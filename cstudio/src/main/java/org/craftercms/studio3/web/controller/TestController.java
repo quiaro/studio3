@@ -14,17 +14,16 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio3.web;
-import java.util.Date;
-import java.util.List;
-
+package org.craftercms.studio3.web.controller;
 import javolution.util.FastList;
+import org.craftercms.studio3.web.TestObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -41,7 +40,8 @@ public class TestController {
      */
     @RequestMapping(value="/", method = RequestMethod.GET)
 
-    public final @ResponseBody TestObject hello(){
+    public final @ResponseBody
+    TestObject hello(){
         return new TestObject("A", new Date(), new TestObject("Child", null, null));
     }
 
