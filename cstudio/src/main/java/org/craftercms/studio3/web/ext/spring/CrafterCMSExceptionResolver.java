@@ -16,32 +16,26 @@
  */
 package org.craftercms.studio3.web.ext.spring;
 
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+
 /**
- * Overrides the {@link org.springframework.web.servlet.handler.SimpleMappingExceptionResolver} <br/><br/>.
- *  {@link #doResolveException(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object, Exception)} removes the
- *  StackTrace of the exception <br/><br/>
- *  resolve the status
+ * Makes sure that All Exceptions are return in a JSON.
+ * if a
  * @author cortiz
  */
-public class RestMappingExceptionResolver extends
-        DefaultHandlerExceptionResolver {
+public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolver {
+
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        ModelAndView mv = new ModelAndView();
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("message", ex.getMessage());
-        map.put("localizedMessage", ex.getLocalizedMessage());
-        mv.addAllObjects(map);
-        return mv;
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

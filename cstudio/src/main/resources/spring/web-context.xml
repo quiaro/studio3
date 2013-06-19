@@ -40,7 +40,7 @@
 
 
     <beans:bean id="exceptionMapping"
-                class="org.craftercms.studio3.web.ext.spring.RestMappingExceptionResolver">
+                class="org.craftercms.studio3.web.ext.spring.CrafterCMSExceptionResolver">
         <beans:property name="preventResponseCaching" value="true"/>
     </beans:bean>
 
@@ -61,5 +61,8 @@
             </beans:value>
         </beans:property>
     </beans:bean>
+
+
+
 
 </beans:beans>
