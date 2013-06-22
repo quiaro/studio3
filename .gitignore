@@ -22,3 +22,5 @@ Thumbs.db
 # IntelliJIdea files#
 *.iml
 .idea
+
+*.log
