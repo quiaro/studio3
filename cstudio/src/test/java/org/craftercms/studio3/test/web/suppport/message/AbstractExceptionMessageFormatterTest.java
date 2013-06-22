@@ -18,33 +18,61 @@
 package org.craftercms.studio3.test.web.suppport.message;
 
 
-import org.craftercms.studio3.web.support.message.AbstractExceptionMessageFormatter;
+import org.craftercms.studio3.web.support.message.impl.AbstractExceptionMessageFormatter;
+import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
+
+import static org.junit.Assert.*;
 
 public class AbstractExceptionMessageFormatterTest {
     private static final String TEST_MESSAGE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
                                       "Morbi iaculis mattis nulla, eget pretium turpis.";
-    private static final int NON_EXISTAND_HTTP_CODE=666;
 
+    private static final String DETAIL_MESSAGE_JSON_KEY = "details";
+    private static final int NON_EXIST_HTTP_CODE=666;
+    private static final String EXCEPTION_MESSAGE="Error Message";
+    private static final int DEFAULT_LENGTH_OF_JSON_MSG = 2;
 
     /**
      * Test validation of
      * <ul>
      *     <li>Message can't be null</li>
-     *     <li>Message can't be empty</li>
-     *     <li>Given http status code int is a valid status code</li>
      * </ul>
      */
     @Test(expected = IllegalStateException.class)
     public void testThatRequireParamsAreValid(){
-        new Test1AbstractExceptionMessageFormatter(null, HttpStatus.BAD_REQUEST.value()).getFormatMessage(new Exception());
-        new Test1AbstractExceptionMessageFormatter("",HttpStatus.OK.value());
-        new Test1AbstractExceptionMessageFormatter(TEST_MESSAGE, NON_EXISTAND_HTTP_CODE).getFormatMessage(new Exception());
+        new Test1AbstractExceptionMessageFormatter(null, HttpStatus.BAD_REQUEST.value()).
+                                                  getFormatMessage(new Exception(EXCEPTION_MESSAGE));
+
     }
+
+    /**
+     * Test validation of
+     * <ul>
+     *     <li>Message can't be empty</li>
+     * </ul>
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testThatDefaultMessageValid(){
+        new Test1AbstractExceptionMessageFormatter("",HttpStatus.OK.value()).getFormatMessage(new Exception());
+    }
+
+
+    /**
+     * Test validation of
+     * <ul>
+     *     <li>Given http status code int is a valid status code</li>
+     * </ul>
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testThatErrorCodeIsValid(){
+        new Test1AbstractExceptionMessageFormatter(TEST_MESSAGE, NON_EXIST_HTTP_CODE)
+                .getFormatMessage(new Exception(EXCEPTION_MESSAGE));
+    }
+
 
     /**
      * Test that the generated response is a valid JSON
@@ -52,28 +80,200 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatReturnStringISJSON(){
-        final AbstractExceptionMessageFormatter formater =
+        final ExceptionMessageFormatter formater =
                                new Test1AbstractExceptionMessageFormatter(TEST_MESSAGE, HttpStatus.BAD_REQUEST.value());
-       final String jsonString=formater.getFormatMessage(new Exception());
+       final String jsonString=formater.getFormatMessage(new Exception(EXCEPTION_MESSAGE));
         try {
             JSONObject jsonObject=new JSONObject(jsonString);
         }catch (JSONException ex){
-            Assert.fail(String.format("The return String %s is not a valid JSON due %s",jsonString,ex.toString()));
+            fail(String.format("The return String %s is not a valid JSON due %s", jsonString, ex.toString()));
         }
     }
 
     /**
-     * Null Response
+     * Test Detail Message
+     */
+    @Test
+    public void testThatMessageDetailIsAppendAndGenerated(){
+        final ExceptionMessageFormatter formatter=
+              new Test1AbstractExceptionMessageFormatter(TEST_MESSAGE,HttpStatus.BAD_GATEWAY.value());
+
+        try {
+            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(EXCEPTION_MESSAGE)));
+            assertTrue(json.get(DETAIL_MESSAGE_JSON_KEY).equals(EXCEPTION_MESSAGE));
+        } catch (JSONException e) {
+            fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
+        }
+
+    }
+
+
+    /**
+     * Test That Http Code and Default Message are
+     *  serialize properly.
+     */
+    @Test
+    public void testThatSerializeIsOk(){
+        final ExceptionMessageFormatter formatter=
+                new Test2AbstractExceptionMessageFormatter(TEST_MESSAGE,HttpStatus.BAD_GATEWAY.value());
+
+        try {
+            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(EXCEPTION_MESSAGE)));
+            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
+            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
+        } catch (JSONException e) {
+            fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
+        }
+
+    }
+
+
+
+    /**
+     * Test if Detail Message is null don't append to final result
+     */
+    @Test
+    public void testThatMessageDetailIsNullDontAppend(){
+        final ExceptionMessageFormatter formatter=
+                new Test2AbstractExceptionMessageFormatter(TEST_MESSAGE,HttpStatus.BAD_GATEWAY.value());
+
+        try {
+            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(EXCEPTION_MESSAGE)));
+            assertEquals(json.length(),DEFAULT_LENGTH_OF_JSON_MSG);
+        } catch (JSONException e) {
+            fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
+        }
+
+    }
+
+
+    /**
+     * Test if Detail Message is empty don't append to final result
+     */
+    @Test
+    public void testThatMessageDetailIsEmptyDontAppend(){
+        final ExceptionMessageFormatter formatter=
+                new Test3AbstractExceptionMessageFormatter(TEST_MESSAGE,HttpStatus.BAD_GATEWAY.value());
+
+        try {
+            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(EXCEPTION_MESSAGE)));
+            assertEquals(json.length(),DEFAULT_LENGTH_OF_JSON_MSG);
+        } catch (JSONException e) {
+            fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
+        }
+    }
+
+
+    /**
+     * Test if Detail Message is empty don't append to final result
+     */
+    @Test
+    public void testThatMessageDetailDontOverride(){
+        final ExceptionMessageFormatter formatter=
+                new Test4AbstractExceptionMessageFormatter(TEST_MESSAGE,HttpStatus.BAD_GATEWAY.value());
+        try {
+            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(EXCEPTION_MESSAGE)));
+            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
+            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
+        } catch (JSONException e) {
+            fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
+        }
+    }
+
+//======================================== Test Implementations ===============================================
+    /**
+     *  Tests
+     *  <ul>
+     *      <li>
+     *          Return of {@link AbstractExceptionMessageFormatter#getFormatMessage(Exception)} is JSON
+     *      </li>
+     *      <li>
+     *           Message and Http Code are valid
+     *      </li>
+     *      <li>
+     *          Detail Message Implementation is been append to the final JSON
+     *      </li>
+     *  </ul>
      */
     class Test1AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
         public Test1AbstractExceptionMessageFormatter(String message, int code) {
+            super(Exception.class);
+            setDefaultMessage(message);
+            setHttpResponseCode(code);
+        }
+
+
+        @Override
+        protected JSONObject generateDetailMessage(Exception exception) throws JSONException {
+           JSONObject obj=new JSONObject();
+           obj.put(DETAIL_MESSAGE_JSON_KEY,exception.getMessage());
+           return obj;
+        }
+    }
+
+    /**
+     *  Tests
+     *  <ul>
+     *      <li>
+     *          If Detail message is null don't append it to final result
+     *      </li>
+     *  </ul>
+     */
+    class Test2AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
+        public Test2AbstractExceptionMessageFormatter(String message, int code) {
+            super(Exception.class);
             setDefaultMessage(message);
             setHttpResponseCode(code);
         }
 
         @Override
         protected JSONObject generateDetailMessage(Exception exception) throws JSONException {
-            return null;
+           return null;
+        }
+    }
+
+    /**
+     *  Tests
+     *  <ul>
+     *      <li>
+     *          If Detail message is null don't append it to final result
+     *      </li>
+     *  </ul>
+     */
+    class Test3AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
+        public Test3AbstractExceptionMessageFormatter(String message, int code) {
+            super(Exception.class);
+            setDefaultMessage(message);
+            setHttpResponseCode(code);
+        }
+
+        @Override
+        protected JSONObject generateDetailMessage(Exception exception) throws JSONException {
+            return new JSONObject();
+        }
+    }
+
+    /**
+     *  Tests
+     *  <ul>
+     *      <li>
+     *          Detail Message should not override httpcode or defaultMessage
+     *      </li>
+     *  </ul>
+     */
+    class Test4AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
+        public Test4AbstractExceptionMessageFormatter(String message, int code) {
+            super(Exception.class);
+            setDefaultMessage(message);
+            setHttpResponseCode(code);
+        }
+
+        @Override
+        protected JSONObject generateDetailMessage(Exception exception) throws JSONException {
+            final JSONObject toReturn= new JSONObject();
+            toReturn.put(super.JSON_CODE_KEY,HttpStatus.OK.value());
+            toReturn.put(super.JSON_MESSAGE_KEY,exception.getMessage());
+            return toReturn;
         }
     }
 }

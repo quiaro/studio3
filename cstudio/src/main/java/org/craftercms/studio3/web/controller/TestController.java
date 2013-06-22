@@ -20,7 +20,6 @@ import org.craftercms.studio3.web.TestObject;
 import org.craftercms.studio3.web.validation.TestObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -78,12 +77,32 @@ public class TestController {
     }
 
 
+
+
+
     /**
      * Hello World.
      */
     @RequestMapping(value="/lots", method = RequestMethod.POST)
     public final @ResponseBody void hello4(@RequestBody List<TestObject> testObjs,@RequestParam(value = "other") String other){
         log.info("I got This {} with this {}",testObjs,other);
+    }
+
+
+    /**
+     * Hello World.
+     */
+    @RequestMapping(value="/lots2", method = RequestMethod.POST)
+    public final @ResponseBody void hello5(@RequestBody List<TestObject> testObjs,@RequestParam(value = "other") String other){
+        log.info("I got This {} with this {}",testObjs,other);
+    }
+
+    /**
+     * Hello World.
+     */
+    @RequestMapping(value="/lots3", method = RequestMethod.GET)
+    public final @ResponseBody void hello6(){
+        throw new IllegalStateException();
     }
 
 

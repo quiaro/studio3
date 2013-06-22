@@ -18,10 +18,10 @@
 package org.craftercms.studio3.web.support.message.impl;
 
 import org.craftercms.studio3.web.exceptions.ValidationException;
-import org.craftercms.studio3.web.support.message.AbstractExceptionMessageFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 
 /**
@@ -32,10 +32,12 @@ public class ValidationExceptionFormatter extends AbstractExceptionMessageFormat
 
     public ValidationExceptionFormatter() {
         super(ValidationException.class);
+        setHttpResponseCode(HttpStatus.BAD_REQUEST.value());
+        setDefaultMessage("Error while processing your request,Some data is not valid");
     }
 
     @Override
-    protected JSONObject generateDetailMessage(Exception ex) throws JSONException {
+    public JSONObject generateDetailMessage(Exception ex) throws JSONException {
         final JSONObject returnJson = new JSONObject();
         if (ex instanceof ValidationException) {
             final ValidationException validationException = (ValidationException) ex;

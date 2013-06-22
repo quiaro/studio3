@@ -16,26 +16,30 @@
  */
 
 package org.craftercms.studio3.web.support.message.impl;
+
 import java.util.Map;
 import javolution.util.FastMap;
-import org.craftercms.studio3.web.support.message.AbstractExceptionMessageFormatter;
+import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
+import org.craftercms.studio3.web.support.message.MessageFormatterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 
 /**
  * Manages all message formatter classes.
  */
-public class MessageFormatterManagerImpl implements org.craftercms.studio3.web.support.message.MessageFormatterManager {
+public class MessageFormatterManagerImpl implements MessageFormatterManager {
     /**
      * Collection of all Message Formatter.
      */
-    private Map<Class<? extends Exception>, AbstractExceptionMessageFormatter> formatterMap;
+    private Map<Class<? extends Exception>, ExceptionMessageFormatter> formatterMap;
     private Logger log = LoggerFactory.getLogger(MessageFormatterManagerImpl.class);
 
     @Override
-    public <T extends AbstractExceptionMessageFormatter>  void registerFormatter(Class<? extends Exception> clazz, T formatter) {
+    public void registerFormatter(Class<? extends Exception> clazz, ExceptionMessageFormatter formatter) {
         if (this.formatterMap == null) {
-            this.formatterMap = new FastMap<Class<? extends Exception>, AbstractExceptionMessageFormatter>();
+            this.formatterMap = new FastMap<>();
         }
         if (this.log.isDebugEnabled()) {
             this.log.debug("Registering Message formatter {}", formatter.getClass().getName());
@@ -44,8 +48,8 @@ public class MessageFormatterManagerImpl implements org.craftercms.studio3.web.s
     }
 
     @Override
-    public <T extends AbstractExceptionMessageFormatter> T getFormatter(Class<? extends Exception> clazz) {
-        return (T) this.formatterMap.get(clazz);
+    public ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz) {
+        return this.formatterMap.get(clazz);
     }
 
 
