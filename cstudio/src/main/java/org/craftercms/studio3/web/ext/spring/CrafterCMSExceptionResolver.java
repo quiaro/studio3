@@ -48,13 +48,16 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response,
                                               Object handler, Exception ex)
     {
-        final ExceptionMessageFormatter exceptionFormatter = this.messageFormatterManager.getFormatter(ex.getClass());
+        ExceptionMessageFormatter exceptionFormatter = this.messageFormatterManager.getFormatter(ex.getClass());
         try {
             if (exceptionFormatter == null) {
                 if (this.log.isDebugEnabled()) {
-                    this.log.debug("There are not any Formatter register for {}", ex.getClass().getCanonicalName());
+                    this.log.debug(" Going to default ");
+                    exceptionFormatter = this.messageFormatterManager.getFormatter(Exception.class);
+                    if (exceptionFormatter == null){
+                        superDefault(response);
+                    }
                 }
-                response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.toString());
             } else {
                 response.sendError(exceptionFormatter.getHttpResponseCode(), exceptionFormatter.getFormatMessage(ex));
             }
@@ -66,5 +69,18 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
 
     public void setMessageFormatterManager(MessageFormatterManager messageFormatterManager) {
         this.messageFormatterManager = messageFormatterManager;
+    }
+
+    /**
+     * Used ony if there is is non Message formatter register
+     * (including a default).
+     * @param response HttpResponse Instance where default response will be written.
+     * @throws IOException   If response can't be written.
+     */
+    private void superDefault(final HttpServletResponse response)throws IOException{
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("There are not any Formatter register");
+        }
+        response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.toString());
     }
 }

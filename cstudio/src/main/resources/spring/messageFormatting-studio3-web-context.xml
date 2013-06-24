@@ -41,4 +41,7 @@
     <bean id="validationFormatter" parent="messageFormatter"
           class="org.craftercms.studio3.web.support.message.impl.ValidationExceptionFormatter"/>
 
+    <bean id="defaultFormatter" parent="messageFormatter"
+          class="org.craftercms.studio3.web.support.message.impl.DefaultMessageFormatter"/>
+
 </beans>

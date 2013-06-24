@@ -16,8 +16,6 @@
  */
 package org.craftercms.studio3.web.controller;
 import javolution.util.FastList;
-import org.craftercms.studio3.web.TestObject;
-import org.craftercms.studio3.web.validation.TestObjectValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
