@@ -7,7 +7,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>cstudio</artifactId>
+    <artifactId>studio</artifactId>
     <packaging>war</packaging>
     <name>Crafter Studio 3</name>
 
@@ -156,7 +156,7 @@
 
     </dependencies>
     <build>
-        <finalName>cstudio</finalName>
+        <finalName>studio</finalName>
         <plugins>
             <plugin>
                     <groupId>org.eclipse.jetty</groupId>
