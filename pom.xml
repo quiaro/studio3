@@ -358,6 +358,6 @@
         <module>sdk</module>
         <module>impl</module>
         <module>alfresco-repo</module>
-        <module>cstudio</module>
+        <module>studio</module>
     </modules>
 </project>
