@@ -16,26 +16,55 @@
  */
 package org.craftercms.studio3.web.ext.spring;
 
-import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
+
+import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
+import org.craftercms.studio3.web.support.message.MessageFormatterManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
+
 
 /**
  * Makes sure that All Exceptions are return in a JSON.
- * if a
+ * by using {@link MessageFormatterManager}
+ *
  * @author cortiz
  */
 public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolver {
 
+    protected MessageFormatterManager messageFormatterManager;
+    private Logger log = LoggerFactory.getLogger(CrafterCMSExceptionResolver.class);
+
+    public CrafterCMSExceptionResolver() {
+    }
 
     @Override
-    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response,
+                                              Object handler, Exception ex)
+    {
+        final ExceptionMessageFormatter exceptionFormatter = this.messageFormatterManager.getFormatter(ex.getClass());
+        try {
+            if (exceptionFormatter == null) {
+                if (this.log.isDebugEnabled()) {
+                    this.log.debug("There are not any Formatter register for {}", ex.getClass().getCanonicalName());
+                }
+                response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.toString());
+            } else {
+                response.sendError(exceptionFormatter.getHttpResponseCode(), exceptionFormatter.getFormatMessage(ex));
+            }
+        } catch (IOException e) {
+            this.log.error("Unable to generate send error due a IOException ", e);
+        }
+        return new ModelAndView();
+    }
+
+    public void setMessageFormatterManager(MessageFormatterManager messageFormatterManager) {
+        this.messageFormatterManager = messageFormatterManager;
     }
 }

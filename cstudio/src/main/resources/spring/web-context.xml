@@ -39,10 +39,6 @@
     </beans:bean>
 
 
-    <beans:bean id="exceptionMapping"
-                class="org.craftercms.studio3.web.ext.spring.CrafterCMSExceptionResolver">
-        <beans:property name="preventResponseCaching" value="true"/>
-    </beans:bean>
 
     <resources mapping="/resources/**" location="/resources/"/>
 
@@ -65,4 +61,7 @@
 
 
 
+
+   <beans:import resource="classpath*:/spring/*-studio3-web-context.xml"/>
+    <beans:import resource="classpath*:/extension/studio3/*-studio3-web-context.xml"/>
 </beans:beans>
