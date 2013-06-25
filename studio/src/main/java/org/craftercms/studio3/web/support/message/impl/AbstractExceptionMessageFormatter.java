@@ -17,8 +17,6 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
-import java.util.Iterator;
-
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.craftercms.studio3.web.support.message.MessageFormatterManager;
@@ -27,6 +25,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+
+import java.util.Iterator;
 
 
 /**
@@ -77,7 +77,7 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      *         or <B>null</B> if the JSON could no be generate due a error.
      */
     @Override
-    public String getFormatMessage(Exception exception) {
+    public String getFormattedMessage(Exception exception) {
         // Checks that all is ok
         validateDefaultMessageParams();
         String returnMsg = null;

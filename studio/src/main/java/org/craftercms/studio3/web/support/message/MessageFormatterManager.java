@@ -25,4 +25,6 @@ public interface MessageFormatterManager {
     void registerFormatter(Class<? extends Exception> clazz, ExceptionMessageFormatter formatter);
 
     ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz);
+
+    String getFormattedMessage(Exception exception);
 }

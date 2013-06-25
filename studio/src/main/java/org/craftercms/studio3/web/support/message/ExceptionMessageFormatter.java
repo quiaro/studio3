@@ -29,7 +29,7 @@ public interface ExceptionMessageFormatter {
      * @param exception Exception to be formatter
      * @return a JSON as string of the formatted exception <b>Never Null or Empty</b>
      */
-    String getFormatMessage(Exception exception);
+    String getFormattedMessage(Exception exception);
 
     /**
      * HTTP Status Code that will be send to the client
