@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(locations = "/spring/messageFormatting-studio3-web-context.xml")
 public class MessageFormatterManagerTest {
 
+    public static final String ERROR = "Error";
     @Autowired
     MessageFormatterManager manager;
 
@@ -28,10 +30,31 @@ public class MessageFormatterManagerTest {
     }
 
     @Test
-    public void registerFormatterOnRuntime() {
+    public void testThatRegisterFormatterOnRuntime() {
         manager.registerFormatter(IllegalArgumentException.class, new TestFormatter());
         assertNotNull(manager.getFormatter(IllegalArgumentException.class));
         assertEquals(TestFormatter.class, manager.getFormatter(IllegalArgumentException.class).getClass());
+    }
+
+
+    @Test
+    public void testThatReturnDefault() {
+        manager.registerFormatter(IllegalArgumentException.class, new TestFormatter());
+        assertNotNull(manager.getFormatter(DummyException.class));
+    }
+
+    @Test
+    public void testThatNullReturnSomething() {
+        manager.registerFormatter(IllegalArgumentException.class, new TestFormatter());
+        assertNotNull(manager.getFormatter(null));
+    }
+
+    @Test
+    public void testThatResultOfFormattedMessageIsSame() {
+        manager.registerFormatter(IllegalArgumentException.class, new TestFormatter());
+        final IllegalArgumentException testException = new IllegalArgumentException(ERROR);
+        assertEquals(manager.getFormattedMessage(testException)
+                ,manager.getFormatter(IllegalArgumentException.class).getFormattedMessage(testException));
     }
 
 //=========================== Support Test classes ====================================
@@ -43,11 +66,20 @@ public class MessageFormatterManagerTest {
 
         protected TestFormatter() {
             super(IllegalArgumentException.class);
+            setHttpResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
         @Override
         protected JSONObject generateDetailMessage(final Exception ex) throws JSONException {
             return null;
         }
+    }
+
+    class DummyException extends Exception{
+
+
+
+
+
     }
 }

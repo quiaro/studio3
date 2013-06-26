@@ -17,23 +17,23 @@
 
 package org.craftercms.studio3.web.exceptions;
 
+import java.util.List;
+
 import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
 import org.springframework.validation.ObjectError;
 
-import java.util.List;
-
 /**
- * Throw when the object send is not valid validation to the
- * proper validators define in {@see org.craftercms.studio3.web.validation} package.
+ * Throw when the object send is not valid validation to the proper validators
+ * define in {@see org.craftercms.studio3.web.validation} package.
  */
 public class ValidationException extends AbstractCrafterCMSException {
     /**
-     * List of All Errors
+     * List of All Errors.
      */
     private final List<ObjectError> errors;
 
     /**
-     * Creates a Instance of ValidationException base on a List of error
+     * Creates a Instance of ValidationException base on a List of error.
      *
      * @param message Exception Summary Message
      * @param errors  List of all validation errors
@@ -44,7 +44,7 @@ public class ValidationException extends AbstractCrafterCMSException {
     }
 
     /**
-     * Gets a List of all Validation Errors
+     * Gets a List of all Validation Errors.
      *
      * @return list of validation errors for this exception.
      */

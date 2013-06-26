@@ -29,8 +29,4 @@ public abstract class AbstractCrafterCMSException extends Exception{
     protected AbstractCrafterCMSException(String message) {
         super(message);
     }
-
-    protected AbstractCrafterCMSException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

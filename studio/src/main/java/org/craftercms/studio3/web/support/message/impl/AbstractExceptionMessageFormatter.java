@@ -17,6 +17,8 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
+import java.util.Iterator;
+
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.craftercms.studio3.web.support.message.MessageFormatterManager;
@@ -25,8 +27,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-
-import java.util.Iterator;
 
 
 /**
@@ -39,7 +39,7 @@ import java.util.Iterator;
  * "message":"Meaningful message"
  * }
  * </code>
- *<b>The meaningful message is call using {@link Exception#getMessage()}</b>
+ * <b>The meaningful message is call using {@link Exception#getMessage()}</b>
  */
 public abstract class AbstractExceptionMessageFormatter implements ExceptionMessageFormatter {
     /**
@@ -50,27 +50,24 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      * JSON key for message.
      */
     public static final String JSON_MESSAGE_KEY = "message";
-
     /**
      * JSO key for any details.
      */
     public static final String JSON_DETAIL_MESSAGE_KEY = "details";
-
     /**
      * Response Code that will be send to the client
      * must compliance to http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html .
      */
     private int httpResponseCode;
-
-    private Class<? extends Exception> exception;
+    private Class<? extends Exception> exceptionClass;
     /**
      * Message Formatter.
      */
     private MessageFormatterManager messageFormatterManager;
     private Logger log = LoggerFactory.getLogger(AbstractExceptionMessageFormatter.class);
 
-    protected AbstractExceptionMessageFormatter(Class<? extends Exception> exception) {
-        this.exception = exception;
+    protected AbstractExceptionMessageFormatter(Class<? extends Exception> exceptionClass) {
+        this.exceptionClass = exceptionClass;
     }
 
     /**
@@ -91,11 +88,11 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
             jsonToReturn.put(JSON_MESSAGE_KEY, exception.getMessage());
             final JSONObject detailsObject = generateDetailMessage(exception);
             if (detailsObject == null) {
-                if(this.log.isDebugEnabled()){
+                if (this.log.isDebugEnabled()) {
                     this.log.debug("Detail Message is null, ignoring");
                 }
             } else if (detailsObject.length() == 0) {
-                if(this.log.isDebugEnabled()){
+                if (this.log.isDebugEnabled()) {
                     this.log.debug("Detail Message is empty, ignoring");
                 }
             } else {
@@ -103,9 +100,9 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
                 while (keys.hasNext()) {
                     final String key = keys.next().toString();
                     if (key.equals(JSON_CODE_KEY) || key.equals(JSON_MESSAGE_KEY)) {
-                        if(this.log.isDebugEnabled()){
+                        if (this.log.isDebugEnabled()) {
                             this.log.debug("Detail message has either {} or {} they are not allow, ignoring them",
-                                            JSON_CODE_KEY, JSON_MESSAGE_KEY);
+                                    JSON_CODE_KEY, JSON_MESSAGE_KEY);
                         }
                     } else {
                         jsonToReturn.put(key, detailsObject.get(key));
@@ -133,11 +130,10 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
             HttpStatus.valueOf(this.httpResponseCode);
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(String.format("%s is not a valid Http Response Code",
-                                                          this.httpResponseCode));
+                    this.httpResponseCode));
         }
 
     }
-
 
     /**
      * Generates the any extra information that will be append to the
@@ -148,21 +144,21 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      * @return A JSONObject that will be append to standard out put.
      *         if contains either "code" or "message" as keys they will be
      *         removed.If return empty or null will be ignore.
-     * @throws org.json.JSONException if a error generating the exception happened.
+     * @throws org.json.JSONException if a error generating the exceptionClass happened.
      */
     protected abstract JSONObject generateDetailMessage(Exception ex) throws JSONException;
 
     public void register() {
-        this.messageFormatterManager.registerFormatter(this.exception, this);
-    }
-
-    protected void setHttpResponseCode(int httpResponseCode) {
-        this.httpResponseCode = httpResponseCode;
+        this.messageFormatterManager.registerFormatter(this.exceptionClass, this);
     }
 
     @Override
     public int getHttpResponseCode() {
         return this.httpResponseCode;
+    }
+
+    protected void setHttpResponseCode(int httpResponseCode) {
+        this.httpResponseCode = httpResponseCode;
     }
 
     public void setMessageFormatterManager(MessageFormatterManagerImpl messageFormatterManager) {

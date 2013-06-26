@@ -17,7 +17,6 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
-import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -26,12 +25,11 @@ import org.springframework.http.HttpStatus;
  * Fallback implementation for Message formatting.
  * <b>{@link AbstractExceptionMessageFormatter#generateDetailMessage(Exception)}
  * will allways return null, and HTTP code will be 500</b>
- *
  */
-public class DefaultMessageFormatter extends AbstractExceptionMessageFormatter{
+public class DefaultMessageFormatter extends AbstractExceptionMessageFormatter {
 
     public DefaultMessageFormatter() {
-        super(AbstractCrafterCMSException.class);
+        super(Exception.class);
         setHttpResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 

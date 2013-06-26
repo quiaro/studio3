@@ -76,7 +76,7 @@ public class MessageFormatterManagerImpl implements MessageFormatterManager {
 
     @Override
     public String getFormattedMessage(Exception exception) {
-        ExceptionMessageFormatter formatter = this.getFormatter(exception.getClass());
+        final ExceptionMessageFormatter formatter = this.getFormatter(exception.getClass());
         return formatter.getFormattedMessage(exception);
     }
 }
