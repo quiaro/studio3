@@ -17,12 +17,13 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
-import java.util.Map;
 import javolution.util.FastMap;
 import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.craftercms.studio3.web.support.message.MessageFormatterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 
 
@@ -58,8 +59,24 @@ public class MessageFormatterManagerImpl implements MessageFormatterManager {
 
     @Override
     public ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz) {
-        return this.formatterMap.get(clazz);
+        if (this.formatterMap == null) {
+            this.formatterMap = new FastMap<>();
+        }
+        ExceptionMessageFormatter formatter;
+        if (clazz == null) {
+            formatter = new DefaultMessageFormatter();
+        } else {
+            formatter = this.formatterMap.get(clazz);
+            if (formatter == null) {
+                formatter = new DefaultMessageFormatter();
+            }
+        }
+        return formatter;
     }
 
-
+    @Override
+    public String getFormattedMessage(Exception exception) {
+        ExceptionMessageFormatter formatter = this.getFormatter(exception.getClass());
+        return formatter.getFormattedMessage(exception);
+    }
 }
