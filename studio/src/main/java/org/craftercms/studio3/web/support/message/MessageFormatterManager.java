@@ -21,8 +21,18 @@ package org.craftercms.studio3.web.support.message;
  * Message Formatter.
  */
 public interface MessageFormatterManager {
-
+    /**
+     * Registers a Formatter fot the give class.
+     * @param clazz Exception class that will be handel by the Formatter.
+     * @param formatter Formatter that will handel the Exception.
+     */
     void registerFormatter(Class<? extends Exception> clazz, ExceptionMessageFormatter formatter);
 
+    /**
+     * Returns the Register Formatter for the given class.
+     * @param clazz Exception base class.
+     * @return The formatter Register for handel that class.
+     */
     ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz);
+
 }

@@ -17,6 +17,7 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
+import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ import org.springframework.http.HttpStatus;
 public class DefaultMessageFormatter extends AbstractExceptionMessageFormatter{
 
     public DefaultMessageFormatter() {
-        super(Exception.class);
+        super(AbstractCrafterCMSException.class);
         setHttpResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 

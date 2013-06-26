@@ -28,12 +28,18 @@ import org.springframework.validation.ObjectError;
  * Valitation Exception  Implementation for AbstractExceptionMessageFormatter.
  */
 public class ValidationExceptionFormatter extends AbstractExceptionMessageFormatter {
-
+    /**
+     * Json key for field name.
+     */
+    public static final String JSON_DETAIL_FIELD_KEY = "field";
+    /**
+     * Json key for detail.
+     */
+    public static final String JSON_DETAIL_MESSAGE_KEY = "detail";
 
     public ValidationExceptionFormatter() {
         super(ValidationException.class);
         setHttpResponseCode(HttpStatus.BAD_REQUEST.value());
-        setDefaultMessage("Error while processing your request,Some data is not valid");
     }
 
     @Override
@@ -45,14 +51,18 @@ public class ValidationExceptionFormatter extends AbstractExceptionMessageFormat
                 final JSONArray jsonArray = new JSONArray();
                 for (ObjectError o : validationException.getErrors()) {
                     final JSONObject errorJson = new JSONObject();
-                    errorJson.put("field", o.getObjectName());
-                    errorJson.put("detail", o.getDefaultMessage());
+                    errorJson.put(JSON_DETAIL_FIELD_KEY, o.getObjectName());
+                    errorJson.put(JSON_DETAIL_MESSAGE_KEY, o.getDefaultMessage());
                     jsonArray.put(errorJson);
                 }
-                returnJson.put("details", jsonArray);
+                returnJson.put(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY, jsonArray);
             }
+            return returnJson;
+        }else {
+            throw new IllegalArgumentException(String.format("The Given Exception (%s) is not a valid %s instance",
+                                                         ex.getClass().getCanonicalName(),
+                                                        this.getClass().getCanonicalName()));
         }
-        return returnJson;
     }
 }
 

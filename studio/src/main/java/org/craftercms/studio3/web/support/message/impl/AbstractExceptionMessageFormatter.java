@@ -36,9 +36,10 @@ import org.springframework.http.HttpStatus;
  * <code>
  * {
  * "code":XXX,
- * "message":"Meaningfully message"
+ * "message":"Meaningful message"
  * }
  * </code>
+ *<b>The meaningful message is call using {@link Exception#getMessage()}</b>
  */
 public abstract class AbstractExceptionMessageFormatter implements ExceptionMessageFormatter {
     /**
@@ -49,15 +50,18 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      * JSON key for message.
      */
     public static final String JSON_MESSAGE_KEY = "message";
+
+    /**
+     * JSO key for any details.
+     */
+    public static final String JSON_DETAIL_MESSAGE_KEY = "details";
+
     /**
      * Response Code that will be send to the client
      * must compliance to http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html .
      */
     private int httpResponseCode;
-    /**
-     * Default Message to be send.
-     */
-    private String defaultMessage;
+
     private Class<? extends Exception> exception;
     /**
      * Message Formatter.
@@ -79,24 +83,30 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
     @Override
     public String getFormatMessage(Exception exception) {
         // Checks that all is ok
-        validateDefaultMessageParams();
+        validateDefaultMessageParams(exception);
         String returnMsg = null;
         try {
             final JSONObject jsonToReturn = new JSONObject();
             jsonToReturn.put(JSON_CODE_KEY, this.httpResponseCode);
-            jsonToReturn.put(JSON_MESSAGE_KEY, this.defaultMessage);
+            jsonToReturn.put(JSON_MESSAGE_KEY, exception.getMessage());
             final JSONObject detailsObject = generateDetailMessage(exception);
             if (detailsObject == null) {
-                this.log.debug("Detail Message is null, ignoring");
+                if(this.log.isDebugEnabled()){
+                    this.log.debug("Detail Message is null, ignoring");
+                }
             } else if (detailsObject.length() == 0) {
-                this.log.debug("Detail Message is empty, ignoring");
+                if(this.log.isDebugEnabled()){
+                    this.log.debug("Detail Message is empty, ignoring");
+                }
             } else {
                 final Iterator keys = detailsObject.keys();
                 while (keys.hasNext()) {
                     final String key = keys.next().toString();
                     if (key.equals(JSON_CODE_KEY) || key.equals(JSON_MESSAGE_KEY)) {
-                        this.log.debug("Detail message has either {} or {} they are not allow, ignoring them",
-                                JSON_CODE_KEY, JSON_MESSAGE_KEY);
+                        if(this.log.isDebugEnabled()){
+                            this.log.debug("Detail message has either {} or {} they are not allow, ignoring them",
+                                            JSON_CODE_KEY, JSON_MESSAGE_KEY);
+                        }
                     } else {
                         jsonToReturn.put(key, detailsObject.get(key));
                     }
@@ -115,13 +125,13 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      *
      * @throws IllegalStateException if either defaultMessage or httpResponseCode are not valid.
      */
-    private void validateDefaultMessageParams() {
-        if (StringUtils.isEmpty(this.defaultMessage)) {
+    private void validateDefaultMessageParams(Exception ex) {
+        if (StringUtils.isEmpty(ex.getMessage())) {
             throw new IllegalStateException("Default message can't be null or empty");
         }
         try {
             HttpStatus.valueOf(this.httpResponseCode);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException e) {
             throw new IllegalStateException(String.format("%s is not a valid Http Response Code",
                                                           this.httpResponseCode));
         }
@@ -132,6 +142,7 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
     /**
      * Generates the any extra information that will be append to the
      * end message.
+     * Key of that JSON MUST be call
      *
      * @param ex Exception used to generate detail message.
      * @return A JSONObject that will be append to standard out put.
@@ -139,7 +150,7 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
      *         removed.If return empty or null will be ignore.
      * @throws org.json.JSONException if a error generating the exception happened.
      */
-   protected abstract JSONObject generateDetailMessage(Exception ex) throws JSONException;
+    protected abstract JSONObject generateDetailMessage(Exception ex) throws JSONException;
 
     public void register() {
         this.messageFormatterManager.registerFormatter(this.exception, this);
@@ -152,10 +163,6 @@ public abstract class AbstractExceptionMessageFormatter implements ExceptionMess
     @Override
     public int getHttpResponseCode() {
         return this.httpResponseCode;
-    }
-
-    protected void setDefaultMessage(String defaultMessage) {
-        this.defaultMessage = defaultMessage;
     }
 
     public void setMessageFormatterManager(MessageFormatterManagerImpl messageFormatterManager) {

@@ -153,15 +153,22 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>0.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
     <build>
         <finalName>studio</finalName>
         <plugins>
             <plugin>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-maven-plugin</artifactId>
-                    <version>9.0.3.v20130506</version>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.0.3.v20130506</version>
                 <configuration>
                     <httpConnector>
                         <port>${jetty.port}</port>
@@ -220,6 +227,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
     <profiles>

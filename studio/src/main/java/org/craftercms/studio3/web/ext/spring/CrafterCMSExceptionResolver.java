@@ -21,11 +21,13 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.craftercms.studio3.utils.exceptions.AbstractCrafterCMSException;
 import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.craftercms.studio3.web.support.message.MessageFormatterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 
@@ -50,17 +52,28 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
     {
         ExceptionMessageFormatter exceptionFormatter = this.messageFormatterManager.getFormatter(ex.getClass());
         try {
+            response.setHeader("Content-Type", MediaType.APPLICATION_JSON.toString());
             if (exceptionFormatter == null) {
                 if (this.log.isDebugEnabled()) {
                     this.log.debug(" Going to default ");
-                    exceptionFormatter = this.messageFormatterManager.getFormatter(Exception.class);
-                    if (exceptionFormatter == null){
-                        superDefault(response);
-                    }
                 }
-            } else {
-                response.sendError(exceptionFormatter.getHttpResponseCode(), exceptionFormatter.getFormatMessage(ex));
+                //Calls Default
+                if (ex instanceof AbstractCrafterCMSException) {
+                    if (this.log.isDebugEnabled()) {
+                        this.log.debug(" Using CrafterCMS Default");
+                    }
+                    exceptionFormatter = this.messageFormatterManager.getFormatter(AbstractCrafterCMSException.class);
+                }
+                //Fallback
+                if (exceptionFormatter == null) {
+                    if (this.log.isDebugEnabled()) {
+                        this.log.debug("There is not a Default Message Formatter going fallback");
+                    }
+                    exceptionFormatter = new FallbackFormatter();
+                }
             }
+            response.setStatus(exceptionFormatter.getHttpResponseCode());
+            response.getWriter().write(exceptionFormatter.getFormatMessage(ex));
         } catch (IOException e) {
             this.log.error("Unable to generate send error due a IOException ", e);
         }
@@ -71,16 +84,20 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
         this.messageFormatterManager = messageFormatterManager;
     }
 
-    /**
-     * Used ony if there is is non Message formatter register
-     * (including a default).
-     * @param response HttpResponse Instance where default response will be written.
-     * @throws IOException   If response can't be written.
-     */
-    private void superDefault(final HttpServletResponse response)throws IOException{
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("There are not any Formatter register");
+    class FallbackFormatter implements ExceptionMessageFormatter {
+
+        FallbackFormatter() {
         }
-        response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.toString());
+
+        @Override
+        public String getFormatMessage(final Exception exception) {
+            return String.format("{\"code\":%d,\"message\":%s}", HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        }
+
+        @Override
+        public int getHttpResponseCode() {
+            return HttpStatus.INTERNAL_SERVER_ERROR.value();
+        }
     }
 }

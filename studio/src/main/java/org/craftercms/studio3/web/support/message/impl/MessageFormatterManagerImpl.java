@@ -30,11 +30,20 @@ import org.slf4j.LoggerFactory;
  * Manages all message formatter classes.
  */
 public class MessageFormatterManagerImpl implements MessageFormatterManager {
+
     /**
      * Collection of all Message Formatter.
      */
     private Map<Class<? extends Exception>, ExceptionMessageFormatter> formatterMap;
+    /**
+     * Logger.
+     */
     private Logger log = LoggerFactory.getLogger(MessageFormatterManagerImpl.class);
+
+
+    public MessageFormatterManagerImpl() {
+    }
+
 
     @Override
     public void registerFormatter(Class<? extends Exception> clazz, ExceptionMessageFormatter formatter) {
