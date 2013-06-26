@@ -73,7 +73,7 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
                 }
             }
             response.setStatus(exceptionFormatter.getHttpResponseCode());
-            response.getWriter().write(exceptionFormatter.getFormatMessage(ex));
+            response.getWriter().write(exceptionFormatter.getFormattedMessage(ex));
         } catch (IOException e) {
             this.log.error("Unable to generate send error due a IOException ", e);
         }
@@ -86,13 +86,14 @@ public class CrafterCMSExceptionResolver extends AbstractHandlerExceptionResolve
 
     class FallbackFormatter implements ExceptionMessageFormatter {
 
+
         FallbackFormatter() {
         }
 
         @Override
-        public String getFormatMessage(final Exception exception) {
+        public String getFormattedMessage(final Exception exception) {
             return String.format("{\"code\":%d,\"message\":%s}", HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+                    exception.getMessage());
         }
 
         @Override

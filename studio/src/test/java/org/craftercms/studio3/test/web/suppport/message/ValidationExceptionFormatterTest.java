@@ -32,7 +32,7 @@ public class ValidationExceptionFormatterTest {
             ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
 
             ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
-            new JSONObject(messageFormatter.getFormatMessage(ex));
+            new JSONObject(messageFormatter.getFormattedMessage(ex));
         } catch (JSONException ex) {
             fail("Unable to parse response for ValidationExceptionFormatter#getFormatMessage due a exception \n"
                     + ex.toString());
@@ -44,7 +44,7 @@ public class ValidationExceptionFormatterTest {
     public void testGenerateDetailMessageIsAnArray() throws Exception {
         ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
-        new JSONObject(messageFormatter.getFormatMessage(ex)).
+        new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
 
     }
@@ -53,7 +53,7 @@ public class ValidationExceptionFormatterTest {
     public void testGenerateDetailMessageArrayLength() throws Exception {
         ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
-        final JSONArray jsonArray = new JSONObject(messageFormatter.getFormatMessage(ex)).
+        final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
         assertEquals(jsonArray.length(), TOTAL_FIELDS);
     }
@@ -62,7 +62,7 @@ public class ValidationExceptionFormatterTest {
     public void testGenerateDetailMessageContents() throws Exception {
         ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
-        final JSONArray jsonArray = new JSONObject(messageFormatter.getFormatMessage(ex)).
+        final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
         for (int i = 0; i < jsonArray.length(); i++) {
             String detail=jsonArray.getJSONObject(i).getString(ValidationExceptionFormatter.JSON_DETAIL_FIELD_KEY);
@@ -76,14 +76,14 @@ public class ValidationExceptionFormatterTest {
     public void testCanSendAnything() throws Exception {
         ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
         Exception ex = new Exception("Not a Validation");
-        messageFormatter.getFormatMessage(ex);
+        messageFormatter.getFormattedMessage(ex);
     }
 
     @Test()
     public void testListOfErrorsEmpty() throws Exception {
         ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", new FastList<ObjectError>());
-        messageFormatter.getFormatMessage(ex);
+        messageFormatter.getFormattedMessage(ex);
     }
 
 

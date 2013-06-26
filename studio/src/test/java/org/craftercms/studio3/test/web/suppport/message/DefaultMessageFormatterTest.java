@@ -29,7 +29,7 @@ public class DefaultMessageFormatterTest {
     @Test
     public void testFormatMessage() throws Exception {
         ExceptionMessageFormatter defaultMessageFormatter = new DefaultMessageFormatter();
-        assertNotNull(defaultMessageFormatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+        assertNotNull(defaultMessageFormatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
     }
 
     /**
@@ -50,7 +50,7 @@ public class DefaultMessageFormatterTest {
     @Test(expected = JSONException.class)
     public void testGenerateDetailMessage() throws Exception {
         ExceptionMessageFormatter defaultMessageFormatter = new DefaultMessageFormatter();
-        JSONObject jsonResponse = new JSONObject(defaultMessageFormatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+        JSONObject jsonResponse = new JSONObject(defaultMessageFormatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
         jsonResponse.get(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
     }
 }

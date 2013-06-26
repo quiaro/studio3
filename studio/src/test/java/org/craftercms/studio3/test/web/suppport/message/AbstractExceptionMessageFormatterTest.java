@@ -43,7 +43,7 @@ public class AbstractExceptionMessageFormatterTest {
     @Test(expected = IllegalStateException.class)
     public void testThatRequireParamsAreValid(){
         new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_REQUEST.value()).
-                                                  getFormatMessage(new Exception(null,null));
+                getFormattedMessage(new Exception(null,null));
 
     }
 
@@ -55,7 +55,7 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testThatDefaultMessageValid(){
-        new Test1AbstractExceptionMessageFormatter(HttpStatus.OK.value()).getFormatMessage(new Exception(""));
+        new Test1AbstractExceptionMessageFormatter(HttpStatus.OK.value()).getFormattedMessage(new Exception(""));
     }
 
 
@@ -68,7 +68,7 @@ public class AbstractExceptionMessageFormatterTest {
     @Test(expected = IllegalStateException.class)
     public void testThatErrorCodeIsValid(){
         new Test1AbstractExceptionMessageFormatter(NON_EXIST_HTTP_CODE)
-                .getFormatMessage(new Exception(TEST_MESSAGE));
+                .getFormattedMessage(new Exception(TEST_MESSAGE));
     }
 
 
@@ -80,7 +80,7 @@ public class AbstractExceptionMessageFormatterTest {
     public void testThatReturnStringISJSON(){
         final ExceptionMessageFormatter formater =
                                new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_REQUEST.value());
-       final String jsonString=formater.getFormatMessage(new Exception(TEST_MESSAGE));
+       final String jsonString=formater.getFormattedMessage(new Exception(TEST_MESSAGE));
         try {
             new JSONObject(jsonString);
         }catch (JSONException ex){
@@ -97,7 +97,7 @@ public class AbstractExceptionMessageFormatterTest {
               new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
-            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+            JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
             assertTrue(json.get(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY).equals(TEST_MESSAGE));
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
@@ -116,7 +116,7 @@ public class AbstractExceptionMessageFormatterTest {
                 new Test2AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
-            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+            JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
             assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
             assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
         } catch (JSONException e) {
@@ -136,7 +136,7 @@ public class AbstractExceptionMessageFormatterTest {
                 new Test2AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
-            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+            JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
             assertEquals(json.length(),DEFAULT_LENGTH_OF_JSON_MSG);
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
@@ -154,7 +154,7 @@ public class AbstractExceptionMessageFormatterTest {
                 new Test3AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
-            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+            JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
             assertEquals(json.length(),DEFAULT_LENGTH_OF_JSON_MSG);
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
@@ -170,7 +170,7 @@ public class AbstractExceptionMessageFormatterTest {
         final ExceptionMessageFormatter formatter=
                 new Test4AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
         try {
-            JSONObject json=new JSONObject(formatter.getFormatMessage(new Exception(TEST_MESSAGE)));
+            JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
             assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
             assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
         } catch (JSONException e) {
@@ -183,7 +183,7 @@ public class AbstractExceptionMessageFormatterTest {
      *  Tests
      *  <ul>
      *      <li>
-     *          Return of {@link AbstractExceptionMessageFormatter#getFormatMessage(Exception)} is JSON
+     *          Return of {@link AbstractExceptionMessageFormatter#getFormattedMessage(Exception)} is JSON
      *      </li>
      *      <li>
      *           Message and Http Code are valid

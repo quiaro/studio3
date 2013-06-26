@@ -31,8 +31,10 @@ public interface MessageFormatterManager {
     /**
      * Returns the Register Formatter for the given class.
      * @param clazz Exception base class.
-     * @return The formatter Register for handel that class.
+     * @return Formatted Error.
      */
-    ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz);
+    ExceptionMessageFormatter getFormatter(final Class<? extends Exception> clazz);
+
+    String getFormattedMessage(Exception exception);
 
 }

@@ -67,7 +67,7 @@ public class CrafterCMSExceptionResolverTest {
                     .andExpect(status().isInternalServerError())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$." + AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY)
-                            .value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                            .value(CrafterCMSExceptionResolverTestController.EXCEPTION_MSG))
                     .andExpect(jsonPath("$" + AbstractExceptionMessageFormatter.JSON_CODE_KEY)
                             .value(HttpStatus.INTERNAL_SERVER_ERROR.value()));
         } catch (Exception e) {
@@ -75,31 +75,4 @@ public class CrafterCMSExceptionResolverTest {
         }
 
     }
-
-    /**
-     * Test default Exception.
-     * @throws Exception
-     */
-    @Test
-    public void testDoResolveValidation(){
-        try {
-            this.mockMvc.perform(get("/testing/throwUnregisterException").accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isInternalServerError())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$." + AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY)
-                            .value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-                    .andExpect(jsonPath("$" + AbstractExceptionMessageFormatter.JSON_CODE_KEY)
-                            .value(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-        } catch (Exception e) {
-            fail("Unable to Test testDoResolveException due "+e.toString());
-        }
-
-    }
-
-
-
-
-
-
-
 }
