@@ -13,8 +13,8 @@ public class CompoundValidator implements Validator {
 
     /**
      * Validators List.
-      */
-   private List<Validator> validators = new ArrayList<Validator>();
+     */
+    private List<Validator> validators = new ArrayList<Validator>();
 
     /**
      * Default Constructor.
