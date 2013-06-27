@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-30(%d [%thread]) %-5level %logger{32} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--Daily rolling file appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>studio.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>studio.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-30(%d [%thread]) %-5level %logger{32} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="org.craftercms.studio3">
+        <level value="debug"/>
+    </logger>
+    <root>
+        <level value="error"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
