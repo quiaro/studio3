@@ -21,4 +21,10 @@ package org.craftercms.studio3.impl;
  * Placeholder class delete when some more meaningful.
  */
 public class PlaceHolder {
+
+    /**
+     * Default Placeholder Constructor.
+     */
+    public PlaceHolder() {
+    }
 }

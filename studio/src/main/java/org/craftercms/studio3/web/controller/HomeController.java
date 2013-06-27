@@ -30,6 +30,12 @@ public class HomeController {
      */
     private static final String INDEX_VIEW = "index";
 
+    /**
+     * Default HomeController Constructor.
+     */
+    public HomeController() {
+    }
+
     @RequestMapping("/")
     public String index() {
         return INDEX_VIEW;

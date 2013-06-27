@@ -17,14 +17,13 @@
 
 package org.craftercms.studio3.web.support.message.impl;
 
+import java.util.Map;
+
 import javolution.util.FastMap;
 import org.craftercms.studio3.web.support.message.ExceptionMessageFormatter;
 import org.craftercms.studio3.web.support.message.MessageFormatterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-
 
 
 /**
@@ -45,13 +44,12 @@ public class MessageFormatterManagerImpl implements MessageFormatterManager {
     public MessageFormatterManagerImpl() {
     }
 
-
     @Override
     public void registerFormatter(Class<? extends Exception> clazz, ExceptionMessageFormatter formatter) {
-        if (this.formatterMap == null) {
+        if ( this.formatterMap == null ) {
             this.formatterMap = new FastMap<>();
         }
-        if (this.log.isDebugEnabled()) {
+        if ( this.log.isDebugEnabled() ) {
             this.log.debug("Registering Message formatter {}", formatter.getClass().getName());
         }
         this.formatterMap.put(clazz, formatter);
@@ -59,15 +57,15 @@ public class MessageFormatterManagerImpl implements MessageFormatterManager {
 
     @Override
     public ExceptionMessageFormatter getFormatter(Class<? extends Exception> clazz) {
-        if (this.formatterMap == null) {
+        if ( this.formatterMap == null ) {
             this.formatterMap = new FastMap<>();
         }
         ExceptionMessageFormatter formatter;
-        if (clazz == null) {
+        if ( clazz == null ) {
             formatter = new DefaultMessageFormatter();
         } else {
             formatter = this.formatterMap.get(clazz);
-            if (formatter == null) {
+            if ( formatter == null ) {
                 formatter = new DefaultMessageFormatter();
             }
         }
