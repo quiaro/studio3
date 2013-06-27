@@ -33,7 +33,7 @@ public interface ExceptionMessageFormatter {
 
     /**
      * HTTP Status Code that will be send to the client
-     * <b>Must be a valid HTTP Status Code</b>
+     * <b>Must be a valid HTTP Status Code</b>.
      */
     int getHttpResponseCode();
 }

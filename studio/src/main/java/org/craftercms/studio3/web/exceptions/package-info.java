@@ -20,4 +20,8 @@
  * This exceptions should be catch by {@link org.craftercms.studio3.web.ext.spring.CrafterCMSExceptionResolver}
  * so it will have a proper JSON Response instead Spring's MVC one.
  */
+
+/**
+ * All Web related exceptions.
+ */
 package org.craftercms.studio3.web.exceptions;

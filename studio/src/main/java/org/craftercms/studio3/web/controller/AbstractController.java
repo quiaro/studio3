@@ -21,7 +21,7 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
-public abstract class BaseController {
+public abstract class AbstractController {
 
     protected Validator validator;
 
