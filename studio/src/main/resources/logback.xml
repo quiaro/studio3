@@ -7,9 +7,9 @@
     </appender>
     <!--Daily rolling file appender -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>studio-web.log</File>
+        <File>studio.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>studio-impl.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>studio.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -17,7 +17,7 @@
             <pattern>%-30(%d [%thread]) %-5level %logger{32} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.craftercms.studio3.web">
+    <logger name="org.craftercms.studio3">
         <level value="debug"/>
     </logger>
     <root>

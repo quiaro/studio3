@@ -24,6 +24,8 @@
         <com.fasterxml.jackson.version>2.2.2</com.fasterxml.jackson.version>
         <org.json.json.version>20090211</org.json.json.version>
         <jetty.port>9666</jetty.port>
+        <test.base.url>http://localhost:${jetty.port}</test.base.url>
+        <test.timeout>30</test.timeout>
     </properties>
 
     <dependencies>
@@ -95,6 +97,12 @@
             <version>${javax.inject.version}</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.freemarker.version}</version>
+        </dependency>
         <!--Utils -->
 
         <dependency>
@@ -207,27 +215,33 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <testFailureIgnore>false</testFailureIgnore>
+                    <failIfNoTests>true</failIfNoTests>
+                    <testFailureIgnore></testFailureIgnore>
                     <includes>
                         <include>
                             **/integration/**/*.java
                         </include>
                     </includes>
                     <excludes>
-                        <exclude>**/support/**/*.java</exclude>
+                        <exclude>**/testing/**/*.java</exclude>
                         <exclude>**/*$__CLR*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-
 
         </plugins>
     </build>
