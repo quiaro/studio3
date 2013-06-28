@@ -200,6 +200,15 @@
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
                         </configuration>
+                        
+                        <dependencies>
+                                           <!-- We need clover.jar to be present in container classpath -->
+                                           <dependency>
+                                               <groupId>com.cenqua.clover</groupId>
+                                               <artifactId>clover</artifactId>
+                                               <version>3.1.8</version>
+                                           </dependency>
+                                       </dependencies>
                     </execution>
                     <execution>
                         <id>stop-jetty</id>
