@@ -21,6 +21,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Rule;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -53,11 +54,7 @@ public abstract class AbstractIntegrationTest{
         desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setJavascriptEnabled(true);
         desiredCapabilities.setCapability("takesScreenshot", true);
-        desiredCapabilities
-                .setCapability(
-                        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-                        testProperties.getProperty("test.phantomjs.path")); //craftercms.test.phantomjs.path
-        driver = new PhantomJSDriver(desiredCapabilities);
+        driver = new FirefoxDriver(desiredCapabilities);
         baseUrl = testProperties.getProperty("test.base.url");
         driver.manage().timeouts().implicitlyWait(Integer.parseInt(testProperties.getProperty("test.timeout")), TimeUnit.SECONDS);
         webIntegrationTestRule = new WebIntegrationTestRule(testProperties.getProperty("test.screenshotOutputPath"),driver);
