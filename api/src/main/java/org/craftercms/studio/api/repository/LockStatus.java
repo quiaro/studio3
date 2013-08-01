@@ -17,21 +17,31 @@
 package org.craftercms.studio.api.repository;
 
 /**
- * Content item transport object.
- *
+ * Lock Status.
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class Item implements Comparable<Item> {
+public class LockStatus {
 
     /**
-     * Compare items
-     * @param item item to compare to
-     * @return comparison result
+     * Lock status id.
      */
-    @Override
-    public final int compareTo(final Item item) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    private String id;
+
+    /**
+     * Lock status id getter.
+     * @return id
+     */
+    public final String getId() {
+        return id;
+    }
+
+    /**
+     * Id setter.
+     * @param id id
+     */
+    public final void setId(final String id) {
+        this.id = id;
     }
 }

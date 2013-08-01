@@ -17,21 +17,11 @@
 package org.craftercms.studio.api.repository;
 
 /**
- * Content item transport object.
+ * Item filter.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class Item implements Comparable<Item> {
-
-    /**
-     * Compare items
-     * @param item item to compare to
-     * @return comparison result
-     */
-    @Override
-    public final int compareTo(final Item item) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+public class ItemFilter {
 }
