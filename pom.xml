@@ -354,9 +354,10 @@
         </testResources>
     </build>
     <modules>
-        <module>sdk</module>
+        <module>api</module>
         <module>impl</module>
-        <module>alfresco-repo</module>
-        <module>studio</module>
+        <module>repo-cmis</module>
+        <module>server</module>
+        <module>ui</module>
     </modules>
 </project>
