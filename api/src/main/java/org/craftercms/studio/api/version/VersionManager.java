@@ -40,4 +40,15 @@ public interface VersionManager {
      * @param revertVersion revertVersion
      */
     void revert(Context context, String itemId, String revertVersion);
+
+    /**
+     * Difference between two versions
+     * @param context context
+     * @param itemId item id
+     * @param version1 version1
+     * @param version2 version2
+     * @return differences
+     */
+    DiffResult diff(Context context, String itemId, String version1,
+                    String version2);
 }
