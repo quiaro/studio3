@@ -5,7 +5,7 @@
             <pattern>%-30(%d [%thread]) %-5level %logger{32} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.craftercms.studio3.impl">
+    <logger name="org.craftercms.studio.impl">
         <level value="debug"/>
     </logger>
     <root>

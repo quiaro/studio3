@@ -11,7 +11,7 @@
 
     <!-- DispatcherServlet Context: defines this servlet's request-processing
         infrastructure -->
-    <context:component-scan base-package="org.craftercms.studio3.web"/>
+    <context:component-scan base-package="org.craftercms.studio.web"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:cstudio.properties"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:/extension/studio3/cstudio.properties"/>
 
