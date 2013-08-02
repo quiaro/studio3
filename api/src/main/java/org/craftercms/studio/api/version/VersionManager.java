@@ -17,7 +17,7 @@
 package org.craftercms.studio.api.version;
 
 import org.craftercms.studio.api.security.Context;
-import org.craftercms.studio.utils.structure.Tree;
+import org.craftercms.studio.api.dto.Tree;
 
 
 /**
