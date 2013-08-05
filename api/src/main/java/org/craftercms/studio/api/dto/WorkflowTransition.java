@@ -14,34 +14,14 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.repository;
+package org.craftercms.studio.api.dto;
 
 /**
- * Lock Status.
+ * Workflow transition.
+ *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class LockStatus {
-
-    /**
-     * Lock status id.
-     */
-    private String id;
-
-    /**
-     * Lock status id getter.
-     * @return id
-     */
-    public final String getId() {
-        return id;
-    }
-
-    /**
-     * Id setter.
-     * @param id id
-     */
-    public final void setId(final String id) {
-        this.id = id;
-    }
+public class WorkflowTransition {
 }

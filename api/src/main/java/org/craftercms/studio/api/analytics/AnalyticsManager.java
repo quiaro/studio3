@@ -2,7 +2,8 @@ package org.craftercms.studio.api.analytics;
 
 import java.util.Map;
 
-import org.craftercms.studio.api.security.Context;
+import org.craftercms.studio.api.dto.AnalyticsReport;
+import org.craftercms.studio.api.dto.Context;
 
 /**
  * @author Sumer Jabri

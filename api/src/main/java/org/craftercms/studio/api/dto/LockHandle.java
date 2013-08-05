@@ -14,21 +14,14 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.search;
-
-import org.craftercms.studio.api.dto.ResultSet;
-import org.craftercms.studio.api.dto.Context;
+package org.craftercms.studio.api.dto;
 
 /**
- * Search Manager.
+ * Lock handle transport object.
+ *
+ * @author Sumer Jabri
+ * @author Dejan Brkic
+ * @author Carlos Ortiz
  */
-public interface SearchManager {
-
-    /**
-     * Execute search within given context for given query.
-     * @param context context
-     * @param query query
-     * @return result set
-     */
-    ResultSet find(Context context, String query);
+public class LockHandle {
 }

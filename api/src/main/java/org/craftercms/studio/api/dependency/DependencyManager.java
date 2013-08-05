@@ -16,8 +16,8 @@
  */
 package org.craftercms.studio.api.dependency;
 
-import org.craftercms.studio.api.repository.Item;
-import org.craftercms.studio.api.security.Context;
+import org.craftercms.studio.api.dto.Item;
+import org.craftercms.studio.api.dto.Context;
 
 import java.util.List;
 

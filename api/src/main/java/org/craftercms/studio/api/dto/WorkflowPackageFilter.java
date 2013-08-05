@@ -14,11 +14,15 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.search;
+package org.craftercms.studio.api.dto;
 
 /**
- * Result set.
+ * Workflow package filter.
+ *
+ * @author Sumer Jabri
+ * @author Dejan Brkic
+ * @author Carlos Ortiz
+ *
  */
-public class ResultSet {
-
+public class WorkflowPackageFilter {
 }

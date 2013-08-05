@@ -17,8 +17,8 @@
 package org.craftercms.studio.web.controller.api;
 
 
-import org.craftercms.studio.api.repository.Item;
-import org.craftercms.studio.api.repository.LockHandle;
+import org.craftercms.studio.api.dto.Item;
+import org.craftercms.studio.api.dto.LockHandle;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

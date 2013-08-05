@@ -16,9 +16,14 @@
  */
 package org.craftercms.studio.api.repository;
 
-import org.craftercms.studio.api.security.Context;
-import org.craftercms.studio.utils.structure.Tree;
-
+import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.api.dto.Item;
+import org.craftercms.studio.api.dto.ItemExtractor;
+import org.craftercms.studio.api.dto.ItemFilter;
+import org.craftercms.studio.api.dto.LockHandle;
+import org.craftercms.studio.api.dto.LockStatus;
+import org.craftercms.studio.api.dto.Site;
+import org.craftercms.studio.api.dto.Tree;
 import java.io.InputStream;
 import java.util.List;
 

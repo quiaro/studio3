@@ -14,24 +14,11 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.repository;
+package org.craftercms.studio.api.dto;
 
 /**
- * Content item transport object.
- *
- * @author Sumer Jabri
- * @author Dejan Brkic
- * @author Carlos Ortiz
+ * Result set.
  */
-public class Item implements Comparable<Item> {
+public class ResultSet {
 
-    /**
-     * Compare items
-     * @param item item to compare to
-     * @return comparison result
-     */
-    @Override
-    public final int compareTo(final Item item) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

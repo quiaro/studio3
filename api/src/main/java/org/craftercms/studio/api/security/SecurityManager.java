@@ -1,5 +1,7 @@
 package org.craftercms.studio.api.security;
 
+import org.craftercms.studio.api.dto.Context;
+
 import java.net.URL;
 
 /**

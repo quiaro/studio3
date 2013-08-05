@@ -16,8 +16,10 @@
  */
 package org.craftercms.studio.api.version;
 
-import org.craftercms.studio.api.security.Context;
+import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.api.dto.DiffResult;
 import org.craftercms.studio.api.dto.Tree;
+import org.craftercms.studio.api.dto.Version;
 
 
 /**

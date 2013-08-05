@@ -14,14 +14,14 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.repository;
+package org.craftercms.studio.api.dto;
 
 /**
- * Lock handle transport object.
+ * Diff Result.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class LockHandle {
+public class DiffResult {
 }
