@@ -1,6 +1,6 @@
 package org.craftercms.studio.testing.controllers;
 
-import org.craftercms.studio.utils.exceptions.AbstractCrafterCMSException;
+import org.craftercms.studio.api.exception.StudioException;
 import org.craftercms.studio.web.controller.AbstractController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class CrafterCMSExceptionResolverTestController extends AbstractControlle
         throw new Exception(EXCEPTION_MSG);
     }
 
-    class TestException extends AbstractCrafterCMSException{
+    class TestException extends StudioException {
         TestException(final String message) {
             super(message);
         }
