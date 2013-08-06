@@ -16,6 +16,9 @@
  */
 package org.craftercms.studio.api.dto;
 
+import java.util.Date;
+import java.util.Map;
+
 /**
  * Activity.
  *
@@ -24,4 +27,73 @@ package org.craftercms.studio.api.dto;
  * @author Carlos Ortiz
  */
 public class Activity {
+
+    private String siteId;
+    private String siteName;
+    private String target;
+    private Map<String, Object> targetProperties;
+    private String type;
+    private Date date;
+    private String creator;
+
+    public Activity() {
+    }
+
+    // Getters and setters
+
+    public String getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public String getSiteName() {
+        return this.siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getTarget() {
+        return this.target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public Map<String, Object> getTargetProperties() {
+        return this.targetProperties;
+    }
+
+    public void setTargetProperties(Map<String, Object> targetProperties) {
+        this.targetProperties = targetProperties;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getCreator() {
+        return this.creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 }

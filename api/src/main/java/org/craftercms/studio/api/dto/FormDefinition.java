@@ -16,6 +16,8 @@
  */
 package org.craftercms.studio.api.dto;
 
+import java.util.Map;
+
 /**
  * Form Definition.
  *
@@ -24,4 +26,55 @@ package org.craftercms.studio.api.dto;
  * @author Carlos Ortiz
  */
 public class FormDefinition {
+
+    private String id;
+    private String siteId;
+    private String siteName;
+    private String name;
+    private Map<String, Object> schema;
+
+    public FormDefinition() {
+    }
+
+    // Getters and setters
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public String getSiteName() {
+        return this.siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<String, Object> getSchema() {
+        return this.schema;
+    }
+
+    public void setSchema(Map<String, Object> schema) {
+        this.schema = schema;
+    }
 }

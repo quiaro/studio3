@@ -40,8 +40,8 @@ public interface BlueprintsManager {
 
     /**
      * Remove blueprint.
-     * @param context
-     * @param blueprint
+     * @param context context
+     * @param blueprint blueprint
      */
     void remove(Context context, String blueprint);
 
@@ -53,7 +53,7 @@ public interface BlueprintsManager {
     void importBlueprint(Context context, Map<String, Object> params);
 
     /**
-     * Create blueprint from site
+     * Create blueprint from site.
      * @param context context
      * @param site site
      * @param blueprintName blueprint name

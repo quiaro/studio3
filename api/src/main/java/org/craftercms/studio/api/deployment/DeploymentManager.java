@@ -18,10 +18,10 @@ package org.craftercms.studio.api.deployment;
 
 import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.DeploymentChannel;
-import org.craftercms.studio.api.dto.DeploymentFilter;
 import org.craftercms.studio.api.dto.Item;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Deployment Manager.
@@ -40,7 +40,7 @@ public interface DeploymentManager {
      * @return list of items
      */
     List<Item> history(Context context, String site,
-                       List<DeploymentFilter> filters);
+                       Map<String, Object> filters);
 
     /**
      * Get deployment channels.

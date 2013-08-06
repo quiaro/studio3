@@ -24,4 +24,7 @@ package org.craftercms.studio.api.dto;
  * @author Carlos Ortiz
  */
 public class DiffResult {
+
+    public DiffResult() {
+    }
 }

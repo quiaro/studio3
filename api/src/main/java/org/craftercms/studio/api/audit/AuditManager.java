@@ -17,10 +17,10 @@
 package org.craftercms.studio.api.audit;
 
 import org.craftercms.studio.api.dto.Activity;
-import org.craftercms.studio.api.dto.AuditFilter;
 import org.craftercms.studio.api.dto.Context;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Audit Manager.
@@ -38,7 +38,7 @@ public interface AuditManager {
      * @param filters filters
      * @return list of activities
      */
-    List<Activity> getActivities(Context context, String site, List<AuditFilter> filters);
+    List<Activity> getActivities(Context context, String site, Map<String, Object> filters);
 
     /**
      * Log activity.
