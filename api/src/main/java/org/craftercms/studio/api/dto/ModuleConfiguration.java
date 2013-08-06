@@ -14,27 +14,14 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.analytics;
-
-import java.util.Map;
-
-import org.craftercms.studio.api.dto.AnalyticsReport;
-import org.craftercms.studio.api.dto.Context;
+package org.craftercms.studio.api.dto;
 
 /**
- * Analytics Manager.
+ * Module Configuration.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public interface AnalyticsManager {
-    /**
-     *
-     * @param context context for the report
-     * @param site target website
-     * @param params report parameters
-     * @return the analytics report
-     */
-    AnalyticsReport report(Context context, String site, Map<String, Object> params);
+public class ModuleConfiguration {
 }
