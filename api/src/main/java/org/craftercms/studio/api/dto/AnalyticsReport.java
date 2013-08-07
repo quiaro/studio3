@@ -1,4 +1,4 @@
-package org.craftercms.studio.api.analytics;
+package org.craftercms.studio.api.dto;
 
 /**
  * @author Sumer Jabri

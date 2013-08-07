@@ -2,13 +2,17 @@ package org.craftercms.studio.api.analytics;
 
 import java.util.Map;
 
+import org.craftercms.studio.api.dto.AnalyticsReport;
 import org.craftercms.studio.api.security.Context;
 
 /**
+ * Analytics management API
+ *
  * @author Sumer Jabri
  */
 public interface AnalyticsManager {
     /**
+     * Generate an analytics report
      *
      * @param context context for the report
      * @param site target website
