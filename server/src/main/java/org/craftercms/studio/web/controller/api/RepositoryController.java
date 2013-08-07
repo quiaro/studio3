@@ -17,8 +17,10 @@
 package org.craftercms.studio.web.controller.api;
 
 
+import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.Item;
 import org.craftercms.studio.api.dto.LockHandle;
+import org.craftercms.studio.api.repository.RepositoryManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,7 @@ import java.util.List;
 @RequestMapping("/api/1/repository")
 public class RepositoryController {
 
+    private RepositoryManager repositoryManager;
     /**
      * TODO: write java doc.
      * Get content for given item ID and version.
@@ -46,8 +49,11 @@ public class RepositoryController {
      * @param response http response.
      */
     @RequestMapping(value = "/read", method = RequestMethod.GET)
-    public void getContent(final String itemId, final String version, final HttpServletRequest request, final HttpServletResponse response) {
+    public void getContent(final String itemId, final String version,
+                           final HttpServletRequest request,
+                           final HttpServletResponse response) {
 
+        this.repositoryManager.read(new Context(), itemId);
     }
 
     /**
@@ -185,10 +191,19 @@ public class RepositoryController {
     public void getTree(@PathVariable final String site, @PathVariable final String itemId, final int depth, final String filters, final String extractors, final HttpServletRequest request, final HttpServletResponse response) {}
 
     /**
-     * TODO: javadoc
+     * TODO: javadoc.
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/site_list", method = RequestMethod.GET)
     public void getSites(final HttpServletRequest request, final HttpServletResponse response) {}
+
+
+    public RepositoryManager getRepositoryManager() {
+        return this.repositoryManager;
+    }
+
+    public void setRepositoryManager(RepositoryManager repositoryManager) {
+        this.repositoryManager = repositoryManager;
+    }
 }

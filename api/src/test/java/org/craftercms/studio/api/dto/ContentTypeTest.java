@@ -17,53 +17,11 @@
 package org.craftercms.studio.api.dto;
 
 /**
- * Security Permission.
+ * Unit test for ContentType.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class SecurityPermission {
-
-    /**
-     * Name.
-     */
-    private String name;
-
-    /**
-     * Description.
-     */
-    private String description;
-
-    /**
-     * Name getter.
-     * @return name
-     */
-    public final String getName() {
-        return name;
-    }
-
-    /**
-     * Name setter.
-     * @param name name
-     */
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Description getter.
-     * @return description
-     */
-    public final String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Description setter.
-     * @param description description
-     */
-    public final void setDescription(final String description) {
-        this.description = description;
-    }
+public class ContentTypeTest {
 }
