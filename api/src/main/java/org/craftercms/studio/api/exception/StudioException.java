@@ -18,7 +18,7 @@
 package org.craftercms.studio.api.exception;
 
 /**
- * Root exception for all exceptions defined in Studio
+ * Root exception for all exceptions defined in Studio.
  *
  * @author Sumer Jabri
  *

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.craftercms.studio.api.analytics.AnalyticsManager;
 import org.craftercms.studio.api.dto.AnalyticsReport;
-import org.craftercms.studio.api.security.Context;
+import org.craftercms.studio.api.dto.Context;
 
 /**
  *

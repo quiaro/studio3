@@ -1,9 +1,9 @@
 package org.craftercms.studio.test.web.suppport.message;
 
 
-import org.craftercms.studio.web.support.message.ExceptionMessageFormatter;
-import org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter;
-import org.craftercms.studio.web.support.message.impl.DefaultMessageFormatter;
+import org.craftercms.studio.exceptions.formatter.ExceptionFormatter;
+import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
+import org.craftercms.studio.exceptions.formatter.impl.DefaultFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class DefaultMessageFormatterTest {
      */
     @Test
     public void testFormatMessage() throws Exception {
-        ExceptionMessageFormatter defaultMessageFormatter = new DefaultMessageFormatter();
+        ExceptionFormatter defaultMessageFormatter = new DefaultFormatter();
         assertNotNull(defaultMessageFormatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
     }
 
@@ -37,7 +37,7 @@ public class DefaultMessageFormatterTest {
      */
     @Test
     public void testHttpStatus() {
-        ExceptionMessageFormatter defaultMessageFormatter = new DefaultMessageFormatter();
+        ExceptionFormatter defaultMessageFormatter = new DefaultFormatter();
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), defaultMessageFormatter.getHttpResponseCode());
     }
 
@@ -49,8 +49,8 @@ public class DefaultMessageFormatterTest {
      */
     @Test(expected = JSONException.class)
     public void testGenerateDetailMessage() throws Exception {
-        ExceptionMessageFormatter defaultMessageFormatter = new DefaultMessageFormatter();
+        ExceptionFormatter defaultMessageFormatter = new DefaultFormatter();
         JSONObject jsonResponse = new JSONObject(defaultMessageFormatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
-        jsonResponse.get(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
+        jsonResponse.get(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
     }
 }

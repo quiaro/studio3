@@ -1,14 +1,13 @@
 package org.craftercms.studio.testing.controllers;
 
 import org.craftercms.studio.api.exception.StudioException;
-import org.craftercms.studio.web.controller.AbstractController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/testing")
-public class CrafterCMSExceptionResolverTestController extends AbstractController {
+public class CrafterCMSExceptionResolverTestController {
 
     public static final String EXCEPTION_MSG ="This is Intended to Fail" ;
 

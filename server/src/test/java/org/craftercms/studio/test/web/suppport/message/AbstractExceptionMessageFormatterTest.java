@@ -18,8 +18,8 @@
 package org.craftercms.studio.test.web.suppport.message;
 
 
-import org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter;
-import org.craftercms.studio.web.support.message.ExceptionMessageFormatter;
+import org.craftercms.studio.exceptions.formatter.ExceptionFormatter;
+import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testThatRequireParamsAreValid(){
-        new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_REQUEST.value()).
+        new Test1AbstractExceptionFormatter(HttpStatus.BAD_REQUEST.value()).
                 getFormattedMessage(new Exception(null,null));
 
     }
@@ -55,7 +55,7 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testThatDefaultMessageValid(){
-        new Test1AbstractExceptionMessageFormatter(HttpStatus.OK.value()).getFormattedMessage(new Exception(""));
+        new Test1AbstractExceptionFormatter(HttpStatus.OK.value()).getFormattedMessage(new Exception(""));
     }
 
 
@@ -67,7 +67,7 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testThatErrorCodeIsValid(){
-        new Test1AbstractExceptionMessageFormatter(NON_EXIST_HTTP_CODE)
+        new Test1AbstractExceptionFormatter(NON_EXIST_HTTP_CODE)
                 .getFormattedMessage(new Exception(TEST_MESSAGE));
     }
 
@@ -78,8 +78,8 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatReturnStringISJSON(){
-        final ExceptionMessageFormatter formater =
-                               new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_REQUEST.value());
+        final ExceptionFormatter formater =
+                               new Test1AbstractExceptionFormatter(HttpStatus.BAD_REQUEST.value());
        final String jsonString=formater.getFormattedMessage(new Exception(TEST_MESSAGE));
         try {
             new JSONObject(jsonString);
@@ -93,12 +93,12 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatMessageDetailIsAppendAndGenerated(){
-        final ExceptionMessageFormatter formatter=
-              new Test1AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
+        final ExceptionFormatter formatter=
+              new Test1AbstractExceptionFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
             JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
-            assertTrue(json.get(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY).equals(TEST_MESSAGE));
+            assertTrue(json.get(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY).equals(TEST_MESSAGE));
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
         }
@@ -112,13 +112,13 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatSerializeIsOk(){
-        final ExceptionMessageFormatter formatter=
-                new Test2AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
+        final ExceptionFormatter formatter=
+                new Test2AbstractExceptionFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
             JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
-            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
-            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
+            assertEquals(json.get(AbstractExceptionFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
+            assertEquals(json.get(AbstractExceptionFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
         }
@@ -132,8 +132,8 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatMessageDetailIsNullDontAppend(){
-        final ExceptionMessageFormatter formatter=
-                new Test2AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
+        final ExceptionFormatter formatter=
+                new Test2AbstractExceptionFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
             JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
@@ -150,8 +150,8 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatMessageDetailIsEmptyDontAppend(){
-        final ExceptionMessageFormatter formatter=
-                new Test3AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
+        final ExceptionFormatter formatter=
+                new Test3AbstractExceptionFormatter(HttpStatus.BAD_GATEWAY.value());
 
         try {
             JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
@@ -167,12 +167,12 @@ public class AbstractExceptionMessageFormatterTest {
      */
     @Test
     public void testThatMessageDetailDontOverride(){
-        final ExceptionMessageFormatter formatter=
-                new Test4AbstractExceptionMessageFormatter(HttpStatus.BAD_GATEWAY.value());
+        final ExceptionFormatter formatter=
+                new Test4AbstractExceptionFormatter(HttpStatus.BAD_GATEWAY.value());
         try {
             JSONObject json=new JSONObject(formatter.getFormattedMessage(new Exception(TEST_MESSAGE)));
-            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
-            assertEquals(json.get(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
+            assertEquals(json.get(AbstractExceptionFormatter.JSON_CODE_KEY),HttpStatus.BAD_GATEWAY.value());
+            assertEquals(json.get(AbstractExceptionFormatter.JSON_MESSAGE_KEY),TEST_MESSAGE);
         } catch (JSONException e) {
             fail(String.format("Unable to finish testing detail message Formatting due %s",e.toString()));
         }
@@ -183,7 +183,7 @@ public class AbstractExceptionMessageFormatterTest {
      *  Tests
      *  <ul>
      *      <li>
-     *          Return of {@link AbstractExceptionMessageFormatter#getFormattedMessage(Exception)} is JSON
+     *          Return of {@link org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter#getFormattedMessage(Exception)} is JSON
      *      </li>
      *      <li>
      *           Message and Http Code are valid
@@ -193,8 +193,8 @@ public class AbstractExceptionMessageFormatterTest {
      *      </li>
      *  </ul>
      */
-    class Test1AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
-        public Test1AbstractExceptionMessageFormatter(int code) {
+    class Test1AbstractExceptionFormatter extends AbstractExceptionFormatter {
+        public Test1AbstractExceptionFormatter(int code) {
             super(Exception.class);
             setHttpResponseCode(code);
         }
@@ -216,8 +216,8 @@ public class AbstractExceptionMessageFormatterTest {
      *      </li>
      *  </ul>
      */
-    class Test2AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
-        public Test2AbstractExceptionMessageFormatter(int code) {
+    class Test2AbstractExceptionFormatter extends AbstractExceptionFormatter {
+        public Test2AbstractExceptionFormatter(int code) {
             super(Exception.class);
             setHttpResponseCode(code);
         }
@@ -236,8 +236,8 @@ public class AbstractExceptionMessageFormatterTest {
      *      </li>
      *  </ul>
      */
-    class Test3AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
-        public Test3AbstractExceptionMessageFormatter(int code) {
+    class Test3AbstractExceptionFormatter extends AbstractExceptionFormatter {
+        public Test3AbstractExceptionFormatter(int code) {
             super(Exception.class);
             setHttpResponseCode(code);
         }
@@ -256,8 +256,8 @@ public class AbstractExceptionMessageFormatterTest {
      *      </li>
      *  </ul>
      */
-    class Test4AbstractExceptionMessageFormatter extends AbstractExceptionMessageFormatter {
-        public Test4AbstractExceptionMessageFormatter(int code) {
+    class Test4AbstractExceptionFormatter extends AbstractExceptionFormatter {
+        public Test4AbstractExceptionFormatter(int code) {
             super(Exception.class);
             setHttpResponseCode(code);
         }
@@ -265,8 +265,8 @@ public class AbstractExceptionMessageFormatterTest {
         @Override
         protected JSONObject generateDetailMessage(Exception exception) throws JSONException {
             final JSONObject toReturn= new JSONObject();
-            toReturn.put(AbstractExceptionMessageFormatter.JSON_CODE_KEY,HttpStatus.OK.value());
-            toReturn.put(AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY,exception.getMessage());
+            toReturn.put(AbstractExceptionFormatter.JSON_CODE_KEY,HttpStatus.OK.value());
+            toReturn.put(AbstractExceptionFormatter.JSON_MESSAGE_KEY,exception.getMessage());
             return toReturn;
         }
     }
