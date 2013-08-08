@@ -16,7 +16,7 @@
  */
 
 /**
- * Unit tests for the repository.
+ * Unit tests for the content.
  * @since 3.0
  */
 package org.craftercms.studio.test.repository;

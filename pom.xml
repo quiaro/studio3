@@ -359,5 +359,6 @@
         <module>repo-cmis</module>
         <module>server</module>
         <module>ui</module>
+        <module>repo-api</module>
     </modules>
 </project>

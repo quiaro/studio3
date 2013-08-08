@@ -25,6 +25,8 @@ package org.craftercms.studio.api.dto;
  */
 public class User {
 
+    // TODO CONSIDER USING CRAFTER PROFILE
+
     /**
      * User id.
      */

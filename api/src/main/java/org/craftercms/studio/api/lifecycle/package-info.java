@@ -17,7 +17,7 @@
 
 /**
  * Provides the necessary definitions and transport
- * objects for repository module.
+ * objects for content module.
  *
  * @since 3.0
  */

@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import javolution.util.FastList;
-import org.craftercms.studio.web.exceptions.ValidationException;
-import org.craftercms.studio.web.support.message.ExceptionMessageFormatter;
-import org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter;
-import org.craftercms.studio.web.support.message.impl.ValidationExceptionFormatter;
+import org.craftercms.studio.exceptions.ValidationException;
+import org.craftercms.studio.exceptions.formatter.ExceptionFormatter;
+import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
+import org.craftercms.studio.exceptions.formatter.impl.ValidationExceptionFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +29,7 @@ public class ValidationExceptionFormatterTest {
     @Test
     public void testGenerateDetailMessageIsValid() throws Exception {
         try {
-            ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+            ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
 
             ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
             new JSONObject(messageFormatter.getFormattedMessage(ex));
@@ -42,28 +42,28 @@ public class ValidationExceptionFormatterTest {
 
     @Test
     public void testGenerateDetailMessageIsAnArray() throws Exception {
-        ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+        ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
         new JSONObject(messageFormatter.getFormattedMessage(ex)).
-                getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
+                getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
 
     }
 
     @Test
     public void testGenerateDetailMessageArrayLength() throws Exception {
-        ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+        ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
         final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
-                getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
+                getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
         assertEquals(jsonArray.length(), TOTAL_FIELDS);
     }
 
     @Test
     public void testGenerateDetailMessageContents() throws Exception {
-        ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+        ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
         final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
-                getJSONArray(AbstractExceptionMessageFormatter.JSON_DETAIL_MESSAGE_KEY);
+                getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
         for (int i = 0; i < jsonArray.length(); i++) {
             String detail=jsonArray.getJSONObject(i).getString(ValidationExceptionFormatter.JSON_DETAIL_FIELD_KEY);
             String message=jsonArray.getJSONObject(i).getString(ValidationExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
@@ -74,14 +74,14 @@ public class ValidationExceptionFormatterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCanSendAnything() throws Exception {
-        ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+        ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
         Exception ex = new Exception("Not a Validation");
         messageFormatter.getFormattedMessage(ex);
     }
 
     @Test()
     public void testListOfErrorsEmpty() throws Exception {
-        ExceptionMessageFormatter messageFormatter = new ValidationExceptionFormatter();
+        ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
         ValidationException ex = new ValidationException("Validation Error", new FastList<ObjectError>());
         messageFormatter.getFormattedMessage(ex);
     }

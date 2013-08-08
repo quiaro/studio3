@@ -1,7 +1,7 @@
 package org.craftercms.studio.test.web.suppport.message;
 
-import org.craftercms.studio.web.support.message.MessageFormatterManager;
-import org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter;
+import org.craftercms.studio.exceptions.formatter.FormatterRegistry;
+import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class MessageFormatterManagerTest {
 
     public static final String ERROR = "Error";
     @Autowired
-    MessageFormatterManager manager;
+    FormatterRegistry manager;
 
     @Before
     public void testThatManagerIsNotNull() {
@@ -62,7 +62,7 @@ public class MessageFormatterManagerTest {
     /**
      * Internal Class to test on Runtime Register of Exceptions.
      */
-    class TestFormatter extends AbstractExceptionMessageFormatter {
+    class TestFormatter extends AbstractExceptionFormatter {
 
         protected TestFormatter() {
             super(IllegalArgumentException.class);

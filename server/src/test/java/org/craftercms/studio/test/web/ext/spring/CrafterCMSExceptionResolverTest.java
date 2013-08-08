@@ -1,7 +1,7 @@
 package org.craftercms.studio.test.web.ext.spring;
 
+import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
 import org.craftercms.studio.testing.controllers.CrafterCMSExceptionResolverTestController;
-import org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,9 +43,9 @@ public class CrafterCMSExceptionResolverTest {
             this.mockMvc.perform(get("/testing/throwUnregisterCrafterCMSException").accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isInternalServerError())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$." + AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY)
+                    .andExpect(jsonPath("$." + AbstractExceptionFormatter.JSON_MESSAGE_KEY)
                             .value(CrafterCMSExceptionResolverTestController.EXCEPTION_MSG))
-                    .andExpect(jsonPath("$" + AbstractExceptionMessageFormatter.JSON_CODE_KEY)
+                    .andExpect(jsonPath("$" + AbstractExceptionFormatter.JSON_CODE_KEY)
                             .value(HttpStatus.INTERNAL_SERVER_ERROR.value()));
         } catch (Exception e) {
             fail("Unable to Test testDoResolveException due "+e.toString());
@@ -64,9 +64,9 @@ public class CrafterCMSExceptionResolverTest {
             this.mockMvc.perform(get("/testing/throwUnregisterException").accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isInternalServerError())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$." + AbstractExceptionMessageFormatter.JSON_MESSAGE_KEY)
+                    .andExpect(jsonPath("$." + AbstractExceptionFormatter.JSON_MESSAGE_KEY)
                             .value(CrafterCMSExceptionResolverTestController.EXCEPTION_MSG))
-                    .andExpect(jsonPath("$" + AbstractExceptionMessageFormatter.JSON_CODE_KEY)
+                    .andExpect(jsonPath("$" + AbstractExceptionFormatter.JSON_CODE_KEY)
                             .value(HttpStatus.INTERNAL_SERVER_ERROR.value()));
         } catch (Exception e) {
             fail("Unable to Test testDoResolveException due "+e.toString());

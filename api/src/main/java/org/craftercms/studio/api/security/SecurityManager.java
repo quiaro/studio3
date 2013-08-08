@@ -32,7 +32,7 @@ public interface SecurityManager {
 
     /**
      * Login.
-     * @param repositoryUrl repository url
+     * @param repositoryUrl content url
      * @param username username
      * @param password password
      * @return security context

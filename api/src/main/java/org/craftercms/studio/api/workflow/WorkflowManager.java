@@ -18,7 +18,7 @@ package org.craftercms.studio.api.workflow;
 
 import org.craftercms.studio.api.dto.Item;
 import org.craftercms.studio.api.dto.WorkflowPackage;
-import org.craftercms.studio.api.dto.WorkflowPackageFilter;
+import org.craftercms.studio.api.filter.WorkflowPackageFilter;
 import org.craftercms.studio.api.dto.WorkflowTransition;
 
 import java.util.List;

@@ -23,25 +23,5 @@ package org.craftercms.studio.api.dto;
  * @author Carlos Ortiz
  */
 public class LockStatus {
-
-    /**
-     * Lock status id.
-     */
-    private String id;
-
-    /**
-     * Lock status id getter.
-     * @return id
-     */
-    public final String getId() {
-        return id;
-    }
-
-    /**
-     * Id setter.
-     * @param id id
-     */
-    public final void setId(final String id) {
-        this.id = id;
-    }
+//todo turn into an enum
 }

@@ -23,25 +23,25 @@
 
 
     <bean id="exceptionMapping"
-                class="org.craftercms.studio.web.ext.spring.CrafterCMSExceptionResolver">
+                class="org.craftercms.studio.ext.spring.CrafterCMSExceptionResolver">
         <property name="preventResponseCaching" value="true"/>
-        <property name="messageFormatterManager" ref="messageFormatterManager"/>
+        <property name="formatterRegistry" ref="formatterRegistry"/>
     </bean>
 
    <!--Message Formatter Manager -->
-    <bean id="messageFormatterManager"
-          class="org.craftercms.studio.web.support.message.impl.MessageFormatterManagerImpl"/>
+    <bean id="formatterRegistry"
+          class="org.craftercms.studio.exceptions.formatter.impl.FormatterRegistryImpl"/>
 
     <!--Parent for all Message Formtatters-->
     <bean id="messageFormatter" abstract="true" init-method="register"
-          class="org.craftercms.studio.web.support.message.impl.AbstractExceptionMessageFormatter">
-        <property name="messageFormatterManager" ref="messageFormatterManager"/>
+          class="org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter">
+        <property name="formatterRegistry" ref="formatterRegistry"/>
     </bean>
 
     <bean id="validationFormatter" parent="messageFormatter"
-          class="org.craftercms.studio.web.support.message.impl.ValidationExceptionFormatter"/>
+          class="org.craftercms.studio.exceptions.formatter.impl.ValidationExceptionFormatter"/>
 
     <bean id="defaultFormatter" parent="messageFormatter"
-          class="org.craftercms.studio.web.support.message.impl.DefaultMessageFormatter"/>
+          class="org.craftercms.studio.exceptions.formatter.impl.DefaultFormatter"/>
 
 </beans>
