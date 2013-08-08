@@ -1,0 +1,25 @@
+{
+  "bitwise": true,    
+  "camelcase": true,  
+  "curly": true,      
+  "eqeqeq": true,     
+  "immed": true,      
+  "latedef": true,    
+  "newcap": true,     
+  "noarg": true,      
+  "nonew": true,      
+  "quotmark": "single", 
+  "unused": true,     
+  "strict": true,     
+  "undef": true,      
+  "trailing": true,   
+
+  "node": true,
+  "browser": true,   
+  "es5": true,       
+  "esnext": true,     
+  "smarttabs": true,
+  "globals": {
+    "angular": false
+  }
+}
