@@ -17,16 +17,14 @@
 package org.craftercms.studio.web.controller.api;
 
 import org.apache.commons.io.IOUtils;
+import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.repository.RepositoryManager;
+
+import org.craftercms.studio.controller.services.rest.RepositoryController;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
-
-import java.io.ByteArrayInputStream;
-import java.io.StringReader;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,19 +40,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 public class RepositoryControllerTest {
 
-    private RepositoryManager repositoryManagerMock;
+    private ContentManager contentManager;
+
     private RepositoryController repositoryController;
 
     @Before
     public void setup() {
         this.repositoryController = new RepositoryController();
-        this.repositoryManagerMock = mock(RepositoryManager.class);
-        this.repositoryController.setRepositoryManager(this.repositoryManagerMock);
+        this.contentManager = mock(ContentManager.class);
     }
 
     @Test
     public void testGetContent() throws Exception {
-        when(this.repositoryManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
+        when(this.contentManager.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
 
         standaloneSetup(this.repositoryController)
                 .build()
@@ -62,7 +60,7 @@ public class RepositoryControllerTest {
                         get("/api/1/repository/read?itemId=1&version=1").accept(MediaType.ALL))
                 .andExpect(status().isOk());
 
-        verify(this.repositoryManagerMock, times(1)).read((Context)Mockito.any(), Mockito.anyString());
+        verify(this.contentManager, times(1)).read((Context)Mockito.any(), Mockito.anyString());
     }
 
     @Test

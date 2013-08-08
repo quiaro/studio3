@@ -6,6 +6,7 @@
 *.ear
 
 *.log
+*.zip
 
 #Maven
 target/

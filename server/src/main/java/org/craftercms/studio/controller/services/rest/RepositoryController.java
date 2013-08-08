@@ -17,10 +17,11 @@
 package org.craftercms.studio.controller.services.rest;
 
 
+import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.Item;
 import org.craftercms.studio.api.dto.LockHandle;
-import org.craftercms.studio.api.repository.RepositoryManager;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,8 +38,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/1/content")
 public class RepositoryController {
-
-    private RepositoryManager repositoryManager;
+    /**
+     * Content Manager instance.
+     */
+    private ContentManager contentManager;
     /**
      * TODO: write java doc.
      * Get content for given item ID and version.
@@ -53,7 +56,7 @@ public class RepositoryController {
                            final HttpServletRequest request,
                            final HttpServletResponse response) {
 
-        this.repositoryManager.read(new Context(), itemId);
+        this.contentManager.read(new Context(), itemId);
     }
 
     /**
@@ -199,11 +202,4 @@ public class RepositoryController {
     public void getSites(final HttpServletRequest request, final HttpServletResponse response) {}
 
 
-    public RepositoryManager getRepositoryManager() {
-        return this.repositoryManager;
-    }
-
-    public void setRepositoryManager(RepositoryManager repositoryManager) {
-        this.repositoryManager = repositoryManager;
-    }
 }
