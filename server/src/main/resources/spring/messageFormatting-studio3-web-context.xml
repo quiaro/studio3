@@ -23,12 +23,12 @@
 
 
     <bean id="exceptionMapping"
-                class="org.craftercms.studio.ext.spring.CrafterCMSExceptionResolver">
+          class="org.craftercms.studio.ext.spring.CrafterCMSExceptionResolver">
         <property name="preventResponseCaching" value="true"/>
         <property name="formatterRegistry" ref="formatterRegistry"/>
     </bean>
 
-   <!--Message Formatter Manager -->
+    <!--Message Formatter Manager -->
     <bean id="formatterRegistry"
           class="org.craftercms.studio.exceptions.formatter.impl.FormatterRegistryImpl"/>
 

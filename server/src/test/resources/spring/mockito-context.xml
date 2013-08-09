@@ -9,8 +9,7 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <!-- DispatcherServlet Context: defines this servlet's request-processing
-        infrastructure -->
-    <context:component-scan base-package="org.craftercms.studio.testing.controllers"/>
-
+    <beans:bean id="contentManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.content.ContentManager" />
+    </beans:bean>
 </beans:beans>

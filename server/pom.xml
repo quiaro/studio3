@@ -214,6 +214,7 @@
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
+                            <webXml>${build.testSourceDirectory}/../resources/web-test.xml</webXml>
                         </configuration>
                         
                       

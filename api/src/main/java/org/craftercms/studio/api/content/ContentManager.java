@@ -24,6 +24,8 @@ import org.craftercms.studio.api.dto.LockHandle;
 import org.craftercms.studio.api.dto.LockStatus;
 import org.craftercms.studio.api.dto.Site;
 import org.craftercms.studio.api.dto.Tree;
+import org.craftercms.studio.api.exception.StudioException;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public interface ContentManager {
      * @param itemId item id
      * @return content
      */
-    InputStream read(Context context, String itemId);
+    InputStream read(Context context, String itemId) throws StudioException;
 
     /**
      * Read content for given item id and version.

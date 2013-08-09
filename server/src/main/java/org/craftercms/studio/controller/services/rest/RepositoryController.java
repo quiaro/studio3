@@ -17,11 +17,14 @@
 package org.craftercms.studio.controller.services.rest;
 
 
+import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.Item;
 import org.craftercms.studio.api.dto.LockHandle;
 
+import org.craftercms.studio.api.exception.StudioException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -41,6 +46,7 @@ public class RepositoryController {
     /**
      * Content Manager instance.
      */
+    @Autowired
     private ContentManager contentManager;
     /**
      * TODO: write java doc.
@@ -54,9 +60,15 @@ public class RepositoryController {
     @RequestMapping(value = "/read", method = RequestMethod.GET)
     public void getContent(final String itemId, final String version,
                            final HttpServletRequest request,
-                           final HttpServletResponse response) {
+                           final HttpServletResponse response) throws StudioException{
 
-        this.contentManager.read(new Context(), itemId);
+        final InputStream content = this.contentManager.read(new Context(), itemId);
+        try {
+            final OutputStream out = response.getOutputStream();
+            IOUtils.copy(content, out);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     /**

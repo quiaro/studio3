@@ -11,7 +11,7 @@
 
     <!-- DispatcherServlet Context: defines this servlet's request-processing
         infrastructure -->
-    <context:component-scan base-package="org.craftercms.studio.web"/>
+    <context:component-scan base-package="org.craftercms.studio"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:cstudio.properties"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:/extension/studio3/cstudio.properties"/>
 
@@ -76,6 +76,6 @@
     </beans:bean>
 
 
-   <beans:import resource="classpath*:/spring/*-studio3-web-context.xml"/>
+    <beans:import resource="classpath*:/spring/*-studio3-web-context.xml"/>
     <beans:import resource="classpath*:/extension/studio3/*-studio3-web-context.xml"/>
 </beans:beans>

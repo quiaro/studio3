@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"/spring/web-context.xml","/spring/test-servlet-context.xml"})
+@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml", "/spring/test-servlet-context.xml"})
 public class CrafterCMSExceptionResolverTest {
 
     @Autowired

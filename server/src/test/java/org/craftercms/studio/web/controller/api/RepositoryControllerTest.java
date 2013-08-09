@@ -16,19 +16,37 @@
  */
 package org.craftercms.studio.web.controller.api;
 
+import com.google.common.io.Files;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
-
 import org.craftercms.studio.controller.services.rest.RepositoryController;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /**
@@ -38,29 +56,130 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml"})
 public class RepositoryControllerTest {
 
-    private ContentManager contentManager;
+    // Mocks
+    @Autowired
+    private ContentManager contentManagerMock;
 
+    @InjectMocks
     private RepositoryController repositoryController;
+
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        this.repositoryController = new RepositoryController();
-        this.contentManager = mock(ContentManager.class);
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        reset(this.contentManagerMock);
     }
 
     @Test
     public void testGetContent() throws Exception {
-        when(this.contentManager.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
+        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
+        URL url = this.getClass().getResource("/content/sample.xml");
+        FileReader reader = new FileReader(url.getFile());
+        assertNotNull(sampleContent);
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
 
-        standaloneSetup(this.repositoryController)
-                .build()
-                .perform(
-                        get("/api/1/repository/read?itemId=1&version=1").accept(MediaType.ALL))
-                .andExpect(status().isOk());
+        this.mockMvc.perform(
+                        get("/api/1/content/read?itemId=1&version=1")
+                                .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+        ;
 
-        verify(this.contentManager, times(1)).read((Context)Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+    }
+
+    @Test
+    public void testGetContentNoParameters() throws Exception {
+        /*
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
+
+        this.mockMvc.perform(
+                get("/api/1/content/read")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).read((Context)Mockito.any(), Mockito.anyString());
+        */
+    }
+
+    @Test
+    public void testGetContentNonExistingContent() throws Exception {
+        //when(this.repositoryManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenThrow(StudioException.class);
+        /*
+        this.mockMvc.perform(
+                get("/api/1/content/read?itemId=1&version=1")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        ;
+
+        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        */
+    }
+
+    @Test
+    public void testGetContentInternalException() throws Exception {
+        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
+        URL url = this.getClass().getResource("/content/sample.xml");
+        FileReader reader = new FileReader(url.getFile());
+        assertNotNull(sampleContent);
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
+
+        this.mockMvc.perform(
+                get("/api/1/content/read?itemId=1&version=1")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+        ;
+
+        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+    }
+
+    @Test
+    public void testGetContentMissingContentId() throws Exception {
+        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
+        URL url = this.getClass().getResource("/content/sample.xml");
+        FileReader reader = new FileReader(url.getFile());
+        assertNotNull(sampleContent);
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
+
+        this.mockMvc.perform(
+                get("/api/1/content/read?itemId=1&version=1")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+        ;
+
+        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+    }
+
+
+
+    @Test
+    public void testGetContentMissingVersion() throws Exception {
+        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
+        URL url = this.getClass().getResource("/content/sample.xml");
+        FileReader reader = new FileReader(url.getFile());
+        assertNotNull(sampleContent);
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
+
+        this.mockMvc.perform(
+                get("/api/1/content/read?itemId=1&version=1")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+        ;
+
+        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
     }
 
     @Test
