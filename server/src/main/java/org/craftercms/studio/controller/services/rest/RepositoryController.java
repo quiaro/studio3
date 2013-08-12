@@ -23,8 +23,12 @@ import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.Item;
 import org.craftercms.studio.api.dto.LockHandle;
 
+import org.craftercms.studio.api.dto.Site;
 import org.craftercms.studio.api.exception.StudioException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -214,7 +219,15 @@ public class RepositoryController {
      * @param response response
      */
     @RequestMapping(value = "/site_list", method = RequestMethod.GET)
-    public void getSites(final HttpServletRequest request, final HttpServletResponse response) {}
+    public void getSites(final HttpServletRequest request, final HttpServletResponse response) throws JSONException, IOException {
+        List<Site> sites = this.contentManager.getSiteList(new Context());
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("sites", sites);
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        final PrintWriter writer = response.getWriter();
+        writer.write(responseJson.toString());
+    }
 
 
 }

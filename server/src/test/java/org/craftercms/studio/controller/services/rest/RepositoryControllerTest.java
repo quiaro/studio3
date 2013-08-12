@@ -19,8 +19,12 @@ package org.craftercms.studio.controller.services.rest;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.api.dto.Site;
 import org.craftercms.studio.api.exception.ItemNotFoundException;
 import org.craftercms.studio.api.exception.StudioException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +42,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -234,6 +240,41 @@ public class RepositoryControllerTest {
 
     @Test
     public void testGetSites() throws Exception {
+        List<Site> siteListMock = generateSiteListMock();
+        JSONObject siteListJSON = generateJSONSiteList(siteListMock);
+        when(this.contentManagerMock.getSiteList((Context) Mockito.any())).thenReturn(siteListMock);
+
+        this.mockMvc.perform(
+                get("/api/1/content/site_list")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(siteListJSON.toString()))
+        ;
+
+        verify(this.contentManagerMock, times(1)).getSiteList((Context) Mockito.any());
+    }
+
+    private JSONObject generateJSONSiteList(List<Site> siteList) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("sites", siteList);
+        } catch (JSONException e) {
+
+        }
+        return json;
+    }
+
+    private List<Site> generateSiteListMock() {
+        List<Site> toRet = new ArrayList<Site>();
+        for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
+            toRet.add(Mockito.mock(Site.class));
+        }
+        return toRet;
+    }
+
+    @Test
+    public void testGetSiteListNoSites() {
 
     }
 }
