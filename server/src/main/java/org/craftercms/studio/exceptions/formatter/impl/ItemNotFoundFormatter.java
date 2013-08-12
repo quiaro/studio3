@@ -15,28 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.api.exception;
+package org.craftercms.studio.exceptions.formatter.impl;
+
+import org.craftercms.studio.api.exception.ItemNotFoundException;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 
 /**
- * Item Not Found Exception.
+ * Item not found exception formatter.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class ItemNotFoundException extends StudioException {
+public class ItemNotFoundFormatter extends AbstractExceptionFormatter {
 
-    private static final long serialVersionUID = 3399277309794733430L;
-
-    public ItemNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    protected ItemNotFoundFormatter() {
+        super(ItemNotFoundException.class);
+        setHttpResponseCode(HttpStatus.NOT_FOUND.value());
     }
 
-    public ItemNotFoundException(String message) {
-        super(message);
-    }
-
-    public ItemNotFoundException(Throwable cause) {
-        super(cause);
+    @Override
+    protected JSONObject generateDetailMessage(Exception ex) throws JSONException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

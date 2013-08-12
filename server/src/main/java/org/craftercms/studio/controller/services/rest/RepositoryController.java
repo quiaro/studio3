@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,9 +59,11 @@ public class RepositoryController {
      * @param response http response.
      */
     @RequestMapping(value = "/read", method = RequestMethod.GET)
-    public void getContent(final String itemId, final String version,
+    public void getContent(@RequestParam(required = true) final String itemId,
+                           @RequestParam(required = false) final String version,
                            final HttpServletRequest request,
-                           final HttpServletResponse response) throws StudioException{
+                           final HttpServletResponse response)
+            throws StudioException{
 
         final InputStream content = this.contentManager.read(new Context(), itemId);
         try {

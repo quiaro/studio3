@@ -19,6 +19,8 @@ package org.craftercms.studio.controller.services.rest;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.api.exception.ItemNotFoundException;
+import org.craftercms.studio.api.exception.StudioException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +55,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml"})
+@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml", "/spring/messageFormatting-studio3-web-context.xml"})
 public class RepositoryControllerTest {
 
     // Mocks
@@ -94,7 +96,6 @@ public class RepositoryControllerTest {
 
     @Test
     public void testGetContentNoParameters() throws Exception {
-        /*
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
 
         this.mockMvc.perform(
@@ -103,13 +104,12 @@ public class RepositoryControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(this.contentManagerMock, times(0)).read((Context)Mockito.any(), Mockito.anyString());
-        */
     }
 
     @Test
     public void testGetContentNonExistingContent() throws Exception {
-        //when(this.repositoryManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenThrow(StudioException.class);
-        /*
+        doThrow(new ItemNotFoundException("Unit test.")).when(this.contentManagerMock).read((Context)Mockito.any(), Mockito.anyString());
+
         this.mockMvc.perform(
                 get("/api/1/content/read?itemId=1&version=1")
                         .accept(MediaType.ALL))
@@ -118,22 +118,22 @@ public class RepositoryControllerTest {
         ;
 
         verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
-        */
+
     }
 
     @Test
     public void testGetContentInternalException() throws Exception {
-        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
-        URL url = this.getClass().getResource("/content/sample.xml");
-        FileReader reader = new FileReader(url.getFile());
-        assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
+        doThrow(new StudioException("Unit test.") {
+
+            private static final long serialVersionUID = 949955896967217476L;
+
+        }).when(this.contentManagerMock).read((Context) Mockito.any(), Mockito.anyString());
 
         this.mockMvc.perform(
                 get("/api/1/content/read?itemId=1&version=1")
                         .accept(MediaType.ALL))
-                .andExpect(status().isOk())
-                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         ;
 
         verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
@@ -141,20 +141,15 @@ public class RepositoryControllerTest {
 
     @Test
     public void testGetContentMissingContentId() throws Exception {
-        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
-        URL url = this.getClass().getResource("/content/sample.xml");
-        FileReader reader = new FileReader(url.getFile());
-        assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
+        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read?version=1")
                         .accept(MediaType.ALL))
-                .andExpect(status().isOk())
-                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+                .andExpect(status().isBadRequest())
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(0)).read((Context) Mockito.any(), Mockito.anyString());
     }
 
 
@@ -168,7 +163,7 @@ public class RepositoryControllerTest {
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read?itemId=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(IOUtils.toByteArray(reader)))
