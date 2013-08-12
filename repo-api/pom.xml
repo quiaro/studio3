@@ -9,7 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>repo-api</artifactId>
+    <artifactId>studio-repo-api</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.craftercms</groupId>
+            <artifactId>studio-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
