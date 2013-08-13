@@ -1,6 +1,8 @@
 package org.craftercms.studio.controller.services.rest;
 
 
+import java.util.Map;
+
 import org.craftercms.studio.api.analytics.AnalyticsManager;
 import org.craftercms.studio.api.dto.AnalyticsReport;
 import org.craftercms.studio.api.dto.Context;
@@ -19,7 +21,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.*;
@@ -56,7 +57,7 @@ public class AnalyticsControllerTest {
                 thenReturn(new AnalyticsReport("testReport"));
 
            this.mockMvc.perform(
-                  get("/api/1/analytics/report/testSite/testReport") //Url
+                  get("/api/1/analytics/report/testSite?report=testReport") //Url
                   .contentType(MediaType.APPLICATION_JSON)) //
                   .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
                   .andExpect(jsonPath("$.reportName").value("testReport")); // Check that Response is a Serialize DTO
@@ -72,15 +73,12 @@ public class AnalyticsControllerTest {
                 .then(new Answer<AnalyticsReport>() {
                     @Override
                     public AnalyticsReport answer(final InvocationOnMock invocation) throws Throwable {
-                        //Find a better way to do this (To much magic numbers + assumptions)
-                        // it seams that @MatrixVariable is always wraps result in a
-                        // LinkedMultiValueMap due implementation (a key can have multiple values)
-                        LinkedMultiValueMap map=LinkedMultiValueMap.class.cast(invocation.getArguments()[3]);
-                        return new AnalyticsReport((String)map.get("reportName").get(0));
+                        Map map=Map.class.cast(invocation.getArguments()[3]);
+                        return new AnalyticsReport((String)map.get("testParam"));
                     }
                 });
         this.mockMvc.perform(
-                get("/api/1/analytics/report/testSite/testReport;reportName=TestParamReport")
+                get("/api/1/analytics/report/testSite?report=testReport&testParam=TestParamReport")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
                 .andExpect(status().isOk())
@@ -98,7 +96,7 @@ public class AnalyticsControllerTest {
                 .thenThrow(new ItemNotFoundException("Site testSite does Not Exist"));
 
         this.mockMvc.perform(
-                get("/api/1/analytics/report/testSite/testReport") //Url
+                get("/api/1/analytics/report/testSite?report=testReport") //Url
                         .contentType(MediaType.APPLICATION_JSON)) //
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
                 .andExpect(status().isNotFound());
@@ -114,7 +112,7 @@ public class AnalyticsControllerTest {
                 .thenThrow(new ItemNotFoundException("Report testReport does Not Exist"));
 
         this.mockMvc.perform(
-                get("/api/1/analytics/report/testSite/testReport") //Url
+                get("/api/1/analytics/report/testSite?report=testReport") //Url
                         .contentType(MediaType.APPLICATION_JSON)) //
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
                 .andExpect(status().isNotFound());
