@@ -32,24 +32,25 @@ public class AnalyticsController {
     /**
      * Interface to generate a report.
      *
-     * @param site         Site on which the report is.
-     * @param report       Name of the Report to be Run
-     * @param reportParams Report specific Parameters
+     * @param site   Site on which the report is.
+     * @param report Name of the Report to be Run
+     * @param params Report specific Parameters
      * @return the result of the report, define in
      *         {@link AnalyticsManager#report(Context, String, String, java.util.Map)}
      */
     @RequestMapping(value = "/report/{site}/{report}",
-            consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.GET)
     @ResponseBody
     public AnalyticsReport report(@PathVariable final String site,
                                   @PathVariable final String report,
-                                  @RequestParam(required = false)
-                                  final Map<String,Object> reportParams) throws StudioException
+                                  @MatrixVariable(pathVar = "report") Map<String, Object> paramsMatrixVars)
+            throws StudioException
 
     {
-        return this.analyticsManager.report(new Context(), site, report, reportParams);
+
+        return this.analyticsManager.report(new Context(), site, report, paramsMatrixVars);
     }
+
 
 }

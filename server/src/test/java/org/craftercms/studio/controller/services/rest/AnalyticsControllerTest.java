@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.*;
@@ -61,6 +64,32 @@ public class AnalyticsControllerTest {
         verify(this.analyticsManager,times(1)).report((Context)Mockito.any(), Mockito.anyString(),
                 Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class));
     }
+
+    @Test
+    public void testSiteSendParams() throws Exception {
+        when(this.analyticsManager.report((Context)Mockito.any(), Mockito.anyString(),
+                Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class)))
+                .then(new Answer<AnalyticsReport>() {
+                    @Override
+                    public AnalyticsReport answer(final InvocationOnMock invocation) throws Throwable {
+                        //Find a better way to do this (To much magic numbers + assumptions)
+                        // it seams that @MatrixVariable is always wraps result in a
+                        // LinkedMultiValueMap due implementation (a key can have multiple values)
+                        LinkedMultiValueMap map=LinkedMultiValueMap.class.cast(invocation.getArguments()[3]);
+                        return new AnalyticsReport((String)map.get("reportName").get(0));
+                    }
+                });
+        this.mockMvc.perform(
+                get("/api/1/analytics/report/testSite/testReport;reportName=TestParamReport")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reportName").value("TestParamReport")); //
+
+        verify(this.analyticsManager, times(1)).report((Context)Mockito.any(), Mockito.anyString(),
+                Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class));
+    }
+
 
     @Test
     public void testSiteNotFound() throws Exception {

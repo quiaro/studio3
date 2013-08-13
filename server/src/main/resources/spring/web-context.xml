@@ -15,7 +15,8 @@
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:cstudio.properties"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:/extension/studio3/cstudio.properties"/>
 
-    <annotation-driven content-negotiation-manager="contentNegotiationManager">
+    <annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true">
+
         <message-converters>
             <beans:bean id="jacksonMessageConverter"
                         class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -32,6 +33,7 @@
                 </beans:property>
             </beans:bean>
         </message-converters>
+
     </annotation-driven>
 
     <resources mapping="/resources/**" location="/resources"/>
@@ -49,6 +51,7 @@
         <beans:property name="ignoreAcceptHeader" value="false" />
         <beans:property name="defaultContentType" value="application/json"/>
         <beans:property name="useJaf" value="true"/>
+
         <beans:property name="mediaTypes">
             <beans:value>
                 json=application/json
