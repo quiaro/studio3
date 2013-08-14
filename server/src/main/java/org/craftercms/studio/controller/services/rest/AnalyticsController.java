@@ -7,6 +7,8 @@ import org.craftercms.studio.api.dto.AnalyticsReport;
 import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.exception.StudioException;
 import org.craftercms.studio.utils.RestControllerUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/api/1/analytics")
 public class AnalyticsController {
+
+    private Logger log= LoggerFactory.getLogger(AnalyticsController.class);
 
     /**
      * Analytics Manager instance.
@@ -50,7 +54,10 @@ public class AnalyticsController {
             throws StudioException
 
     {
+        log.debug("Filtering \"report\",\"security\" from params map");
         RestControllerUtils.removeParamters(params,"report","security");
+        log.debug("Final map is {}",params);
+        log.debug("Calling AnalyticsManager#report");
         return this.analyticsManager.report(new Context(), site, report, params);
     }
 
