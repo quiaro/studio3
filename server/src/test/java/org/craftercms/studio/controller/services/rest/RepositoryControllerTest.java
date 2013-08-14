@@ -22,7 +22,6 @@ import org.craftercms.studio.api.dto.Context;
 import org.craftercms.studio.api.dto.Site;
 import org.craftercms.studio.api.exception.ItemNotFoundException;
 import org.craftercms.studio.api.exception.StudioException;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -31,6 +30,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,6 +49,7 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -91,7 +93,7 @@ public class RepositoryControllerTest {
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
 
         this.mockMvc.perform(
-                        get("/api/1/content/read?itemId=1&version=1")
+                        get("/api/1/content/read/sample?itemId=1&version=1")
                                 .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(IOUtils.toByteArray(reader)))
@@ -105,7 +107,7 @@ public class RepositoryControllerTest {
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
 
         this.mockMvc.perform(
-                get("/api/1/content/read")
+                get("/api/1/content/read/sample")
                         .accept(MediaType.ALL))
                 .andExpect(status().isBadRequest());
 
@@ -117,7 +119,7 @@ public class RepositoryControllerTest {
         doThrow(new ItemNotFoundException("Unit test.")).when(this.contentManagerMock).read((Context)Mockito.any(), Mockito.anyString());
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?itemId=1&version=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -136,7 +138,7 @@ public class RepositoryControllerTest {
         }).when(this.contentManagerMock).read((Context) Mockito.any(), Mockito.anyString());
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?itemId=1&version=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -150,7 +152,7 @@ public class RepositoryControllerTest {
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
 
         this.mockMvc.perform(
-                get("/api/1/content/read?version=1")
+                get("/api/1/content/read/sample?version=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isBadRequest())
         ;
@@ -169,7 +171,7 @@ public class RepositoryControllerTest {
         when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(sampleContent);
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1")
+                get("/api/1/content/read/sample?itemId=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(IOUtils.toByteArray(reader)))
@@ -180,7 +182,28 @@ public class RepositoryControllerTest {
 
     @Test
     public void testUpdate() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/update.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
 
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update((Context) Mockito.any(), Mockito.anyString(), (InputStream) Mockito.any());
+
+        this.mockMvc.perform(
+                post("/api/1/content/update/site/1")
+                        .accept(MediaType.ALL)
+                        .content(reqBody)
+        )
+                .andExpect(status().isOk())
+        ;
+
+        verify(this.contentManagerMock, times(1)).update((Context)Mockito.any(), Mockito.anyString(), (InputStream)Mockito.any());
     }
 
     @Test

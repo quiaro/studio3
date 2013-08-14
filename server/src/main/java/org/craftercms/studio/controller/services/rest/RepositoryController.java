@@ -63,8 +63,8 @@ public class RepositoryController {
      * @param request http request.
      * @param response http response.
      */
-    @RequestMapping(value = "/read", method = RequestMethod.GET)
-    public void getContent(@RequestParam(required = true) final String itemId,
+    @RequestMapping(value = "/read/{site}", method = RequestMethod.GET)
+    public void getContent(@PathVariable final String site, @RequestParam(required = true) final String itemId,
                            @RequestParam(required = false) final String version,
                            final HttpServletRequest request,
                            final HttpServletResponse response)
@@ -88,9 +88,10 @@ public class RepositoryController {
      * @param request http request.
      * @param response http response.
      */
-    @RequestMapping(value = "/update/{site}/{itemId}", method = RequestMethod.POST)
-    public void update(@PathVariable final String site, final String itemId, final InputStream content, final HttpServletRequest request, final HttpServletResponse response) {
 
+    @RequestMapping(value = "/update/{site}/{itemId}", method = RequestMethod.POST)
+    public void update(@PathVariable final String site, final String itemId, final InputStream content, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        this.contentManager.update(new Context(), itemId, request.getInputStream());
     }
 
     /**
