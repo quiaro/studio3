@@ -3,8 +3,8 @@ package org.craftercms.studio.impl.analytics;
 import java.util.Map;
 
 import org.craftercms.studio.api.analytics.AnalyticsManager;
-import org.craftercms.studio.api.dto.AnalyticsReport;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.AnalyticsReport;
+import org.craftercms.studio.commons.dto.Context;
 
 /**
  * {@link AnalyticsManager} default implementation.

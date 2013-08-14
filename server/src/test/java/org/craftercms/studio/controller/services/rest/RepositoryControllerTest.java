@@ -22,7 +22,7 @@ import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +38,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static junit.framework.Assert.assertNotNull;
+
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

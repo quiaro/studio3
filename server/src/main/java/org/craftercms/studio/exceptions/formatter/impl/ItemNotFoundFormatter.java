@@ -1,6 +1,6 @@
 package org.craftercms.studio.exceptions.formatter.impl;
 
-import org.craftercms.studio.api.exception.ItemNotFoundException;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;

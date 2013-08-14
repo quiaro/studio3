@@ -19,11 +19,11 @@ package org.craftercms.studio.controller.services.rest;
 
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.Item;
-import org.craftercms.studio.api.dto.LockHandle;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.LockHandle;
 
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

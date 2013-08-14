@@ -19,12 +19,12 @@ package org.craftercms.studio.exceptions;
 
 import java.util.List;
 
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.validation.ObjectError;
 
 /**
  * Throw when the object send is not valid validation to the proper validators
- * define in {@see org.craftercms.studio.web.validation} package.
+ * define in {@link org.craftercms.studio.web.validation} package.
  */
 public class ValidationException extends StudioException {
     /**

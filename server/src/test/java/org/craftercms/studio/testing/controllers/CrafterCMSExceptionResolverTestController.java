@@ -1,6 +1,6 @@
 package org.craftercms.studio.testing.controllers;
 
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

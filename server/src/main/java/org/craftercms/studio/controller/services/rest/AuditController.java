@@ -1,10 +1,11 @@
 package org.craftercms.studio.controller.services.rest;
 
 import java.util.List;
+import javax.validation.Valid;
 
 import org.craftercms.studio.api.audit.AuditManager;
-import org.craftercms.studio.api.dto.Activity;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 
 /**
  * Handles the JSON API for Audit module.
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/api/1/audit")
 public class AuditController {
-    private Logger log= LoggerFactory.getLogger(AuditController.class);
+    private Logger log = LoggerFactory.getLogger(AuditController.class);
     /**
      * Audit manager instance.
      */
@@ -50,15 +50,14 @@ public class AuditController {
      */
     @RequestMapping(value = "/log/{site}", produces = "application/json", method = RequestMethod.POST)
     public Activity logActivity(@PathVariable final String site, @Valid @RequestBody final Activity activity,
-                                final BindingResult result) throws ValidationException
-    {
+                                final BindingResult result) throws ValidationException {
         if ( result.hasErrors() ) {
-            final ValidationException validationException= new ValidationException("Unable to save Activity",
-                                                                                    result.getAllErrors());
-            log.error("Unable to save a activity since is not valid",validationException);
+            final ValidationException validationException = new ValidationException("Unable to save Activity",
+                    result.getAllErrors());
+            log.error("Unable to save a activity since is not valid", validationException);
             throw validationException;
         } else {
-            log.debug("Calling AuditManager#logActivity with {}",activity);
+            log.debug("Calling AuditManager#logActivity with {}", activity);
             return this.auditManager.logActivity(new Context(), site, activity);
         }
     }

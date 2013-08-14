@@ -4,9 +4,9 @@ package org.craftercms.studio.controller.services.rest;
 import java.util.Map;
 
 import org.craftercms.studio.api.analytics.AnalyticsManager;
-import org.craftercms.studio.api.dto.AnalyticsReport;
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.exception.ItemNotFoundException;
+import org.craftercms.studio.commons.dto.AnalyticsReport;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -18,8 +18,8 @@ package org.craftercms.studio.api.audit;
 
 import java.util.List;
 
-import org.craftercms.studio.api.dto.Activity;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.dto.Context;
 
 /**
  * Audit Manager.

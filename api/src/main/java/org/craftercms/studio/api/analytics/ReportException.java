@@ -1,6 +1,6 @@
 package org.craftercms.studio.api.analytics;
 
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  *  Thrown when a Analytics report could no be generate.
