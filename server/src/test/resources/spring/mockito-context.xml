@@ -12,4 +12,9 @@
     <beans:bean id="contentManager" class="org.mockito.Mockito" factory-method="mock">
         <beans:constructor-arg value="org.craftercms.studio.api.content.ContentManager" />
     </beans:bean>
+
+    <beans:bean id="analyticsManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.analytics.AnalyticsManager" />
+    </beans:bean>
+
 </beans:beans>
