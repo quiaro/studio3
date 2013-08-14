@@ -368,5 +368,6 @@
         <module>server</module>
         <module>ui</module>
         <module>repo-api</module>
+        <module>commons</module>
     </modules>
 </project>
