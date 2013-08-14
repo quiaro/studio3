@@ -21,32 +21,21 @@ package org.craftercms.studio.api.exception;
  * Root exception for all exceptions defined in Studio.
  *
  * @author Sumer Jabri
- *
  */
-public class StudioException extends Exception{
+public abstract class StudioException extends Exception {
     private static final long serialVersionUID = 8822403836288820982L;
 
     /**
-     * Default constructor
-     *
-     */
-    public StudioException() {
-        super();
-    }
-
-    /**
-     *
      * Construct with a message and cause exception
      *
      * @param message description
-     * @param cause original cause exception
+     * @param cause   original cause exception
      */
     public StudioException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     *
      * Construct with a message
      *
      * @param message description
@@ -56,7 +45,6 @@ public class StudioException extends Exception{
     }
 
     /**
-     *
      * Construct with a cause exception
      *
      * @param cause original cause exception
