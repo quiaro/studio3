@@ -35,22 +35,29 @@ public interface VersionService {
      * Checkout item for edit.
      * @param ticket security ticket
      * @param itemId item id
+     * @return Id of working copy
      */
-    void checkOut(String ticket, String itemId);
+    String checkOut(String ticket, String itemId);
 
     /**
      * Cancel checkout.
      * @param ticket security ticket
      * @param itemId item id
+     * @param workingCopyId id of working copy obtained during
+     * {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
      */
-    void cancelCheckOut(String ticket, String itemId);
+    void cancelCheckOut(String ticket, String itemId, String workingCopyId);
 
     /**
-     * Check in item.
+     * Cancel checkout.
      * @param ticket security ticket
      * @param itemId item id
+     * @param workingCopyId id of working copy obtained during
+     * @param isMajorVersion is this a major or minor version
+     * @param comment comment to attach to the check in
+     * {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
      */
-    void checkIn(String ticket, String itemId);
+    void checkIn(String ticket, String itemId, String workingCopyId, boolean isMajorVersion, String comment);
 
     /**
      * Get all item versions.
@@ -64,9 +71,10 @@ public interface VersionService {
      * Revert item to given version.
      * @param ticket security ticket
      * @param itemId item id
-     * @param version version
+     * @param version version to revert to
      */
     void revert(String ticket, String itemId, String version);
+    // TODO think some more about the version param
 
     /**
      * Diff on two item versions.
@@ -77,4 +85,5 @@ public interface VersionService {
      * @return diff result
      */
     DiffResult diff(String ticket, String itemId, String version1, String version2);
+    // TODO think some more about the version param
 }
