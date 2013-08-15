@@ -17,12 +17,12 @@
 
 package org.craftercms.studio.api.content;
 
-import org.craftercms.studio.api.dto.Item;
-import org.craftercms.studio.api.dto.Tree;
-import org.craftercms.studio.api.filter.Filter;
-
 import java.io.InputStream;
 import java.util.List;
+
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.filter.Filter;
 
 /**
  * Content Service.

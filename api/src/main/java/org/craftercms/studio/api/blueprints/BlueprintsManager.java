@@ -16,7 +16,7 @@
  */
 package org.craftercms.studio.api.blueprints;
 
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.Context;
 
 import java.util.List;
 import java.util.Map;

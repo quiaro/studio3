@@ -45,6 +45,6 @@
           class="org.craftercms.studio.exceptions.formatter.impl.DefaultFormatter"/>
 
     <bean id="itemNotFoundFormatter" parent="messageFormatter"
-            class="org.craftercms.studio.exceptions.formatter.impl.ItemNotFoundFormatter" />
+          class="org.craftercms.studio.exceptions.formatter.impl.ItemNotFoundFormatter"/>
 
 </beans>

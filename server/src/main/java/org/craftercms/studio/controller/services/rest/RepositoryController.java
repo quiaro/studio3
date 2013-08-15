@@ -1,39 +1,37 @@
 /*
  * Copyright (C) 2007-2013 Crafter Software Corporation.
  *
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *   This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.craftercms.studio.controller.services.rest;
 
 
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.ContentManager;
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.Item;
-import org.craftercms.studio.api.dto.LockHandle;
 
-import org.craftercms.studio.api.dto.Site;
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.LockHandle;
+import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +66,7 @@ public class RepositoryController {
                            @RequestParam(required = false) final String version,
                            final HttpServletRequest request,
                            final HttpServletResponse response)
-            throws StudioException{
+            throws StudioException {
 
         final InputStream content = this.contentManager.read(new Context(), itemId);
         try {
@@ -88,7 +86,6 @@ public class RepositoryController {
      * @param request http request.
      * @param response http response.
      */
-
     @RequestMapping(value = "/update/{site}/{itemId}", method = RequestMethod.POST)
     public void update(@PathVariable final String site, final String itemId, final InputStream content, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         this.contentManager.update(new Context(), itemId, request.getInputStream());
@@ -216,18 +213,13 @@ public class RepositoryController {
 
     /**
      * TODO: javadoc.
-     * @param request request
-     * @param response response
+     * Get site list.
      */
-    @RequestMapping(value = "/site_list", method = RequestMethod.GET)
-    public void getSites(final HttpServletRequest request, final HttpServletResponse response) throws JSONException, IOException {
+    @RequestMapping(value = "/site_list", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Site> getSites() {
         List<Site> sites = this.contentManager.getSiteList(new Context());
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("sites", sites);
-
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        final PrintWriter writer = response.getWriter();
-        writer.write(responseJson.toString());
+        return sites;
     }
 
 

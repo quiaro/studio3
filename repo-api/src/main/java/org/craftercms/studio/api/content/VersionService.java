@@ -17,10 +17,10 @@
 
 package org.craftercms.studio.api.content;
 
-import org.craftercms.studio.api.dto.DiffResult;
-import org.craftercms.studio.api.dto.Item;
-
 import java.util.List;
+
+import org.craftercms.studio.commons.dto.DiffResult;
+import org.craftercms.studio.commons.dto.Item;
 
 /**
  * Version Service.

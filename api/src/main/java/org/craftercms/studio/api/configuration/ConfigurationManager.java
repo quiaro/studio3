@@ -16,8 +16,8 @@
  */
 package org.craftercms.studio.api.configuration;
 
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.ModuleConfiguration;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.ModuleConfiguration;
 
 import java.io.InputStream;
 

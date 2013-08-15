@@ -18,8 +18,9 @@ package org.craftercms.studio.api.analytics;
 
 import java.util.Map;
 
-import org.craftercms.studio.api.dto.AnalyticsReport;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.AnalyticsReport;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
 
 /**
  * Analytics Manager.
@@ -30,11 +31,17 @@ import org.craftercms.studio.api.dto.Context;
  */
 public interface AnalyticsManager {
     /**
-     *
+     * Runs and return a report.
      * @param context context for the report
-     * @param site target website
+     * @param site target
+     * @param report report name
      * @param params report parameters
-     * @return the analytics report
+     * @return the analytics report <b>never null</b>
+     * @throws ItemNotFoundException if report with given named is not found or site is not found.
+     *         ReportException       if the report can't be generated.
      */
-    AnalyticsReport report(Context context, String site, Map<String, Object> params);
+    AnalyticsReport report(Context context, String site, String report, Map<String, Object> params) throws
+                                                                                                  ItemNotFoundException,
+                                                                                                  ReportException;
+
 }

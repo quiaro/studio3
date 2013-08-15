@@ -63,6 +63,12 @@
             <artifactId>quartz</artifactId>
             <version>2.1.7</version>
         </dependency>
+        <!--Validation -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+        </dependency>
 
         <!-- JSP -->
         <dependency>
@@ -96,6 +102,8 @@
             <artifactId>javax.inject</artifactId>
             <version>${javax.inject.version}</version>
         </dependency>
+
+
 
 
         <dependency>
@@ -214,10 +222,10 @@
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
-                            <webXml>${build.testSourceDirectory}/../resources/web-test.xml</webXml>
+                            <webXml>${project.build.testSourceDirectory}/../resources/web-test.xml</webXml>
                         </configuration>
-                        
-                      
+
+
                     </execution>
                     <execution>
                         <id>stop-jetty</id>

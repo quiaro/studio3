@@ -16,10 +16,10 @@
  */
 package org.craftercms.studio.api.workflow;
 
-import org.craftercms.studio.api.dto.Item;
-import org.craftercms.studio.api.dto.WorkflowPackage;
-import org.craftercms.studio.api.filter.WorkflowPackageFilter;
-import org.craftercms.studio.api.dto.WorkflowTransition;
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.WorkflowPackage;
+import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
+import org.craftercms.studio.commons.dto.WorkflowTransition;
 
 import java.util.List;
 import java.util.Map;

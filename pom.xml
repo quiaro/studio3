@@ -173,6 +173,14 @@
             <artifactId>joda-time</artifactId>
             <version>${joda-time.joda-time.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+
+
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -354,11 +362,12 @@
         </testResources>
     </build>
     <modules>
+        <module>commons</module>
         <module>api</module>
+        <module>repo-api</module>
         <module>impl</module>
         <module>repo-cmis</module>
-        <module>server</module>
         <module>ui</module>
-        <module>repo-api</module>
+        <module>server</module>
     </modules>
 </project>

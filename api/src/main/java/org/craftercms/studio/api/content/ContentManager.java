@@ -16,15 +16,15 @@
  */
 package org.craftercms.studio.api.content;
 
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.Item;
-import org.craftercms.studio.api.extractor.ItemExtractor;
-import org.craftercms.studio.api.filter.ItemFilter;
-import org.craftercms.studio.api.dto.LockHandle;
-import org.craftercms.studio.api.dto.LockStatus;
-import org.craftercms.studio.api.dto.Site;
-import org.craftercms.studio.api.dto.Tree;
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.extractor.ItemExtractor;
+import org.craftercms.studio.commons.filter.ItemFilter;
+import org.craftercms.studio.commons.dto.LockHandle;
+import org.craftercms.studio.commons.dto.LockStatus;
+import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.exception.StudioException;
 
 import java.io.InputStream;
 import java.util.List;

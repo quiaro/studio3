@@ -16,8 +16,8 @@
  */
 package org.craftercms.studio.api.search;
 
-import org.craftercms.studio.api.dto.ResultSet;
-import org.craftercms.studio.api.dto.Context;
+import org.craftercms.studio.commons.dto.ResultSet;
+import org.craftercms.studio.commons.dto.Context;
 
 /**
  * Search Manager.

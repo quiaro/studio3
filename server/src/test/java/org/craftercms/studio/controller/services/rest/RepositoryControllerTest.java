@@ -16,12 +16,18 @@
  */
 package org.craftercms.studio.controller.services.rest;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.ContentManager;
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.Site;
-import org.craftercms.studio.api.exception.ItemNotFoundException;
-import org.craftercms.studio.api.exception.StudioException;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -34,6 +40,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,11 +53,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -203,7 +211,7 @@ public class RepositoryControllerTest {
                 .andExpect(status().isOk())
         ;
 
-        verify(this.contentManagerMock, times(1)).update((Context)Mockito.any(), Mockito.anyString(), (InputStream)Mockito.any());
+        verify(this.contentManagerMock, times(1)).update((Context) Mockito.any(), Mockito.anyString(), (InputStream) Mockito.any());
     }
 
     @Test
@@ -264,7 +272,7 @@ public class RepositoryControllerTest {
     @Test
     public void testGetSites() throws Exception {
         List<Site> siteListMock = generateSiteListMock();
-        JSONObject siteListJSON = generateJSONSiteList(siteListMock);
+        String siteListJSON = generateJSONSiteList(siteListMock);
         when(this.contentManagerMock.getSiteList((Context) Mockito.any())).thenReturn(siteListMock);
 
         this.mockMvc.perform(
@@ -272,26 +280,31 @@ public class RepositoryControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(siteListJSON.toString()))
+                .andExpect(content().string(siteListJSON))
         ;
 
         verify(this.contentManagerMock, times(1)).getSiteList((Context) Mockito.any());
     }
 
-    private JSONObject generateJSONSiteList(List<Site> siteList) {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("sites", siteList);
-        } catch (JSONException e) {
+    private String generateJSONSiteList(List<Site> siteList) throws JSONException {
+        ObjectMapper mapper = new ObjectMapper();
 
+        String toRet = "";
+        try {
+            toRet = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(siteList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        return json;
+        return toRet;
     }
 
     private List<Site> generateSiteListMock() {
         List<Site> toRet = new ArrayList<Site>();
         for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
-            toRet.add(Mockito.mock(Site.class));
+            Site site = new Site();
+            site.setSiteId(RandomStringUtils.randomAlphabetic(10));
+            site.setSiteName(RandomStringUtils.randomAlphabetic(10));
+            toRet.add(site);
         }
         return toRet;
     }

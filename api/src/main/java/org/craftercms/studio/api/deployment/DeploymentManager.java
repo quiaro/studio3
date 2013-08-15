@@ -16,9 +16,9 @@
  */
 package org.craftercms.studio.api.deployment;
 
-import org.craftercms.studio.api.dto.Context;
-import org.craftercms.studio.api.dto.DeploymentChannel;
-import org.craftercms.studio.api.dto.Item;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.DeploymentChannel;
+import org.craftercms.studio.commons.dto.Item;
 
 import java.util.List;
 import java.util.Map;

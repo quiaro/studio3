@@ -16,10 +16,11 @@
  */
 package org.craftercms.studio.api.security;
 
-import org.craftercms.studio.api.dto.*;
-
 import java.net.URL;
 import java.util.List;
+
+import org.craftercms.studio.commons.dto.*;
+
 
 /**
  * Security Manager.
@@ -32,21 +33,24 @@ public interface SecurityManager {
 
     /**
      * Login.
+     *
      * @param repositoryUrl content url
-     * @param username username
-     * @param password password
+     * @param username      username
+     * @param password      password
      * @return security context
      */
     Context login(URL repositoryUrl, String username, String password);
 
     /**
      * Logout.
+     *
      * @param context context
      */
     void logout(Context context);
 
     /**
      * Validate security context.
+     *
      * @param context context
      * @return true if context is valid, otherwise false
      */
@@ -54,104 +58,116 @@ public interface SecurityManager {
 
     /**
      * Get users for site.
+     *
      * @param context context
-     * @param site site
+     * @param site    site
      * @return list of users
      */
     List<User> getUsers(Context context, String site);
 
     /**
      * Create or update user.
-     * @param context context
-     * @param user user
+     *
+     * @param context  context
+     * @param user     user
      * @param password password
-     * @param role role
+     * @param role     role
      * @return user id
      */
     String updateUser(Context context, User user, String password, String role);
 
     /**
      * Remove user.
+     *
      * @param context context
-     * @param user user
+     * @param user    user
      */
     void removeUser(Context context, String user);
 
     /**
      * Get permissions.
+     *
      * @param context context
-     * @param site site
-     * @param itemId itemId
+     * @param site    site
+     * @param itemId  itemId
      * @return list of permission
      */
     List<SecurityPermission> getPermissions(Context context, String site, String itemId);
 
     /**
      * Update permissions.
-     * @param context context
-     * @param site site
-     * @param itemId item id
-     * @param user user
+     *
+     * @param context     context
+     * @param site        site
+     * @param itemId      item id
+     * @param user        user
      * @param permissions permissions
-     * @param inherit inherit true/false
+     * @param inherit     inherit true/false
      */
     void updatePermissions(Context context, String site, String itemId, User user, List<SecurityPermission> permissions, boolean inherit);
 
     /**
      * Update permissions.
-     * @param context context
-     * @param site site
-     * @param itemId item id
-     * @param group group
+     *
+     * @param context     context
+     * @param site        site
+     * @param itemId      item id
+     * @param group       group
      * @param permissions permissions
-     * @param inherit inherit true/false
+     * @param inherit     inherit true/false
      */
     void updatePermissions(Context context, String site, String itemId, SecurityGroup group, List<SecurityPermission> permissions, boolean inherit);
 
     /**
      * Get groups.
+     *
      * @param context context
-     * @param site site
+     * @param site    site
      * @return list of groups
      */
     List<SecurityGroup> getGroups(Context context, String site);
 
     /**
      * Create or update group.
-     * @param context context
-     * @param site site
+     *
+     * @param context   context
+     * @param site      site
      * @param groupName groupName
      */
     void updateGroup(Context context, String site, String groupName);
 
     /**
      * Remove group.
-     * @param context context
-     * @param site site
+     *
+     * @param context   context
+     * @param site      site
      * @param groupName groupName
      */
     void removeGroup(Context context, String site, String groupName);
 
     /**
      * Get roles.
-     * @param context context
-     * @param site site
+     *
+     * @param context ßcontext
+     * @param site    site
      * @return list of roles
      */
     List<SecurityRole> getRoles(Context context, String site);
 
     /**
      * Create or update role.
-     * @param context context
-     * @param site site
+     *
+     * @param context  context
+     * @param site     site
      * @param roleName roleName
      */
     void updateRole(Context context, String site, String roleName);
 
     /**
      * Remove role.
-     * @param context context
-     * @param site site
+     *
+     * @param context  context
+     * @param site     site
      * @param roleName roleName
      */
     void removeRole(Context context, String site, String roleName);
