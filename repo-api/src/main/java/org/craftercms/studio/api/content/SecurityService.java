@@ -27,6 +27,9 @@ import java.util.List;
  * @author Carlos Ortiz
  */
 public interface SecurityService {
+    public enum Propagation {
+        PROPAGATE, DO_NOT_PROPAGATE, INHERIT;
+    }
 
     /**
      * Login.
@@ -59,7 +62,7 @@ public interface SecurityService {
      * @param permissions list of permissions to add
      * @param propagation propagation
      */
-    void addPermissions(String ticket, String user, String itemId, List<String> permissions, String propagation);
+    void addPermissions(String ticket, String user, String itemId, List<String> permissions, Propagation propagation);
 
     /**
      * Remove user permissions.

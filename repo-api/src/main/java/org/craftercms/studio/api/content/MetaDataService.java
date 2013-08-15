@@ -35,7 +35,7 @@ public interface MetaDataService {
      * @param itemId item id
      * @return map of properties
      */
-    Map<String, Object> getProperties(String ticket, String itemId);
+    <T> Map<String, T> getProperties(String ticket, String itemId, Class<T> type);
 
     /**
      * Set item properties.
@@ -43,7 +43,7 @@ public interface MetaDataService {
      * @param itemId item id
      * @param properties properties
      */
-    void setProperties(String ticket, String itemId, Map<String, Object> properties);
+    <T> void setProperties(String ticket, String itemId, Map<String, T> properties);
 
     /**
      * Get item property.
@@ -62,5 +62,5 @@ public interface MetaDataService {
      * @param property property
      * @param value value
      */
-    void setProperty(String ticket, String itemId, String property, Object value);
+    <T> void setProperty(String ticket, String itemId, String property, T value);
 }
