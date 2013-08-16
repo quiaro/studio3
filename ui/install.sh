@@ -21,11 +21,13 @@ fi
 # Install Grunt CLI and Bower packages globally (if already installed, NPM will try to install them again)
 npm install -g grunt-cli bower
 
-# Fetch all package dependencies
-npm install
+# Fetch all package dependencies -WARNING: this may break production code!!
+# Keep commented out unless you know what you are doing
+# npm install  
 
-# Fetch all component dependencies
-bower install
+# Fetch all component dependencies -WARNING: this may break production code!!
+# Keep commented out unless you know what you are doing
+# bower install
 
 echo "";
 echo "Setup complete!";
