@@ -7,12 +7,21 @@ import org.craftercms.studio.api.audit.AuditManager;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.exceptions.ValidationException;
+import org.craftercms.studio.validation.AuditValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Handles the JSON API for Audit module.
@@ -20,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/api/1/audit")
 public class AuditController {
+
+
     private Logger log = LoggerFactory.getLogger(AuditController.class);
     /**
      * Audit manager instance.
@@ -34,8 +45,10 @@ public class AuditController {
     }
 
     @RequestMapping(value = "/activity/{site}", produces = "application/json", method = RequestMethod.GET)
+    @ResponseBody
     public List<Activity> getActivities(@PathVariable final String site,
-                                        @RequestParam(required = false) final String[] filters) {
+                                        @RequestParam(required = false) final List<String> filters) {
+        this.log.debug("Retrieving list of activities for {} using filters {}", site, filters);
         return this.auditManager.getActivities(new Context(), site, filters);
     }
 
@@ -48,18 +61,26 @@ public class AuditController {
      * @return The Activity that have been save
      * @throws ValidationException If the given object is not valid
      */
-    @RequestMapping(value = "/log/{site}", produces = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/log/{site}", produces = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    @ResponseBody
     public Activity logActivity(@PathVariable final String site, @Valid @RequestBody final Activity activity,
-                                final BindingResult result) throws ValidationException {
+                                final BindingResult result) throws ValidationException
+    {
         if ( result.hasErrors() ) {
             final ValidationException validationException = new ValidationException("Unable to save Activity",
                     result.getAllErrors());
-            log.error("Unable to save a activity since is not valid", validationException);
+            this.log.error("Unable to save a activity since is not valid", validationException);
             throw validationException;
         } else {
-            log.debug("Calling AuditManager#logActivity with {}", activity);
+            this.log.debug("Calling AuditManager#logActivity with {}", activity);
             return this.auditManager.logActivity(new Context(), site, activity);
         }
     }
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        this.log.debug("Setting Validators for AuditController");
+        binder.setValidator(new AuditValidator());
+    }
 }

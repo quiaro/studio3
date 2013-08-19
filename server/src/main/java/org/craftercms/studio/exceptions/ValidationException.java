@@ -24,7 +24,7 @@ import org.springframework.validation.ObjectError;
 
 /**
  * Throw when the object send is not valid validation to the proper validators
- * define in {@link org.craftercms.studio.web.validation} package.
+ * define in {@link org.craftercms.studio.exceptions.formatter} package.
  */
 public class ValidationException extends StudioException {
     /**
@@ -51,4 +51,24 @@ public class ValidationException extends StudioException {
     public final List<ObjectError> getErrors() {
         return this.errors;
     }
+
+    @Override
+    public String getMessage() {
+        return String.format("%s, invalid fields %s",super.getMessage(), errorsToMessage());
+    }
+
+    protected String errorsToMessage(){
+        StringBuilder builder=new StringBuilder();
+        for (ObjectError error : this.errors){
+            builder.append(" ");
+            builder.append(error.getObjectName());
+            builder.append(" ");
+            builder.append(error.getDefaultMessage());
+            builder.append(",");
+        }
+        //Remove last ',' ToDo do this with a integrator
+        builder.setLength(builder.length()-1);
+        return builder.toString();
+    }
 }
+

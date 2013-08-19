@@ -37,7 +37,7 @@ public interface AuditManager {
      * @param filters filters
      * @return list of activities
      */
-    List<Activity> getActivities(Context context, String site, String[] filters);
+    List<Activity> getActivities(Context context, String site, List<String> filters);
 
     /**
      * Log activity.
