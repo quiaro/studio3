@@ -38,8 +38,9 @@ angular.module('s2doAppDev', [
         'lastPersonalEdit': '12/05/12 09:12 AM'
     }];
 
-    // returns the current list of phones
     $httpBackend.whenGET('/api/0.1/repo/list/pebbles').respond(200, items);
+    // Mock failed request
+    // $httpBackend.whenGET('/api/0.1/repo/list/pebbles').respond(500, null);
 
     $httpBackend.whenGET('/api/0.1/repo/read/pebbles?itemId=3QCRS&version=3').respond(200, items[1]);
 
