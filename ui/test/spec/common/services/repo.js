@@ -2,23 +2,28 @@
 
 describe('Service: Repo', function () {
 
-  var repoService, httpBackend, params;
+  var repoService, httpBackend,
+      alertDialog = jasmine.createSpyObj('alertDialog', ['open']);
 
-  beforeEach(module('services.repo'));
+  beforeEach( function () {
 
-  beforeEach(inject(function($httpBackend, $http, $service, repo) {
+    module('resources.util', function ($provide) {
+      $provide.value('util', {
+          getServiceURL : function () {
+            return '/url/to/backend/service';  
+          }
+      });
+    });
 
+    module('services.repo', function ($provide) {
+      $provide.value('alertDialog', alertDialog);
+    });
+
+  });
+
+  beforeEach(inject(function($httpBackend, repo) {
     httpBackend = $httpBackend;
-    params = {
-      $http: $http,
-      $window: jasmine.createSpyObj('$window', ['alert']), // overrides $window with a mock version so window.alert() will not block the test runner with a real alert box
-      util: {
-        getServiceURL: function getServiceURL() {
-          return '/url/to/backend/service';
-        }
-      }
-    };
-    repo.$inject = params;
+    repoService = repo;
   }));
 
   afterEach(function() {
@@ -26,23 +31,41 @@ describe('Service: Repo', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  xit('should return a list of items if successful', function () {
-    var val;
+  it('should return a list of items', function () {
+    var promise;
     
-    httpBackend.expectGET('/url/to/backend/service').respond(200, ['a']);
-    val = repoService.getList();
+    httpBackend.expectGET('/url/to/backend/service').respond(200, ['a', 'b']);
+    promise = repoService.list();
+
+    promise.then( function (data) {
+      expect(data).toEqual(['a', 'b']);
+    });  
+
     httpBackend.flush();
-    expect(val).toEqual(['a']);
+    
   });
 
-  xit('should return null and display an error message if it fails', function () {
-    var val;
+  it('should return null and display an error message when it fails', function () {
+    var promise, promiseArr = [];
 
-    httpBackend.expectGET('/url/to/backend/service').respond(500);
-    val = repoService.getList();
-    httpBackend.flush();
-    expect(params.$window.alert).toHaveBeenCalled();
-    expect(scope.recentActivity).toBeUndefined();
+    // All methods in the repo service should behave the same
+    for (var method in repoService) {
+      httpBackend.expectGET('/url/to/backend/service').respond(500);
+      promise = repoService[method]();
+
+      promise.then( function (data) {
+        // should not be called because the service call is returning a 500 -just in case, we'll make it fail
+        expect(data).toBe(null);
+      }, function (data) {
+        expect(alertDialog.open).toHaveBeenCalled();
+        expect(data).toBe(null);
+      });
+
+      // Store away the promise in an array
+      promiseArr.push(promise);
+      httpBackend.flush();
+    }
+    
   });
 
 });
