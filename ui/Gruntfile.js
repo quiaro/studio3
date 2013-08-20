@@ -82,8 +82,7 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*'
+            'target'
           ]
         }]
       },
@@ -298,7 +297,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'coffee',
-    'compass',
+    // 'compass',
     'connect:test',
     'karma:dev'
   ]);
@@ -312,7 +311,7 @@ module.exports = function (grunt) {
   grunt.registerTask('server', [
     'clean:server',
     'coffee:dist',
-    'compass:server',
+    // 'compass:server',
     'livereload-start',
     'connect:livereload',
     'replace:dev',
@@ -325,7 +324,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'jshint',
     'coffee',
-    'compass:dist',
+    // 'compass:dist',
     'connect:test',
     'karma:continuous',
     'replace:build',
