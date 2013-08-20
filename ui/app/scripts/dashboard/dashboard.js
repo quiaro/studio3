@@ -20,9 +20,9 @@ angular.module('dashboard', ['dialogs', 'services.repo'])
 
 			// Service is handling any failures
 			promise.then( function (data) {
-      	$scope.recentActivity = data;
+        $scope.recentActivity = data;
       });
-			
+
 		};
 
 	}]);
