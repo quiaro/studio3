@@ -1,14 +1,24 @@
 'use strict';
 
-angular.module('services.repo', ['resources.util'])
-	.service('repo', function($http, util) {
+angular.module('services.repo', ['resources.util', 'alert.dialog'])
+	.factory('repo', ['$http', '$q', 'util', 'alertDialog', function($http, $q, util, alertDialog) {
 
 	var api = 'repo';
+
+	function makeServiceCall (url, deferred) {
+		$http.get(url).success(function(data) {
+			deferred.resolve(data);
+		}).error(function() {
+			alertDialog.open();
+			deferred.reject(null);
+		});
+	}
 
 	function list(filtersObj) {
 
 		var url,
-			searchStr = '';
+			searchStr = '',
+			deferred = $q.defer();
 
 		for (var filter in filtersObj) {
 			if (filtersObj.hasOwnProperty(filter)) {
@@ -17,17 +27,20 @@ angular.module('services.repo', ['resources.util'])
 		}
 		url = util.getServiceURL(api, 'list', searchStr);
 
-		return $http.get(url);
+		makeServiceCall(url, deferred);
+		return deferred.promise;
 	}
 
 	function read(item, version) {
 
-		var searchStr, url;
+		var searchStr, url,
+			deferred = $q.defer();
 
 		searchStr = 'item=' + item + 'version=' + version;
 		url = util.getServiceURL(api, 'read', searchStr);
 
-		return $http.get(url);
+		makeServiceCall(url, deferred);
+		return deferred.promise;
 	}
 
 	// expose the API to the user
@@ -35,4 +48,4 @@ angular.module('services.repo', ['resources.util'])
 		list: list,
 		read: read
 	};
-});
+}]);

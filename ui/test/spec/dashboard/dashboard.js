@@ -2,46 +2,54 @@
 
 describe('Controller: DashboardCtrl', function () {
 
-  var DashboardCtrl, controller, scope, httpBackend, params;
+  var DashboardCtrl, scope, params, httpBackend,
+      alertDialog = jasmine.createSpyObj('alertDialog', ['open']);
 
-  // load the controller's module
-  beforeEach(module('dashboard'));
+  beforeEach( function () {
 
-  beforeEach(inject(function($controller, $httpBackend, $http, $rootScope) {
+    module('resources.util', function ($provide) {
+      $provide.value('util', {
+          getServiceURL : function () {
+            return '/url/to/backend/service';  
+          }
+      });
+    });
 
-    controller = $controller;
-    scope = $rootScope.$new();
+    module('services.repo');
+
+    // load the controller's module    
+    module('dashboard');
+
+  });
+
+  beforeEach(inject(function($controller, $httpBackend, $rootScope, repo) {
+
     httpBackend = $httpBackend;
+
+    scope = $rootScope.$new();
     params = {
       $scope: scope,
-      $window: jasmine.createSpyObj('$window', ['alert']), // overrides $window with a mock version so window.alert() will not block the test runner with a real alert box
-      repo: {
-        list: function list() {
-          return $http.get('/url/to/activity/items');
-        }
-      }
+      repo: repo
     };
-    DashboardCtrl = controller('DashboardCtrl', params);
+    DashboardCtrl = $controller('DashboardCtrl', params);
   }));
 
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  it('should append a list of recent activity items to the scope', function () {
+    
+    runs(function () {
+      httpBackend.expectGET('/url/to/backend/service').respond(200, [1, 2, 3]);
+      scope.getRecentActivity();
+      httpBackend.flush();
+    })
 
-  it('should attach the list of recent activity items to the scope when the call to repo.list() is successful', function () {
-    httpBackend.expectGET('/url/to/activity/items').respond(200, ['a']);
-    scope.getRecentActivity();
-    httpBackend.flush();    
-    expect(scope.recentActivity).toEqual(['a']);
-  });
+    waitsFor(function () {
+      return scope.recentActivity !== null;
+    }, "scope.recentActivity to be set", 250);
 
-  it('should display an error message when the call to repo.list() fails', function () {
-    httpBackend.expectGET('/url/to/activity/items').respond(500);
-    scope.getRecentActivity();
-    httpBackend.flush();
-    expect(params.$window.alert).toHaveBeenCalled();
-    expect(scope.recentActivity).toBeUndefined();
+    runs(function () {
+      expect(scope.recentActivity).toEqual([1, 2, 3]);
+    });
+    
   });
 
 });

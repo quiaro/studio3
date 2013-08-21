@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('resources.util', ['resources.vars'])
-	.service('util', ['S2dio', function (S2dio) {
+	.factory('util', ['S2dio', function (S2dio) {
 
 	/*
 	 * @param api -API Category
