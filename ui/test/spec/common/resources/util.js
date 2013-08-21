@@ -8,16 +8,16 @@ describe('Module: Utilities', function () {
 
   beforeEach(inject(function (util) {
     utilService = util;
-    utilService.setS2dioProperty('siteName', 'pebbles');
+    utilService.setEnvProperty('siteName', 'pebbles');
   }));
 
   it('should correctly calculate the service URL', function () {
 
     var siteName, urlBase, apiVersion, res, url;
 
-    siteName = utilService.getS2dioProperty('siteName');
-    urlBase = utilService.getS2dioProperty('urlBase');
-    apiVersion = utilService.getS2dioProperty('apiVersion');
+    siteName = utilService.getEnvProperty('siteName');
+    urlBase = utilService.getEnvProperty('urlBase');
+    apiVersion = utilService.getEnvProperty('apiVersion');
 
     url = utilService.getServiceURL('category','method','');
     res = '/' + urlBase + '/' + apiVersion + '/category/method/' + siteName;

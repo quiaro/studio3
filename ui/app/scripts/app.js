@@ -19,5 +19,5 @@ angular.module('s2doApp', [
   // Initialize the app
   .run(function (util) {
     // In real life, when the UI loads, siteName will be passed as a parameter in the URL
-    util.setS2dioProperty('siteName', 'pebbles');
+    util.setEnvProperty('siteName', 'pebbles');
   });
