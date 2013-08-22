@@ -266,7 +266,7 @@ module.exports = function (grunt) {
             'min': '',
             'dev': 'Dev',
             'includeNgMocks': '<script src="components/angular-mocks/angular-mocks.js"></script>',
-            'includeAppDev': '<script src="scripts/appDev.js"></script>'
+            'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
           }
         },
         files: [

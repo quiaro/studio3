@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('dashboard', ['dialogs', 'services.repo'])
+angular.module('dashboard', ['services.repo'])
+
   .controller('DashboardCtrl', ['$scope', 'repo', function($scope, repo) {
 
 		$scope.getRecentActivity = function getRecentActivity () {
@@ -22,7 +23,6 @@ angular.module('dashboard', ['dialogs', 'services.repo'])
 			promise.then( function (data) {
         $scope.recentActivity = data;
       });
-
 		};
 
 	}]);

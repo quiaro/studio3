@@ -12,7 +12,9 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/dashboard.css -->
     <link rel="stylesheet" href="styles/bootstrap.css">
+    <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/preview.css">
     <!-- endbuild -->
   </head>
 
@@ -38,15 +40,17 @@
     @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
+    <script src="scripts/app/app.js"></script>
     <script src="scripts/common/resources/vars.js"></script>
     <script src="scripts/common/resources/util.js"></script>
-    <script src="scripts/dashboard/dashboard.js"></script>
-    <script src="scripts/dialogs/dialogs.js"></script>
-    <script src="scripts/dialogs/go-live/go-live.js"></script>
-    <script src="scripts/dialogs/history/history.js"></script>
-    <script src="scripts/dialogs/alert/alert.js"></script>
+    <script src="scripts/common/resources/dialogs/dialogs.js"></script>
+    <script src="scripts/common/resources/dialogs/go-live/go-live.js"></script>
+    <script src="scripts/common/resources/dialogs/history/history.js"></script>
+    <script src="scripts/common/resources/dialogs/alert/alert.js"></script>
+    <script src="scripts/common/directives/navigation.js"></script>
     <script src="scripts/common/services/repo.js"></script>
+    <script src="scripts/app/dashboard/dashboard.js"></script>
+    <script src="scripts/app/preview/preview.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

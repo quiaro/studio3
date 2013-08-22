@@ -1,4 +1,5 @@
 target
+test-sites
 .tmp
 .sass-cache
 .DS_Store

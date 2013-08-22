@@ -1,0 +1,19 @@
+<div id="app-container" class="preview">
+
+	<navigation></navigation>
+
+	<div id="preview-container" ng-controller="PreviewCtrl">
+		<h1>Preview</h1>
+
+		<div>Content from the AppCtrl: {{test.property}}</div>
+
+		<div>Content from the PreviewCtrl: {{test2.anotherProperty}}</div>
+
+		<p>Try out the dialogs by clicking on the buttons below:</p>
+	  <div ng-controller="DialogsCtrl">
+	  	<button type="button" class="btn btn-primary" ng-click="showDialog('history')">Open History Dialog</button>
+	  	<button type="button" class="btn btn-primary" ng-click="showDialog('go-live')">Open Go-Live Dialog</button>
+	  </div>
+	</div>
+
+</div>
