@@ -7,9 +7,7 @@ angular.module('directives.navigation', [])
 			restrict: 'E',
 			replace: true,
 			template: '<div class="navigation">' +
-								'  <div class="logo">' +
-								'    <a href="#"><img src="/img/crafter-logo.png" alt="" /></a>' +
-								'  </div>' +
+								'  <div class="logo"></div>' +
 								'  <search></search>' +
 								'  <fileview></fileview>' +
 								'  <iconmenu></iconmenu>' +
@@ -46,15 +44,15 @@ angular.module('directives.navigation', [])
 		return {
 			restrict: 'E',
 			replace: true,
-			template: '<ul class="icon-menu list-inline pull-right">' +
+			template: '<ul class="icon-menu list-inline pull-left">' +
 								'  <li><a href="#">' +
 								'     <span class="glyphicon glyphicon-user"></span>' +
-								'			<span>Scott Weiland</span>' +
+								'			<span class="description">Scott Weiland</span>' +
 								'	 </a></li>' +
 								'  <li class="separator">|</li>' +
 								'  <li><a href="#">' +
 								'     <span class="glyphicon glyphicon-log-out"></span>' +
-								'			<span>Sign Out</span>' +
+								'			<span class="description">Sign Out</span>' +
 								'	 </a></li>' +
 								'</ul>'
 		};

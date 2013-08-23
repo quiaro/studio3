@@ -1,20 +1,23 @@
-<div class="preview">
+<div class="preview expand2">
 
 	<navigation></navigation>
 
 	<div id="preview-container" ng-controller="PreviewCtrl">
 		<div class="content">
-			<h1>Preview</h1>
-		
+
+			<!-- If this div is moved after the iframe, it won't be rendered! -->
+			<div class="preview-toolbar">
+
+				<!-- 
 				<div>Content from the AppCtrl: {{test.property}}</div>
-		
-				<div>Content from the PreviewCtrl: {{test2.anotherProperty}}</div>
-		
-				<p>Try out the dialogs by clicking on the buttons below:</p>
-			  <div ng-controller="DialogsCtrl">
-			  	<button type="button" class="btn btn-primary" ng-click="showDialog('history')">Open History Dialog</button>
-			  	<button type="button" class="btn btn-primary" ng-click="showDialog('go-live')">Open Go-Live Dialog</button>
-			  </div>
+	
+				<div>Content from the PreviewCtrl: {{test2.anotherProperty}}</div> 
+				-->
+
+			</div>
+
+			<iframe frameborder="0" src="/test-sites/unigroup.html" height="80%" width="100%" />
+
 		</div>
 	</div>
 

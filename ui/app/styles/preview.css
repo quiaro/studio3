@@ -14,10 +14,26 @@
 	min-width: 708px;
 }
 
-#preview-container h1 {
-	padding: 15px 20px 0 20px;
+#preview-container .preview-toolbar {
+	background-color: #E2E2E2;
+	position: absolute;
+	bottom: 0;
+	height: 20%;
+	left: 0;
+	width: 100%;
+
+	border-top: 1px solid #606060;
 }
 
-#preview-container .panel {
-	margin: 15px 20px;
+/* --- class: expand --- */
+.expand #preview-container > .content { left: 90px; }
+
+
+/* --- class: expand2 --- */
+.expand2 #preview-container > .content { 
+	border: none;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 64px; 
 }
