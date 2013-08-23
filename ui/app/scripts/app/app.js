@@ -19,7 +19,7 @@ angular.module('s2doApp', [
         controller: 'AppCtrl'
       })
       .otherwise({
-        redirectTo: '/preview'
+        redirectTo: '/dashboard'
       });
   })
 

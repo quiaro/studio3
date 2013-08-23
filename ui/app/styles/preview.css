@@ -1,1 +1,23 @@
-/* Will be compiled down to a single stylesheet with your sass files */
+#app-container .preview { display: table-row; width: 100%; }
+
+#preview-container { 
+	display: table-cell; 
+}
+#preview-container > .content { 
+	position: absolute;
+	top: 15px;
+	bottom: 15px;
+	right: 15px;
+	left: 290px;	/* navigation width */
+	background-color: #FFFFFF;
+	border: 1px solid #111111;
+	min-width: 708px;
+}
+
+#preview-container h1 {
+	padding: 15px 20px 0 20px;
+}
+
+#preview-container .panel {
+	margin: 15px 20px;
+}

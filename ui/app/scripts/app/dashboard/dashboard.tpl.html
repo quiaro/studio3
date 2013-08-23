@@ -1,48 +1,85 @@
-<div id="app-container" class="preview">
+<div class="dashboard">
 
 	<navigation></navigation>
 
 	<div id="dashboard-container" ng-controller="DashboardCtrl">
+		<div class="content">
 
-		<h1>Dashboard</h1>
-	  <div class="recent-activity">
-		  <h3>My Recent Activity</h3>
-		  <table class="item-list recent-activity" ng-init="getRecentActivity()">
-		  	<thead>
-		  		<tr>
-		  			<th>&nbsp;</th>
-		  			<th>Status</th>
-		  			<th>Page Name</th>
-		  			<th>Operations</th>
-		  			<th>URL</th>
-		  			<th>Last Edited</th>
-		  			<th>Author</th>
-		  			<th>My Last Edit</th>
-		  		</tr>
-		  	</thead>
-		  	<tbody>
-		  		<tr ng-repeat="item in recentActivity">
-		  			<td><input type="checkbox" name="{{item.id}}" /></td>
-		  			<td>
-		  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
-		  				</span>
-		  			</td>
-		  			<td>{{item.name}}</td>
-		  			<td><a href="#">Edit</a></td>
-		  			<td>{{item.url}}</td>
-		  			<td>{{item.lastEdited}}</td>
-		  			<td>{{item.lastAuthor}}</td>
-		  			<td>{{item.lastPersonalEdit}}</td>
-		  		</tr>
-		  	</tbody>
-		  </table>
+		  <div class="panel panel-default recent-activity">
+		  	<div class="panel-heading">
+		  		<h3 class="panel-title">My Recent Activity</h3>
+		  	</div>
+			  <div class="panel-body">
+			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+				  	<thead>
+				  		<tr>
+				  			<th>&nbsp;</th>
+				  			<!-- <th>Status</th> -->
+				  			<th>Page Name</th>
+				  			<th>Operations</th>
+				  			<th>URL</th>
+				  			<th>Last Edited</th>
+				  			<th>Author</th>
+				  			<th>My Last Edit</th>
+				  		</tr>
+				  	</thead>
+				  	<tbody>
+				  		<tr ng-repeat="item in recentActivity">
+				  			<td><input type="checkbox" name="{{item.id}}" /></td>
+				  			<!-- <td>
+				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+				  				</span>
+				  			</td> -->
+				  			<td>{{item.name}}</td>
+				  			<td><a href="#">Edit</a></td>
+				  			<td>{{item.url}}</td>
+				  			<td>{{item.lastEdited}}</td>
+				  			<td>{{item.lastAuthor}}</td>
+				  			<td>{{item.lastPersonalEdit}}</td>
+				  		</tr>
+				  	</tbody>
+				  </table>
+			  </div>
+			</div>
+
+			<div class="panel panel-default pending-approval">
+		  	<div class="panel-heading">
+		  		<h3 class="panel-title">Waiting for Approval</h3>
+		  	</div>
+			  <div class="panel-body">
+			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+				  	<thead>
+				  		<tr>
+				  			<th>&nbsp;</th>
+				  			<!-- <th>Status</th> -->
+				  			<th>Page Name</th>
+				  			<th>Operations</th>
+				  			<th>URL</th>
+				  			<th>Last Edited</th>
+				  			<th>Author</th>
+				  			<th>My Last Edit</th>
+				  		</tr>
+				  	</thead>
+				  	<tbody>
+				  		<tr ng-repeat="item in recentActivity">
+				  			<td><input type="checkbox" name="{{item.id}}" /></td>
+				  			<!-- <td>
+				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+				  				</span>
+				  			</td> -->
+				  			<td>{{item.name}}</td>
+				  			<td><a href="#">Edit</a></td>
+				  			<td>{{item.url}}</td>
+				  			<td>{{item.lastEdited}}</td>
+				  			<td>{{item.lastAuthor}}</td>
+				  			<td>{{item.lastPersonalEdit}}</td>
+				  		</tr>
+				  	</tbody>
+				  </table>
+			  </div>
+			</div>
+		  
 		</div>
-
-	  <p>Try out the dialogs by clicking on the buttons below:</p>
-	  <div ng-controller="DialogsCtrl">
-	  	<button type="button" class="btn btn-primary" ng-click="showDialog('history')">Open History Dialog</button>
-	  	<button type="button" class="btn btn-primary" ng-click="showDialog('go-live')">Open Go-Live Dialog</button>
-	  </div>
 	</div>
 
 </div>
