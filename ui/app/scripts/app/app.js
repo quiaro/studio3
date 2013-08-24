@@ -10,7 +10,7 @@ angular.module('s2doApp', [
 
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/dashboard', {
+      .when('/', {
         templateUrl: 'scripts/app/dashboard/dashboard.tpl.html',
         controller: 'AppCtrl'
       })
@@ -19,7 +19,7 @@ angular.module('s2doApp', [
         controller: 'AppCtrl'
       })
       .otherwise({
-        redirectTo: '/dashboard'
+        redirectTo: '/'
       });
   })
 

@@ -13,7 +13,7 @@ html, body { height: 100%; min-width: 1024px; }
 
 .navigation { padding: 10px 15px; }
 .navigation .logo { 
-	background: transparent url(/img/crafter-logo.png) 10px 0 no-repeat; 
+	background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat; 
 	display: block;
 	height: 78px;
 	width: 160px;
@@ -67,7 +67,7 @@ html, body { height: 100%; min-width: 1024px; }
 }
 
 .expand  > .navigation .logo {
-	background: transparent url(/img/crafter-logo-min.png) 10px 0 no-repeat; 
+	background: transparent url(/images/crafter-logo-min.png) 10px 0 no-repeat; 
 	height: 78px;
 	width: 60px;
 }
@@ -90,7 +90,7 @@ html, body { height: 100%; min-width: 1024px; }
 }
 
 .expand2  > .navigation .logo {
-	background: transparent url(/img/crafter-logo-min.png) 0 0 no-repeat; 
+	background: transparent url(/images/crafter-logo-min.png) 0 0 no-repeat; 
 	height: 78px;
 	width: 45px;
 }

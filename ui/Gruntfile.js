@@ -36,7 +36,7 @@ module.exports = function (grunt) {
       livereload: {
         files: [
           '<%= yeoman.app %>/**/*.html',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
+          '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
@@ -146,16 +146,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    concat: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/scripts/scripts.js': [
-            '.tmp/scripts/**/*.js',
-            '<%= yeoman.app %>/scripts/**/*.js'
-          ]
-        }
-      }
-    },
     useminPrepare: {
       html: '<%= yeoman.app %>/index.html',
       options: {
@@ -163,8 +153,8 @@ module.exports = function (grunt) {
       }
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      html: ['<%= yeoman.dist %>/**/*.html'],
+      css: ['<%= yeoman.dist %>/styles/**/*.css'],
       options: {
         dirs: ['<%= yeoman.dist %>']
       }
@@ -182,11 +172,9 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/styles/dashboard.css': [
-            '.tmp/styles/{,*/}*.css',
-            '<%= yeoman.app %>/styles/{,*/}*.css'
-          ]
-        }
+          '<%= yeoman.dist %>/styles/studio.css': [
+            '<%= yeoman.app %>/styles/*.css'
+          ]}
       }
     },
     htmlmin: {
@@ -254,7 +242,10 @@ module.exports = function (grunt) {
             '.htaccess',
             'components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'styles/**/fonts/*',
+            'styles/**/*.min.css',
+            'styles/studio.css'
           ]
         }]
       }
@@ -330,12 +321,12 @@ module.exports = function (grunt) {
     'replace:build',
     'useminPrepare',
     'imagemin',
-    'cssmin',
     'htmlmin',
     'concat',
+    // 'cssmin',
     'copy',
     'ngmin',
-    'uglify',
+    // 'uglify',
     'usemin'
   ]);
 
