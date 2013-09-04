@@ -45,7 +45,7 @@ angular.module('s2doAppDev', [
     $httpBackend.whenGET('/api/0.1/repo/read/pebbles?itemId=3QCRS&version=3').respond(200, items[1]);
 
     // adds a new item  to the items list
-    $httpBackend.whenPOST('/api/0.1/repo/write/pebbles').respond(200, function(method, url, data) {
+    $httpBackend.whenPOST('/api/0.1/repo/write/pebbles').respond(200, function(data) {
         items.push(angular.fromJSON(data));
     });
 

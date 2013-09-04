@@ -7,11 +7,12 @@ angular.module('resources.util', ['resources.vars'])
 	 * @param api -API Category
 	 * @param method -Existing method in the API Category
 	 * @param searchStr -url search parameters
-	 * @return URL used to communicate with the backend; null, if the URL cannot be calculated correctly with the parameters given
+	 * @return URL used to communicate with the backend; 
+	 *         null, if the URL cannot be calculated correctly with the parameters given
 	 */
 	function getServiceURL(api, method, searchStr) {
 
-		var siteName, urlBase, apiVersion;
+		var siteName, urlBase, apiVersion, ss;
 
 		siteName = getEnvProperty('siteName');
 		urlBase = getEnvProperty('urlBase');
@@ -20,7 +21,9 @@ angular.module('resources.util', ['resources.vars'])
 		if (api && typeof api === 'string' &&
 				method && typeof method === 'string' &&
 				typeof searchStr === 'string') {
-			return '/' + urlBase + '/' + apiVersion + '/' + api + '/' + method + '/' + siteName + ((!searchStr) ? '' : '?' + searchStr);
+
+			ss = (!searchStr) ? '' : '?' + searchStr;
+			return '/' + urlBase + '/' + apiVersion + '/' + api + '/' + method + '/' + siteName + ss;
 		} else {
 			throw new Error('Unable to resolve service URL');
 		}
