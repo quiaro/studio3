@@ -28,6 +28,7 @@ import java.util.Map;
  */
 public class Activity {
 
+
     private String siteId;
     private String siteName;
     private String target;
@@ -35,6 +36,7 @@ public class Activity {
     private String type;
     private Date date;
     private String creator;
+    private String id;
 
     public Activity() {
     }
@@ -95,5 +97,28 @@ public class Activity {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Activity{");
+        sb.append("siteId='").append(siteId).append('\'');
+        sb.append(", siteName='").append(siteName).append('\'');
+        sb.append(", target='").append(target).append('\'');
+        sb.append(", targetProperties=").append(targetProperties);
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", date=").append(date);
+        sb.append(", creator='").append(creator).append('\'');
+        sb.append(", id='").append(id).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

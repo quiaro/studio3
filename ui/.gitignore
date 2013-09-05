@@ -1,8 +1,7 @@
-node_modules
 target
+test-sites
 .tmp
 .sass-cache
-app/components
 .DS_Store
 *.iml
 .idea

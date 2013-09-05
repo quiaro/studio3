@@ -1,0 +1,86 @@
+<div class="dashboard">
+
+	<navigation></navigation>
+
+	<div id="dashboard-container" ng-controller="DashboardCtrl">
+		<div class="content">
+
+		  <div class="panel panel-default recent-activity">
+		  	<div class="panel-heading">
+		  		<h3 class="panel-title">My Recent Activity</h3>
+		  	</div>
+			  <div class="panel-body">
+			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+				  	<thead>
+				  		<tr>
+				  			<th>&nbsp;</th>
+				  			<!-- <th>Status</th> -->
+				  			<th>Page Name</th>
+				  			<th>Operations</th>
+				  			<th>URL</th>
+				  			<th>Last Edited</th>
+				  			<th>Author</th>
+				  			<th>My Last Edit</th>
+				  		</tr>
+				  	</thead>
+				  	<tbody>
+				  		<tr ng-repeat="item in recentActivity">
+				  			<td><input type="checkbox" name="{{item.id}}" /></td>
+				  			<!-- <td>
+				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+				  				</span>
+				  			</td> -->
+				  			<td>{{item.name}}</td>
+				  			<td><a href="#">Edit</a></td>
+				  			<td>{{item.url}}</td>
+				  			<td>{{item.lastEdited}}</td>
+				  			<td>{{item.lastAuthor}}</td>
+				  			<td>{{item.lastPersonalEdit}}</td>
+				  		</tr>
+				  	</tbody>
+				  </table>
+			  </div>
+			</div>
+
+			<div class="panel panel-default pending-approval">
+		  	<div class="panel-heading">
+		  		<h3 class="panel-title">Waiting for Approval</h3>
+		  	</div>
+			  <div class="panel-body">
+			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+				  	<thead>
+				  		<tr>
+				  			<th>&nbsp;</th>
+				  			<!-- <th>Status</th> -->
+				  			<th>Page Name</th>
+				  			<th>Operations</th>
+				  			<th>URL</th>
+				  			<th>Last Edited</th>
+				  			<th>Author</th>
+				  			<th>My Last Edit</th>
+				  		</tr>
+				  	</thead>
+				  	<tbody>
+				  		<tr ng-repeat="item in recentActivity">
+				  			<td><input type="checkbox" name="{{item.id}}" /></td>
+				  			<!-- <td>
+				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+				  				</span>
+				  			</td> -->
+				  			<td>{{item.name}}</td>
+				  			<td><a href="#">Edit</a></td>
+				  			<td>{{item.url}}</td>
+				  			<td>{{item.lastEdited}}</td>
+				  			<td>{{item.lastAuthor}}</td>
+				  			<td>{{item.lastPersonalEdit}}</td>
+				  		</tr>
+				  	</tbody>
+				  </table>
+			  </div>
+			</div>
+		  
+		</div>
+	</div>
+
+</div>
+

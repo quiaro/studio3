@@ -2,7 +2,7 @@
 angular.module('resources.vars', [])
 
 	// App configuration values
-	.value('S2dio', {
+	.value('Env', {
 		siteName: '',
 		urlBase: 'api',
 		apiVersion: '0.1'

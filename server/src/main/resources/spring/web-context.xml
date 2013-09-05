@@ -15,7 +15,8 @@
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:cstudio.properties"/>
     <context:property-placeholder file-encoding="UTF-8" location="classpath*:/extension/studio3/cstudio.properties"/>
 
-    <annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true">
+    <annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true"
+                       >
 
         <message-converters>
             <beans:bean id="jacksonMessageConverter"

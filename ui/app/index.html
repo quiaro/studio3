@@ -10,9 +10,13 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/dashboard.css -->
-    <link rel="stylesheet" href="styles/bootstrap.css">
+    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap@@min.css">
+    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme@@min.css">
+    
+    <!-- build:css styles/studio.css -->
+    <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/preview.css">
     <!-- endbuild -->
   </head>
 
@@ -28,7 +32,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container-fluid" ng-view></div>
+    <div id="app-container" class="container-fluid" ng-view></div>
     
     <script src="components/angular/angular@@min.js"></script>
     <script src="components/angular-bootstrap/ui-bootstrap@@min.js"></script>
@@ -38,14 +42,17 @@
     @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
+    <script src="scripts/app/app.js"></script>
     <script src="scripts/common/resources/vars.js"></script>
     <script src="scripts/common/resources/util.js"></script>
-    <script src="scripts/dashboard/dashboard.js"></script>
-    <script src="scripts/dialogs/dialogs.js"></script>
-    <script src="scripts/dialogs/go-live/go-live.js"></script>
-    <script src="scripts/dialogs/history/history.js"></script>
+    <script src="scripts/common/resources/dialogs/dialogs.js"></script>
+    <script src="scripts/common/resources/dialogs/go-live/go-live.js"></script>
+    <script src="scripts/common/resources/dialogs/history/history.js"></script>
+    <script src="scripts/common/resources/dialogs/alert/alert.js"></script>
+    <script src="scripts/common/directives/navigation.js"></script>
     <script src="scripts/common/services/repo.js"></script>
+    <script src="scripts/app/dashboard/dashboard.js"></script>
+    <script src="scripts/app/preview/preview.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

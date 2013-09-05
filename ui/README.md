@@ -21,40 +21,28 @@ Installing
 
 *Any lines starting with $ are commands to type in a terminal window (the "$" is not meant to be included)*
 
-To install this application:
+To install this application (assuming that the whole repository -studio3- has already been cloned):
 
-1.   Install the Grunt-CLI and Bower plugins globally:
+1.   Go to the home directory of the app (/studio3/ui):
+
+    `$ cd ui`
+
+2.   Install the Grunt-CLI and Bower plugins globally:
 
     `$ npm install -g grunt-cli bower`
 
-2.   Clone the repo:
-
-    `$ git clone https://github.com/quiaro/angular-demo`
-
-3.   Go to the home directory of the app:
-
-    `$ cd angular-demo`
-
-4.   Fetch all package dependencies
+3.   Fetch all package dependencies
 
     `$ npm install`
 
-5.   Fetch all component dependencies
+4.   Fetch all component dependencies
 
     `$ bower install`
 
 
 ### Automatic Install for Mac OS X and *nix systems
 
-1.   Clone the repo:
-
-    `$ git clone https://github.com/quiaro/angular-demo`
-
-    *This command will clone the repo into a folder with the repo's name (i.e. angular-demo) inside the current directory. If you wish to clone the repo directly into the current directory, use this other command instead*:
-
-    `$ git clone https://github.com/quiaro/angular-demo .`
-
-2.  Run the install script found in the project root:
+1.  Assuming that the whole repository -studio3- has already been cloned, run the install script found in the "ui" folder :
 
     `$ sudo ./install.sh`
 

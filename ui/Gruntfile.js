@@ -36,7 +36,7 @@ module.exports = function (grunt) {
       livereload: {
         files: [
           '<%= yeoman.app %>/**/*.html',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
+          '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
@@ -82,8 +82,7 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*'
+            'target'
           ]
         }]
       },
@@ -147,16 +146,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    concat: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/scripts/scripts.js': [
-            '.tmp/scripts/**/*.js',
-            '<%= yeoman.app %>/scripts/**/*.js'
-          ]
-        }
-      }
-    },
     useminPrepare: {
       html: '<%= yeoman.app %>/index.html',
       options: {
@@ -164,8 +153,8 @@ module.exports = function (grunt) {
       }
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      html: ['<%= yeoman.dist %>/**/*.html'],
+      css: ['<%= yeoman.dist %>/styles/**/*.css'],
       options: {
         dirs: ['<%= yeoman.dist %>']
       }
@@ -183,11 +172,9 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/styles/dashboard.css': [
-            '.tmp/styles/{,*/}*.css',
-            '<%= yeoman.app %>/styles/{,*/}*.css'
-          ]
-        }
+          '<%= yeoman.dist %>/styles/studio.css': [
+            '<%= yeoman.app %>/styles/*.css'
+          ]}
       }
     },
     htmlmin: {
@@ -210,11 +197,6 @@ module.exports = function (grunt) {
           src: ['scripts/**/*.tpl.html'],
           dest: '<%= yeoman.dist %>'
         }]
-      }
-    },
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
       }
     },
     ngmin: {
@@ -260,7 +242,10 @@ module.exports = function (grunt) {
             '.htaccess',
             'components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'styles/**/fonts/*',
+            'styles/**/*.min.css',
+            'styles/studio.css'
           ]
         }]
       }
@@ -272,7 +257,7 @@ module.exports = function (grunt) {
             'min': '',
             'dev': 'Dev',
             'includeNgMocks': '<script src="components/angular-mocks/angular-mocks.js"></script>',
-            'includeAppDev': '<script src="scripts/appDev.js"></script>'
+            'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
           }
         },
         files: [
@@ -303,7 +288,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'coffee',
-    'compass',
+    // 'compass',
     'connect:test',
     'karma:dev'
   ]);
@@ -317,7 +302,7 @@ module.exports = function (grunt) {
   grunt.registerTask('server', [
     'clean:server',
     'coffee:dist',
-    'compass:server',
+    // 'compass:server',
     'livereload-start',
     'connect:livereload',
     'replace:dev',
@@ -330,19 +315,18 @@ module.exports = function (grunt) {
     'clean:dist',
     'jshint',
     'coffee',
-    'compass:dist',
+    // 'compass:dist',
     'connect:test',
     'karma:continuous',
     'replace:build',
     'useminPrepare',
     'imagemin',
-    'cssmin',
     'htmlmin',
     'concat',
+    // 'cssmin',
     'copy',
-    'cdnify',
     'ngmin',
-    'uglify',
+    // 'uglify',
     'usemin'
   ]);
 
