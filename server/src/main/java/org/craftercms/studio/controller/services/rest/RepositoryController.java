@@ -27,6 +27,7 @@ import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.Site;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.validation.LockHandleValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,14 +138,18 @@ public class RepositoryController {
      * TODO: javadoc
      * @param site site.
      * @param itemId site.
-     * @param lockHandle site.
+     * @param lockHandleId site.
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/close/{site}", method = RequestMethod.POST)
     public void close(@PathVariable final String site, @RequestParam(required = true) final String itemId,
-                      @RequestParam(required = true) final LockHandle lockHandle,
-                      final HttpServletRequest request, final HttpServletResponse response) {}
+                      @RequestParam(required = true) final String lockHandleId,
+                      final HttpServletRequest request, final HttpServletResponse response) {
+        LockHandle lockHandle = new LockHandle();
+        lockHandle.setId(lockHandleId);
+        this.contentManager.close(new Context(), itemId, lockHandle);
+    }
 
     /**
      * TODO: javadoc

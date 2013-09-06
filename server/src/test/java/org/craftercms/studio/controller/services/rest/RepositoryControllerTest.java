@@ -308,8 +308,8 @@ public class RepositoryControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.contentManagerMock).save((Context) Mockito.any(), Mockito.anyString(),
-                (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+        }).when(this.contentManagerMock).save((Context)Mockito.any(), Mockito.anyString(), (LockHandle)Mockito.any(),
+            (InputStream)Mockito.any());
 
         this.mockMvc.perform(
             post("/api/1/content/save/site")
@@ -321,8 +321,8 @@ public class RepositoryControllerTest {
             .andExpect(status().isOk())
         ;
 
-        verify(this.contentManagerMock, times(1)).save((Context) Mockito.any(), Mockito.anyString(),
-            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+        verify(this.contentManagerMock, times(1)).save((Context)Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream)Mockito.any());
     }
 
     @Test
@@ -412,7 +412,75 @@ public class RepositoryControllerTest {
 
     @Test
     public void testClose() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close((Context)Mockito.any(), Mockito.anyString(), (LockHandle)Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).close((Context)Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any());
+    }
+
+    protected String generateLockHandleJson() {
+        LockHandle lh = createLockHandle();
+        ObjectMapper mapper = new ObjectMapper();
+        String toRet = "";
+        try {
+            toRet = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(lh);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return toRet;
+    }
+
+    @Test
+    public void testCloseMissingItemId() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close((Context)Mockito.any(), Mockito.anyString(), (LockHandle)Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("lockHandleId", UUID.randomUUID().toString()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).close((Context)Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any());
+    }
+
+    @Test
+    public void testCloseMissingLockHandle() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close((Context)Mockito.any(), Mockito.anyString(), (LockHandle)Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("itemId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).close((Context)Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any());
     }
 
     @Test
