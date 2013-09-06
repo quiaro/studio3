@@ -24,6 +24,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.Site;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.StudioException;
@@ -52,6 +53,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -204,8 +206,9 @@ public class RepositoryControllerTest {
         }).when(this.contentManagerMock).update((Context) Mockito.any(), Mockito.anyString(), (InputStream) Mockito.any());
 
         this.mockMvc.perform(
-                post("/api/1/content/update/site/1")
+                post("/api/1/content/update/site")
                         .accept(MediaType.ALL)
+                        .param("itemId", "1")
                         .content(reqBody)
         )
                 .andExpect(status().isOk())
@@ -215,13 +218,196 @@ public class RepositoryControllerTest {
     }
 
     @Test
-    public void testOpenForEdit() throws Exception {
+    public void testUpdateMissingItemId() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/update.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
 
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(final InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update((Context)Mockito.any(), Mockito.anyString(), (InputStream)Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/update/site")
+                .accept(MediaType.ALL)
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).update((Context) Mockito.any(), Mockito.anyString(),
+            (InputStream)Mockito.any());
+    }
+
+    @Test
+    public void testUpdateNullContent() throws Exception {
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(final InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update((Context) Mockito.any(), Mockito.anyString(), (InputStream)Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/update/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .content((new String()).getBytes())
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).update((Context) Mockito.any(), Mockito.anyString(),
+            (InputStream)Mockito.any());
+    }
+
+    @Test
+    public void testOpenForEdit() throws Exception {
+        when(this.contentManagerMock.open((Context)Mockito.any(), Mockito.anyString())).thenReturn(createLockHandle());
+
+        this.mockMvc.perform(
+                get("/api/1/content/open/site?itemId=1").accept(MediaType.ALL))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        verify(this.contentManagerMock, times(1)).open((Context)Mockito.any(), Mockito.anyString());
+    }
+
+    private LockHandle createLockHandle() {
+        LockHandle lockHandle = new LockHandle();
+        lockHandle.setId(UUID.randomUUID().toString());
+        return lockHandle;
+    }
+
+    @Test
+    public void testOpenForEditMissingItemId() throws Exception {
+        when(this.contentManagerMock.open((Context)Mockito.any(), Mockito.anyString())).thenReturn(createLockHandle());
+
+        this.mockMvc.perform(
+            get("/api/1/content/open/site").accept(MediaType.ALL))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).open((Context)Mockito.any(), Mockito.anyString());
     }
 
     @Test
     public void testSaveContent() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
 
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save((Context) Mockito.any(), Mockito.anyString(),
+                (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content(reqBody)
+        )
+            .andExpect(status().isOk())
+        ;
+
+        verify(this.contentManagerMock, times(1)).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+    }
+
+    @Test
+    public void testSaveContentMissingItemId() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+    }
+
+    @Test
+    public void testSaveContentMissingLockHandle() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+    }
+
+    @Test
+    public void testSaveContentMissingContent() throws Exception {
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content((new String()).getBytes())
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save((Context) Mockito.any(), Mockito.anyString(),
+            (LockHandle)Mockito.any(), (InputStream) Mockito.any());
     }
 
     @Test

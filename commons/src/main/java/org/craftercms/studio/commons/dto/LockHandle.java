@@ -24,4 +24,16 @@ package org.craftercms.studio.commons.dto;
  * @author Carlos Ortiz
  */
 public class LockHandle {
+
+    private String id;
+
+    // Getters and setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
 }

@@ -19,6 +19,7 @@ package org.craftercms.studio.controller.services.rest;
 
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.ContentManager;
 
 import org.craftercms.studio.commons.dto.Context;
@@ -31,10 +32,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -82,13 +87,15 @@ public class RepositoryController {
      * Update content.
      * @param site site.
      * @param itemId    itemId.
-     * @param content   content.
      * @param request http request.
      * @param response http response.
      */
-    @RequestMapping(value = "/update/{site}/{itemId}", method = RequestMethod.POST)
-    public void update(@PathVariable final String site, final String itemId, final InputStream content, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        this.contentManager.update(new Context(), itemId, request.getInputStream());
+    @RequestMapping(value = "/update/{site}", method = RequestMethod.POST)
+    public void update(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                       @Valid @RequestBody(required = true) final String content, final HttpServletRequest request,
+                       final HttpServletResponse response) throws IOException {
+        InputStream contentStream = IOUtils.toInputStream(content);
+        this.contentManager.update(new Context(), itemId, contentStream);
     }
 
     /**
@@ -98,20 +105,33 @@ public class RepositoryController {
      * @param request http request
      * @param response http response
      */
-    @RequestMapping(value = "/open/{site}/{itemId}", method = RequestMethod.GET)
-    public void openForEdit(@PathVariable final String site, final String itemId, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/open/{site}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public LockHandle openForEdit(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                            final HttpServletRequest request, final HttpServletResponse response) {
+        LockHandle lockHandle = this.contentManager.open(new Context(), itemId);
+        return lockHandle;
+    }
 
     /**
      * TODO: javadoc.
      * @param site site.
      * @param itemId itemId.
-     * @param lockHandle lockHandle.
+     * @param lockHandleId lockHandle.
      * @param content content.
      * @param request request
      * @param response response.
      */
-    @RequestMapping(value = "/save/{site}/{itemId}", method = RequestMethod.POST)
-    public void saveContent(@PathVariable final String site, @PathVariable final String itemId, final LockHandle lockHandle, final InputStream content, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/save/{site}", method = RequestMethod.POST)
+    public void saveContent(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                            @RequestParam(required = true) final String lockHandleId,
+                            @Valid @RequestBody final String content, final HttpServletRequest request,
+                            final HttpServletResponse response) {
+        InputStream contentStream = IOUtils.toInputStream(content);
+        LockHandle lockHandle = new LockHandle();
+        lockHandle.setId(lockHandleId);
+        this.contentManager.save(new Context(), itemId, lockHandle, contentStream);
+    }
 
     /**
      * TODO: javadoc
@@ -121,8 +141,10 @@ public class RepositoryController {
      * @param request request
      * @param response response
      */
-    @RequestMapping(value = "/close/{site}/{itemId}", method = RequestMethod.POST)
-    public void close(@PathVariable final String site, @PathVariable final String itemId, final LockHandle lockHandle, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/close/{site}", method = RequestMethod.POST)
+    public void close(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                      @RequestParam(required = true) final LockHandle lockHandle,
+                      final HttpServletRequest request, final HttpServletResponse response) {}
 
     /**
      * TODO: javadoc
@@ -218,9 +240,25 @@ public class RepositoryController {
     @RequestMapping(value = "/site_list", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ResponseBody
     public List<Site> getSites() {
-        List<Site> sites = this.contentManager.getSiteList(new Context());
-        return sites;
+        return this.contentManager.getSiteList(new Context());
     }
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new Validator() {
+            @Override
+            public boolean supports(final Class<?> clazz) {
+                return String.class.equals(clazz);
+            }
 
+            @Override
+            public void validate(final Object o, final Errors errors) {
+                if (o instanceof String) {
+                    if (StringUtils.isEmpty((String)o)) {
+                        errors.reject((String)o, "Request body can not be empty");
+                    }
+                }
+            }
+        });
+    }
 }
