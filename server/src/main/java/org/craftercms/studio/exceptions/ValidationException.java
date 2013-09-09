@@ -67,7 +67,9 @@ public class ValidationException extends StudioException {
             builder.append(",");
         }
         //Remove last ',' ToDo do this with a integrator
-      //  builder.setLength(builder.length()-1);
+        if (builder.length() > 0) {
+            builder.setLength(builder.length()-1);
+        }
         return builder.toString();
     }
 }
