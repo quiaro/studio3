@@ -23,15 +23,55 @@ angular.module('s2doApp', [
       });
   })
 
-  .controller('AppCtrl', ['$scope', function($scope) {
+  // Application Controller
+  .controller('AppCtrl', ['$scope', 'notifications', function($scope, notifications) {
 
-    $scope.test = {
-      property: 'Mary Kate'
-    };
+    // TO-DO: Remove these default values
+    this.msgTitle = 'Alert';
+    this.msgBody  = 'Here is an important message!';
+    this.msgType  = 'warning';
+
+    this.notifications = notifications;
+
+    return $scope.AppCtrl = this;
 
   }])
 
-  // Initialize the app
+  // Application services
+  .factory("notifications", function($rootScope) {
+    var queue = [];
+
+    toastr.options.timeOut = 3500;
+    toastr.options.closeButton = true;
+    
+    return {
+      set: function(message) {
+        var msg = message;
+        queue.push(msg);
+
+      },
+      pop: function(message) {
+        switch(message.type) {
+          case 'success':
+            toastr.success(message.body, message.title);
+            break;
+          case 'info':
+            toastr.info(message.body, message.title);
+            break;
+          case 'warning':
+            toastr.warning(message.body, message.title);
+            break;
+          case 'error':
+            toastr.error(message.body, message.title);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+  })
+
+  // Initialize the application
   .run(function (util) {
     // In real life, when the UI loads, siteName will be passed as a parameter in the URL
     util.setEnvProperty('siteName', 'pebbles');
