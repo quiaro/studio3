@@ -5,7 +5,8 @@ angular.module('s2doApp', [
     'preview',
     'dialogs',
     'services.repo',
-    'resources.util'
+    'resources.util',
+    'resources.toastr'
   ])
 
   .config(function ($routeProvider) {
@@ -33,17 +34,15 @@ angular.module('s2doApp', [
 
     this.notifications = notifications;
 
-    return $scope.AppCtrl = this;
+    // Expose to the (global) scope
+    $scope.AppCtrl = this;
 
   }])
 
   // Application services
-  .factory("notifications", function($rootScope) {
+  .factory('notifications', ['toastr', function(toastr) {
     var queue = [];
 
-    toastr.options.timeOut = 3500;
-    toastr.options.closeButton = true;
-    
     return {
       set: function(message) {
         var msg = message;
@@ -51,25 +50,12 @@ angular.module('s2doApp', [
 
       },
       pop: function(message) {
-        switch(message.type) {
-          case 'success':
-            toastr.success(message.body, message.title);
-            break;
-          case 'info':
-            toastr.info(message.body, message.title);
-            break;
-          case 'warning':
-            toastr.warning(message.body, message.title);
-            break;
-          case 'error':
-            toastr.error(message.body, message.title);
-            break;
-          default:
-            break;
+        if (message.type in toastr && typeof toastr[message.type] === 'function') {
+          toastr[message.type](message.body, message.title);
         }
       }
     };
-  })
+  }])
 
   // Initialize the application
   .run(function (util) {
