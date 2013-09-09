@@ -285,7 +285,7 @@ module.exports = function (grunt) {
       install: {
         options : {
           targetDir: './app/lib',
-          cleanup: true,
+          cleanBowerDir: true,
           layout: 'byType',
           verbose: true
         }
