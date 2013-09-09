@@ -240,7 +240,8 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,txt}',
             '.htaccess',
-            'components/**/*',
+            'lib/**/*.min.js',
+            'lib/**/*.min.css',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
             'styles/**/fonts/*',
@@ -256,7 +257,7 @@ module.exports = function (grunt) {
           variables: {
             'min': '',
             'dev': 'Dev',
-            'includeNgMocks': '<script src="components/angular-mocks/angular-mocks.js"></script>',
+            'includeNgMocks': '<script src="lib/js/angular-mocks/angular-mocks.js"></script>',
             'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
           }
         },
@@ -278,6 +279,16 @@ module.exports = function (grunt) {
           { src: ['<%= yeoman.app %>/index.html'],
             dest: '<%= yeoman.dist %>/index.html' }
         ]
+      }
+    },
+    bower: {
+      install: {
+        options : {
+          targetDir: './app/lib',
+          cleanup: true,
+          layout: 'byType',
+          verbose: true
+        }
       }
     }
   });
