@@ -10,8 +10,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap@@min.css">
-    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme@@min.css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap@@min.css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme@@min.css">
+    <link rel="stylesheet" href="lib/toastr/css/toastr@@min.css">
     
     <!-- build:css styles/studio.css -->
     <link rel="stylesheet" href="styles/global.css">
@@ -25,15 +26,18 @@
     <!-- Add your site or application content here -->
     <div id="app-container" class="container-fluid" ng-view></div>
     
-    <script src="lib/js/angular/angular@@min.js"></script>
-    <script src="lib/js/angular-bootstrap/ui-bootstrap@@min.js"></script>
-    <script src="lib/js/angular-resource/angular-resource@@min.js"></script>
-    <script src="lib/js/angular-sanitize/angular-sanitize@@min.js"></script>
+    <script src="lib/jquery/js/jquery@@min.js"></script>
+    <script src="lib/toastr/js/toastr@@min.js"></script>
+    <script src="lib/angular/js/angular@@min.js"></script>
+    <script src="lib/angular-bootstrap/js/ui-bootstrap@@min.js"></script>
+    <script src="lib/angular-resource/js/angular-resource@@min.js"></script>
+    <script src="lib/angular-sanitize/js/angular-sanitize@@min.js"></script>
     @@includeNgMocks
     @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app/app.js"></script>
+    <script src="scripts/common/resources/toastr.js"></script>
     <script src="scripts/common/resources/vars.js"></script>
     <script src="scripts/common/resources/util.js"></script>
     <script src="scripts/common/resources/dialogs/dialogs.js"></script>
