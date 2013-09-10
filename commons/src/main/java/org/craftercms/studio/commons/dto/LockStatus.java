@@ -24,4 +24,13 @@ package org.craftercms.studio.commons.dto;
  */
 public class LockStatus {
 //todo turn into an enum
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(final String value) {
+        this.value = value;
+    }
 }

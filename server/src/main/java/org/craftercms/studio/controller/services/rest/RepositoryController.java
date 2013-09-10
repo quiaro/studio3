@@ -18,6 +18,8 @@
 package org.craftercms.studio.controller.services.rest;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.ContentManager;
@@ -25,9 +27,14 @@ import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
+import org.craftercms.studio.commons.dto.LockStatus;
 import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.commons.extractor.ItemExtractor;
+import org.craftercms.studio.commons.filter.ItemFilter;
 import org.craftercms.studio.validation.LockHandleValidator;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -154,66 +162,135 @@ public class RepositoryController {
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/delete/{site}", method = RequestMethod.POST)
-    public void deleteContent(@PathVariable final String site, final List<Item> items, final HttpServletRequest request, final HttpServletResponse response) {}
+    public void deleteContent(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                              final HttpServletRequest request, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        this.contentManager.delete(new Context(), items);
+    }
 
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param destinationPath destinationPath
      * @param includeChildren includeChildren
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/copy/{site}", method = RequestMethod.POST)
-    public void copy(@PathVariable final String site, final List<Item> items, final String destinationPath, final boolean includeChildren, final HttpServletRequest request, final HttpServletResponse response) {}
+    public void copy(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                     @RequestParam(required = true) final String destinationPath,
+                     @RequestParam(required = false, defaultValue = "true") final boolean includeChildren,
+                     final HttpServletRequest request, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        this.contentManager.copy(new Context(), items, destinationPath, includeChildren);
+    }
 
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param destinationPath destinationPath
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/move/{site}", method = RequestMethod.POST)
-    public void move(@PathVariable final String site, final List<Item> items, final String destinationPath, final HttpServletRequest request, final HttpServletResponse response) {}
+    public void move(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                     @RequestParam(required = true) final String destinationPath,
+                     final HttpServletRequest request, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        this.contentManager.move(new Context(), items, destinationPath);
+    }
 
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/lock/{site}", method = RequestMethod.POST)
-    public void lock(@PathVariable final String site, final List<Item> items, final HttpServletRequest request, final HttpServletResponse response) {}
+    @ResponseBody
+    public LockHandle lock(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                     final HttpServletRequest request, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        LockHandle lockHandle = this.contentManager.lock(new Context(), items);
+        return lockHandle;
+    }
 
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param lockHandle lock handle
      * @param request request
      * @param response response
      */
     @RequestMapping(value = "/unlock/{site}", method = RequestMethod.POST)
-    public void unlock(@PathVariable final String site, final List<Item> items, final LockHandle lockHandle, final HttpServletRequest request, final HttpServletResponse response) {}
+    public void unlock(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                       @RequestParam(required = true) final String lockHandle, final HttpServletRequest request,
+                           final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        LockHandle lh = new LockHandle();
+        lh.setId(lockHandle);
+        this.contentManager.unlock(new Context(), items, lh);
+    }
 
     /**
      * TODO: javadoc
      * @param site site
-     * @param items items
+     * @param itemsJson items
      * @param request request
      * @param response response
      */
-    @RequestMapping(value = "/get_lock_status/{site}", method = RequestMethod.GET)
-    public void getLockStatus(@PathVariable final String site, final List<Item> items, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/get_lock_status/{site}", method = RequestMethod.POST)
+    @ResponseBody
+    public List<LockStatus> getLockStatus(@PathVariable final String site, @Valid @RequestBody final String itemsJson,
+                              final HttpServletRequest request, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Item> items = null;
+        try {
+            items = mapper.readValue(itemsJson.getBytes(), new TypeReference<List<Item>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return this.contentManager.getLockStatus(new Context(), items);
+    }
 
     /**
      * TODO: javadoc
@@ -222,8 +299,12 @@ public class RepositoryController {
      * @param request request
      * @param response response
      */
-    @RequestMapping(value = "/list/{site}/{itemId}", method = RequestMethod.GET)
-    public void getChildren(@PathVariable final String site, @PathVariable final String itemId, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/list/{site}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Item> getChildren(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                            final HttpServletRequest request, final HttpServletResponse response) {
+        return this.contentManager.list(new Context(), itemId);
+    }
 
     /**
      * TODO: javadoc
@@ -235,8 +316,17 @@ public class RepositoryController {
      * @param request request
      * @param response response
      */
-    @RequestMapping(value = "/tree/{site}/{itemId}", method = RequestMethod.GET)
-    public void getTree(@PathVariable final String site, @PathVariable final String itemId, final int depth, final String filters, final String extractors, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/tree/{site}", method = RequestMethod.GET)
+    @ResponseBody
+    public Tree<Item> getTree(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+                        @RequestParam(required = false, defaultValue = "-1") final int depth,
+                        @RequestParam(required = false) final List<String> filters,
+                        @RequestParam(required = false) final List<String> extractors,
+                        final HttpServletRequest request, final HttpServletResponse response) {
+        List<ItemFilter> filterList = new ArrayList<ItemFilter>();
+        List<ItemExtractor> extractorList = new ArrayList<ItemExtractor>();
+        return this.contentManager.tree(new Context(), itemId, depth, filterList, extractorList);
+    }
 
     /**
      * TODO: javadoc.
