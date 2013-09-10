@@ -257,7 +257,7 @@ module.exports = function (grunt) {
           variables: {
             'min': '',
             'dev': 'Dev',
-            'includeNgMocks': '<script src="lib/js/angular-mocks/angular-mocks.js"></script>',
+            'includeNgMocks': '<script src="lib/angular-mocks/js/angular-mocks.js"></script>',
             'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
           }
         },
@@ -286,7 +286,7 @@ module.exports = function (grunt) {
         options : {
           targetDir: './app/lib',
           cleanBowerDir: true,
-          layout: 'byType',
+          layout: 'byComponent',
           verbose: true
         }
       }
