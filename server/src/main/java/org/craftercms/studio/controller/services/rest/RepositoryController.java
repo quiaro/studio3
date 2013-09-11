@@ -18,6 +18,7 @@
 package org.craftercms.studio.controller.services.rest;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
@@ -325,7 +326,8 @@ public class RepositoryController {
                         final HttpServletRequest request, final HttpServletResponse response) {
         List<ItemFilter> filterList = new ArrayList<ItemFilter>();
         List<ItemExtractor> extractorList = new ArrayList<ItemExtractor>();
-        return this.contentManager.tree(new Context(), itemId, depth, filterList, extractorList);
+        Tree<Item> tree = this.contentManager.tree(new Context(), itemId, depth, filterList, extractorList);
+        return tree;
     }
 
     /**

@@ -29,6 +29,7 @@ import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
 import org.craftercms.studio.commons.dto.Site;
 import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.dto.TreeNode;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.json.JSONArray;
@@ -877,22 +878,45 @@ public class RepositoryControllerTest {
 
     @Test
     public void testGetTree() throws Exception {
-        /*when(this.contentManagerMock.tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
+        when(this.contentManagerMock.tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
             Mockito.anyList(), Mockito.anyList())).thenReturn(generateItemTreeMock());
 
         this.mockMvc.perform(
             get("/api/1/content/tree/site?itemId=1&depth=1").accept(MediaType.ALL))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+            .andExpect(status().isOk());
 
         verify(this.contentManagerMock, times(1)).tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
-            Mockito.anyList(), Mockito.anyList());  */
+            Mockito.anyList(), Mockito.anyList());
     }
 
     private Tree<Item> generateItemTreeMock() {
-        Tree<Item> itemTreeMock = new Tree<Item>();
-
+        Item root = createItemMock();
+        Tree<Item> itemTreeMock = new Tree<Item>(root);
+        TreeNode<Item> rootNode = itemTreeMock.getRootNode();
+        for (int i = 0; i < 1 + (int)(3* Math.random()); i++) {
+            Item item = createItemMock();
+            rootNode.addChild(item);
+        }
+        for (TreeNode<Item> nodeItem : rootNode.getChildren()) {
+            for (int i = 0; i < 1 + (int)(3 * Math.random()); i++) {
+                Item item = createItemMock();
+                nodeItem.addChild(item);
+            }
+        }
         return itemTreeMock;
+    }
+
+    @Test
+    public void testGetTreeMissingItemId() throws Exception {
+        when(this.contentManagerMock.tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyList(), Mockito.anyList())).thenReturn(generateItemTreeMock());
+
+        this.mockMvc.perform(
+            get("/api/1/content/tree/site?depth=1").accept(MediaType.ALL))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyList(), Mockito.anyList());
     }
 
     @Test
@@ -933,10 +957,5 @@ public class RepositoryControllerTest {
             toRet.add(site);
         }
         return toRet;
-    }
-
-    @Test
-    public void testGetSiteListNoSites() {
-
     }
 }
