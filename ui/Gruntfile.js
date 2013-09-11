@@ -36,6 +36,7 @@ module.exports = function (grunt) {
       livereload: {
         files: [
           '<%= yeoman.app %>/**/*.html',
+          '{.tmp,<%= yeoman.app %>}/i18n/*.json',
           '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -240,6 +241,7 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,txt}',
             '.htaccess',
+            'i18n/*.json',
             'lib/**/*.min.js',
             'lib/**/*.min.css',
             'images/{,*/}*.{gif,webp}',
@@ -258,6 +260,8 @@ module.exports = function (grunt) {
             'min': '',
             'dev': 'Dev',
             'includeNgMocks': '<script src="lib/angular-mocks/js/angular-mocks.js"></script>',
+            'includeTranslateErrorHandler': '<script ' +
+              'src="lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
             'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
           }
         },
@@ -272,6 +276,7 @@ module.exports = function (grunt) {
             'min': '.min',
             'dev': '',
             'includeNgMocks': '',
+            'includeTranslateErrorHandler': '',
             'includeAppDev': ''
           }
         },

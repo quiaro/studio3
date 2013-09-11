@@ -4,7 +4,11 @@ angular.module('s2doAppDev', [
     's2doApp',
     'ngMockE2E'])
 
-    .run(function($httpBackend) {
+    .config(['$translateProvider', function ($translateProvider) {
+        $translateProvider.useMissingTranslationHandlerLog();
+    }])
+
+    .run(function ($httpBackend) {
 
     var items = [{
         'id': '1AWTX',
@@ -52,4 +56,5 @@ angular.module('s2doAppDev', [
     // Use .passThrough to bypass the mock and issue a real http request
     // e.g. $httpBackend.whenGET(/^\/templates\//).passThrough();
     $httpBackend.whenGET(/^scripts\/.*\.tpl\.html/).passThrough();
+    $httpBackend.whenGET(/^i18n\/.*\.json/).passThrough();
 });

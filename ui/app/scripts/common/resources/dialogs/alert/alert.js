@@ -8,7 +8,7 @@ angular.module('alert.dialog', ['ui.bootstrap.dialog'])
 		keyboard: true,
 		backdropClick: true,
 		backdropFade: true,
-		templateUrl: 'scripts/dialogs/alert/alert.tpl.html'
+		templateUrl: 'scripts/common/resources/dialogs/alert/alert.tpl.html'
 	};
 
 	return $dialog.dialog(opts);

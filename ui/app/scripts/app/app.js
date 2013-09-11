@@ -6,10 +6,13 @@ angular.module('s2doApp', [
     'dialogs',
     'services.repo',
     'resources.util',
-    'resources.toastr'
+    'resources.toastr',
+    'pascalprecht.translate',
+    'ngCookies'
   ])
 
-  .config(function ($routeProvider) {
+  .config(['$routeProvider', '$translateProvider', function ($routeProvider, $translateProvider) {
+
     $routeProvider
       .when('/', {
         templateUrl: 'scripts/app/dashboard/dashboard.tpl.html',
@@ -22,17 +25,25 @@ angular.module('s2doApp', [
       .otherwise({
         redirectTo: '/'
       });
-  })
+
+    $translateProvider.useStaticFilesLoader({
+      prefix: 'i18n/locale_',
+      suffix: '.json'
+    });
+    // load 'en' table on startup
+    $translateProvider.preferredLanguage('en');
+    $translateProvider.useLocalStorage();
+
+  }])
 
   // Application Controller
-  .controller('AppCtrl', ['$scope', 'notifications', function($scope, notifications) {
-
-    // TO-DO: Remove these default values
-    this.msgTitle = 'Alert';
-    this.msgBody  = 'Here is an important message!';
-    this.msgType  = 'warning';
+  .controller('AppCtrl', ['$scope', 'notifications', '$translate', function ($scope, notifications, $translate) {
 
     this.notifications = notifications;
+
+    this.changeLanguage = function changeLanguage (langKey) {
+      $translate.uses(langKey);
+    };
 
     // Expose to the (global) scope
     $scope.AppCtrl = this;
@@ -40,7 +51,7 @@ angular.module('s2doApp', [
   }])
 
   // Application services
-  .factory('notifications', ['toastr', function(toastr) {
+  .factory('notifications', ['toastr', function (toastr) {
     var queue = [];
 
     return {

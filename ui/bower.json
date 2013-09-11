@@ -6,7 +6,12 @@
     "angular-resource": "~1.0.5",
     "angular-sanitize": "~1.0.6",
     "angular-bootstrap": "~0.3.0",
-    "angular-translate": "1.1.0",
+    "angular-cookies": "~1.0.0",
+    "angular-translate": "~1.1.0",
+    "angular-translate-storage-cookie": "~0.1.5",
+    "angular-translate-storage-local": "~0.1.5",
+    "angular-translate-loader-static-files": "~0.1.5",
+    "angular-translate-handler-log": "~0.1.5",
     "bootstrap": "3.0.0",
     "jquery" : "2.0.3",
     "toastr" : "1.3.1"
