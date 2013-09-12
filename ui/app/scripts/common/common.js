@@ -84,7 +84,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
 			keyboard: true,
 			backdropClick: true,
 			backdropFade: true,
-			templateUrl: '/templates/dialogs/go-live.tpl.html',
+			templateUrl: '/templates/dialogs/go-live.tpl.html'
 		};
 		return $dialog.dialog(opts);
 	}])

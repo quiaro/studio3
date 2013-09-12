@@ -8,8 +8,8 @@ angular.module('studio-ui', [
     'ngCookies'
   ])
 
-  .config(['$routeProvider', 
-           '$translateProvider', 
+  .config(['$routeProvider',
+           '$translateProvider',
            'I18N', function ($routeProvider, $translateProvider, I18N) {
 
     $routeProvider

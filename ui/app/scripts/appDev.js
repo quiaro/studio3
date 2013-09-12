@@ -7,7 +7,7 @@ angular.module('studio-uiDev', [
     .config(['$translateProvider', function ($translateProvider) {
         // We need to mock the backend before we make any requests to it so we're going to null 
         // the loader set in the app and redefine it again after mocking the backend. 
-        $translateProvider.useLoader(null, null);   
+        $translateProvider.useLoader(null, null);
         $translateProvider.useMissingTranslationHandlerLog();
     }])
 
