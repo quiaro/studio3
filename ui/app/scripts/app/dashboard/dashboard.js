@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboard', ['services.repo'])
+angular.module('dashboard', ['common'])
 
   .controller('DashboardCtrl', ['$scope', 'repo', function($scope, repo) {
 

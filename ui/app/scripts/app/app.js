@@ -3,10 +3,7 @@
 angular.module('studio-ui', [
     'dashboard',
     'preview',
-    'dialogs',
-    'services.repo',
-    'resources.util',
-    'resources.toastr',
+    'common',
     'pascalprecht.translate',
     'ngCookies'
   ])

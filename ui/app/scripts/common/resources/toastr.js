@@ -1,7 +1,7 @@
 /* global toastr */
 'use strict';
 
-angular.module('resources.toastr', [])
+angular.module('common')
   .factory('toastr', function() {
 
     toastr.options.timeOut = 3500;

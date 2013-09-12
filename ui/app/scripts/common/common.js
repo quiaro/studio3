@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('resources.util', ['resources.vars'])
+angular.module('common', ['ui.bootstrap.dialog'])
 	.factory('util', ['Env', function (Env) {
 
 	/*

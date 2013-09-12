@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('go-live.dialog', ['ui.bootstrap.dialog'])
+angular.module('common')
 	.factory('goLiveDialog', function($dialog) {
 
 	var opts = {
@@ -8,8 +8,7 @@ angular.module('go-live.dialog', ['ui.bootstrap.dialog'])
 		keyboard: true,
 		backdropClick: true,
 		backdropFade: true,
-		templateUrl: 'scripts/dialogs/go-live/go-live.tpl.html',
-		controller: 'DialogsCtrl'
+		templateUrl: 'scripts/common/resources/dialogs/go-live/go-live.tpl.html',
 	};
 
 	return $dialog.dialog(opts);

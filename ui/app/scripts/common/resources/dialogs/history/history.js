@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('history.dialog', ['ui.bootstrap.dialog'])
+angular.module('common')
 	.factory('historyDialog', function($dialog) {
 
 	var opts = {
@@ -8,8 +8,7 @@ angular.module('history.dialog', ['ui.bootstrap.dialog'])
 		keyboard: true,
 		backdropClick: true,
 		backdropFade: true,
-		templateUrl: 'scripts/dialogs/history/history.tpl.html',
-		controller: 'DialogsCtrl'
+		templateUrl: 'scripts/common/resources/dialogs/history/history.tpl.html'
 	};
 
 	return $dialog.dialog(opts);

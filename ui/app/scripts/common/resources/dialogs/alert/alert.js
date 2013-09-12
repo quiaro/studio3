@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('alert.dialog', ['ui.bootstrap.dialog'])
+angular.module('common')
 	.factory('alertDialog', function($dialog) {
 
 	var opts = {

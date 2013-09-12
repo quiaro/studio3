@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('preview', ['directives.navigation'])
+angular.module('preview', ['common'])
 
   .controller('PreviewCtrl', ['$scope', function($scope) {
 
