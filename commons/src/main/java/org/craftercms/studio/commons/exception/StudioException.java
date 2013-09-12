@@ -26,30 +26,40 @@ public abstract class StudioException extends Exception {
     private static final long serialVersionUID = 8822403836288820982L;
 
     /**
-     * Construct with a message and cause exception
+     * Construct with a message and cause exception.
      *
      * @param message description
      * @param cause   original cause exception
      */
-    public StudioException(String message, Throwable cause) {
+    public StudioException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Construct with a message
+     * Construct with a message.
      *
      * @param message description
      */
-    public StudioException(String message) {
+    public StudioException(final String message) {
         super(message);
     }
 
     /**
-     * Construct with a cause exception
+     * Construct with a message using {@link String#format(String, Object...)}.
+     *
+     * @param message message format (as {@link String#format(String, Object...)} )
+     * @param args   arguments to format the message
+     */
+    public StudioException(final String message, final Object... args) {
+        super(String.format(message, args));
+    }
+
+    /**
+     * Construct with a cause exception.
      *
      * @param cause original cause exception
      */
-    public StudioException(Throwable cause) {
+    public StudioException(final Throwable cause) {
         super(cause);
     }
 }
