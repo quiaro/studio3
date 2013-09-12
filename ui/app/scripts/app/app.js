@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('s2doApp', [
+angular.module('studio-ui', [
     'dashboard',
     'preview',
     'dialogs',
@@ -11,7 +11,9 @@ angular.module('s2doApp', [
     'ngCookies'
   ])
 
-  .config(['$routeProvider', '$translateProvider', function ($routeProvider, $translateProvider) {
+  .config(['$routeProvider', 
+           '$translateProvider', 
+           'I18N', function ($routeProvider, $translateProvider, I18N) {
 
     $routeProvider
       .when('/', {
@@ -27,8 +29,8 @@ angular.module('s2doApp', [
       });
 
     $translateProvider.useStaticFilesLoader({
-      prefix: 'i18n/locale_',
-      suffix: '.json'
+      prefix: I18N.prefix,
+      suffix: I18N.suffix
     });
     // load 'en' table on startup
     $translateProvider.preferredLanguage('en');

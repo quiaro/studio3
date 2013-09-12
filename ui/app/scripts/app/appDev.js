@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('s2doAppDev', [
-    's2doApp',
+angular.module('studio-uiDev', [
+    'studio-ui',
     'ngMockE2E'])
 
     .config(['$translateProvider', function ($translateProvider) {
@@ -11,7 +11,7 @@ angular.module('s2doAppDev', [
         $translateProvider.useMissingTranslationHandlerLog();
     }])
 
-    .run(['$httpBackend', '$translate', function ($httpBackend, $translate) {
+    .run(['$httpBackend', '$translate', 'I18N', function ($httpBackend, $translate, I18N) {
 
         var items = [{
             'id': '1AWTX',
@@ -62,8 +62,8 @@ angular.module('s2doAppDev', [
         $httpBackend.whenGET(/^i18n\/.*\.json/).passThrough();
 
         $translate.useLoader('$translateStaticFilesLoader', {
-          prefix: 'i18n/locale_',
-          suffix: '.json'
+          prefix: I18N.prefix,
+          suffix: I18N.suffix
         });
         $translate.uses('en');
 }]);
