@@ -31,6 +31,7 @@ import org.craftercms.studio.commons.dto.TreeNode;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.json.JSONException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,8 +92,13 @@ public class RepositoryControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @After
+    public void tearDown() {
         reset(this.contentManagerMock);
     }
+
 
     @Test
     public void testGetContent() throws Exception {

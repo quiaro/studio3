@@ -26,4 +26,8 @@
         <beans:constructor-arg value="org.craftercms.studio.api.search.SearchManager" />
     </beans:bean>
 
+    <beans:bean id="versionManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.version.VersionManager" />
+    </beans:bean>
+
 </beans:beans>

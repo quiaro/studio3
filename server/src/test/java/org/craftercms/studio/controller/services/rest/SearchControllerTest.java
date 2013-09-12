@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.search.SearchManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ResultSet;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +72,10 @@ public class SearchControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @After
+    public void tearDown() {
         reset(this.searchManagerMock);
     }
 
@@ -94,9 +99,7 @@ public class SearchControllerTest {
         when(this.searchManagerMock.find((Context)Mockito.any(), Mockito.anyString())).thenReturn
             (generateResultSetMock());
 
-        this.mockMvc.perform(
-            get("/api/1/search/find/site")
-                .accept(MediaType.ALL))
+        this.mockMvc.perform(get("/api/1/search/find/site").accept(MediaType.ALL))
             .andExpect(status().isBadRequest())
         ;
 
