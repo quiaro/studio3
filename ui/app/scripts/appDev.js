@@ -58,7 +58,7 @@ angular.module('studio-uiDev', [
 
         // Use .passThrough to bypass the mock and issue a real http request
         // e.g. $httpBackend.whenGET(/^\/templates\//).passThrough();
-        $httpBackend.whenGET(/^scripts\/.*\.tpl\.html/).passThrough();
+        $httpBackend.whenGET(/^\/templates\/.*\.tpl\.html/).passThrough();
         $httpBackend.whenGET(/^i18n\/.*\.json/).passThrough();
 
         $translate.useLoader('$translateStaticFilesLoader', {
