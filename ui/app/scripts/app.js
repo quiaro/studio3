@@ -36,9 +36,7 @@ angular.module('studio-ui', [
   }])
 
   // Application Controller
-  .controller('AppCtrl', ['$scope', 'notifications', '$translate', function ($scope, notifications, $translate) {
-
-    this.notifications = notifications;
+  .controller('AppCtrl', ['$scope', '$translate', function ($scope, $translate) {
 
     this.changeLanguage = function changeLanguage (langKey) {
       $translate.uses(langKey);
@@ -47,24 +45,6 @@ angular.module('studio-ui', [
     // Expose to the (global) scope
     $scope.AppCtrl = this;
 
-  }])
-
-  // Application services
-  .factory('notifications', ['toastr', function (toastr) {
-    var queue = [];
-
-    return {
-      set: function(message) {
-        var msg = message;
-        queue.push(msg);
-
-      },
-      pop: function(message) {
-        if (message.type in toastr && typeof toastr[message.type] === 'function') {
-          toastr[message.type](message.body, message.title);
-        }
-      }
-    };
   }])
 
   // Initialize the application

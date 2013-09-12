@@ -2,7 +2,10 @@
 
 angular.module('dashboard', ['common'])
 
-  .controller('DashboardCtrl', ['$scope', 'repo', function($scope, repo) {
+  .controller('DashboardCtrl', 
+  	['$scope', 'repo', 'notifications', function($scope, repo, notifications) {
+
+  	$scope.notifications = notifications;
 
 		$scope.getRecentActivity = function getRecentActivity () {
 

@@ -81,17 +81,17 @@
 
 			<div style="padding: 20px 22px;">
 				<label>Message Title</label>
-	      <input ng-model="AppCtrl.msgTitle" placeholder="Title"><br />
+	      <input ng-model="msg.title" placeholder="Title"><br />
 	      <label>Message Body</label>
-	      <input ng-model="AppCtrl.msgBody" placeholder="Body"><br />
+	      <input ng-model="msg.body" placeholder="Body"><br />
 	      <label>Message Type</label>
-	      <select ng-model="AppCtrl.msgType">
+	      <select ng-model="msg.type">
 	        <option value="success">Success</option>
 	        <option value="info">Info</option>
 	        <option value="warning">Warning</option>
 	        <option value="error">Error</option>
 	      </select><br />
-	      <a ng-click="AppCtrl.notifications.pop({title: AppCtrl.msgTitle, body: AppCtrl.msgBody, type: AppCtrl.msgType})" class="btn">Show Message</a>
+	      <a ng-click="notifications.pop({title: msg.title, body: msg.body, type: msg.type})" class="btn">Show Message</a>
 	    </div>
 		  
 		</div>
