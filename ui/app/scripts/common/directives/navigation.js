@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('directives.navigation', [])
+angular.module('common')
 
 	.directive('navigation', function () {
 		return {

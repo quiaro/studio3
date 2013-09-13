@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('services.repo', ['resources.util', 'alert.dialog'])
+angular.module('common')
 	.factory('repo', ['$http', '$q', 'util', 'alertDialog', function($http, $q, util, alertDialog) {
 
 	var api = 'repo';

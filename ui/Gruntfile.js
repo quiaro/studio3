@@ -35,9 +35,11 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          '<%= yeoman.app %>/**/*.html',
+          '{.tmp,<%= yeoman.app %>}/index.html',
+          '{.tmp,<%= yeoman.app %>}/i18n/*.json',
           '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
+          '{.tmp,<%= yeoman.app %>}/templates/**/*.html',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         tasks: ['livereload']
@@ -194,7 +196,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['scripts/**/*.tpl.html'],
+          src: ['templates/**/*.tpl.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -222,6 +224,7 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
+            '<%= yeoman.dist %>/templates/**/*.tpl.html',
             '<%= yeoman.dist %>/scripts/**/*.js',
             '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
@@ -240,13 +243,16 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,txt}',
             '.htaccess',
+            'i18n/*.json',
             'lib/**/*.min.js',
+            'lib/require*/**/*.js',
             'lib/**/*.min.css',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
             'styles/**/fonts/*',
             'styles/**/*.min.css',
-            'styles/studio.css'
+            'styles/studio.css',
+            'templates/**/*.tpl.html'
           ]
         }]
       }
@@ -258,7 +264,9 @@ module.exports = function (grunt) {
             'min': '',
             'dev': 'Dev',
             'includeNgMocks': '<script src="lib/angular-mocks/js/angular-mocks.js"></script>',
-            'includeAppDev': '<script src="scripts/app/appDev.js"></script>'
+            'includeTranslateErrorHandler': '<script ' +
+              'src="lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
+            'includeAppDev': '<script src="scripts/appDev.js"></script>'
           }
         },
         files: [
@@ -272,6 +280,7 @@ module.exports = function (grunt) {
             'min': '.min',
             'dev': '',
             'includeNgMocks': '',
+            'includeTranslateErrorHandler': '',
             'includeAppDev': ''
           }
         },
@@ -285,7 +294,6 @@ module.exports = function (grunt) {
       install: {
         options : {
           targetDir: './app/lib',
-          cleanBowerDir: true,
           layout: 'byComponent',
           verbose: true
         }
@@ -305,9 +313,10 @@ module.exports = function (grunt) {
   ]);
 
   // Run tests for code linting
-  grunt.registerTask('lint', [
-    'jshint'
-  ]);
+  grunt.registerTask('lint', ['newer:jshint:all']);
+
+  // Component update
+  grunt.registerTask('cup', ['bower:install']);
 
   // Test look and feel locally
   grunt.registerTask('server', [
