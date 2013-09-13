@@ -263,11 +263,6 @@ angular.module('pascalprecht.translate').provider('$translate', [
         $translate.storage = function () {
           return Storage;
         };
-        $translate.useLoader = function (loaderFactory, options) {
-          $loaderFactory = loaderFactory;
-          $loaderOptions = options || {};
-          return $loaderFactory;
-        };
         $translate.uses = function (key) {
           if (!key) {
             return $uses;
