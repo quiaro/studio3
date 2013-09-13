@@ -1,13 +1,11 @@
 'use strict';
 
-describe('Controller: DashboardCtrl', function () {
-
-  var DashboardCtrl, scope, params, httpBackend,
-      alertDialog = jasmine.createSpyObj('alertDialog', ['open']);
+describe('Module: Dashboard', function () {
 
   beforeEach( function () {
 
-    module('resources.util', function ($provide) {
+    // load dependency
+    module('common', function ($provide) {
       $provide.value('util', {
           getServiceURL : function () {
             return '/url/to/backend/service';  
@@ -15,41 +13,42 @@ describe('Controller: DashboardCtrl', function () {
       });
     });
 
-    module('services.repo');
-
-    // load the controller's module    
     module('dashboard');
-
   });
 
-  beforeEach(inject(function($controller, $httpBackend, $rootScope, repo) {
+  describe('Controller: DashboardCtrl', function () {
 
-    httpBackend = $httpBackend;
+    var DashboardCtrl, scope, params, httpBackend;
 
-    scope = $rootScope.$new();
-    params = {
-      $scope: scope,
-      repo: repo
-    };
-    DashboardCtrl = $controller('DashboardCtrl', params);
-  }));
+    beforeEach(inject(function($controller, $httpBackend, $rootScope, repo) {
 
-  it('should append a list of recent activity items to the scope', function () {
-    
-    runs(function () {
-      httpBackend.expectGET('/url/to/backend/service').respond(200, [1, 2, 3]);
-      scope.getRecentActivity();
-      httpBackend.flush();
-    })
+      httpBackend = $httpBackend;
 
-    waitsFor(function () {
-      return scope.recentActivity !== null;
-    }, "scope.recentActivity to be set", 250);
+      scope = $rootScope.$new();
+      params = {
+        $scope: scope,
+        repo: repo
+      };
+      DashboardCtrl = $controller('DashboardCtrl', params);
+    }));
 
-    runs(function () {
-      expect(scope.recentActivity).toEqual([1, 2, 3]);
+    it('should append a list of recent activity items to the scope', function () {
+      
+      runs(function () {
+        httpBackend.expectGET('/url/to/backend/service').respond(200, [1, 2, 3]);
+        scope.getRecentActivity();
+        httpBackend.flush();
+      })
+
+      waitsFor(function () {
+        return scope.recentActivity !== null;
+      }, "scope.recentActivity to be set", 250);
+
+      runs(function () {
+        expect(scope.recentActivity).toEqual([1, 2, 3]);
+      });
     });
-    
+
   });
 
 });

@@ -21,7 +21,7 @@
     <!-- endbuild -->
   </head>
 
-  <body ng-app="s2doApp@@dev">
+  <body ng-app="studio-ui@@dev">
 
     <!-- Add your site or application content here -->
     <div id="app-container" class="container-fluid" ng-view></div>
@@ -32,32 +32,24 @@
     <script src="lib/angular-bootstrap/js/ui-bootstrap@@min.js"></script>
     <script src="lib/angular-resource/js/angular-resource@@min.js"></script>
     <script src="lib/angular-sanitize/js/angular-sanitize@@min.js"></script>
+    <script src="lib/angular-cookies/js/angular-cookies@@min.js"></script>
+    <script src="lib/angular-translate/js/angular-translate@@min.js"></script>
+    <script src="lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
+    <script src="lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
+    <script src="lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
     @@includeNgMocks
+    @@includeTranslateErrorHandler
     @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app/app.js"></script>
-    <script src="scripts/common/resources/toastr.js"></script>
-    <script src="scripts/common/resources/vars.js"></script>
-    <script src="scripts/common/resources/util.js"></script>
-    <script src="scripts/common/resources/dialogs/dialogs.js"></script>
-    <script src="scripts/common/resources/dialogs/go-live/go-live.js"></script>
-    <script src="scripts/common/resources/dialogs/history/history.js"></script>
-    <script src="scripts/common/resources/dialogs/alert/alert.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/common/common.js"></script>
+    <script src="scripts/common/config.js"></script>
     <script src="scripts/common/directives/navigation.js"></script>
     <script src="scripts/common/services/repo.js"></script>
-    <script src="scripts/app/dashboard/dashboard.js"></script>
-    <script src="scripts/app/preview/preview.js"></script>
+    <script src="scripts/dashboard/dashboard.js"></script>
+    <script src="scripts/preview/preview.js"></script>
     <!-- endbuild -->
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <!--
-    <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
-    -->
   </body>
 </html>
