@@ -245,6 +245,7 @@ module.exports = function (grunt) {
             '.htaccess',
             'i18n/*.json',
             'lib/**/*.min.js',
+            'lib/require*/**/*.js',
             'lib/**/*.min.css',
             'images/{,*/}*.{gif,webp}',
             'styles/fonts/*',
@@ -293,7 +294,6 @@ module.exports = function (grunt) {
       install: {
         options : {
           targetDir: './app/lib',
-          cleanBowerDir: true,
           layout: 'byComponent',
           verbose: true
         }
@@ -313,9 +313,10 @@ module.exports = function (grunt) {
   ]);
 
   // Run tests for code linting
-  grunt.registerTask('lint', [
-    'jshint'
-  ]);
+  grunt.registerTask('lint', ['newer:jshint:all']);
+
+  // Component update
+  grunt.registerTask('cup', ['bower:install']);
 
   // Test look and feel locally
   grunt.registerTask('server', [
