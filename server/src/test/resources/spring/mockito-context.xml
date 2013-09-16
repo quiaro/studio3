@@ -30,4 +30,8 @@
         <beans:constructor-arg value="org.craftercms.studio.api.version.VersionManager" />
     </beans:bean>
 
+    <beans:bean id="dependencyManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.dependency.DependencyManager" />
+    </beans:bean>
+
 </beans:beans>
