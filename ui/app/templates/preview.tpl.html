@@ -6,13 +6,37 @@
 		<div class="content">
 
 			<!-- If this div is moved after the iframe, it won't be rendered! -->
-			<div class="preview-toolbar">
+			<div class="toolbar">
+				<p class="intro">Element selected: [<span id="element-id">{{selectedElement}}</span>]</p>
+        <form>
+            <div>
 
-				<!-- <div>Content from the PreviewCtrl: {{test2.anotherProperty}}</div> -->
+            		<div ng-controller="OneCtrl">
+	                <label for='view-locked'>
+	                    <input type='checkbox' name='changes' id='view-locked' ng-click="lockView()" />
+	                    <span>View as locked</span>
+	                </label>
+	              </div>
 
+	              <div ng-controller="TwoCtrl">
+	                <label for='view-readonly'>
+	                    <input type='checkbox' name='changes' id='view-readonly' ng-click="readOnlyView()" />
+	                    <span>View as read-only</span>
+	                </label>
+	              </div>
+
+	              <div ng-controller="ThreeCtrl">
+	                <label for='view-edit'>
+	                    <input type='checkbox' name='changes' id='view-edit' ng-click="editView()" />
+	                    <span>View as edit</span>
+	                </label>
+	              </div>
+
+            </div>
+        </form>
 			</div>
 
-			<iframe frameborder="0" src="/test-sites/unigroup.html" height="80%" width="100%" />
+			<editor-iframe frameborder="0" src="/test-sites/unigroup.html" height="80%" width="100%" />
 
 		</div>
 	</div>
