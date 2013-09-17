@@ -18,7 +18,8 @@
     "toastr" : "1.3.1",
     "requirejs" : "2.1.8",
     "require-css" : "0.0.8",
-    "requirejs-domready" : "2.0.1"
+    "requirejs-domready" : "2.0.1",
+    "pubsub-js" : "https://github.com/mroderick/PubSubJS.git#1.4.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.5",

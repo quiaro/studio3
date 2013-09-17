@@ -84,7 +84,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
   }])
 
   .factory('toastr', [ function() {
-  	// Factory that lets you change toastr's plugin default settings
+		// Factory that lets you change toastr's plugin default settings
     toastr.options.timeOut = 3500;
     return toastr;
   }])
