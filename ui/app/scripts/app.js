@@ -14,12 +14,10 @@ angular.module('studio-ui', [
 
     $routeProvider
       .when('/', {
-        templateUrl: '/templates/dashboard.tpl.html',
-        controller: 'AppCtrl'
+        templateUrl: '/templates/dashboard.tpl.html'
       })
       .when('/preview', {
-        templateUrl: '/templates/preview.tpl.html',
-        controller: 'AppCtrl'
+        templateUrl: '/templates/preview.tpl.html'
       })
       .otherwise({
         redirectTo: '/'

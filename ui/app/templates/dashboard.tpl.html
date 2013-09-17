@@ -16,11 +16,11 @@
 				  			<th>&nbsp;</th>
 				  			<!-- <th>Status</th> -->
 				  			<th translate>DASHBOARD.activity.page_name</th>
-				  			<th>Operations</th>
-				  			<th>URL</th>
-				  			<th>Last Edited</th>
-				  			<th>Author</th>
-				  			<th>My Last Edit</th>
+				  			<th translate>DASHBOARD.activity.operations</th>
+				  			<th translate>DASHBOARD.activity.url</th>
+				  			<th translate>DASHBOARD.activity.last_edited</th>
+				  			<th translate>DASHBOARD.activity.author</th>
+				  			<th translate>DASHBOARD.activity.my_last_edit</th>
 				  		</tr>
 				  	</thead>
 				  	<tbody>
@@ -31,7 +31,7 @@
 				  				</span>
 				  			</td> -->
 				  			<td>{{item.name}}</td>
-				  			<td><a href="#">Edit</a></td>
+				  			<td><a href="#" translate>DASHBOARD.activity.edit_link</a></td>
 				  			<td>{{item.url}}</td>
 				  			<td>{{item.lastEdited}}</td>
 				  			<td>{{item.lastAuthor}}</td>
@@ -44,7 +44,7 @@
 
 			<div class="panel panel-default pending-approval">
 		  	<div class="panel-heading">
-		  		<h3 class="panel-title">Waiting for Approval</h3>
+		  		<h3 class="panel-title" translate>DASHBOARD.approval.header</h3>
 		  	</div>
 			  <div class="panel-body">
 			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
@@ -52,12 +52,12 @@
 				  		<tr>
 				  			<th>&nbsp;</th>
 				  			<!-- <th>Status</th> -->
-				  			<th>Page Name</th>
-				  			<th>Operations</th>
-				  			<th>URL</th>
-				  			<th>Last Edited</th>
-				  			<th>Author</th>
-				  			<th>My Last Edit</th>
+				  			<th translate>DASHBOARD.approval.page_name</th>
+				  			<th translate>DASHBOARD.approval.operations</th>
+				  			<th translate>DASHBOARD.approval.url</th>
+				  			<th translate>DASHBOARD.approval.last_edited</th>
+				  			<th translate>DASHBOARD.approval.author</th>
+				  			<th translate>DASHBOARD.approval.my_last_edit</th>
 				  		</tr>
 				  	</thead>
 				  	<tbody>
@@ -68,7 +68,7 @@
 				  				</span>
 				  			</td> -->
 				  			<td>{{item.name}}</td>
-				  			<td><a href="#">Edit</a></td>
+				  			<td><a href="#" translate>DASHBOARD.approval.edit_link</a></td>
 				  			<td>{{item.url}}</td>
 				  			<td>{{item.lastEdited}}</td>
 				  			<td>{{item.lastAuthor}}</td>

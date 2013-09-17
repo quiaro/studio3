@@ -11,6 +11,12 @@ angular.module('common')
 								'  <search></search>' +
 								'  <fileview></fileview>' +
 								'  <iconmenu></iconmenu>' +
+								'  <div class="language">' +
+								'    <input type="button" value="English" ' +
+								'       ng-click="AppCtrl.changeLanguage(\'en\')" />' +
+								'    <input type="button" value="French" ' +
+								'       ng-click="AppCtrl.changeLanguage(\'fr\')" />' +
+								'  </div>' +
 								'</div>'
 		};
 	})
