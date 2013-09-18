@@ -16,6 +16,9 @@
  */
 package org.craftercms.studio.commons.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * Workflow transition.
  *
@@ -24,4 +27,28 @@ package org.craftercms.studio.commons.dto;
  * @author Carlos Ortiz
  */
 public class WorkflowTransition {
+
+    @NotNull
+    @Pattern(regexp = "^\\S+$")
+    private String id;
+
+    @NotNull
+    @Pattern(regexp = "^\\S+$")
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

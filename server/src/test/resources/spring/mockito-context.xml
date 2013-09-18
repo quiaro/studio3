@@ -34,4 +34,8 @@
         <beans:constructor-arg value="org.craftercms.studio.api.dependency.DependencyManager" />
     </beans:bean>
 
+    <beans:bean id="workflowManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.workflow.WorkflowManager" />
+    </beans:bean>
+
 </beans:beans>
