@@ -33,10 +33,6 @@ import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
-import org.craftercms.studio.validation.LockHandleValidator;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -51,7 +47,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -325,7 +320,8 @@ public class RepositoryController {
                         final HttpServletRequest request, final HttpServletResponse response) {
         List<ItemFilter> filterList = new ArrayList<ItemFilter>();
         List<ItemExtractor> extractorList = new ArrayList<ItemExtractor>();
-        return this.contentManager.tree(new Context(), itemId, depth, filterList, extractorList);
+        Tree<Item> tree = this.contentManager.tree(new Context(), itemId, depth, filterList, extractorList);
+        return tree;
     }
 
     /**
