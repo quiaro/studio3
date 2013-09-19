@@ -42,4 +42,8 @@
         <beans:constructor-arg value="org.craftercms.studio.api.deployment.DeploymentManager" />
     </beans:bean>
 
+    <beans:bean id="lifecycleManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.lifecycle.LifecycleManager" />
+    </beans:bean>
+
 </beans:beans>
