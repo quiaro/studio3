@@ -105,7 +105,7 @@
                 <version>2.6</version>
                 <configuration>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                    <testFailureIgnore>false</testFailureIgnore>
+
                     <includes>
                         <include>**/IT*.java</include>
                         <include>**/*IT.java</include>
@@ -122,7 +122,7 @@
                     <execution>
                         <goals>
                             <goal>integration-test</goal>
-                            <!-- <goal>verify</goal> -->
+                             <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>

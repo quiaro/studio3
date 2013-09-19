@@ -62,7 +62,6 @@ public class CoreMetadata implements Cloneable {
         this.fileId = metadata.getFileId();
     }
 
-
     /**
      * Creates and sets a new copy of CoreMetadata instance.
      *
@@ -72,12 +71,13 @@ public class CoreMetadata implements Cloneable {
         return new CoreMetadata(this);
     }
 
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CoreMetadata)) {
             return false;
         }
 
@@ -92,7 +92,7 @@ public class CoreMetadata implements Cloneable {
         if (!creator.equals(that.creator)) {
             return false;
         }
-        if (!fileId.equals(that.fileId)) {
+        if (fileId != null? !fileId.equals(that.fileId): that.fileId != null) {
             return false;
         }
         if (!lastModifiedDate.equals(that.lastModifiedDate)) {
@@ -108,17 +108,15 @@ public class CoreMetadata implements Cloneable {
         return true;
     }
 
-
     @Override
     public int hashCode() {
-        int magicNumberForHash = 31;
-        int result = name != null? name.hashCode(): 0;
-        result = magicNumberForHash * result + (lastModifiedDate != null? lastModifiedDate.hashCode(): 0);
-        result = magicNumberForHash * result + (modifier != null? modifier.hashCode(): 0);
-        result = magicNumberForHash * result + (createDate != null? createDate.hashCode(): 0);
-        result = magicNumberForHash * result + (creator != null? creator.hashCode(): 0);
-        result = magicNumberForHash * result + (int)(size ^ (size >>> 32));
-        result = magicNumberForHash * result + (fileId != null? fileId.hashCode(): 0);
+        int result = name.hashCode();
+        result = 31 * result + (lastModifiedDate != null? lastModifiedDate.hashCode(): 0);
+        result = 31 * result + (modifier != null? modifier.hashCode(): 0);
+        result = 31 * result + createDate.hashCode();
+        result = 31 * result + creator.hashCode();
+        result = 31 * result + (int)(size ^ (size >>> 32));
+        result = 31 * result + fileId.hashCode();
         return result;
     }
 
@@ -126,8 +124,6 @@ public class CoreMetadata implements Cloneable {
     protected Object clone() throws CloneNotSupportedException {
         return copy();
     }
-
-
 
     @Override
     public String toString() {
@@ -142,7 +138,6 @@ public class CoreMetadata implements Cloneable {
         sb.append('}');
         return sb.toString();
     }
-
 
     public String getFileId() {
         return fileId;
