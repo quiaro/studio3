@@ -66,7 +66,7 @@ public class Node implements Cloneable {
         if (!metadata.equals(node.metadata)) {
             return false;
         }
-        if (!parent.equals(node.parent)) {
+        if (parent != null? !parent.equals(node.parent): node.parent != null) {
             return false;
         }
         if (type != node.type) {

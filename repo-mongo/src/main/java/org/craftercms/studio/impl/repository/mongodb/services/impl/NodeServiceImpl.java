@@ -71,7 +71,7 @@ public class NodeServiceImpl implements org.craftercms.studio.impl.repository.mo
             Node newNode = new Node(parent, NodeType.FILE);
             newNode.setId(UUID.randomUUID().toString());
             try {
-                newNode.setMetadata(createFileNodeMetadata(fileName, creatorName, content));
+                newNode.setMetadata(createNodeMetadata(fileName, creatorName, content));
                 newNode = nodeDataRepository.save(newNode);
                 log.debug("File node  {} saved ", newNode );
                 return newNode;
@@ -89,12 +89,11 @@ public class NodeServiceImpl implements org.craftercms.studio.impl.repository.mo
         }
     }
 
-    private CoreMetadata createFileNodeMetadata(final String fileName, final String creatorName,
-                                                final InputStream content) throws MongoRepositoryException {
-        CoreMetadata coreMetadata = new CoreMetadata();
-        coreMetadata.setName(fileName);
-        coreMetadata.setCreator(creatorName);
-        coreMetadata.setCreateDate(new Date());
+
+
+    private CoreMetadata createNodeMetadata(final String fileName, final String creatorName,
+                                            final InputStream content) throws MongoRepositoryException {
+        CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName);
         try {
             GridFSFile savedFile = gridFSService.saveFile(fileName, content);
             coreMetadata.setSize(savedFile.getLength());
@@ -104,6 +103,16 @@ public class NodeServiceImpl implements org.craftercms.studio.impl.repository.mo
             log.error("DataAccessException thrown ", ex);
             throw new MongoRepositoryException("Unable to save file due a DataAccessException", ex);
         }
+        return coreMetadata;
+    }
+
+    private CoreMetadata createBasicMetadata(final String fileName, final String creatorName) {
+        CoreMetadata coreMetadata = new CoreMetadata();
+        coreMetadata.setName(fileName);
+        coreMetadata.setCreator(creatorName);
+        coreMetadata.setCreateDate(new Date());
+        coreMetadata.setLastModifiedDate(new Date());
+        coreMetadata.setModifier(creatorName);
         return coreMetadata;
     }
 
@@ -121,12 +130,8 @@ public class NodeServiceImpl implements org.craftercms.studio.impl.repository.mo
             log.debug("Generating ID and CoreMetadata");
             Node newNode = new Node(parent, NodeType.FOLDER);
             newNode.setId(UUID.randomUUID().toString());
-            CoreMetadata coreMetadata = new CoreMetadata();
-            coreMetadata.setCreator(creatorName);
-            coreMetadata.setName(folderName);
-            coreMetadata.setCreateDate(new Date());
-            newNode.setMetadata(coreMetadata);
-            log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), coreMetadata);
+            newNode.setMetadata(createBasicMetadata(folderName, creatorName));
+            log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), newNode.getMetadata());
             log.debug("Saving Folder");
             try {
                 newNode = nodeDataRepository.save(newNode);
