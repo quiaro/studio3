@@ -4,7 +4,15 @@ describe('Module: Common', function () {
 
   var utilService;
 
-  beforeEach(module('common'));
+  beforeEach( function () {
+
+    module('common', function ($provide) {
+      $provide.constant('REGISTRY', {
+        path : '/url/to/registry'
+      });
+    });
+
+  });
 
   describe('Service: Util', function () {
 
@@ -29,6 +37,24 @@ describe('Module: Common', function () {
       res = '/' + urlBase + '/' + apiVersion + '/category/method/' + siteName + '?stringWithSearchParams';
       expect(url).toBe(res);  
     });
+
+    it('should return the registry', inject(function ($httpBackend) {
+
+      var httpBackend = $httpBackend,
+          promise;
+
+      httpBackend.expectGET('/url/to/registry').respond(200, { "key": "value" });
+      promise = utilService.getRegistry();
+
+      promise.then( function (data) {
+        expect(data).toEqual({ "key": "value" });
+      });  
+
+      httpBackend.flush();
+
+      httpBackend.verifyNoOutstandingExpectation();
+      httpBackend.verifyNoOutstandingRequest();
+    }));
 
   });
   
