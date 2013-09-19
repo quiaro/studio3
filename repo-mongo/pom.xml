@@ -302,11 +302,11 @@
             <version>3.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator}</version>
-        </dependency>
+     <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>5.0.1.Final</version>
+</dependency>
 
 
         <dependency>
