@@ -91,8 +91,10 @@ public class MongoStartupService implements ApplicationListener {
         rootNode.setParent(null); //Force it to be ROOT, Only way to do it , hard way
         CoreMetadata metadata = new CoreMetadata();
         metadata.setCreateDate(new Date());
+        metadata.setLastModifiedDate(new Date());
         metadata.setName("/");
         metadata.setCreator(MongoRepositoryDefaults.SYSTEM_USER_NAME);
+        metadata.setModifier(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setSize(0);
         rootNode.setMetadata(metadata);
         try {
