@@ -7,6 +7,11 @@ angular.module('common')
 		suffix: '.json'
 	})
 
+	.constant('REGISTRY', {
+		path: '/config/registry.json',
+		bridgedEventsKey: 'bridgedEvents'
+	})
+
 	.value('Env', {
 		siteName: '',
 		urlBase: 'api',

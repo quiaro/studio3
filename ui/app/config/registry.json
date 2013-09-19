@@ -1,0 +1,6 @@
+{
+	"bridgedEvents" : [
+		"app/element/update",
+		"editor/element/select"
+	]
+}
