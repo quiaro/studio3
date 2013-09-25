@@ -44,7 +44,7 @@ public interface NodeDataRepository extends MongoRepository<Node, String> {
     Node findByParentIsNull();
 
     /**
-     * Finds all Nodes with a given Name
+     * Finds all Nodes with a given Name.
      * @param name Name of the Node
      * @return A list of nodes where the name is the given, <br/> empty list
      * if nothing is found.

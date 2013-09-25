@@ -19,8 +19,6 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.io.InputStream;
 
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -31,6 +29,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
 
 /**
  * Default GridFS implementation.
