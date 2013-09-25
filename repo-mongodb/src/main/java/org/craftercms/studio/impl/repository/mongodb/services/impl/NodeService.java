@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.mongodb.gridfs.GridFSFile;
+
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
+import com.mongodb.gridfs.GridFSFile;
 
 /**
  * Default Implementation of {@link org.craftercms.studio.impl.repository.mongodb.services.NodeService}.
@@ -164,7 +165,6 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
             throw new MongoRepositoryException("Unable to find Node ", ex);
         }
     }
-
 
     private CoreMetadata createNodeMetadata(final String fileName, final String creatorName,
                                             final InputStream content) throws MongoRepositoryException {

@@ -13,8 +13,17 @@ public final class MongoRepositoryDefaults {
      * MongoDB Collection ID key for document.
      */
     public static final String MONGODB_ID_KEY = "_id";
+    /**
+     * Default name of content folder.
+     */
     public static final String REPO_DEFAULT_CONTENT_FOLDER = "content";
+    /**
+     * Default name of configuration folder.
+     */
     public static final String REPO_DEFAULT_CONFIG_FOLDER = "config";
+    /**
+     * Default path separator.
+     */
     public static final String REPO_DEFAULT_PATH_SEPARATOR_CHAR = "/";
 
     /**

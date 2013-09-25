@@ -55,29 +55,28 @@ public class MongoStartupService implements ApplicationListener {
     /**
      * Checks repository integrity.
      * <ul>
-     *     <li>Checks if a root node exists if not creates a new one</li>
-     *     <li>Checks that there is only one root node, if multiple found a IllegalStateException is thrown</li>
+     * <li>Checks if a root node exists if not creates a new one</li>
+     * <li>Checks that there is only one root node, if multiple found a IllegalStateException is thrown</li>
      * </ul>
-     *
      */
     private void checkRepoIntegrity() {
         log.debug("Checking Repository Integrity");
         Node root = nodeService.getRootNode();
-        if ( root == null) {
+        if (root == null) {
             log.info("Unable to find a root node, creating one ");
-            root=createRootNode();
+            root = createRootNode();
             log.info("Root node created , root = ", root);
-        }else{
+        } else {
             log.debug("Root node found, root= {}", root);
         }
         //Checks if root node was created. if multiple roots found
         // Throw exception and stop startup
         //TODO build Tools for Mongo repo (sort of fdisk)
         List<Node> roots = nodeService.findNodesByParent(null);
-        if ( roots.size() >1){
+        if (roots.size() > 1) {
             log.error("Found {} root nodes, stopping repository to prevent it's corruption or data loses",
                 roots.size());
-            throw  new IllegalStateException("Multiple Root Nodes found");
+            throw new IllegalStateException("Multiple Root Nodes found");
         }
 
     }
@@ -105,7 +104,7 @@ public class MongoStartupService implements ApplicationListener {
             log.info("Root node created");
             createSiteStructure(rootNode);
             return rootNode;
-        }catch (MongoRepositoryException ex){
+        } catch (MongoRepositoryException ex) {
             log.error("Unable to create Repository default folders");
             log.error("Error while creating Site default folders ", ex);
             throw new IllegalStateException("Unable to create basic Repository structure");
@@ -118,10 +117,10 @@ public class MongoStartupService implements ApplicationListener {
     }
 
     private void createSiteStructure(Node root) throws MongoRepositoryException {
-       nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER,
-           MongoRepositoryDefaults.SYSTEM_USER_NAME);
-       nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER,
-           MongoRepositoryDefaults.SYSTEM_USER_NAME);
+        nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER,
+            MongoRepositoryDefaults.SYSTEM_USER_NAME);
+        nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER,
+            MongoRepositoryDefaults.SYSTEM_USER_NAME);
     }
 
     public void setMongoTemplate(final MongoTemplate mongoTemplate) {

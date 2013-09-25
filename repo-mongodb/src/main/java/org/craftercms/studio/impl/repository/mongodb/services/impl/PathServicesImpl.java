@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 
 import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
-
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
@@ -35,7 +34,10 @@ import org.slf4j.LoggerFactory;
  * Default Path implementation for Mongodb repository.
  */
 public class PathServicesImpl implements PathService {
-
+    /**
+     * Initial size of StringBuilder.
+     */
+    private static final int DEFAULT_BUILDER_SIZE = 512;
     /**
      * Node Service.
      */
@@ -44,15 +46,15 @@ public class PathServicesImpl implements PathService {
 
     @Override
     public String getItemIdByPath(final String ticket, final String site, final String path) {
-         if(StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)){
-             log.debug("Given Ticket is blank or empty");
-             throw new IllegalArgumentException("Given Ticket is Blank or empty");
-         }
-        if(StringUtils.isEmpty(site) || StringUtils.isBlank(site)){
+        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+            log.debug("Given Ticket is blank or empty");
+            throw new IllegalArgumentException("Given Ticket is Blank or empty");
+        }
+        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
             log.debug("Given Site is blank or empty");
             throw new IllegalArgumentException("Given Site is Blank or empty");
         }
-        if(StringUtils.isEmpty(path) || StringUtils.isBlank(path)){
+        if (StringUtils.isEmpty(path) || StringUtils.isBlank(path)) {
             log.debug("Given Path is blank or empty");
             throw new IllegalArgumentException("Given Path is Blank or empty");
         }
@@ -75,7 +77,7 @@ public class PathServicesImpl implements PathService {
         } else {
             log.debug("Node Found {}", node);
             //make it bigger so it will not have to resize it for a bit.
-            StringBuilder builder = new StringBuilder(512);
+            StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
             walkTheTree(builder, node);
             String path = builder.toString();
             log.debug("Calculated Path is {}", path);
@@ -98,7 +100,7 @@ public class PathServicesImpl implements PathService {
         } //We found '/' aka root
     }
 
-    public void setNodeServiceImpl(NodeService nodeService) {
+    public void setNodeServiceImpl(final NodeService nodeService) {
         this.nodeService = nodeService;
     }
 }

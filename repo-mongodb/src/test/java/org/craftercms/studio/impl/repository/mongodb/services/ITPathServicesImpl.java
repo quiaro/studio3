@@ -20,6 +20,7 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +29,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.fail;
 
 /**
  * Test of PathServicesImpl
@@ -50,10 +49,7 @@ public class ITPathServicesImpl implements ApplicationContextAware {
     @Test
     public void testGetPathByItem() throws Exception {
         String path = pathService.getPathByItemId("", "", createSampleNodeTree());
-        System.out.println("SPARTA STN");
-        System.out.println(path);
-        System.out.println("SPARTA STN");
-        fail(path);
+        Assert.assertEquals(path, "/Philip J. Fry/Yancy Fry, Sr./Yancy Fry/Hubert J. Farnsworth");
     }
 
 
