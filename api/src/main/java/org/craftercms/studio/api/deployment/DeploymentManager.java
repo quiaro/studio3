@@ -40,7 +40,7 @@ public interface DeploymentManager {
      * @return list of items
      */
     List<Item> history(Context context, String site,
-                       Map<String, Object> filters);
+                       List<String> filters);
 
     /**
      * Get deployment channels.
@@ -73,7 +73,7 @@ public interface DeploymentManager {
      * @param context context
      * @param itemIds list of item ids
      */
-    void deploy(Context context, List<String> itemIds);
+    void deploy(Context context, String site, List<String> itemIds);
 
     /**
      * Get deployment channel status.
@@ -81,7 +81,7 @@ public interface DeploymentManager {
      * @param site site
      * @param channel channel
      */
-    void status(Context context, String site, DeploymentChannel channel);
+    String status(Context context, String site, DeploymentChannel channel);
 
     /**
      * Get deployment channel version.
@@ -89,7 +89,7 @@ public interface DeploymentManager {
      * @param site site
      * @param channel channel
      */
-    void version(Context context, String site, DeploymentChannel channel);
+    long version(Context context, String site, DeploymentChannel channel);
 
     /**
      * Abort deployment.
