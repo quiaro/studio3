@@ -17,6 +17,8 @@
 
 package org.craftercms.studio.api.content;
 
+import org.craftercms.studio.api.RepositoryException;
+
 /**
  * @author Sumer Jabri
  */
@@ -33,10 +35,11 @@ public interface PathService {
 
     /**
      * Get item path by item id.
+     *
      * @param ticket security ticket
      * @param site site
      * @param itemId item id
      * @return item path
      */
-    String getPathByItemId(String ticket, String site, String itemId);
+    String getPathByItemId(final String ticket, final String site, final String itemId) throws RepositoryException;
 }

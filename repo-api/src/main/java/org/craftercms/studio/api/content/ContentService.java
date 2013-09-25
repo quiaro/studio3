@@ -43,6 +43,16 @@ public interface ContentService {
      */
     String create(String ticket, String site, String path, InputStream content);
 
+
+    /**
+     * Create new folder into repository.
+     * @param ticket security ticket
+     * @param site site
+     * @param path path
+     * @return content id
+     */
+    String create(String ticket, String site, String path);
+
     /**
      * Read content from repository.
      * @param ticket security ticket
