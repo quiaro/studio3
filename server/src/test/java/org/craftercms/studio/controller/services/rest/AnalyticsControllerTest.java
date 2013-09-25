@@ -7,6 +7,7 @@ import org.craftercms.studio.api.analytics.AnalyticsManager;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,26 +34,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml"})
-public class AnalyticsControllerTest {
-
+public class AnalyticsControllerTest extends AbstractControllerTest {
 
     @Autowired
     private AnalyticsManager analyticsManager;
 
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    @After
+    public void tearDown() throws Exception {
         reset(this.analyticsManager);
     }
 
     @Test
     public void testReportIsCall() throws Exception {
-        when(this.analyticsManager.report((Context)Mockito.any(), Mockito.anyString(),
+        when(this.analyticsManager.report(Mockito.any(Context.class), Mockito.anyString(),
                                             Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class))).
                 thenReturn(new AnalyticsReport("testReport"));
 
@@ -62,13 +56,13 @@ public class AnalyticsControllerTest {
                   .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Check that is JSON
                   .andExpect(jsonPath("$.reportName").value("testReport")); // Check that Response is a Serialize DTO
 
-        verify(this.analyticsManager,times(1)).report((Context)Mockito.any(), Mockito.anyString(),
+        verify(this.analyticsManager,times(1)).report(Mockito.any(Context.class), Mockito.anyString(),
                 Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class));
     }
 
     @Test
     public void testSiteSendParams() throws Exception {
-        when(this.analyticsManager.report((Context)Mockito.any(), Mockito.anyString(),
+        when(this.analyticsManager.report(Mockito.any(Context.class), Mockito.anyString(),
                 Mockito.anyString(), Mockito.anyMapOf(String.class,Object.class)))
                 .then(new Answer<AnalyticsReport>() {
                     @Override
