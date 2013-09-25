@@ -183,7 +183,7 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
 
     private CoreMetadata createBasicMetadata(final String fileName, final String creatorName) {
         CoreMetadata coreMetadata = new CoreMetadata();
-        coreMetadata.setName(fileName);
+        coreMetadata.setNodeName(fileName);
         coreMetadata.setCreator(creatorName);
         coreMetadata.setCreateDate(new Date());
         coreMetadata.setLastModifiedDate(new Date());

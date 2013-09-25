@@ -17,7 +17,12 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
+
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
@@ -39,6 +44,23 @@ public class PathServicesImpl implements PathService {
 
     @Override
     public String getItemIdByPath(final String ticket, final String site, final String path) {
+         if(StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)){
+             log.debug("Given Ticket is blank or empty");
+             throw new IllegalArgumentException("Given Ticket is Blank or empty");
+         }
+        if(StringUtils.isEmpty(site) || StringUtils.isBlank(site)){
+            log.debug("Given Site is blank or empty");
+            throw new IllegalArgumentException("Given Site is Blank or empty");
+        }
+        if(StringUtils.isEmpty(path) || StringUtils.isBlank(path)){
+            log.debug("Given Path is blank or empty");
+            throw new IllegalArgumentException("Given Path is Blank or empty");
+        }
+        log.debug("Converting {} to a path object", path);
+        Path internalPath = Paths.get(path);
+        log.debug("Internal Path is {}", internalPath);
+        //Lets get the node by name
+
         return null;
     }
 
@@ -68,10 +90,10 @@ public class PathServicesImpl implements PathService {
      * @param node    Node to walk and append.
      */
     private void walkTheTree(final StringBuilder builder, final Node node) {
-        //Always insert at 0 (start of the String)
-        builder.insert(0, node.getMetadata().getName()); // Add the Name
-        builder.insert(0, MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR); // Add the separator.
         if (node.getParent() != null) {
+            //Always insert at 0 (start of the String)
+            builder.insert(0, node.getMetadata().getNodeName()); // Add the Name
+            builder.insert(0, MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR); // Add the separator.
             walkTheTree(builder, node.getParent());
         } //We found '/' aka root
     }

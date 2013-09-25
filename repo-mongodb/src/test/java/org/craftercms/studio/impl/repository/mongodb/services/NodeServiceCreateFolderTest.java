@@ -82,7 +82,7 @@ public class NodeServiceCreateFolderTest {
         Assert.assertNotNull(node);
         Assert.assertNotNull(node.getMetadata());
         Assert.assertEquals(node.getMetadata().getCreator(), "Philip J. Fry");
-        Assert.assertEquals(node.getMetadata().getName(), "TestFolder");
+        Assert.assertEquals(node.getMetadata().getNodeName(), "TestFolder");
         Assert.assertEquals(node.getParent(), parent);
         TestUtils.isUUIDValid(node.getId());
         Assert.assertTrue(nodeService.isNodeFolder(node));

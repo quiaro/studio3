@@ -41,7 +41,7 @@ public class ITMongoStartupService implements ApplicationContextAware {
     public void testContentNameCreated() throws Exception {
         List<Node> nodes = nodeService.findNodesByParent(nodeService.getRootNode());
         for (Node node : nodes) {
-            if(node.getMetadata().getName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER)){
+            if(node.getMetadata().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER)){
                 return;
             }
         }
@@ -54,7 +54,7 @@ public class ITMongoStartupService implements ApplicationContextAware {
     public void testConfigNameCreated() throws Exception {
         List<Node> nodes = nodeService.findNodesByParent(nodeService.getRootNode());
         for (Node node : nodes) {
-            if(node.getMetadata().getName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER)){
+            if(node.getMetadata().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER)){
                 return;
             }
         }

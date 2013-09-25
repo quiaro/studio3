@@ -81,7 +81,7 @@ public class NodeServiceCreateFileTest {
         Assert.assertNotNull(fileNode);
         Assert.assertNotNull(fileNode.getMetadata());
         Assert.assertEquals(fileNode.getMetadata().getCreator(), "Doctor John A. Zoidberg");
-        Assert.assertEquals(fileNode.getMetadata().getName(), "TestFile");
+        Assert.assertEquals(fileNode.getMetadata().getNodeName(), "TestFile");
         Assert.assertEquals(fileNode.getParent(), nodeService.getRootNode());
         TestUtils.isUUIDValid(fileNode.getId());
         Assert.assertTrue(nodeService.isNodeFile(fileNode));

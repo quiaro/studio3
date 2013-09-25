@@ -94,7 +94,7 @@ public class MongoStartupService implements ApplicationListener {
         CoreMetadata metadata = new CoreMetadata();
         metadata.setCreateDate(new Date());
         metadata.setLastModifiedDate(new Date());
-        metadata.setName("/");
+        metadata.setNodeName("/");
         metadata.setCreator(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setModifier(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setSize(0);

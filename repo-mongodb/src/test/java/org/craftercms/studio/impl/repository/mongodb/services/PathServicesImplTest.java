@@ -60,19 +60,20 @@ public class PathServicesImplTest {
 
     private Node createTree() {
         Node root = new Node();
-        root.getMetadata().setName("/");
+        root.getMetadata().setNodeName("/");
         Node a = new Node();
-        a.getMetadata().setName("A");
+        a.getMetadata().setNodeName("A");
         Node b = new Node();
-        b.getMetadata().setName("B");
+        b.getMetadata().setNodeName("B");
         Node c = new Node();
-        c.getMetadata().setName("C");
+        c.getMetadata().setNodeName("C");
         Node d = new Node();
-        d.getMetadata().setName("D");
+        d.getMetadata().setNodeName("D");
         //Making the Tree
         d.setParent(c);
         c.setParent(b);
         b.setParent(a);
+        a.setParent(root);
         return d;
     }
 }

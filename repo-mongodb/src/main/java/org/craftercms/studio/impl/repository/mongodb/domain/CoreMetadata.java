@@ -13,9 +13,11 @@ import java.util.Date;
 public class CoreMetadata implements Cloneable {
 
     /**
-     * Name.
+     * This nodeName is used for path calculation. <br/>
+     * <b>(can have non ASCII chars and spaces)</b>
      */
-    private String name;
+    private String nodeName;
+
     /**
      * Last Modified Date.
      */
@@ -53,13 +55,14 @@ public class CoreMetadata implements Cloneable {
      * @param metadata CoreMetadata to be use a base.
      */
     protected CoreMetadata(final CoreMetadata metadata) {
-        this.name = metadata.getName();
+        this.nodeName = metadata.getNodeName();
         this.lastModifiedDate = metadata.getLastModifiedDate();
         this.modifier = metadata.getModifier();
         this.createDate = metadata.getCreateDate();
         this.creator = metadata.getCreator();
         this.size = metadata.getSize();
         this.fileId = metadata.getFileId();
+
     }
 
     /**
@@ -101,19 +104,21 @@ public class CoreMetadata implements Cloneable {
         if (!modifier.equals(that.modifier)) {
             return false;
         }
-        if (!name.equals(that.name)) {
+        if (!nodeName.equals(that.nodeName)) {
             return false;
         }
+
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = nodeName.hashCode();
         result = 31 * result + (lastModifiedDate != null? lastModifiedDate.hashCode(): 0);
         result = 31 * result + (modifier != null? modifier.hashCode(): 0);
         result = 31 * result + createDate.hashCode();
+
         result = 31 * result + creator.hashCode();
         result = 31 * result + (int)(size ^ (size >>> 32));
         result = 31 * result + fileId.hashCode();
@@ -128,7 +133,7 @@ public class CoreMetadata implements Cloneable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("CoreMetadata{");
-        sb.append("name='").append(name).append('\'');
+        sb.append("nodeName='").append(nodeName).append('\'');
         sb.append(", lastModifiedDate=").append(lastModifiedDate);
         sb.append(", modifier='").append(modifier).append('\'');
         sb.append(", createDate=").append(createDate);
@@ -187,13 +192,14 @@ public class CoreMetadata implements Cloneable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public String getName() {
-        return name;
+    public String getNodeName() {
+        return nodeName;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setNodeName(final String nodeName) {
+        this.nodeName = nodeName;
     }
+
 
 
 }

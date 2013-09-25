@@ -37,7 +37,7 @@ public class CoreMetadataTest {
         coreMetadata1.setCreateDate(new Date());
         coreMetadata1.setCreator("Carlos Ortiz");
         coreMetadata1.setFileId(UUID.randomUUID().toString());
-        coreMetadata1.setName("TestNode");
+        coreMetadata1.setNodeName("TestNode");
         coreMetadata1.setModifier("Dejan Brkic");
         coreMetadata1.setLastModifiedDate(new Date());
         // Now lets do the copies
