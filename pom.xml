@@ -383,6 +383,6 @@
         <module>repo-cmis</module>
         <module>ui</module>
         <module>server</module>
-        <module>repo-mongo</module>
+        <module>repo-mongodb</module>
     </modules>
 </project>
