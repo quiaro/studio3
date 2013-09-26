@@ -17,42 +17,21 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.media.sound.EmergencySoundbank;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.workflow.WorkflowManager;
-import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.WorkflowPackage;
 import org.craftercms.studio.commons.dto.WorkflowTransition;
 import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
-import org.craftercms.studio.controller.services.rest.dto.WorkflowStartRequest;
-import org.craftercms.studio.controller.services.rest.dto.WorkflowTransitionRequest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.reset;
@@ -70,10 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml", "/spring/messageFormatting-studio3-web-context.xml"})
-public class WorkflowControllerTest {
+public class WorkflowControllerTest extends AbstractControllerTest {
 
     //Mocks
     @Autowired
@@ -82,15 +58,6 @@ public class WorkflowControllerTest {
     @InjectMocks
     private WorkflowController workflowController;
 
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
 
     @After
     public void tearDown() throws Exception {
@@ -105,7 +72,7 @@ public class WorkflowControllerTest {
         this.mockMvc.perform(
             post("/api/1/workflow/start/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(generateStartWorkflowJSON().getBytes())
+                .content(generateRequestBody(generateStartWorkflowRequest()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
@@ -113,67 +80,11 @@ public class WorkflowControllerTest {
             Mockito.anyListOf(Item.class));
     }
 
-    private String generateStartWorkflowJSON() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        String toRet = "";
-        try {
-            toRet = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(generateStartWorkflowRequest());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return toRet;
-
-    }
-
-    private WorkflowStartRequest generateStartWorkflowRequest() {
-        WorkflowStartRequest workflowStartRequest = new WorkflowStartRequest();
-        workflowStartRequest.setPackageName(RandomStringUtils.randomAlphanumeric(10));
-        List<String> comments = new ArrayList<String>();
-        for (int i = 0; i < 5 + (int)(Math.random() * (6)); i++) {
-            comments.add(RandomStringUtils.randomAlphanumeric((int)(256 * Math.random())));
-        }
-        workflowStartRequest.setComments(comments);
-        List<Item> items = new ArrayList<Item>();
-        for (int i = 0; i < 5 + (int)(Math.random() * (6)); i++) {
-            items.add(createItemMock());
-        }
-        workflowStartRequest.setItems(items);
-        return workflowStartRequest;
-    }
-
-    private Item createItemMock() {
-        Item item = new Item();
-        item.setContentType(RandomStringUtils.randomAlphabetic(10));
-        item.setCreateDate(new Date());
-        item.setCreator(RandomStringUtils.randomAlphabetic(10));
-        item.setDisabled(false);
-        item.setFileName(RandomStringUtils.randomAlphanumeric(10));
-        item.setId(UUID.randomUUID().toString());
-        item.setLastModifiedDate(new Date());
-        item.setLockOwner(RandomStringUtils.randomAlphabetic(10));
-        item.setMimeType(RandomStringUtils.randomAlphabetic(10));
-        item.setModifier(RandomStringUtils.randomAlphabetic(10));
-        item.setName(RandomStringUtils.randomAlphabetic(10));
-        item.setPackages(new ArrayList<String>());
-        item.setPath(RandomStringUtils.randomAlphabetic(100));
-        item.setPlaceInNav(true);
-        item.setPreviewable(true);
-        item.setPreviewUrl(RandomStringUtils.randomAlphabetic(100));
-        item.setProperties(new HashMap<String, Object>());
-        item.setRenderingTemplates(new ArrayList<String>());
-        item.setRepoId(RandomStringUtils.randomAlphabetic(10));
-        item.setScheduledDate(new Date());
-        item.setState(RandomStringUtils.randomAlphabetic(10));
-        item.setStudioType(RandomStringUtils.randomAlphabetic(10));
-        return item;
-    }
-
     // TODO: invalid request tests
 
     @Test
     public void testPackage() throws Exception {
-        when(this.workflowManagerMock.getPackage(Mockito.anyString())).thenReturn(generateListOfItems());
+        when(this.workflowManagerMock.getPackage(Mockito.anyString())).thenReturn(generateItemListMock());
 
         this.mockMvc.perform(
             get("/api/1/workflow/package/sample?packageId=1")
@@ -183,17 +94,9 @@ public class WorkflowControllerTest {
         verify(this.workflowManagerMock, times(1)).getPackage(Mockito.anyString());
     }
 
-    private List<Item> generateListOfItems() {
-        List<Item> items = new ArrayList<Item>();
-        for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
-            items.add(createItemMock());
-        }
-        return items;
-    }
-
     @Test
     public void testPackageMissingPackageId() throws Exception {
-        when(this.workflowManagerMock.getPackage(Mockito.anyString())).thenReturn(generateListOfItems());
+        when(this.workflowManagerMock.getPackage(Mockito.anyString())).thenReturn(generateItemListMock());
 
         this.mockMvc.perform(
             get("/api/1/workflow/package/sample")
@@ -214,33 +117,8 @@ public class WorkflowControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.workflowManagerMock, times(1)).getPackages(Mockito.anyString(), Mockito.anyListOf
-            (WorkflowPackageFilter.class));
-    }
-
-    private List<WorkflowPackage> generateListOfPackages() {
-        List<WorkflowPackage> packages = new ArrayList<WorkflowPackage>();
-        for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
-            packages.add(createPackageMock());
-        }
-        return packages;
-    }
-
-    private WorkflowPackage createPackageMock() {
-        WorkflowPackage workflowPackage = new WorkflowPackage();
-        workflowPackage.setId(UUID.randomUUID().toString());
-        workflowPackage.setState(RandomStringUtils.randomAlphabetic(8));
-        workflowPackage.setScheduledDate(new Date());
-        workflowPackage.setDescription(RandomStringUtils.randomAlphanumeric(256));
-        workflowPackage.setItems(generateListOfItems());
-        workflowPackage.setName(RandomStringUtils.randomAlphabetic(15));
-        Map<String, Object> props = new HashMap<String, Object>();
-        props.put("prop1", RandomStringUtils.randomAlphanumeric(10));
-        props.put("prop2", RandomStringUtils.randomAlphanumeric(10));
-        workflowPackage.setProperties(props);
-        workflowPackage.setSubmittedBy(RandomStringUtils.randomAlphabetic(10));
-        workflowPackage.setWorkflowId(RandomStringUtils.randomAlphanumeric(15));
-        return workflowPackage;
+        verify(this.workflowManagerMock, times(1)).getPackages(Mockito.anyString(),
+            Mockito.anyListOf(WorkflowPackageFilter.class));
     }
 
     @Test
@@ -253,21 +131,6 @@ public class WorkflowControllerTest {
             .andExpect(status().isOk());
 
         verify(this.workflowManagerMock, times(1)).getTransitions(Mockito.anyString());
-    }
-
-    private List<WorkflowTransition> generateListOfTransitions() {
-        List<WorkflowTransition> transitions = new ArrayList<WorkflowTransition>();
-        for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
-            transitions.add(createTransitionMock());
-        }
-        return transitions;
-    }
-
-    private WorkflowTransition createTransitionMock() {
-        WorkflowTransition transition = new WorkflowTransition();
-        transition.setId(UUID.randomUUID().toString());
-        transition.setName(RandomStringUtils.randomAlphabetic(10));
-        return transition;
     }
 
     @Test
@@ -298,41 +161,14 @@ public class WorkflowControllerTest {
 
         this.mockMvc.perform(
             post("/api/1/workflow/transition/sample")
-                .content(generateTransitionRequestJson().getBytes())
+                .content(generateRequestBody(generateTransitionRequestMock()).getBytes())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL)
                 )
             .andExpect(status().isOk());
 
-        verify(this.workflowManagerMock, times(1)).transition(Mockito.anyString(), Mockito.any(WorkflowTransition
-            .class), Mockito.anyMapOf(String.class, Object.class));
-    }
-
-    private WorkflowTransitionRequest generateTransitionRequest() {
-        WorkflowTransitionRequest requestObject = new WorkflowTransitionRequest();
-        requestObject.setPackageId(RandomStringUtils.randomAlphanumeric(10));
-        //requestObject.setPackageId(" ");
-        WorkflowTransition transition = new WorkflowTransition();
-        transition.setId(UUID.randomUUID().toString());
-        transition.setName(RandomStringUtils.randomAlphabetic(10));
-        requestObject.setTransition(transition);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("param1", RandomStringUtils.randomAlphanumeric(20));
-        params.put("param2", RandomStringUtils.randomAlphanumeric(20));
-        requestObject.setParams(params);
-        return requestObject;
-    }
-
-    private String generateTransitionRequestJson() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        String toRet = "";
-        try {
-            toRet = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(generateTransitionRequest());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return toRet;
+        verify(this.workflowManagerMock, times(1)).transition(Mockito.anyString(),
+            Mockito.any(WorkflowTransition.class), Mockito.anyMapOf(String.class, Object.class));
     }
 
     @Test
