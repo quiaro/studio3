@@ -101,5 +101,11 @@ define({
         }
       ]
     }
+  },
+
+  REGISTRY: {
+    path: '/config/registry.json',
+    bridgedEventsKey: 'bridgedEvents'
   }
+
 });

@@ -3,7 +3,8 @@
 
 angular.module('common', ['ui.bootstrap.dialog'])
 
-	.factory('util', ['Env', function (Env) {
+	.factory('util',
+		['$http', '$q', 'Env', 'REGISTRY', function($http, $q, Env, REGISTRY) {
 
 		/*
 		 * @param api -API Category
@@ -58,11 +59,29 @@ angular.module('common', ['ui.bootstrap.dialog'])
 			}
 		}
 
+		/*
+		 * Get the app registry (and cache it if it doesn't exist yet)
+		 * @return promise : on success it will pass the registry as a JSON object
+		 */
+		function getRegistry () {
+			var deferred = $q.defer();
+
+			$http.get(REGISTRY.path)
+				.success(function(data) {
+					deferred.resolve(data);
+				}).error(function() {
+					// alertDialog.open();
+					deferred.reject(null);
+				});
+			return deferred.promise;
+		}
+
 		// expose the API to the user
 		return {
 			getServiceURL: getServiceURL,
 			getEnvProperty: getEnvProperty,
-			setEnvProperty: setEnvProperty
+			setEnvProperty: setEnvProperty,
+			getRegistry: getRegistry
 		};
 	}])
 

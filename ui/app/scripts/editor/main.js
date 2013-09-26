@@ -7,9 +7,9 @@ require.config({
 	paths: {
 		'ckeditor' : 'lib/ckeditor/ckeditor',
 		'config' : 'scripts/editor/modules/config',
-		'editor-pubsub' : 'scripts/editor/modules/pubsub',
+		'event-bridge' : 'scripts/editor/modules/eventBridge',
 		'domReady' : 'lib/requirejs-domready/js/domReady',
-		'jquery' : 'lib/jquery/js/jquery.min',
+		'jquery' : 'lib/jquery/js/jquery',
 		'jquery-private' : 'scripts/editor/modules/jquery-private',
 		'pubsub' : 'lib/pubsub-js/pubsub'
 	},
@@ -32,7 +32,8 @@ require(['config',
 	'domReady',
 	'jquery',
 	'ckeditor',
-	'editor-pubsub',
+	'pubsub',
+	'event-bridge',
 	'lib/require-css/js/css!styles/editor'],
 		function (config, domReady, $, ckeditor, PubSub) {
 
