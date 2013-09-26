@@ -3,6 +3,7 @@ html, body { height: 100%; min-width: 1024px; }
 #app-container {
     /* background-color: #ABC7E7; lighter blue: not good for background color ... maybe for small details; */
 	background-color: #8899AD;
+    color: #333;
 	display: table;
 	border-spacing: 0;
     border-collapse: collapse;
@@ -40,22 +41,20 @@ html, body { height: 100%; min-width: 1024px; }
 
 .navigation .logo { display: block; }
 
-.navigation .icon-menu {
-	font-size: 14px;
-}
-
-.navigation .icon-menu li,
-.navigation .icon-menu li a {
+.navigation .user-menu { font-size: 14px; }
+.navigation .user-menu li,
+.navigation .user-menu a,
+.navigation .user-menu li a {
 	/*color: #363636;*/
-	color: #E6E6E6;
+	color: #EDEDED;
 }
 
-.navigation .icon-menu li {
+.navigation .user-menu li {
 	margin: 8px 0px;
 	padding: 0 2px;
 }
 
-.navigation .icon-menu li a:hover {
+.navigation .user-menu a:hover {
 	/*color: #000000;*/
 	color: #FFFFFF;
 	text-decoration: none;

@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('studio-ui', [
+        'navigation',
         'dashboard',
         'preview',
         'common',
