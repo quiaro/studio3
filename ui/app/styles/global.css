@@ -1,42 +1,44 @@
 html, body { height: 100%; min-width: 1024px; }
 
-#app-container { 
-	/*background-color: #5E8EC4;*/
-  /*	background-color: #ABC7E7; lighter blue: not good for background color ... maybe for small details; */
+#app-container {
+    /* background-color: #ABC7E7; lighter blue: not good for background color ... maybe for small details; */
 	background-color: #8899AD;
 	display: table;
 	border-spacing: 0;
-  border-collapse: collapse;
-	height: 100%; 
+    border-collapse: collapse;
+	height: 100%;
 	width: 100%;
 }
+#app-container > div { display: table-row; width: 100%; }
 
-.navigation { padding: 10px 15px; }
-.navigation .logo { 
-	background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat; 
-	display: block;
-	height: 78px;
-	width: 160px;
+/* --- Animations --- */
+.navigation {
+    transition: width 1s;
+    -webkit-transition: width 1s;
 }
 
-.dashboard > .navigation,
-.preview > .navigation { 
-	display: table-cell; 
-	width: 280px; 
-	margin-right: 20px; 
+#main-container .content {
+    transition: top 1s;
+    -webkit-transition: top 1s;
+
+    transition: right 1s;
+    -webkit-transition: right 1s;
+
+    transition: bottom 1s;
+    -webkit-transition: bottom 1s;
+
+    transition: left 1s;
+    -webkit-transition: left 1s;
 }
 
-.navigation .search { margin: 10px 0; }
-.navigation .search .form-group { width: 100%; }
-.navigation .search input[type='search'] { width: 210px; }
-
-.navigation .file-view {
-	background-color: #FFFFFF;
-	border: 1px solid #606060;
-	height: 400px;
-	width: 100%;
-	border-radius: 5px;
+/* --- Navigation --- */
+.navigation {
+    display: table-cell;
+    padding: 10px 15px;
+    margin-right: 20px;
 }
+
+.navigation .logo { display: block; }
 
 .navigation .icon-menu {
 	font-size: 14px;
@@ -48,11 +50,10 @@ html, body { height: 100%; min-width: 1024px; }
 	color: #E6E6E6;
 }
 
-.navigation .icon-menu li {	
+.navigation .icon-menu li {
 	margin: 8px 0px;
 	padding: 0 2px;
 }
-
 
 .navigation .icon-menu li a:hover {
 	/*color: #000000;*/
@@ -60,47 +61,24 @@ html, body { height: 100%; min-width: 1024px; }
 	text-decoration: none;
 }
 
-/* --- class: expand = Navigation collapsed, Work Area expanded --- */
-.dahshboard.expand  > .navigation,
-.preview.expand  > .navigation {
-	width: 55px;
+/* --- Main Container --- */
+#main-container { display: table-cell; }
+
+#main-container > .content {
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    right: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #111111;
+    min-width: 708px;
 }
 
-.expand  > .navigation .logo {
-	background: transparent url(/images/crafter-logo-min.png) 10px 0 no-repeat; 
-	height: 78px;
-	width: 60px;
+/* --- Full Screen State --- */
+.full .navigation { display: none; }
+.full #main-container .content {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }
-
-.expand .navigation .search input[type='search'] { display: none; }
-.expand .navigation .search button[type='button'] { float: right; }
-
-
-.expand .navigation .icon-menu .description { display: none; }
-
-
-/* --- class: expand2 = Navigation collapsed, Work Area expanded | only show icons on the navigation --- */
-.dahshboard.expand2  > .navigation,
-.preview.expand2  > .navigation {
-	width: 60px;
-	margin-right: 10px;
-	padding: 10px 5px;
-
-	border-right: 6px solid gray;
-}
-
-.expand2  > .navigation .logo {
-	background: transparent url(/images/crafter-logo-min.png) 0 0 no-repeat; 
-	height: 78px;
-	width: 45px;
-}
-
-.expand2 .navigation .file-view { display: none; }
-
-.expand2 .navigation .search input[type='search'] { display: none; }
-
-.expand2 .navigation .icon-menu { font-size: 18px; }
-.expand2 .navigation .icon-menu .description { display: none; }
-.expand2 .navigation .list-inline li { display: block; margin-left: 6px; }
-.expand2 .navigation .icon-menu .separator { display: none; }
-

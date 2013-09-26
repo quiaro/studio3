@@ -49,7 +49,7 @@ angular.module('ngEventBridge', ['common'])
 				$rootScope.$on(evt, function(event, data) {
 					var iframe, requireFunc;
 
-					// We're going to add a property to the message data "cancelBridge" 
+					// We're going to add a property to the message data "cancelBridge"
 					// to check if we should pass on an event or not and avoid creating
 					// an endless loop
 					if (!data.cancelBridge) {
@@ -59,11 +59,6 @@ angular.module('ngEventBridge', ['common'])
 						requireFunc = getRequireFunc(iframe);
 
 						requireFunc([PubSubModule], function (EditorPubSub) {
-
-							// console.log("--- Publishing in Editor ---");
-							// console.log("Event: ", evt);
-							// console.log("Data: ", data);
-
 							EditorPubSub.publish(evt, data);
 						});
 					}

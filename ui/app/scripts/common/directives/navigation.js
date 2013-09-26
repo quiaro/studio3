@@ -16,6 +16,8 @@ angular.module('common')
 								'       ng-click="AppCtrl.changeLanguage(\'en\')" />' +
 								'    <input type="button" value="French" ' +
 								'       ng-click="AppCtrl.changeLanguage(\'fr\')" />' +
+                                '    <input type="button" value="UV" ' +
+                                '       ng-click="AppCtrl.toggleView()" />' +
 								'  </div>' +
 								'</div>'
 		};

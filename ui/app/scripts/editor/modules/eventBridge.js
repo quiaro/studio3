@@ -45,11 +45,6 @@ define(['config', 'jquery', 'pubsub'], function (cfg, $, PubSub) {
 				// "cancelBridge" to check if we should pass on an event or not.
 				if (!data.cancelBridge) {
 					data.cancelBridge = true;
-
-					// console.log("--- Publishing in Angular ---");
-					// console.log("Event: ", evt);
-					// console.log("Data: ", data);
-
 					AngularRootScope.$broadcast(evt, data);
 				}
 			});

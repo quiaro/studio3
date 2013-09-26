@@ -1,101 +1,89 @@
-<div class="dashboard">
-
-	<navigation></navigation>
-
-	<div id="dashboard-container" ng-controller="DashboardCtrl">
-		<div class="content">
-
-		  <div class="panel panel-default recent-activity">
-		  	<div class="panel-heading">
-		  		<h3 class="panel-title" translate>DASHBOARD.activity.header</h3>
-		  	</div>
-			  <div class="panel-body">
-			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
-				  	<thead>
-				  		<tr>
-				  			<th>&nbsp;</th>
-				  			<!-- <th>Status</th> -->
-				  			<th translate>DASHBOARD.activity.page_name</th>
-				  			<th translate>DASHBOARD.activity.operations</th>
-				  			<th translate>DASHBOARD.activity.url</th>
-				  			<th translate>DASHBOARD.activity.last_edited</th>
-				  			<th translate>DASHBOARD.activity.author</th>
-				  			<th translate>DASHBOARD.activity.my_last_edit</th>
-				  		</tr>
-				  	</thead>
-				  	<tbody>
-				  		<tr ng-repeat="item in recentActivity">
-				  			<td><input type="checkbox" name="{{item.id}}" /></td>
-				  			<!-- <td>
-				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
-				  				</span>
-				  			</td> -->
-				  			<td>{{item.name}}</td>
-				  			<td><a href="#" translate>DASHBOARD.activity.edit_link</a></td>
-				  			<td>{{item.url}}</td>
-				  			<td>{{item.lastEdited}}</td>
-				  			<td>{{item.lastAuthor}}</td>
-				  			<td>{{item.lastPersonalEdit}}</td>
-				  		</tr>
-				  	</tbody>
-				  </table>
-			  </div>
-			</div>
-
-			<div class="panel panel-default pending-approval">
-		  	<div class="panel-heading">
-		  		<h3 class="panel-title" translate>DASHBOARD.approval.header</h3>
-		  	</div>
-			  <div class="panel-body">
-			  	<table class="item-list recent-activity" ng-init="getRecentActivity()">
-				  	<thead>
-				  		<tr>
-				  			<th>&nbsp;</th>
-				  			<!-- <th>Status</th> -->
-				  			<th translate>DASHBOARD.approval.page_name</th>
-				  			<th translate>DASHBOARD.approval.operations</th>
-				  			<th translate>DASHBOARD.approval.url</th>
-				  			<th translate>DASHBOARD.approval.last_edited</th>
-				  			<th translate>DASHBOARD.approval.author</th>
-				  			<th translate>DASHBOARD.approval.my_last_edit</th>
-				  		</tr>
-				  	</thead>
-				  	<tbody>
-				  		<tr ng-repeat="item in recentActivity">
-				  			<td><input type="checkbox" name="{{item.id}}" /></td>
-				  			<!-- <td>
-				  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
-				  				</span>
-				  			</td> -->
-				  			<td>{{item.name}}</td>
-				  			<td><a href="#" translate>DASHBOARD.approval.edit_link</a></td>
-				  			<td>{{item.url}}</td>
-				  			<td>{{item.lastEdited}}</td>
-				  			<td>{{item.lastAuthor}}</td>
-				  			<td>{{item.lastPersonalEdit}}</td>
-				  		</tr>
-				  	</tbody>
-				  </table>
-			  </div>
-			</div>
-
-			<div style="padding: 20px 22px;">
-				<label>Message Title</label>
-	      <input ng-model="msg.title" placeholder="Title"><br />
-	      <label>Message Body</label>
-	      <input ng-model="msg.body" placeholder="Body"><br />
-	      <label>Message Type</label>
-	      <select ng-model="msg.type">
-	        <option value="success">Success</option>
-	        <option value="info">Info</option>
-	        <option value="warning">Warning</option>
-	        <option value="error">Error</option>
-	      </select><br />
-	      <a ng-click="notifications.pop({title: msg.title, body: msg.body, type: msg.type})" class="btn">Show Message</a>
-	    </div>
-		  
-		</div>
+<div class="panel panel-default recent-activity">
+	<div class="panel-heading">
+		<h3 class="panel-title" translate>DASHBOARD.activity.header</h3>
 	</div>
+    <div class="panel-body">
+      	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+    	  	<thead>
+    	  		<tr>
+    	  			<th>&nbsp;</th>
+    	  			<!-- <th>Status</th> -->
+    	  			<th translate>DASHBOARD.activity.page_name</th>
+    	  			<th translate>DASHBOARD.activity.operations</th>
+    	  			<th translate>DASHBOARD.activity.url</th>
+    	  			<th translate>DASHBOARD.activity.last_edited</th>
+    	  			<th translate>DASHBOARD.activity.author</th>
+    	  			<th translate>DASHBOARD.activity.my_last_edit</th>
+    	  		</tr>
+    	  	</thead>
+    	  	<tbody>
+    	  		<tr ng-repeat="item in recentActivity">
+    	  			<td><input type="checkbox" name="{{item.id}}" /></td>
+    	  			<!-- <td>
+    	  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+    	  				</span>
+    	  			</td> -->
+    	  			<td>{{item.name}}</td>
+    	  			<td><a href="#" translate>DASHBOARD.activity.edit_link</a></td>
+    	  			<td>{{item.url}}</td>
+    	  			<td>{{item.lastEdited}}</td>
+    	  			<td>{{item.lastAuthor}}</td>
+    	  			<td>{{item.lastPersonalEdit}}</td>
+    	  		</tr>
+    	  	</tbody>
+    	</table>
+    </div>
+</div>
 
+<div class="panel panel-default pending-approval">
+	<div class="panel-heading">
+		<h3 class="panel-title" translate>DASHBOARD.approval.header</h3>
+	</div>
+    <div class="panel-body">
+      	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+    	  	<thead>
+    	  		<tr>
+    	  			<th>&nbsp;</th>
+    	  			<!-- <th>Status</th> -->
+    	  			<th translate>DASHBOARD.approval.page_name</th>
+    	  			<th translate>DASHBOARD.approval.operations</th>
+    	  			<th translate>DASHBOARD.approval.url</th>
+    	  			<th translate>DASHBOARD.approval.last_edited</th>
+    	  			<th translate>DASHBOARD.approval.author</th>
+    	  			<th translate>DASHBOARD.approval.my_last_edit</th>
+    	  		</tr>
+    	  	</thead>
+    	  	<tbody>
+    	  		<tr ng-repeat="item in recentActivity">
+    	  			<td><input type="checkbox" name="{{item.id}}" /></td>
+    	  			<!-- <td>
+    	  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
+    	  				</span>
+    	  			</td> -->
+    	  			<td>{{item.name}}</td>
+    	  			<td><a href="#" translate>DASHBOARD.approval.edit_link</a></td>
+    	  			<td>{{item.url}}</td>
+    	  			<td>{{item.lastEdited}}</td>
+    	  			<td>{{item.lastAuthor}}</td>
+    	  			<td>{{item.lastPersonalEdit}}</td>
+    	  		</tr>
+    	  	</tbody>
+    	</table>
+    </div>
+</div>
+
+<div style="padding: 20px 22px;">
+	<label>Message Title</label>
+    <input ng-model="msg.title" placeholder="Title"><br />
+    <label>Message Body</label>
+    <input ng-model="msg.body" placeholder="Body"><br />
+    <label>Message Type</label>
+    <select ng-model="msg.type">
+    <option value="success">Success</option>
+    <option value="info">Info</option>
+    <option value="warning">Warning</option>
+    <option value="error">Error</option>
+    </select><br />
+    <a ng-click="notifications.pop({title: msg.title, body: msg.body, type: msg.type})" class="btn">Show Message</a>
 </div>
 

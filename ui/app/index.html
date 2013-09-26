@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap@@min.css">
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme@@min.css">
     <link rel="stylesheet" href="lib/toastr/css/toastr@@min.css">
-    
+
     <!-- build:css styles/studio.css -->
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/dashboard.css">
@@ -23,9 +23,15 @@
 
   <body ng-app="studio-ui@@dev" ng-controller="AppCtrl">
 
-    <!-- Add your site or application content here -->
-    <div id="app-container" class="container-fluid" ng-view></div>
-    
+    <div id="app-container" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
+        <div>
+            <navigation></navigation>
+            <div id="main-container">
+                <div class="content container-fluid" ng-view></div>
+            </div>
+        </div>
+    </div>
+
     <script src="lib/jquery/js/jquery@@min.js"></script>
     <script src="lib/toastr/js/toastr@@min.js"></script>
     <script src="lib/angular/js/angular@@min.js"></script>
