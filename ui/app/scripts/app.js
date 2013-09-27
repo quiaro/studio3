@@ -50,7 +50,7 @@ angular.module('studio-ui', [
         // Namespace all things attached to the scope so it's easier to know
         // what values/functions were assigned through this controller.
         $scope.AppCtrl = {};
-        $scope.AppCtrl.fullScreen = "normal";
+        $scope.AppCtrl.fullScreen = 'normal';
 
         // Error handling on route changes
         $rootScope.$on('$routeChangeError', function (evt, current, prev, rejection) {
@@ -61,11 +61,11 @@ angular.module('studio-ui', [
         $rootScope.$on('$routeChangeSuccess', function (evt) {
             switch ($location.path()) {
                 case APP_PATHS.dashboard:
-                    $scope.AppCtrl.appState = "dashboard"; break;
+                    $scope.AppCtrl.appState = 'dashboard'; break;
                 case APP_PATHS.preview:
-                    $scope.AppCtrl.appState = "preview"; break;
+                    $scope.AppCtrl.appState = 'preview'; break;
                 default:
-                    $scope.AppCtrl.appState = "unknown";
+                    $scope.AppCtrl.appState = 'unknown';
             }
         });
 
@@ -79,11 +79,11 @@ angular.module('studio-ui', [
             } else {
                 $location.path('/');
             }
-        }
+        };
 
         $scope.AppCtrl.toggleFullScreen = function toggleFullScreen () {
             $scope.AppCtrl.fullScreen = ($scope.AppCtrl.fullScreen === 'normal') ? 'full' : 'normal';
-        }
+        };
     }])
 
     // Initialize the application

@@ -34,4 +34,4 @@ angular.module('common')
 			replace: true,
 			template: '<div class="file-view"></div>'
 		};
-	})
+	});
