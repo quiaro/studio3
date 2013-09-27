@@ -31,6 +31,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.lifecycle.Action;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
+import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
@@ -382,6 +383,27 @@ public abstract class AbstractControllerTest {
         params.put("param2", RandomStringUtils.randomAlphanumeric(20));
         requestObject.setParams(params);
         return requestObject;
+    }
+
+    protected List<FormDefinition> generateFormDefinitionList() {
+        List<FormDefinition> forms = new ArrayList<FormDefinition>();
+        for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
+            forms.add(createFormDefinitionMock());
+        }
+        return forms;
+    }
+
+    protected FormDefinition createFormDefinitionMock() {
+        FormDefinition form = new FormDefinition();
+        form.setName(RandomStringUtils.randomAlphabetic(10));
+        form.setId(UUID.randomUUID().toString());
+        Map<String, Object> schema = new HashMap<String, Object>();
+        schema.put("param1", "param1");
+        schema.put("param2", "param2");
+        form.setSchema(schema);
+        form.setSiteId(RandomStringUtils.randomAlphabetic(10));
+        form.setSiteName(RandomStringUtils.randomAlphabetic(10));
+        return form;
     }
 
     public class TestAction implements Action {
