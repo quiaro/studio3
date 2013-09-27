@@ -24,9 +24,9 @@ angular.module('dashboard', ['common'])
 
 			// Service is handling any failures
 			promise.then( function (data) {
-        $scope.recentActivity = data;
-      });
-		};
+                $scope.recentActivity = data;
+            });
+        };
 
 	}]);
 
