@@ -1,36 +1,36 @@
 /* ------------------ */
-/* --- Navigation --- */
+/* ---#nav --- */
 /* ------------------ */
-.dashboard .navigation { width: 280px; }
+.dashboard #nav { width: 280px; }
 
-.dashboard .navigation input[type='search'],
-.dashboard .navigation select { border-color: #666; }
+.dashboard #nav input[type='search'],
+.dashboard #nav select { border-color: #666; }
 
-.dashboard .navigation .logo {
+.dashboard #nav .logo {
     background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat;
     height: 78px;
     width: 100%;
 }
 
-.dashboard .navigation .search { margin: 5px 0; }
+.dashboard #nav .search { margin: 5px 0; }
 
-.dashboard .navigation .project-menu,
-.dashboard .navigation .project-menu > button { width: 100%; }
+.dashboard #nav .project-menu,
+.dashboard #nav .project-menu > button { width: 100%; }
 
-.dashboard .navigation .project-menu { margin: 5px 0; }
-.dashboard .navigation .project-menu > button { text-align: left; }
+.dashboard #nav .project-menu { margin: 5px 0; }
+.dashboard #nav .project-menu > button { text-align: left; }
 
 
-.dashboard .navigation .file-view {
+.dashboard #nav .file-view {
     background-color: #FFFFFF;
     border: 1px solid #606060;
-    height: 500px;
+    height: 507px;
     margin: 5px 0;
     width: 100%;
     border-radius: 5px;
 }
 
-.dashboard .navigation .s2do-menu .options {
+.dashboard #nav .s2do-menu .options {
     position: absolute;
     left: 0;
     z-index: 1000;
@@ -47,42 +47,42 @@
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-clip: padding-box;
 }
-.dashboard .navigation .options.bottom { top:100%; }
-.dashboard .navigation .options.top { bottom:100%; }
+.dashboard #nav .options.bottom { top:100%; }
+.dashboard #nav .options.top { bottom:100%; }
 
-.dashboard .navigation .s2do-menu .options li {
+.dashboard #nav .s2do-menu .options li {
     text-align: left;
     margin: 0;
 }
-.dashboard .navigation .s2do-menu .options a {
+.dashboard #nav .s2do-menu .options a {
     display: block;
     color: #333;
     padding: 4px 10px;
     white-space: nowrap;
 }
-.dashboard .navigation .s2do-menu .options a:hover {
+.dashboard #nav .s2do-menu .options a:hover {
     color: #FFF;
     text-decoration: none;
     background-color: #428BCA;
 }
 
-.dashboard .navigation .user-menu {
+.dashboard #nav .user-menu {
     float: right;
     margin: 5px 0;
     position: relative;
 }
-.dashboard .navigation .project-menu {
+.dashboard #nav .project-menu {
     position: relative;
 }
 
-.dashboard .navigation .project-menu .options {
+.dashboard #nav .project-menu .options {
     width: 100%;
 }
 
 /* ------------------ */
 /* --- Dashboard ---- */
 /* ------------------ */
-.dashboard .content { left: 290px };
+.dashboard .content { left: 280px };
 
 .dashboard h1 { padding: 15px 20px 0 20px; }
 
