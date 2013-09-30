@@ -23,7 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @ReportAsSingleViolation
 @NotNull
-@Pattern(regexp = "^\\S+$")
+@Pattern(regexp = "^(\\s*\\S+\\s*)*$")
 public @interface StringNotEmpty {
 
     String message() default "{org.craftercms.studio.commons.validation.StringNotEmpty.message}";

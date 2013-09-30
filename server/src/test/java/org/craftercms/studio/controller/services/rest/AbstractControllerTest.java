@@ -35,6 +35,7 @@ import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
+import org.craftercms.studio.commons.dto.ModuleConfiguration;
 import org.craftercms.studio.commons.dto.ResultSet;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.Site;
@@ -404,6 +405,13 @@ public abstract class AbstractControllerTest {
         form.setSiteId(RandomStringUtils.randomAlphabetic(10));
         form.setSiteName(RandomStringUtils.randomAlphabetic(10));
         return form;
+    }
+
+    protected ModuleConfiguration createModuleConfigurationMock() {
+        ModuleConfiguration module = new ModuleConfiguration();
+        module.setModuleName(RandomStringUtils.randomAlphabetic(10));
+        module.setModuleType(RandomStringUtils.randomAlphabetic(10));
+        return module;
     }
 
     public class TestAction implements Action {
