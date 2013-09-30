@@ -5,27 +5,51 @@ angular.module('dashboard', ['common'])
   .controller('DashboardCtrl',
 		['$scope', 'repo', 'notifications', function($scope, repo, notifications) {
 
-		$scope.notifications = notifications;
+        $scope.notifications = notifications;
 
-		$scope.getRecentActivity = function getRecentActivity () {
+        var table = {
+            // real value for data property will be assigned in the getData method
+            data: {},
 
-			var filterObj, promise;
+            // filter : number of results to show
+            results: 0,
+            getData: function getData (filterOpts) {
 
-			function buildFilterObj () {
-				// TO-DO: Build the config object for the specific functionality we're on
-				return {};
-			}
+                // We need to use call to preserve the context (this)
+                (function (filterOpts) {
+                    var that = this;
 
-			// Initialize value
-			$scope.recentActivity = null;
+                    repo.list(filterOpts)
+                        .then( function (data) {
+                            that.data = data;
+                            that.results = data.length;
+                        });
+                }).call(this, filterOpts);
+            },
+            setSortClass: function setSortClass (column) {
+                var sortOrder;
 
-			filterObj = buildFilterObj();
-			promise = repo.list(filterObj);
+                sortOrder = (this.sort.descending) ? 'descending' : 'ascending';
+                return column === this.sort.column && 'sort-' + sortOrder;
 
-			// Service is handling any failures
-			promise.then( function (data) {
-                $scope.recentActivity = data;
-            });
+            },
+            changeSorting: function changeSorting (column) {
+                var sort = this.sort;
+                if (sort.column === column) {
+                    sort.descending = !sort.descending;
+                } else {
+                    sort.column = column;
+                    sort.descending = false;
+                }
+            }
+        };
+
+        // Dashboard tables : Make all dashboard tables inherit from the table object
+        $scope.recentActivity = Object.create(table);
+
+        $scope.recentActivity.sort = {
+            column : 'lastAuthor',
+            descending : false
         };
 
 	}]);

@@ -6,6 +6,5 @@ angular.module('navigation', ['common'])
         ['$scope', function($scope) {
 
         $scope.hideUserOptions = true;
-        $scope.hideProjectOptions = true;
 
     }]);

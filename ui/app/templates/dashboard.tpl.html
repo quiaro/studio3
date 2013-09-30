@@ -1,31 +1,56 @@
 <div class="panel panel-default recent-activity">
 	<div class="panel-heading">
 		<h3 class="panel-title" translate>DASHBOARD.activity.header</h3>
+        <div class="filters">
+            <span class="type-results">
+                <select title="Filter by item type" class="form-control input-sm">
+                  <option value="">All</option>
+                  <option value="mango">Pages</option>
+                  <option value="starfruit">Components</option>
+                  <option value="dragonfruit">Documents</option>
+                </select>
+            </span>
+            <span class="num-results">
+                <input title="Filter by number of results"
+                       class="form-control input-sm" type="number"
+                       ng-model="recentActivity.results"
+                       min="0" max="100" required />
+                of <b>{{recentActivity.data.length}}</b>
+            </span>
+        </div>
 	</div>
     <div class="panel-body">
-      	<table class="item-list recent-activity" ng-init="getRecentActivity()">
+      	<table class="item-list recent-activity" ng-init="recentActivity.getData()">
     	  	<thead>
     	  		<tr>
     	  			<th>&nbsp;</th>
     	  			<!-- <th>Status</th> -->
-    	  			<th translate>DASHBOARD.activity.page_name</th>
-    	  			<th translate>DASHBOARD.activity.operations</th>
-    	  			<th translate>DASHBOARD.activity.url</th>
-    	  			<th translate>DASHBOARD.activity.last_edited</th>
-    	  			<th translate>DASHBOARD.activity.author</th>
-    	  			<th translate>DASHBOARD.activity.my_last_edit</th>
+    	  			<th ng-class="recentActivity.setSortClass('name')"
+                        ng-click="recentActivity.changeSorting('name')"
+                        translate>DASHBOARD.activity.page_name</th>
+    	  			<!-- <th ng-class="recentActivity.setSortClass('url')"
+                        ng-click="recentActivity.changeSorting('url')"
+                        translate>DASHBOARD.activity.url</th> -->
+    	  			<th ng-class="recentActivity.setSortClass('lastEdited')"
+                        ng-click="recentActivity.changeSorting('lastEdited')"
+                        translate>DASHBOARD.activity.last_edited</th>
+    	  			<th ng-class="recentActivity.setSortClass('lastAuthor')"
+                        ng-click="recentActivity.changeSorting('lastAuthor')"
+                        translate>DASHBOARD.activity.author</th>
+    	  			<th ng-class="recentActivity.setSortClass('lastPersonalEdit')"
+                        ng-click="recentActivity.changeSorting('lastPersonalEdit')"
+                        translate>DASHBOARD.activity.my_last_edit</th>
     	  		</tr>
     	  	</thead>
     	  	<tbody>
-    	  		<tr ng-repeat="item in recentActivity">
+    	  		<tr ng-repeat="item in recentActivity.data | orderBy : recentActivity.sort.column : recentActivity.sort.descending | limitTo : recentActivity.results">
     	  			<td><input type="checkbox" name="{{item.id}}" /></td>
     	  			<!-- <td>
     	  				<span class="icon status {{item.existence}} {{item.type}} {{item.status}}">{{item.existence}} : {{item.type}} : {{item.status}}
     	  				</span>
     	  			</td> -->
-    	  			<td>{{item.name}}</td>
-    	  			<td><a href="#" translate>DASHBOARD.activity.edit_link</a></td>
-    	  			<td>{{item.url}}</td>
+    	  			<td title="{{item.url}}">{{item.name}}</td>
+    	  			<!-- <td>{{item.url}}</td> -->
     	  			<td>{{item.lastEdited}}</td>
     	  			<td>{{item.lastAuthor}}</td>
     	  			<td>{{item.lastPersonalEdit}}</td>
@@ -34,40 +59,6 @@
     	</table>
     </div>
 </div>
-
-<!--
-<div class="panel panel-default pending-approval">
-	<div class="panel-heading">
-		<h3 class="panel-title" translate>DASHBOARD.approval.header</h3>
-	</div>
-    <div class="panel-body">
-      	<table class="item-list recent-activity" ng-init="getRecentActivity()">
-    	  	<thead>
-    	  		<tr>
-    	  			<th>&nbsp;</th>
-    	  			<th translate>DASHBOARD.approval.page_name</th>
-    	  			<th translate>DASHBOARD.approval.operations</th>
-    	  			<th translate>DASHBOARD.approval.url</th>
-    	  			<th translate>DASHBOARD.approval.last_edited</th>
-    	  			<th translate>DASHBOARD.approval.author</th>
-    	  			<th translate>DASHBOARD.approval.my_last_edit</th>
-    	  		</tr>
-    	  	</thead>
-    	  	<tbody>
-    	  		<tr ng-repeat="item in recentActivity">
-    	  			<td><input type="checkbox" name="{{item.id}}" /></td>
-    	  			<td>{{item.name}}</td>
-    	  			<td><a href="#" translate>DASHBOARD.approval.edit_link</a></td>
-    	  			<td>{{item.url}}</td>
-    	  			<td>{{item.lastEdited}}</td>
-    	  			<td>{{item.lastAuthor}}</td>
-    	  			<td>{{item.lastPersonalEdit}}</td>
-    	  		</tr>
-    	  	</tbody>
-    	</table>
-    </div>
-</div>
--->
 
 <!-- Controls for testing the growler notifications
 <div style="padding: 20px 22px;">

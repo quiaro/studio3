@@ -3,15 +3,16 @@
 /* ------------------ */
 .dashboard .navigation { width: 280px; }
 
+.dashboard .navigation input[type='search'],
+.dashboard .navigation select { border-color: #666; }
+
 .dashboard .navigation .logo {
     background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat;
     height: 78px;
-    width: 160px;
+    width: 100%;
 }
 
 .dashboard .navigation .search { margin: 5px 0; }
-.dashboard .navigation .search .form-group { width: 100%; }
-.dashboard .navigation .search input[type='search'] { width: 210px; }
 
 .dashboard .navigation .project-menu,
 .dashboard .navigation .project-menu > button { width: 100%; }
@@ -85,4 +86,31 @@
 
 .dashboard h1 { padding: 15px 20px 0 20px; }
 
-.dashboard .panel { margin: 15px 20px; }
+.dashboard .panel {
+    font-size: 12px;
+    margin: 15px 20px;
+}
+.dashboard .panel-heading { overflow: hidden; }
+.dashboard .panel-heading .panel-title {
+    float: left;
+    line-height: 1.5;
+}
+.dashboard .panel-heading .filters { float: right; }
+.dashboard .panel .filters input[type='number'],
+.dashboard .panel .filters select {
+    display: inline-block;
+    padding: 2px 5px;
+    height: 24px;
+}
+.dashboard .panel-heading .filters .type-results select {
+    width: 110px;
+}
+.dashboard .panel .filters input[type='number'] {
+    width: 45px;
+}
+.dashboard .panel .filters input.ng-invalid {
+    border: 1px solid red;
+}
+.dashboard .panel table td {
+    padding: 2px 10px 2px 4px;
+}
