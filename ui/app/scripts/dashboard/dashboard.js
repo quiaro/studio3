@@ -2,7 +2,20 @@
 
 angular.module('dashboard', ['common'])
 
-  .controller('DashboardCtrl',
+    // Filter items depending on their category: pages, components, assets or any
+    .filter('typeFilter', function() {
+        return function (items, category) {
+            if (!category || '' === category) {
+                return items;
+            }
+
+            return items.filter(function(element, index, array) {
+                return element.type === category;
+            });
+        }
+    })
+
+    .controller('DashboardCtrl',
 		['$scope', 'repo', 'notifications', function($scope, repo, notifications) {
 
         $scope.notifications = notifications;
@@ -11,8 +24,9 @@ angular.module('dashboard', ['common'])
             // real value for data property will be assigned in the getData method
             data: {},
 
-            // filter : number of results to show
-            results: 0,
+            // number of results to show
+            filterLength: 0,
+
             getData: function getData (filterOpts) {
 
                 // We need to use call to preserve the context (this)
@@ -22,10 +36,11 @@ angular.module('dashboard', ['common'])
                     repo.list(filterOpts)
                         .then( function (data) {
                             that.data = data;
-                            that.results = data.length;
+                            that.filterLength = data.length;
                         });
                 }).call(this, filterOpts);
             },
+
             setSortClass: function setSortClass (column) {
                 var sortOrder;
 
@@ -33,6 +48,7 @@ angular.module('dashboard', ['common'])
                 return column === this.sort.column && 'sort-' + sortOrder;
 
             },
+
             changeSorting: function changeSorting (column) {
                 var sort = this.sort;
                 if (sort.column === column) {
@@ -51,6 +67,7 @@ angular.module('dashboard', ['common'])
             column : 'lastAuthor',
             descending : false
         };
+        $scope.recentActivity.filterType = '';
 
 	}]);
 
