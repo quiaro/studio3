@@ -30,7 +30,7 @@ public class ITSpringConfigCheck {
     @Test
     public void testSpringConfigIsUp() throws Exception {
         ApplicationContext ctx = new ClassPathXmlApplicationContext
-            ("classpath:/craftercms/studio/craftercms-mongo-repocitory.xml");
+            ("classpath:/craftercms/studio/craftercms-mongo-repository.xml");
         Assert.notNull(ctx.getId());
     }
 }

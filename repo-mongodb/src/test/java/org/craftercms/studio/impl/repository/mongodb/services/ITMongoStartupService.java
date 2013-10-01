@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
  * Integration Testing for MongoStartupService service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
+@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITMongoStartupService implements ApplicationContextAware {
 
     private NodeService nodeService;

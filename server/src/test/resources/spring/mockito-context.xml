@@ -54,4 +54,8 @@
         <beans:constructor-arg value="org.craftercms.studio.api.forms.FormsManager" />
     </beans:bean>
 
+    <beans:bean id="configurationManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.configuration.ConfigurationManager" />
+    </beans:bean>
+
 </beans:beans>
