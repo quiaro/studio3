@@ -16,10 +16,11 @@
  */
 package org.craftercms.studio.api.configuration;
 
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
-
 import java.io.InputStream;
+
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.dto.ModuleConfiguration;
 
 /**
  * Configuration Manager.
@@ -32,37 +33,41 @@ public interface ConfigurationManager {
 
     /**
      * Get configuration.
+     *
      * @param context context
-     * @param site site
-     * @param module module
+     * @param site    site
+     * @param module  module
      * @return module configuration
      */
     ModuleConfiguration getConfiguration(Context context, String site, String module);
 
     /**
      * Create or update module configuration.
-     * @param context context
-     * @param site site
-     * @param module module
+     *
+     * @param context             context
+     * @param site                site
+     * @param module              module
      * @param moduleConfiguration module configuration
      */
     void configure(Context context, String site, String module, ModuleConfiguration moduleConfiguration);
 
     /**
      * Get configuration object.
-     * @param context context
-     * @param site site
-     * @param objectId object id
+     *
+     * @param context  context
+     * @param site     site
+     * @param itemId configuration item Id
      * @return content
      */
-    InputStream getContent(Context context, String site, String objectId);
+    InputStream getContent(Context context, String site, ItemId itemId);
 
     /**
      * Create or update configuration.
-     * @param context context
-     * @param site site
-     * @param objectId object id
-     * @param content content
+     *
+     * @param context  context
+     * @param site     site
+     * @param itemId configuration item id
+     * @param content  content
      */
-    void write(Context context, String site, String objectId, InputStream content);
+    void write(Context context, String site, ItemId itemId, InputStream content);
 }

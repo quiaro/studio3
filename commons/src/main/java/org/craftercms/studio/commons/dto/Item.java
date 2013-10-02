@@ -29,7 +29,8 @@ import java.util.Map;
  */
 public class Item implements Comparable<Item> {
 
-    private String id;
+    // Core Metadata
+    private ItemId id;
     private String repoId;
     private String name;
     private String fileName;
@@ -50,6 +51,7 @@ public class Item implements Comparable<Item> {
     private List<String> renderingTemplates;
     private Date scheduledDate;
     private List<String> packages;
+    // Additional Metadata
     private Map<String, Object> properties;
 
     public Item() {
@@ -57,6 +59,7 @@ public class Item implements Comparable<Item> {
 
     /**
      * Compare items.
+     *
      * @param item item to compare to
      * @return comparison result
      */
@@ -66,11 +69,11 @@ public class Item implements Comparable<Item> {
     }
 
     // Getters and setters
-    public String getId() {
+    public ItemId getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(ItemId id) {
         this.id = id;
     }
 

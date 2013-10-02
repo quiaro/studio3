@@ -27,49 +27,99 @@ import java.util.List;
  * @author Carlos Ortiz
  */
 public interface SecurityService {
-    public enum Propagation {
-        PROPAGATE, DO_NOT_PROPAGATE, INHERIT;
-    }
-
     /**
      * Login.
+     *
      * @param repositoryUrl repository login url
-     * @param user user
-     * @param password password
+     * @param user          user
+     * @param password      password
      * @return security ticket
      */
     String login(String repositoryUrl, String user, String password);
 
     /**
      * Logout.
+     *
      * @param ticket security ticket
      */
     void logout(String ticket);
 
     /**
      * Get user permissions.
+     * <p/>
+     * Must have READ or MANAGE permission
+     *
      * @param ticket security ticket
      * @param itemId item id
      * @return list of permissions
      */
-    List<String> getPermissions(String ticket, String itemId);
+    List<Permission> getPermissions(String ticket, String itemId);
 
     /**
-     * Add user permissions.
-     * @param ticket security ticket
-     * @param user user
-     * @param itemId item id
+     * Add authority permissions.
+     * Adds a list of permissions (incrementally) to an item for a user or group of users.
+     * <p/>
+     * Must have MANAGE permission
+     *
+     * @param ticket      security ticket
+     * @param authorities authorities (users or groups) to grand the permissions to
+     * @param itemId      item id
      * @param permissions list of permissions to add
      * @param propagation propagation
      */
-    void addPermissions(String ticket, String user, String itemId, List<String> permissions, Propagation propagation);
+    void addPermissions(String ticket, List<String> authorities, String itemId, List<Permission> permissions,
+                        Propagation propagation);
 
     /**
      * Remove user permissions.
-     * @param ticket security ticket
-     * @param user user
-     * @param itemId itemId
+     * <p/>
+     * Must have MANAGE permission
+     *
+     * @param ticket      security ticket
+     * @param authorities authorities (users or groups) to grand the permissions to
+     * @param itemId      itemId
      * @param permissions permissions
      */
-    void removePermissions(String ticket, String user, String itemId, List<String> permissions);
+    void removePermissions(String ticket, List<String> authorities, String itemId, List<Permission> permissions);
+
+    /**
+     * Set propagation scheme.
+     * TODO
+     * <p/>
+     * Must have MANAGE permission
+     *
+     * @param ticket      security ticket
+     * @param itemId      item id, must be a folder
+     * @param propagation propagation
+     */
+    void setPropagation(String ticket, String itemId, Propagation propagation);
+
+    /**
+     * Propagation scheme.
+     * Supports three propagation schemes:
+     * Propagate: Propagate the permissions to the children
+     * ...
+     */
+    public enum Propagation {
+        PROPAGATE, DO_NOT_PROPAGATE, INHERIT;
+    }
+
+    /**
+     * TODO: Document me
+     */
+    public enum Permission {
+        READ(0x00000001),
+        WRITE(0x00000001),
+        DELETE(0x00000004),
+        LIST_CHILDREN(0x00000008),
+        ADD_CHILDREN(0x00000010),
+        UPDATE_PROPERTIES(0x00000020),
+        MANAGE(0x80000000),   // TODO think about this some more
+        ALL(0Xffffffff);
+        private final int permissionMask;
+
+        Permission(int permissionMask) {
+            this.permissionMask = permissionMask;
+        }
+    }
 }

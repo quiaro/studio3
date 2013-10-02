@@ -16,13 +16,14 @@
  */
 package org.craftercms.studio.api.blueprints;
 
-import org.craftercms.studio.commons.dto.Context;
-
 import java.util.List;
 import java.util.Map;
 
+import org.craftercms.studio.commons.dto.Context;
+
 /**
  * Blueprints Manager.
+ * Install, remove, list and create blueprints.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic
@@ -32,6 +33,7 @@ public interface BlueprintsManager {
 
     /**
      * List blueprints.
+     *
      * @param context context
      * @param filters filters
      * @return list of blueprints
@@ -40,24 +42,27 @@ public interface BlueprintsManager {
 
     /**
      * Remove blueprint.
-     * @param context context
+     *
+     * @param context   context
      * @param blueprint blueprint
      */
     void remove(Context context, String blueprint);
 
     /**
-     * Import blueprint.
-     * @param context context
-     * @param params parameters
+     * Install blueprint.
+     *
+     * @param context    context
+     * @param pluginName name of the plugin that holds the blueprint to install
      */
-    void importBlueprint(Context context, Map<String, Object> params);
+    void install(Context context, String pluginName);
 
     /**
      * Create blueprint from site.
-     * @param context context
-     * @param site site
+     *
+     * @param context       context
+     * @param site          site
      * @param blueprintName blueprint name
-     * @param destination destination
+     * @param destination   destination
      */
     void createBlueprintFromSite(Context context, String site, String blueprintName, String destination);
 }
