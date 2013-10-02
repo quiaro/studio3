@@ -18,32 +18,34 @@
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-
+import com.mongodb.gridfs.GridFSFile;
 import org.apache.commons.lang.StringUtils;
+import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.GridFSService;
+import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-
-import com.mongodb.gridfs.GridFSFile;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 /**
  * Default Implementation of {@link org.craftercms.studio.impl.repository.mongodb.services.NodeService}.
  */
-public class NodeService implements org.craftercms.studio.impl.repository.mongodb.services.NodeService {
+public class NodeServiceImpl implements NodeService {
     /**
      * Logger.
      */
-    private Logger log = LoggerFactory.getLogger(NodeService.class);
+    private Logger log = LoggerFactory.getLogger(NodeServiceImpl.class);
     /**
      * Data Repository.
      */
@@ -52,11 +54,19 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
      * Grid FS Helper Services.
      */
     private GridFSService gridFSService;
+    /**
+     * Mongo Template for support.
+     */
+    private MongoTemplate mongoTemplate;
+    /**
+     * Path Services
+     */
+    private PathService pathServices;
 
     /**
      * Default CTOR.
      */
-    public NodeService() {
+    public NodeServiceImpl() {
     }
 
     @Override
@@ -68,14 +78,22 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
             throw new IllegalArgumentException("Parent  of a File Node can't be null");
         }
         if (isNodeFolder(parent)) {
+
             log.debug("Creating File Node with params {}, {} in {}", fileName, creatorName, parent);
             Node newNode = new Node(parent, NodeType.FILE);
             newNode.setId(UUID.randomUUID().toString());
             try {
-                newNode.setMetadata(createNodeMetadata(fileName, creatorName, content));
-                newNode = nodeDataRepository.save(newNode);
-                log.debug("File node  {} saved ", newNode);
-                return newNode;
+                newNode.getMetadata().setCore(createNodeMetadata(fileName, creatorName, content));
+                if (isNodeUniqueNodeinTree(newNode)) {
+                    newNode = nodeDataRepository.save(newNode);
+                    log.debug("File node  {} saved ", newNode);
+                    return newNode;
+                } else {
+                    log.debug("Node with name {} is already exist on given tree path {}",
+                        newNode.getMetadata().getCore().getNodeName(), newNode.getAncestors());
+                    throw new IllegalArgumentException("Node named " + fileName + " Already exist in given path " +
+                        parent.getMetadata().getCore().getNodeName());
+                }
             } catch (DataAccessException ex) {
                 log.error("Unable to save node {} due a DataAccessException", newNode);
                 log.error("DataAccessException ", ex);
@@ -100,15 +118,23 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
         }
 
         if (isNodeFolder(parent)) {
+            //TODO Validate that folder with same name and ancenstor does not exist.
             log.debug("Params for new Folder node are ok");
             log.debug("Generating ID and CoreMetadata");
             Node newNode = new Node(parent, NodeType.FOLDER);
             newNode.setId(UUID.randomUUID().toString());
-            newNode.setMetadata(createBasicMetadata(folderName, creatorName));
+            newNode.getMetadata().setCore(createBasicMetadata(folderName, creatorName));
             log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), newNode.getMetadata());
             log.debug("Saving Folder");
             try {
-                newNode = nodeDataRepository.save(newNode);
+                if (isNodeUniqueNodeinTree(newNode)) {
+                    newNode = nodeDataRepository.save(newNode);
+                } else {
+                    log.debug("Node with name {} is already exist on given tree path {}",
+                        newNode.getMetadata().getCore().getNodeName(), newNode.getAncestors());
+                    throw new IllegalArgumentException("Node named " + folderName + " Already exist in given path " +
+                        parent.getMetadata().getCore().getNodeName());
+                }
             } catch (DataAccessException ex) {
                 log.error("Unable to save Folder Node ", ex);
                 throw new MongoRepositoryException("Unable to save Folder Node", ex);
@@ -124,16 +150,16 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
     }
 
     @Override
-    public List<Node> findNodesByParent(final Node parent) {
-        log.debug("Finding all children of {}", parent);
-        List<Node> foundNodes = nodeDataRepository.findAllByParent(parent);
+    public List<Node> findNodesByParents(final List<Node> parents) {
+        log.debug("Finding all children of {}", parents);
+        List<Node> foundNodes = nodeDataRepository.findAllByAncestors(parents);
         log.debug("Found {} children nodes ", foundNodes);
         return foundNodes;
     }
 
     @Override
     public Node getRootNode() {
-        return nodeDataRepository.findByParentIsNull();
+        return nodeDataRepository.findRootNode();
     }
 
     @Override
@@ -164,6 +190,30 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
             log.error("DataAccessException is ", ex);
             throw new MongoRepositoryException("Unable to find Node ", ex);
         }
+    }
+
+    @Override
+    public Node findNodeByAncestorsAndName(final List<Node> ancestors, final String nodeName) {
+        if (StringUtils.isEmpty(nodeName) || StringUtils.isBlank(nodeName)) {
+            log.debug("Node name can't be empty or blank");
+            throw new IllegalArgumentException("Can't search node with name either null ,empty or blank");
+        }
+        if (ancestors == null || ancestors.isEmpty()) {                      //Quick List of 1
+            return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(Arrays.asList(getRootNode()),
+                nodeName);
+        } else {
+            return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(ancestors, nodeName);
+        }
+    }
+
+    @Override
+    public Node getSiteNode(String siteName) {
+        return findNodeByAncestorsAndName(Arrays.asList(getRootNode()), siteName);
+    }
+
+    private boolean isNodeUniqueNodeinTree(Node nodeToValidate) {
+        return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(nodeToValidate.getAncestors(),
+            nodeToValidate.getMetadata().getCore().getNodeName()) == null;
     }
 
     private CoreMetadata createNodeMetadata(final String fileName, final String creatorName,
@@ -197,5 +247,13 @@ public class NodeService implements org.craftercms.studio.impl.repository.mongod
 
     public void setGridFSService(final GridFSService gridFSService) {
         this.gridFSService = gridFSService;
+    }
+
+    public void setMongoTemplate(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    public void setPathServices(PathService pathServices) {
+        this.pathServices = pathServices;
     }
 }

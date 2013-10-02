@@ -76,7 +76,7 @@ public interface NodeService {
      * @return Empty List if given node has no children.
      *         List of all nodes that are children of the given node.
      */
-    List<Node> findNodesByParent(Node parent);
+    List<Node> findNodesByParents(List<Node> parent);
 
     /**
      * Gets the Root node.
@@ -111,4 +111,18 @@ public interface NodeService {
     Node getNode(String nodeId) throws MongoRepositoryException;
 
 
+    /**
+     * Finds a node by the ancestors and the node name.
+     * @param ancestors List of ancestors
+     * @param nodeName Name of the node looking for.
+     * @return The node with given ancenstors and given name. Null if nothing is found.
+     */
+    Node findNodeByAncestorsAndName(List<Node> ancestors, String nodeName);
+
+    /**
+     * Gets the site Root node, null if the site node does not exist (site haven't been created or deleted).
+     * @param siteName Site name.
+     * @return the node that represents the site root, null if not found.
+     */
+    Node getSiteNode(String siteName);
 }

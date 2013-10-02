@@ -29,31 +29,28 @@ public class NodeTest {
     @Test
     public void testClone() throws Exception {
         Node testNode = new Node();
-        testNode.setParent(new Node());
         testNode.setId(UUID.randomUUID().toString());
         testNode.setType(NodeType.FOLDER);
-        testNode.getMetadata().setCreateDate(new Date());
-        testNode.getMetadata().setCreator("Amy Wong");
-        testNode.getMetadata().setLastModifiedDate(new Date());
-        testNode.getMetadata().setModifier("Amy Wong");
-        testNode.getMetadata().setNodeName("Mars U");
+        testNode.getMetadata().getCore().setCreateDate(new Date());
+        testNode.getMetadata().getCore().setCreator("Amy Wong");
+        testNode.getMetadata().getCore().setLastModifiedDate(new Date());
+        testNode.getMetadata().getCore().setModifier("Amy Wong");
+        testNode.getMetadata().getCore().setNodeName("Mars U");
         Node clone = (Node)testNode.clone();
         Assert.assertEquals(testNode, clone);
         Assert.assertFalse(testNode == clone);//Should be Different mem ref
     }
 
-
     @Test
     public void testCopy() throws Exception {
         Node testNode = new Node();
-        testNode.setParent(new Node());
         testNode.setId(UUID.randomUUID().toString());
         testNode.setType(NodeType.FOLDER);
-        testNode.getMetadata().setCreateDate(new Date());
-        testNode.getMetadata().setCreator("Amy Wong");
-        testNode.getMetadata().setLastModifiedDate(new Date());
-        testNode.getMetadata().setModifier("Amy Wong");
-        testNode.getMetadata().setNodeName("Mars U");
+        testNode.getMetadata().getCore().setCreateDate(new Date());
+        testNode.getMetadata().getCore().setCreator("Amy Wong");
+        testNode.getMetadata().getCore().setLastModifiedDate(new Date());
+        testNode.getMetadata().getCore().setModifier("Amy Wong");
+        testNode.getMetadata().getCore().setNodeName("Mars U");
         Node copy = testNode.copy();
         Assert.assertEquals(testNode, copy);
         Assert.assertFalse(testNode == copy);//Should be Different mem ref

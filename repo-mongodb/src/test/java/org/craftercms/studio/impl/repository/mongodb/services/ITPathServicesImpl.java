@@ -48,11 +48,10 @@ public class ITPathServicesImpl implements ApplicationContextAware {
 
     @Test
     public void testGetPathByItem() throws Exception {
-        String path = pathService.getPathByItemId("", "", createSampleNodeTree());
+        String path = pathService.getPathByItemId("TicketID", "SITE", createSampleNodeTree());
+        System.out.println("PATh" + path);
         Assert.assertEquals(path, "/Philip J. Fry/Yancy Fry, Sr./Yancy Fry/Hubert J. Farnsworth");
     }
-
-
 
     private String createSampleNodeTree() throws MongoRepositoryException {
         NodeService nodeService = applicationContext.getBean(NodeService.class);

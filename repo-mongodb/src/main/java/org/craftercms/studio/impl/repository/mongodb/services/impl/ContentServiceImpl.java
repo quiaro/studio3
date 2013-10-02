@@ -20,31 +20,78 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.NotImplementedException;
 import org.craftercms.studio.api.content.ContentService;
+import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.exception.InvalidContextException;
 import org.craftercms.studio.commons.filter.Filter;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.PropertyResolver;
 
 /**
  * Mongo DB implementation of ContentService.
  */
 public class ContentServiceImpl implements ContentService {
+
     /**
      * Node Service Impl.
-      */
+     */
     private NodeService nodeService;
+    /**
+     * System properties.
+     */
+    private PropertyResolver properties;
+    /**
+     * Logger.
+     */
+    private Logger log = LoggerFactory.getLogger(ContentServiceImpl.class);
+    /**
+     * Path Service.
+     */
+    private PathService pathService;
 
     @Override
     public String create(final String ticket, final String site, final String path, final InputStream content) {
-
         throw new NotImplementedException("Not implemented yet");
     }
 
     @Override
-    public String create(final String ticket, final String site, final String path) {
-        throw new NotImplementedException("Not implemented yet");
+    public String create(final String ticket, final String site, final String path) throws InvalidContextException {
+
+        if (StringUtils.isEmpty(path) || StringUtils.isBlank(path)) {
+            throw new IllegalArgumentException("Path can't be null or empty");
+        }
+
+        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
+            throw new IllegalArgumentException("Site can't be null or empty");
+        }
+
+        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+            throw new IllegalArgumentException("Ticket can't be null or empty");
+        }
+
+        if (siteExists(ticket, site)) {
+            String exist = pathService.getItemIdByPath(ticket, site, path);
+            log.debug("Checking if folder/file in {} for site {} exists", path, site);
+            if (exist != null) {
+                log.debug("Folder/File {} exist for site {} ", path, site);
+                throw new InvalidContextException("Folder named " + path + " already exist in the site {}");
+            }
+            return "";
+        } else {
+            log.debug("Site with name {} does not exist", site);
+            throw new IllegalArgumentException("Site with name " + site + " does not exist");
+        }
+
+    }
+
+    private boolean siteExists(final String ticket, final String site) {
+        return nodeService.getSiteNode(site) != null;
     }
 
     @Override
@@ -79,8 +126,15 @@ public class ContentServiceImpl implements ContentService {
         throw new NotImplementedException("Not implemented yet");
     }
 
-
     public void setNodeServiceImpl(final NodeService nodeService) {
         this.nodeService = nodeService;
+    }
+
+    public void setPropertyResolver(PropertyResolver propertyResolver) {
+        this.properties = propertyResolver;
+    }
+
+    public void setPathServices(PathService pathServices) {
+        this.pathService = pathServices;
     }
 }

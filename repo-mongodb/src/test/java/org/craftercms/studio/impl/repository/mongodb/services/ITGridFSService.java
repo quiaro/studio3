@@ -20,7 +20,7 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.io.InputStream;
 
-import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
-public class ITGridFSServiceTest implements ApplicationContextAware {
+public class ITGridFSService implements ApplicationContextAware {
 
     /**
      *  Ruler of the planet Omicron Persei 8
@@ -57,12 +57,12 @@ public class ITGridFSServiceTest implements ApplicationContextAware {
 
     @Test
     public void testSaveFile() throws Exception {
-        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
+        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
         Assert.assertNotNull(testInput);
         testInput.mark(Integer.MAX_VALUE);
         String originalMD5 = DigestUtils.md5Hex(testInput);
         testInput.reset();
-        GridFSDBFile file = (GridFSDBFile)gridFSService.saveFile(FILE_NAME, testInput);
+        GridFSFile file = gridFSService.saveFile(FILE_NAME, testInput);
         Assert.assertEquals(FILE_NAME, file.getFilename());
         Assert.assertEquals(file.getMD5(), originalMD5);
     }

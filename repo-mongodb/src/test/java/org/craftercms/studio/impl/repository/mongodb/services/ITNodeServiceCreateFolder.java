@@ -17,6 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
@@ -41,6 +42,7 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
 
     private static final String FOLDER_CREATOR="Philip J Fry";
     private static final String FOLDER_NAME="Panucci Pizza";
+    private static final String FOLDER_NAME_2 = "Robot Arms Apts";
     private NodeService nodeService;
     private ApplicationContext applicationContext;
 
@@ -53,7 +55,7 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
     public void testRootFolderIsCreated() throws Exception {
         Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME, FOLDER_CREATOR);
         Assert.assertNotNull(folder);
-        List<Node> nodes = nodeService.findNodesByParent(nodeService.getRootNode());
+        List<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
         for(Node n :nodes){
             if(n.equals(folder)){ //Node.equals call also CoreMetadata Equals therefor no need to recheck
                return ; // we found it and is equals , my job here is done.
@@ -62,6 +64,14 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
         fail("Saved Folder was not found when searching for it ");
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testValidationOfFolderNameInPath() throws Exception {
+        Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2, FOLDER_CREATOR);
+        Assert.assertNotNull(folder);
+        Node folder2 = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2, FOLDER_CREATOR);
+
+    }
 
 
     @Override

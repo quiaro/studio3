@@ -17,8 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ListIterator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
@@ -59,16 +58,37 @@ public class PathServicesImpl implements PathService {
             throw new IllegalArgumentException("Given Path is Blank or empty");
         }
         log.debug("Converting {} to a path object", path);
-        Path internalPath = Paths.get(path);
-        log.debug("Internal Path is {}", internalPath);
-        //Lets get the node by name
-
-        return null;
+        log.debug("Walking down the tree ");
+        String[] pathToDescent = path.substring(0).split("/");
+        Node foundNode = walkDownTheTree(pathToDescent);
+        if (foundNode != null) {
+            log.debug("Found a Node with path {} ,node is {}", path, foundNode);
+            return foundNode.getId();
+        } else {
+            log.debug("Node with path {} was not found", path);
+            return null;
+        }
     }
 
     @Override
     public String getPathByItemId(final String ticket, final String site,
                                   final String itemId) throws RepositoryException {
+
+
+        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+            log.debug("Given Ticket is blank or empty");
+            throw new IllegalArgumentException("Given Ticket is Blank or empty");
+        }
+        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
+            log.debug("Given Site is blank or empty");
+            throw new IllegalArgumentException("Given Site is Blank or empty");
+        }
+        if (StringUtils.isEmpty(itemId) || StringUtils.isBlank(itemId)) {
+            log.debug("Given Item ID is blank or empty");
+            throw new IllegalArgumentException("Given Path is Blank or empty");
+        }
+
+
         log.debug("Calculating Path for item with id {}", itemId);
         Node node = nodeService.getNode(itemId);
         if (node == null) {
@@ -78,26 +98,35 @@ public class PathServicesImpl implements PathService {
             log.debug("Node Found {}", node);
             //make it bigger so it will not have to resize it for a bit.
             StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
-            walkTheTree(builder, node);
+            //First Add the Node with the given ID
+
+            ListIterator<Node> nodeListIterator = node.getAncestors().listIterator();
+            while (nodeListIterator.hasNext()) {
+                Node tmpNode = nodeListIterator.next();
+                if (nodeListIterator.previousIndex()>0) { // if don't have next is the root node, ignore it
+                    builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+                    builder.append(tmpNode.getMetadata().getCore().getNodeName());
+
+                }
+
+            }
+            builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+            builder.append(node.getMetadata().getCore().getNodeName());
             String path = builder.toString();
             log.debug("Calculated Path is {}", path);
             return path;
         }
     }
 
-    /**
-     * Walks the Tree and append at start the parent , moving children forward in  the string.
-     *
-     * @param builder String Builder where the current string is.
-     * @param node    Node to walk and append.
-     */
-    private void walkTheTree(final StringBuilder builder, final Node node) {
-        if (node.getParent() != null) {
-            //Always insert at 0 (start of the String)
-            builder.insert(0, node.getMetadata().getNodeName()); // Add the Name
-            builder.insert(0, MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR); // Add the separator.
-            walkTheTree(builder, node.getParent());
-        } //We found '/' aka root
+    private Node walkDownTheTree(String[] pathToDescent) {
+        Node tempNode = nodeService.getRootNode();
+        for (int i = 0; i < pathToDescent.length; i++) {
+            tempNode = nodeService.findNodeByAncestorsAndName(tempNode.getAncestors(), pathToDescent[i]);
+            if (tempNode == null) {
+                break;
+            }
+        }
+        return tempNode;
     }
 
     public void setNodeServiceImpl(final NodeService nodeService) {

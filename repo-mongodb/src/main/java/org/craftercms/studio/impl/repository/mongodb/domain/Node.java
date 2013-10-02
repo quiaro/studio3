@@ -1,5 +1,7 @@
 package org.craftercms.studio.impl.repository.mongodb.domain;
 
+import java.util.LinkedList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -25,7 +27,8 @@ public class Node implements Cloneable {
      * Parent Node can't be null.
      */
     @DBRef
-    private Node parent;
+    @Indexed
+    private LinkedList<Node> ancestors;
     /**
      * Node Type.
      */
@@ -33,60 +36,37 @@ public class Node implements Cloneable {
     /**
      * Metadata of this node.
      */
-    private CoreMetadata metadata;
+    private Metadata metadata;
 
     public Node() {
-        metadata = new CoreMetadata();
+        ancestors = new LinkedList<>();
+        metadata = new Metadata();
     }
 
+    /**
+     * Creates a new node, add parent to new node's ancestry line.
+     *
+     * @param parent Parent of the new Node
+     * @param type   Type of the new Node
+     */
     public Node(final Node parent, final NodeType type) {
-
-        this.parent = parent;
+        ancestors = new LinkedList<>(parent.getAncestors());
+        //Collections.copy(ancestors, parent.getAncestors());
+        ancestors.addLast(parent);// new node is child of its parent. added to his ancestry line
         this.type = type;
+        metadata = new Metadata();
     }
 
+    /**
+     * Internal CTOR to be use on copy/clone methods.
+     *
+     * @param node Node to by copy of this
+     */
     protected Node(final Node node) {
         this.id = node.getId();
-        this.parent = node.getParent();
+        this.ancestors = node.getAncestors();
         this.type = node.getType();
         this.metadata = node.getMetadata().copy();//also Copy the Metadata Object.
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Node)) {
-            return false;
-        }
-
-        final Node node = (Node)o;
-
-        if (!id.equals(node.id)) {
-            return false;
-        }
-        if (!metadata.equals(node.metadata)) {
-            return false;
-        }
-        if (parent != null? !parent.equals(node.parent): node.parent != null) {
-            return false;
-        }
-        if (type != node.type) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int magicNumberForHash = 31;
-        int result = id != null? id.hashCode(): 0;
-        result = magicNumberForHash * result + (parent != null? parent.hashCode(): 0);
-        result = magicNumberForHash * result + (type != null? type.hashCode(): 0);
-        result = magicNumberForHash * result + (metadata != null? metadata.hashCode(): 0);
-        return result;
     }
 
     /**
@@ -105,9 +85,9 @@ public class Node implements Cloneable {
 
     @Override
     public String toString() {
+        //Ignoring the Ancestors to make ToString fast.
         final StringBuilder sb = new StringBuilder("Node{");
         sb.append("id='").append(id).append('\'');
-        sb.append(", parent=").append(parent);
         sb.append(", type=").append(type);
         sb.append(", metadata=").append(metadata);
         sb.append('}');
@@ -122,14 +102,6 @@ public class Node implements Cloneable {
         this.id = id;
     }
 
-    public Node getParent() {
-        return parent;
-    }
-
-    public void setParent(final Node parent) {
-        this.parent = parent;
-    }
-
     public NodeType getType() {
         return type;
     }
@@ -138,13 +110,72 @@ public class Node implements Cloneable {
         this.type = type;
     }
 
-    public CoreMetadata getMetadata() {
+    public LinkedList<Node> getAncestors() {
+        return ancestors;
+    }
+
+    public void setAncestors(final LinkedList<Node> ancestors) {
+        this.ancestors = ancestors;
+    }
+
+    public Metadata getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(final CoreMetadata metadata) {
+    public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Node)) {
+            return false;
+        }
+
+        final Node node = (Node)o;
+
+        if (!ancestors.equals(node.ancestors)) {
+            return false;
+        }
+        if (!id.equals(node.id)) {
+            return false;
+        }
+        if (!metadata.equals(node.metadata)) {
+            return false;
+        }
+        if (type != node.type) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + ancestors.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + metadata.hashCode();
+        return result;
+    }
+
+    /**
+     * Gets current Node parent.
+     *
+     * @return current node parent <br/>
+     * Null if there is no parent.
+     */
+    public Node getParent() {
+        if (!ancestors.isEmpty()) {
+            return ancestors.getLast();
+        } else {
+            return null;
+        }
+    }
+
 }
 
 

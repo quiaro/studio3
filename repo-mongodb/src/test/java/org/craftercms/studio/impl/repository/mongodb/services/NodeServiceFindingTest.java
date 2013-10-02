@@ -22,7 +22,7 @@ import java.util.UUID;
 import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
-import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeService;
+import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class NodeServiceFindingTest {
     /**
      * Node Service (the one to be tested)
      */
-    private NodeService nodeService;
+    private NodeServiceImpl nodeService;
     /**
      * Node Repo Mock
      */
@@ -48,7 +48,7 @@ public class NodeServiceFindingTest {
 
     @Before
     public void setUp() throws Exception {
-        nodeService = new org.craftercms.studio.impl.repository.mongodb.services.impl.NodeService();
+        nodeService = new NodeServiceImpl();
         nodeDataRepository = mock(NodeDataRepository.class);
         nodeService.setNodeDataRepository(nodeDataRepository);
         // Return the same save object.
