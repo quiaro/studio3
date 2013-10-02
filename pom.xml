@@ -377,10 +377,14 @@
     </build>
     <modules>
         <module>commons</module>
-        <module>api</module>
+
         <module>repo-api</module>
-        <module>impl</module>
         <module>repo-cmis</module>
+        <module>repo-mongodb</module>
+
+        <module>api</module>
+        <module>impl</module>
+
         <module>ui</module>
         <module>server</module>
     </modules>

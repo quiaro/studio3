@@ -1,7 +1,11 @@
 'use strict';
 
-angular.module('dashboard', ['dialogs', 'services.repo'])
-  .controller('DashboardCtrl', ['$scope', 'repo', function($scope, repo) {
+angular.module('dashboard', ['common'])
+
+  .controller('DashboardCtrl',
+		['$scope', 'repo', 'notifications', function($scope, repo, notifications) {
+
+		$scope.notifications = notifications;
 
 		$scope.getRecentActivity = function getRecentActivity () {
 
@@ -20,10 +24,9 @@ angular.module('dashboard', ['dialogs', 'services.repo'])
 
 			// Service is handling any failures
 			promise.then( function (data) {
-        $scope.recentActivity = data;
-      });
-
-		};
+                $scope.recentActivity = data;
+            });
+        };
 
 	}]);
 

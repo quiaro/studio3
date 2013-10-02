@@ -1,0 +1,83 @@
+html, body { height: 100%; min-width: 1024px; }
+
+#app-container {
+    /* background-color: #ABC7E7; lighter blue: not good for background color ... maybe for small details; */
+	background-color: #8899AD;
+    color: #333;
+	display: table;
+	border-spacing: 0;
+    border-collapse: collapse;
+	height: 100%;
+	width: 100%;
+}
+#app-container > div { display: table-row; width: 100%; }
+
+/* --- Animations --- */
+.navigation {
+    transition: width 1s;
+    -webkit-transition: width 1s;
+}
+
+#main-container .content {
+    transition: top 1s;
+    -webkit-transition: top 1s;
+
+    transition: right 1s;
+    -webkit-transition: right 1s;
+
+    transition: bottom 1s;
+    -webkit-transition: bottom 1s;
+
+    transition: left 1s;
+    -webkit-transition: left 1s;
+}
+
+/* --- Navigation --- */
+.navigation {
+    display: table-cell;
+    padding: 10px 15px;
+    margin-right: 20px;
+}
+
+.navigation .logo { display: block; }
+
+.navigation .user-menu { font-size: 14px; }
+.navigation .user-menu li,
+.navigation .user-menu a,
+.navigation .user-menu li a {
+	/*color: #363636;*/
+	color: #EDEDED;
+}
+
+.navigation .user-menu li {
+	margin: 8px 0px;
+	padding: 0 2px;
+}
+
+.navigation .user-menu a:hover {
+	/*color: #000000;*/
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+/* --- Main Container --- */
+#main-container { display: table-cell; }
+
+#main-container > .content {
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    right: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #111111;
+    min-width: 708px;
+}
+
+/* --- Full Screen State --- */
+.full .navigation { display: none; }
+.full #main-container .content {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}

@@ -19,29 +19,40 @@ package org.craftercms.studio.controller.services.rest;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.ContentManager;
 import org.craftercms.studio.commons.dto.Context;
-import org.junit.Before;
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.LockHandle;
+import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.commons.extractor.ItemExtractor;
+import org.craftercms.studio.commons.filter.ItemFilter;
+import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,26 +63,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml"})
-public class RepositoryControllerTest {
+public class RepositoryControllerTest extends AbstractControllerTest {
 
     // Mocks
     @Autowired
     private ContentManager contentManagerMock;
+
     @InjectMocks
     private RepositoryController repositoryController;
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    @After
+    public void tearDown() {
         reset(this.contentManagerMock);
     }
+
 
     @Test
     public void testGetContent() throws Exception {
@@ -79,82 +84,80 @@ public class RepositoryControllerTest {
         URL url = this.getClass().getResource("/content/sample.xml");
         FileReader reader = new FileReader(url.getFile());
         assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String) Mockito.any())).thenReturn(sampleContent);
+        when(this.contentManagerMock.read(Mockito.any(Context.class), Mockito.anyString())).thenReturn(sampleContent);
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
-                        .accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON))
+                        get("/api/1/content/read/sample?itemId=1&version=1")
+                                .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(IOUtils.toByteArray(reader)))
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(1)).read(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testGetContentNoParameters() throws Exception {
-        /*
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenReturn(IOUtils.toInputStream("TEST"));
+        when(this.contentManagerMock.read(Mockito.any(Context.class), Mockito.anyString())).thenReturn(IOUtils
+            .toInputStream("TEST"));
 
         this.mockMvc.perform(
-                get("/api/1/content/read")
+                get("/api/1/content/read/sample")
                         .accept(MediaType.ALL))
                 .andExpect(status().isBadRequest());
 
-        verify(this.contentManagerMock, times(0)).read((Context)Mockito.any(), Mockito.anyString());
-        */
+        verify(this.contentManagerMock, times(0)).read(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testGetContentNonExistingContent() throws Exception {
-        //when(this.repositoryManagerMock.read((Context) Mockito.any(), (String)Mockito.any())).thenThrow(StudioException.class);
-        /*
+        doThrow(new ItemNotFoundException("Unit test.")).when(this.contentManagerMock).read(Mockito.any(Context.class),
+            Mockito.anyString());
+
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?itemId=1&version=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
-        */
+        verify(this.contentManagerMock, times(1)).read(Mockito.any(Context.class), Mockito.anyString());
+
     }
 
     @Test
     public void testGetContentInternalException() throws Exception {
-        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
-        URL url = this.getClass().getResource("/content/sample.xml");
-        FileReader reader = new FileReader(url.getFile());
-        assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String) Mockito.any())).thenReturn(sampleContent);
+        doThrow(new StudioException("Unit test.") {
+
+            private static final long serialVersionUID = 949955896967217476L;
+
+        }).when(this.contentManagerMock).read(Mockito.any(Context.class), Mockito.anyString());
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?itemId=1&version=1")
                         .accept(MediaType.ALL))
-                .andExpect(status().isOk())
-                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(1)).read(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testGetContentMissingContentId() throws Exception {
-        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
-        URL url = this.getClass().getResource("/content/sample.xml");
-        FileReader reader = new FileReader(url.getFile());
-        assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String) Mockito.any())).thenReturn(sampleContent);
+        when(this.contentManagerMock.read(Mockito.any(Context.class), Mockito.anyString())).thenReturn(IOUtils
+            .toInputStream("TEST"));
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?version=1")
                         .accept(MediaType.ALL))
-                .andExpect(status().isOk())
-                .andExpect(content().bytes(IOUtils.toByteArray(reader)))
+                .andExpect(status().isBadRequest())
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(0)).read(Mockito.any(Context.class), Mockito.anyString());
     }
+
+
 
     @Test
     public void testGetContentMissingVersion() throws Exception {
@@ -162,80 +165,674 @@ public class RepositoryControllerTest {
         URL url = this.getClass().getResource("/content/sample.xml");
         FileReader reader = new FileReader(url.getFile());
         assertNotNull(sampleContent);
-        when(this.contentManagerMock.read((Context) Mockito.any(), (String) Mockito.any())).thenReturn(sampleContent);
+        when(this.contentManagerMock.read(Mockito.any(Context.class), Mockito.anyString())).thenReturn(sampleContent);
 
         this.mockMvc.perform(
-                get("/api/1/content/read?itemId=1&version=1")
+                get("/api/1/content/read/sample?itemId=1")
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(IOUtils.toByteArray(reader)))
         ;
 
-        verify(this.contentManagerMock, times(1)).read((Context) Mockito.any(), Mockito.anyString());
+        verify(this.contentManagerMock, times(1)).read(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testUpdate() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/update.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
 
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+                post("/api/1/content/update/site")
+                        .accept(MediaType.ALL)
+                        .param("itemId", "1")
+                        .content(reqBody)
+        )
+                .andExpect(status().isOk())
+        ;
+
+        verify(this.contentManagerMock, times(1)).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(InputStream.class));
+    }
+
+    @Test
+    public void testUpdateMissingItemId() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/update.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
+
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(final InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/update/site")
+                .accept(MediaType.ALL)
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(InputStream.class));
+    }
+
+    @Test
+    public void testUpdateNullContent() throws Exception {
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(final InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(post("/api/1/content/update/site").accept(MediaType.ALL).param("itemId",
+            "1").content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).update(Mockito.any(Context.class), Mockito.anyString(), Mockito.any
+            (InputStream.class));
     }
 
     @Test
     public void testOpenForEdit() throws Exception {
+        when(this.contentManagerMock.open(Mockito.any(Context.class), Mockito.anyString())).thenReturn(createLockHandleMock());
 
+        this.mockMvc.perform(
+                get("/api/1/content/open/site?itemId=1").accept(MediaType.ALL))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        verify(this.contentManagerMock, times(1)).open((Context)Mockito.any(), Mockito.anyString());
+    }
+
+    @Test
+    public void testOpenForEditMissingItemId() throws Exception {
+        when(this.contentManagerMock.open((Context)Mockito.any(), Mockito.anyString()))
+            .thenReturn(createLockHandleMock());
+
+        this.mockMvc.perform(
+            get("/api/1/content/open/site").accept(MediaType.ALL))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).open(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testSaveContent() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
 
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content(reqBody)
+        )
+            .andExpect(status().isOk())
+        ;
+
+        verify(this.contentManagerMock, times(1)).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+    }
+
+    @Test
+    public void testSaveContentMissingItemId() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+    }
+
+    @Test
+    public void testSaveContentMissingLockHandle() throws Exception {
+        InputStream updateContent = this.getClass().getResourceAsStream("/content/save.xml");
+        byte[] reqBody = IOUtils.toByteArray(updateContent);
+        assertNotNull(updateContent);
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .content(reqBody)
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
+    }
+
+    @Test
+    public void testSaveContentMissingContent() throws Exception {
+
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).save(Mockito.any(Context.class), Mockito.anyString(), Mockito.any(LockHandle
+            .class), Mockito.any(InputStream.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/save/site")
+                .accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString())
+                .content(StringUtils.EMPTY.getBytes())
+        )
+            .andExpect(status().isBadRequest())
+        ;
+
+        verify(this.contentManagerMock, times(0)).save(Mockito.any(Context.class), Mockito.anyString(), Mockito.any(LockHandle.class), Mockito.any(InputStream.class));
     }
 
     @Test
     public void testClose() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("itemId", "1")
+                .param("lockHandleId", UUID.randomUUID().toString()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
+    }
+
+    @Test
+    public void testCloseMissingItemId() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("lockHandleId", UUID.randomUUID().toString()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
+    }
+
+    @Test
+    public void testCloseMissingLockHandle() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
+
+        this.mockMvc.perform(
+            post("/api/1/content/close/site").accept(MediaType.ALL)
+                .param("itemId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).close(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(LockHandle.class));
     }
 
     @Test
     public void testDeleteContent() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).delete(Mockito.any(Context.class),Mockito.anyListOf(Item.class));
+
+        this.mockMvc.perform(post("/api/1/content/delete/site").accept(MediaType.ALL)
+                .content(generateRequestBody(generateItemListMock()).getBytes()))
+        .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).delete(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
+    }
+
+    @Test
+    public void testDeleteContentMissingItems() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).delete(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
+
+        this.mockMvc.perform(post("/api/1/content/delete/site").accept(MediaType.ALL)
+            .content((new String()).getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).delete(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
     }
 
     @Test
     public void testCopy() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/copy/site").accept(MediaType.ALL)
+            .param("destinationPath", RandomStringUtils.randomAlphabetic(10))
+            .param("includeChildren", (new Random()).nextBoolean() ? "true" : "false")
+            .content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+    }
+
+    @Test
+    public void testCopyMissingIncludeChildren() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/copy/site").accept(MediaType.ALL)
+            .param("destinationPath", RandomStringUtils.randomAlphabetic(10))
+            .content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.eq(true));
+    }
+
+    @Test
+    public void testCopyMissingDestinationPath() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/copy/site").accept(MediaType.ALL)
+            .param("includeChildren", (new Random()).nextBoolean() ? "true" : "false")
+            .content(itemsJSONList.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+    }
+
+    @Test
+    public void testCopyMissingItems() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
+
+        this.mockMvc.perform(post("/api/1/content/copy/site").accept(MediaType.ALL)
+            .param("destinationPath", RandomStringUtils.randomAlphabetic(10))
+            .param("includeChildren", (new Random()).nextBoolean() ? "true" : "false")
+            .content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString(), Mockito.anyBoolean());
     }
 
     @Test
     public void testMove() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/move/site").accept(MediaType.ALL)
+            .param("destinationPath", RandomStringUtils.randomAlphabetic(10))
+            .content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
+    }
+
+    @Test
+    public void testMoveMissingItems() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
+
+        this.mockMvc.perform(post("/api/1/content/move/site").accept(MediaType.ALL)
+            .param("destinationPath", RandomStringUtils.randomAlphabetic(10))
+            .content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
+    }
+
+    @Test
+    public void testMoveMissingDestinationPath() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/move/site").accept(MediaType.ALL)
+            .content(itemsJSONList.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).move(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.anyString());
     }
 
     @Test
     public void testLock() throws Exception {
+        when(this.contentManagerMock.lock(Mockito.any(Context.class), Mockito.anyListOf(Item.class)))
+            .thenReturn(createLockHandleMock());
 
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(
+            post("/api/1/content/lock/site").accept(MediaType.ALL)
+                .content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        verify(this.contentManagerMock, times(1)).lock(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
+    }
+
+    @Test
+    public void testLockMissingItems() throws Exception {
+        when(this.contentManagerMock.lock(Mockito.any(Context.class), Mockito.anyListOf(Item.class)))
+            .thenReturn(createLockHandleMock());
+
+        this.mockMvc.perform(post("/api/1/content/lock/site").accept(MediaType.ALL).content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).lock(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
     }
 
     @Test
     public void testUnlock() throws Exception {
+        doAnswer(new Answer<Void>() {
 
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/unlock/site").accept(MediaType.ALL).param("lockHandle",
+            createLockHandleMock().getId()).content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
+    }
+
+    @Test
+    public void testUnlockMissingLockHandle() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(
+            post("/api/1/content/unlock/site").accept(MediaType.ALL)
+                .content(itemsJSONList.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
+    }
+
+    @Test
+    public void testUnlockMissingItems() throws Exception {
+        doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
+            }
+        }).when(this.contentManagerMock).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(
+            post("/api/1/content/unlock/site").accept(MediaType.ALL)
+                .param("lockHandle", createLockHandleMock().getId())
+                .content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).unlock(Mockito.any(Context.class), Mockito.anyListOf(Item.class),
+            Mockito.any(LockHandle.class));
     }
 
     @Test
     public void testGetLockStatus() throws Exception {
+        when(this.contentManagerMock.getLockStatus(Mockito.any(Context.class), Mockito.anyListOf(Item.class)))
+            .thenReturn(createLockStatus());
 
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(
+            post("/api/1/content/get_lock_status/site").accept(MediaType.ALL)
+                .content(itemsJSONList.getBytes()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        verify(this.contentManagerMock, times(1)).getLockStatus(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
+    }
+
+    @Test
+    public void testGetLockStatusMissingItems() throws Exception {
+        when(this.contentManagerMock.getLockStatus((Context)Mockito.any(), (List<Item>)Mockito.any()))
+            .thenReturn(createLockStatus());
+
+        String itemsJSONList = generateRequestBody(generateItemListMock());
+        this.mockMvc.perform(post("/api/1/content/get_lock_status/site")
+            .accept(MediaType.ALL)
+            .content(StringUtils.EMPTY.getBytes()))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).getLockStatus(Mockito.any(Context.class), Mockito.anyListOf(Item.class));
     }
 
     @Test
     public void testGetChildren() throws Exception {
+        when(this.contentManagerMock.list(Mockito.any(Context.class), Mockito.anyString()))
+            .thenReturn(generateItemListMock());
 
+        this.mockMvc.perform(
+            get("/api/1/content/list/site?itemId=1").accept(MediaType.ALL))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        verify(this.contentManagerMock, times(1)).list(Mockito.any(Context.class), Mockito.anyString());
+    }
+
+    @Test
+    public void testGetChildrenMissingItemId() throws Exception {
+        when(this.contentManagerMock.list(Mockito.any(Context.class), Mockito.anyString()))
+            .thenReturn(generateItemListMock());
+
+        this.mockMvc.perform(get("/api/1/content/list/site").accept(MediaType.ALL))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).list(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testGetTree() throws Exception {
+        when(this.contentManagerMock.tree(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyListOf(ItemFilter.class), Mockito.anyListOf(ItemExtractor.class))).thenReturn(generateItemTreeMock
+            ());
 
+        this.mockMvc.perform(
+            get("/api/1/content/tree/site?itemId=1&depth=1").accept(MediaType.ALL))
+            .andExpect(status().isOk());
+
+        verify(this.contentManagerMock, times(1)).tree((Context)Mockito.any(), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyList(), Mockito.anyList());
+    }
+
+
+
+    @Test
+    public void testGetTreeMissingItemId() throws Exception {
+        when(this.contentManagerMock.tree(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyListOf(ItemFilter.class), Mockito.anyListOf(ItemExtractor.class))).thenReturn(generateItemTreeMock
+            ());
+
+        this.mockMvc.perform(
+            get("/api/1/content/tree/site?depth=1").accept(MediaType.ALL))
+            .andExpect(status().isBadRequest());
+
+        verify(this.contentManagerMock, times(0)).tree(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyInt(),
+            Mockito.anyListOf(ItemFilter.class), Mockito.anyListOf(ItemExtractor.class));
     }
 
     @Test
     public void testGetSites() throws Exception {
+        List<Site> siteListMock = generateSiteListMock();
+        String siteListJSON = generateRequestBody(siteListMock);
+        when(this.contentManagerMock.getSiteList(Mockito.any(Context.class))).thenReturn(siteListMock);
 
+        this.mockMvc.perform(
+                get("/api/1/content/site_list")
+                        .accept(MediaType.ALL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(siteListJSON))
+        ;
+
+        verify(this.contentManagerMock, times(1)).getSiteList(Mockito.any(Context.class));
     }
 }

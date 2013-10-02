@@ -23,5 +23,33 @@ package org.craftercms.studio.commons.dto;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class ModuleConfiguration {
+public class ModuleConfiguration<T> {
+
+    private String moduleName;
+    private String moduleType;
+    private T configuration;
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(final String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getModuleType() {
+        return moduleType;
+    }
+
+    public void setModuleType(final String moduleType) {
+        this.moduleType = moduleType;
+    }
+
+    public T getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(final T configuration) {
+        this.configuration = configuration;
+    }
 }

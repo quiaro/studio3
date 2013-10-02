@@ -16,10 +16,17 @@
  */
 package org.craftercms.studio.controller.services.rest;
 
+import org.craftercms.studio.api.version.VersionManager;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.dto.Version;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +38,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/1/version")
 public class VersionController {
 
+    @Autowired
+    private VersionManager versionManager;
+
     /**
      * TODO: javadoc.
      * @param site site.
@@ -38,8 +48,12 @@ public class VersionController {
      * @param request request.
      * @param response response.
      */
-    @RequestMapping(value = "/history/{site}/{itemId}", method = RequestMethod.GET)
-    public void getVersionHistory(@PathVariable final String site, @PathVariable final String itemId, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/history/{site}", method = RequestMethod.GET)
+    @ResponseBody
+    public Tree<Version> getVersionHistory(@PathVariable final String site, @RequestParam(required = true) final
+            String itemId, final HttpServletRequest request, final HttpServletResponse response) {
+        return this.versionManager.history(new Context(), itemId);
+    }
 
     /**
      * TODO: javadoc.
@@ -49,6 +63,10 @@ public class VersionController {
      * @param request request.
      * @param response response.
      */
-    @RequestMapping(value = "/revert/{site}/{itemId}", method = RequestMethod.POST)
-    public void revert(@PathVariable final String site, @PathVariable final String itemId, final String versionToRevertTo, final HttpServletRequest request, final HttpServletResponse response) {}
+    @RequestMapping(value = "/revert/{site}", method = RequestMethod.POST)
+    public void revert(@PathVariable final String site, @RequestParam(required = true) final String itemId,
+        @RequestParam(required = true) final String versionToRevertTo,
+                       final HttpServletRequest request, final HttpServletResponse response) {
+        this.versionManager.revert(new Context(), itemId, versionToRevertTo);
+    }
 }

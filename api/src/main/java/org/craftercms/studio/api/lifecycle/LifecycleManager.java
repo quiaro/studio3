@@ -32,8 +32,9 @@ public interface LifecycleManager {
     /**
      * List of actions allowed against items.
      * @param context context
+     * @param site site
      * @param itemIds list of item ids
      * @return list of actions
      */
-    List<Action> getPossibleActions(Context context, List<String> itemIds);
+    List<Action> getPossibleActions(Context context, String site, List<String> itemIds);
 }

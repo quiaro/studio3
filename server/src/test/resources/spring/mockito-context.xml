@@ -22,4 +22,40 @@
         <beans:constructor-arg value="org.craftercms.studio.api.audit.AuditManager" />
     </beans:bean>
 
+    <beans:bean id="searchManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.search.SearchManager" />
+    </beans:bean>
+
+    <beans:bean id="versionManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.version.VersionManager" />
+    </beans:bean>
+
+    <beans:bean id="dependencyManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.dependency.DependencyManager" />
+    </beans:bean>
+
+    <beans:bean id="workflowManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.workflow.WorkflowManager" />
+    </beans:bean>
+
+    <beans:bean id="deploymentManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.deployment.DeploymentManager" />
+    </beans:bean>
+
+    <beans:bean id="lifecycleManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.lifecycle.LifecycleManager" />
+    </beans:bean>
+
+    <beans:bean id="securityManager" class="org.mockito.Mockito" factory-method="mock" >
+        <beans:constructor-arg value="org.craftercms.studio.api.security.SecurityManager" />
+    </beans:bean>
+
+    <beans:bean id="formsManager" class="org.mockito.Mockito" factory-method="mock" >
+        <beans:constructor-arg value="org.craftercms.studio.api.forms.FormsManager" />
+    </beans:bean>
+
+    <beans:bean id="configurationManager" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.configuration.ConfigurationManager" />
+    </beans:bean>
+
 </beans:beans>

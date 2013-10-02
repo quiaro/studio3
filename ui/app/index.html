@@ -10,53 +10,54 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/dashboard.css -->
-    <link rel="stylesheet" href="styles/bootstrap.css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap@@min.css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme@@min.css">
+    <link rel="stylesheet" href="lib/toastr/css/toastr@@min.css">
+
+    <!-- build:css styles/studio.css -->
+    <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/preview.css">
     <!-- endbuild -->
   </head>
 
-  <body ng-app="s2doApp@@dev">
-    
-    <!--[if lt IE 7]>
-      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-    <![endif]-->
+  <body ng-app="studio-ui@@dev" ng-controller="AppCtrl">
 
-    <!--[if lt IE 9]>
-      <script src="components/es5-shim/es5-shim.js"></script>
-      <script src="components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+    <div id="app-container" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
+        <div>
+            <navigation></navigation>
+            <div id="main-container">
+                <div class="content container-fluid" ng-view></div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Add your site or application content here -->
-    <div class="container-fluid" ng-view></div>
-    
-    <script src="components/angular/angular@@min.js"></script>
-    <script src="components/angular-bootstrap/ui-bootstrap@@min.js"></script>
-    <script src="components/angular-resource/angular-resource@@min.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize@@min.js"></script>
+    <script src="lib/jquery/js/jquery@@min.js"></script>
+    <script src="lib/toastr/js/toastr@@min.js"></script>
+    <script src="lib/angular/js/angular@@min.js"></script>
+    <script src="lib/angular-bootstrap/js/ui-bootstrap@@min.js"></script>
+    <script src="lib/angular-resource/js/angular-resource@@min.js"></script>
+    <script src="lib/angular-sanitize/js/angular-sanitize@@min.js"></script>
+    <script src="lib/angular-cookies/js/angular-cookies@@min.js"></script>
+    <script src="lib/angular-translate/js/angular-translate@@min.js"></script>
+    <script src="lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
+    <script src="lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
+    <script src="lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
     @@includeNgMocks
+    @@includeTranslateErrorHandler
     @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/common/resources/vars.js"></script>
-    <script src="scripts/common/resources/util.js"></script>
-    <script src="scripts/dashboard/dashboard.js"></script>
-    <script src="scripts/dialogs/dialogs.js"></script>
-    <script src="scripts/dialogs/go-live/go-live.js"></script>
-    <script src="scripts/dialogs/history/history.js"></script>
-    <script src="scripts/dialogs/alert/alert.js"></script>
+    <script src="scripts/common/common.js"></script>
+    <script src="scripts/common/config.js"></script>
+    <script src="scripts/common/directives/navigation.js"></script>
     <script src="scripts/common/services/repo.js"></script>
+    <script src="scripts/navigation/navigation.js"></script>
+    <script src="scripts/dashboard/dashboard.js"></script>
+    <script src="scripts/preview/preview.js"></script>
+    <script src="scripts/editor/ngEventBridge.js"></script>
     <!-- endbuild -->
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <!--
-    <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
-    -->
   </body>
 </html>

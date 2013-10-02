@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2007-2013 Crafter Software Corporation.
+  ~
+  ~   This program is free software: you can redistribute it and/or modify
+  ~   it under the terms of the GNU General Public License as published by
+  ~   the Free Software Foundation, either version 3 of the License, or
+  ~   (at your option) any later version.
+  ~
+  ~   This program is distributed in the hope that it will be useful,
+  ~   but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~   GNU General Public License for more details.
+  ~
+  ~   You should have received a copy of the GNU General Public License
+  ~   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/mongo
+       http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+
+    <bean name="studio.repo.mongo.properties"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="false"/>
+        <property name="locations">
+            <list>
+                <value>classpath:craftercms/studio/studio-mongodb-repository.properties</value>
+                <value>classpath*:craftercms/extension/studio/studio-mongodb-repository.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <mongo:mongo host="${studio.repocitory.mongodb.connection.host}" id="studio.repo.mongo.mongo" port="${studio.repocitory.mongodb.connection.port}"
+                 write-concern="${studio.repocitory.mongodb.connection.writeConcern}">
+        <mongo:options connections-per-host="${studio.repocitory.mongodb.connection.connectionsPerHost}"
+                       threads-allowed-to-block-for-connection-multiplier="${studio.repocitory.mongodb.connection.threadsAllowedToBlockForConnectionMultiplier}"
+                       connect-timeout="${studio.repocitory.mongodb.connection.connectTimeout}"
+                       max-wait-time="${studio.repocitory.mongodb.connection.maxWaitTime}"
+                       auto-connect-retry="${studio.repocitory.mongodb.connection.autoConnectRetry}"
+                       socket-keep-alive="${studio.repocitory.mongodb.connection.socketKeepAlive}"
+                       slave-ok="${studio.repocitory.mongodb.connection.slaveOk}"
+                       write-number="${studio.repocitory.mongodb.connection.writeNumber}"
+                       write-timeout="${studio.repocitory.mongodb.connection.writeTimeout}"
+                       write-fsync="${studio.repocitory.mongodb.connection.writeFsync}"
+                />
+    </mongo:mongo>
+
+    <bean id="studio.repo.mongo.mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+    <bean name="studio.repo.mongo.gridFsTemplate"
+          class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <constructor-arg ref="mongoDbFactory" />
+        <constructor-arg ref="studio.repo.mongo.Converter" />
+    </bean>
+    <bean class="org.craftercms.studio.impl.repository.mongodb.services.ITMongoStartupService" id=""/>
+    <bean class="org.craftercms.studio.impl.repository.mongodb.services.ITMongoStartupService" id=""/>
+
+
+    <mongo:repositories base-package="org.craftercms.studio.impl.repository.mongodb.datarepos"
+                        mongo-template-ref="studio.repo.mongo.mongoTemplate"
+                        create-query-indexes="true"
+            />
+
+    <!-- Quick Notes (cortiz)-->
+    <!-- It seems that there is a issue if someone change the id of  DBFactory bean -->
+    <mongo:db-factory dbname="${studio.repocitory.mongodb.connection.db}"
+                      username="${studio.repocitory.mongodb.connection.dbUser}"
+                      password="${studio.repocitory.mongodb.connection.dbPassword}"
+                      mongo-ref="studio.repo.mongo.mongo"
+                      />
+
+    <mongo:mapping-converter id="studio.repo.mongo.Converter" />
+
+</beans>

@@ -1,0 +1,39 @@
+<div class="navigation">
+    <div class="logo"></div>
+    <search></search>
+    <div class="project-menu s2do-menu" ng-click="hideProjectOptions=!hideProjectOptions">
+        <button type="button" class="btn btn-default">
+          Choose a Project <span class="caret"></span>
+        </button>
+        <ul class="options bottom" ng-hide="hideProjectOptions">
+            <li><a href="#">Mango</a></li>
+            <li><a href="#">Star fruit</a></li>
+            <li><a href="#">Dragon fruit</a></li>
+            <li><a href="#">Passion fruit</a></li>
+        </ul>
+    </div>
+    <fileview></fileview>
+    <div class="user-menu s2do-menu" ng-click="hideUserOptions=!hideUserOptions">
+        <button type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="description">Scott Weiland</span>
+        </button>
+        <ul class="options top" ng-hide="hideUserOptions">
+            <li><a href="#">
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="description">Account Settings</span>
+            </a></li>
+            <li><a href="#">
+                <span class="glyphicon glyphicon-log-out"></span>
+                <span class="description">Sign Out</span>
+            </a></li>
+        </ul>
+    </div>
+    <!--
+    <div class="language">
+        <input type="button" value="English" ng-click="AppCtrl.changeLanguage(\'en\')" />
+        <input type="button" value="French" ng-click="AppCtrl.changeLanguage(\'fr\')" />
+        <input type="button" value="UV" ng-click="AppCtrl.toggleView()" />
+    </div
+    -->
+</div>

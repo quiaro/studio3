@@ -21,4 +21,13 @@ package org.craftercms.studio.commons.dto;
  */
 public class ResultSet {
 
+    private int size;
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(final int size) {
+        this.size = size;
+    }
 }
