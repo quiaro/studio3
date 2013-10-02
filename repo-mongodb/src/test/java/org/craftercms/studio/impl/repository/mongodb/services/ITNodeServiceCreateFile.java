@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Integration Test of Creation of a File
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
+@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITNodeServiceCreateFile implements ApplicationContextAware {
 
     private static final String FILE_NAME = "Dr. John A. Zoiberg";

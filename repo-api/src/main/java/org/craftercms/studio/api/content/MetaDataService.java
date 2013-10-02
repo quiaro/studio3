@@ -36,7 +36,7 @@ public interface MetaDataService {
      * @return map of properties
      */
     <T> Map<String, T> getProperties(String ticket, String itemId, Class<T> type);
-
+// TODO Switch to add/remove instead of get/set
     /**
      * Set item properties.
      * @param ticket security ticket

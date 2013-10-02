@@ -34,8 +34,9 @@ public interface SearchService {
     /**
      * Find items.
      * @param ticket security ticket
+     * @param query query string
      * @param filters filters
      * @return list of items
      */
-    List<Item> find(String ticket, List<Filter> filters);
+    List<Item> find(String ticket, String query, List<Filter> filters);
 }

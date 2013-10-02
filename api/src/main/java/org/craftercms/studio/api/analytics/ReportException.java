@@ -3,7 +3,11 @@ package org.craftercms.studio.api.analytics;
 import org.craftercms.studio.commons.exception.StudioException;
 
 /**
- *  Thrown when a Analytics report could no be generate.
+ * Thrown when a Analytics report could not be generated.
+ *
+ * @author Sumer Jabri
+ * @author Dejan Brkic
+ * @author Carlos Ortiz
  */
 public class ReportException extends StudioException {
 
@@ -15,5 +19,9 @@ public class ReportException extends StudioException {
 
     public ReportException(final String message) {
         super(message);
+    }
+
+    public ReportException(final Throwable cause) {
+        super(cause);
     }
 }

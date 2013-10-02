@@ -24,7 +24,7 @@ package org.craftercms.studio.commons.dto;
  * @author Carlos Ortiz
  */
 public class DiffResult {
-
+// todo diff should be both item content and item metadata
     public DiffResult() {
     }
 }

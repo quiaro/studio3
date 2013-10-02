@@ -23,6 +23,7 @@ import org.craftercms.studio.commons.dto.Context;
 
 /**
  * Audit Manager.
+ * Record and retrieve activity logs.
  *
  * @author Sumer Jabri
  * @author Dejan Brkic

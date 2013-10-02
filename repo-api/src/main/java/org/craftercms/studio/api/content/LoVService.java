@@ -36,4 +36,7 @@ public interface LoVService {
      * @return list of values
      */
     <T> List<T> getLoV(String ticket, String lovName, Class<T> type);
+
+    // fixme todo
+    <T> void updateLoV(String ticket, String lovName, Class<T> type, List<T> LoV);
 }

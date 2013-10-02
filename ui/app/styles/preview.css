@@ -1,20 +1,61 @@
-#app-container .preview { display: table-row; width: 100%; }
+/* ------------------ */
+/* --- Navigation --- */
+/* ------------------ */
 
-#preview-container { 
-	display: table-cell; 
-}
-#preview-container > .content { 
-	position: absolute;
-	top: 15px;
-	bottom: 15px;
-	right: 15px;
-	left: 290px;	/* navigation width */
-	background-color: #FFFFFF;
-	border: 1px solid #111111;
-	min-width: 708px;
+/* --- class: preview = Navigation collapsed, Work Area expanded --- */
+.preview .navigation { width: 55px; }
+
+.preview .navigation .logo {
+    background: transparent url(/images/crafter-logo-min.png) 10px 0 no-repeat;
+    height: 78px;
+    width: 60px;
 }
 
-#preview-container .toolbar {
+.preview .navigation .search { margin: 10px 0; }
+.preview .navigation .search input[type='search'] { display: none; }
+.preview .navigation .search button[type='button'] { float: right; }
+
+.preview .navigation .file-view {
+    background-color: #FFFFFF;
+    border: 1px solid #606060;
+    height: 400px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.preview .navigation .icon-menu .description { display: none; }
+
+
+/* --- class: preview2 = Navigation collapsed, Work Area expanded | only show icons on the navigation --- */
+.preview2 .navigation {
+    display: table-cell;
+    width: 60px;
+    margin-right: 10px;
+    padding: 10px 5px;
+
+    border-right: 6px solid gray;
+}
+
+.preview2 .navigation .logo {
+    background: transparent url(/images/crafter-logo-min.png) 0 0 no-repeat;
+    height: 78px;
+    width: 45px;
+}
+
+.preview2 .navigation .file-view { display: none; }
+
+.preview2 .navigation .search { margin: 10px 0; }
+.preview2 .navigation .search input[type='search'] { display: none; }
+
+.preview2 .navigation .icon-menu { font-size: 18px; }
+.preview2 .navigation .icon-menu .description { display: none; }
+.preview2 .navigation .list-inline li { display: block; margin-left: 6px; }
+.preview2 .navigation .icon-menu .separator { display: none; }
+
+/* ------------------ */
+/* ----- Preview ---- */
+/* ------------------ */
+.preview .toolbar {
 	background-color: #E2E2E2;
 	position: absolute;
 	bottom: 0;
@@ -25,15 +66,15 @@
 	border-top: 1px solid #606060;
 }
 
-/* --- class: expand --- */
-.expand #preview-container > .content { left: 90px; }
+/* --- class: preview --- */
+.preview .content { left: 90px; }
 
 
-/* --- class: expand2 --- */
-.expand2 #preview-container > .content { 
+/* --- class: preview2 --- */
+.preview2 .content {
 	border: none;
 	top: 0;
 	bottom: 0;
 	right: 0;
-	left: 64px; 
+	left: 64px;
 }

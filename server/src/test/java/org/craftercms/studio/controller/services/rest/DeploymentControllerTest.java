@@ -17,37 +17,21 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.deployment.DeploymentManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
-import org.craftercms.studio.commons.dto.Item;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.reset;
@@ -65,10 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations = {"/spring/mockito-context.xml", "/spring/web-context.xml", "/spring/messageFormatting-studio3-web-context.xml"})
-public class DeploymentControllerTest {
+public class DeploymentControllerTest extends AbstractControllerTest {
 
     // Mocks
     @Autowired
@@ -76,16 +57,6 @@ public class DeploymentControllerTest {
 
     @InjectMocks
     private DeploymentController deploymentController;
-
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
 
     @After
     public void tearDown() throws Exception {
@@ -105,41 +76,6 @@ public class DeploymentControllerTest {
 
         verify(this.deploymentManagerMock, times(1)).history(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyListOf(String.class));
-    }
-
-    private List<Item> generateDeploymentHistory() {
-        List<Item> items = new ArrayList<Item>();
-        for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
-            items.add(createItemMock());
-        }
-        return items;
-    }
-
-    private Item createItemMock() {
-        Item item = new Item();
-        item.setContentType(RandomStringUtils.randomAlphabetic(10));
-        item.setCreateDate(new Date());
-        item.setCreator(RandomStringUtils.randomAlphabetic(10));
-        item.setDisabled(false);
-        item.setFileName(RandomStringUtils.randomAlphanumeric(10));
-        item.setId(UUID.randomUUID().toString());
-        item.setLastModifiedDate(new Date());
-        item.setLockOwner(RandomStringUtils.randomAlphabetic(10));
-        item.setMimeType(RandomStringUtils.randomAlphabetic(10));
-        item.setModifier(RandomStringUtils.randomAlphabetic(10));
-        item.setName(RandomStringUtils.randomAlphabetic(10));
-        item.setPackages(new ArrayList<String>());
-        item.setPath(RandomStringUtils.randomAlphabetic(100));
-        item.setPlaceInNav(true);
-        item.setPreviewable(true);
-        item.setPreviewUrl(RandomStringUtils.randomAlphabetic(100));
-        item.setProperties(new HashMap<String, Object>());
-        item.setRenderingTemplates(new ArrayList<String>());
-        item.setRepoId(RandomStringUtils.randomAlphabetic(10));
-        item.setScheduledDate(new Date());
-        item.setState(RandomStringUtils.randomAlphabetic(10));
-        item.setStudioType(RandomStringUtils.randomAlphabetic(10));
-        return item;
     }
 
     @Test
@@ -174,30 +110,6 @@ public class DeploymentControllerTest {
             Mockito.anyString());
     }
 
-    private List<DeploymentChannel> generateChannelsList() {
-        List<DeploymentChannel> items = new ArrayList<DeploymentChannel>();
-        for (int i = 0; i < 1 + (int)(Math.random() * (5)); i++) {
-            items.add(createDeploymentChannelMock());
-        }
-        return items;
-    }
-
-    private DeploymentChannel createDeploymentChannelMock() {
-        DeploymentChannel channel = new DeploymentChannel();
-        channel.setId(UUID.randomUUID().toString());
-        channel.setName(RandomStringUtils.randomAlphabetic(10));
-        channel.setDisabled(false);
-        channel.setHost("localhost");
-        channel.setPort("9191");
-        channel.setPublishingUrl("http://localhost:9191/publish");
-        channel.setPublishMetadata(false);
-        channel.setStatusUrl("http://localhost:9191/api/1/monitoring/status");
-        channel.setTarget(RandomStringUtils.randomAlphabetic(10));
-        channel.setType(RandomStringUtils.randomAlphanumeric(10));
-        channel.setVersionUrl("http://localhost:9191/api/1/version");
-        return channel;
-    }
-
     @Test
     public void testChannelsMissingEnvironment() throws Exception {
         when(this.deploymentManagerMock.channels(Mockito.any(Context.class), Mockito.anyString(),
@@ -228,24 +140,12 @@ public class DeploymentControllerTest {
         this.mockMvc.perform(
             post("/api/1/deployment/update_channel/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createDeploymentChannelJson().getBytes())
+                .content(generateRequestBody(createDeploymentChannelMock()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
         verify(this.deploymentManagerMock, times(1)).updateChannel(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.any(DeploymentChannel.class));
-    }
-
-    private String createDeploymentChannelJson() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        String toRet = "";
-        try {
-            toRet = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(createDeploymentChannelMock());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return toRet;
     }
 
     @Test
@@ -286,7 +186,7 @@ public class DeploymentControllerTest {
         this.mockMvc.perform(
             post("/api/1/deployment/remove_channel/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createDeploymentChannelJson().getBytes())
+                .content(generateRequestBody(createDeploymentChannelMock()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
@@ -368,7 +268,7 @@ public class DeploymentControllerTest {
         this.mockMvc.perform(
             get("/api/1/deployment/status/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createDeploymentChannelJson().getBytes())
+                .content(generateRequestBody(createDeploymentChannelMock()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
@@ -400,7 +300,7 @@ public class DeploymentControllerTest {
         this.mockMvc.perform(
             get("/api/1/deployment/version/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createDeploymentChannelJson().getBytes())
+                .content(generateRequestBody(createDeploymentChannelMock()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
@@ -439,7 +339,7 @@ public class DeploymentControllerTest {
         this.mockMvc.perform(
             post("/api/1/deployment/abort/sample")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createDeploymentChannelJson().getBytes())
+                .content(generateRequestBody(createDeploymentChannelMock()).getBytes())
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 

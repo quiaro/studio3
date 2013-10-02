@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.exception.ItemAlreadyCheckedOutException;
 
 /**
  * Version Service.
@@ -33,34 +34,38 @@ public interface VersionService {
 
     /**
      * Checkout item for edit.
+     *
      * @param ticket security ticket
      * @param itemId item id
      * @return Id of working copy
      */
-    String checkOut(String ticket, String itemId);
+    String checkOut(String ticket, String itemId) throws ItemAlreadyCheckedOutException;
 
     /**
      * Cancel checkout.
-     * @param ticket security ticket
-     * @param itemId item id
+     *
+     * @param ticket        security ticket
+     * @param itemId        item id
      * @param workingCopyId id of working copy obtained during
-     * {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
+     *                      {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
      */
     void cancelCheckOut(String ticket, String itemId, String workingCopyId);
 
     /**
      * Cancel checkout.
-     * @param ticket security ticket
-     * @param itemId item id
-     * @param workingCopyId id of working copy obtained during
+     *
+     * @param ticket         security ticket
+     * @param itemId         item id
+     * @param workingCopyId  id of working copy obtained during
      * @param isMajorVersion is this a major or minor version
-     * @param comment comment to attach to the check in
-     * {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
+     * @param comment        comment to attach to the check in
+     *                       {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
      */
     void checkIn(String ticket, String itemId, String workingCopyId, boolean isMajorVersion, String comment);
 
     /**
      * Get all item versions.
+     *
      * @param ticket security ticket
      * @param itemId item id
      * @return return list of items (versions)
@@ -69,8 +74,9 @@ public interface VersionService {
 
     /**
      * Revert item to given version.
-     * @param ticket security ticket
-     * @param itemId item id
+     *
+     * @param ticket  security ticket
+     * @param itemId  item id
      * @param version version to revert to
      */
     void revert(String ticket, String itemId, String version);
@@ -78,8 +84,9 @@ public interface VersionService {
 
     /**
      * Diff on two item versions.
-     * @param ticket security ticket
-     * @param itemId item id
+     *
+     * @param ticket   security ticket
+     * @param itemId   item id
      * @param version1 version 1
      * @param version2 version 2
      * @return diff result

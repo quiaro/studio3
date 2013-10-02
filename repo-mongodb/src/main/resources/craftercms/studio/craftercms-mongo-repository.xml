@@ -25,8 +25,8 @@
         <property name="fileEncoding" value="UTF-8"/>
         <property name="locations">
             <list>
-                <value>classpath:craftercms/studio/studio-mongodb-repocitory.properties</value>
-                <value>classpath*:craftercms/extension/studio/studio-mongodb-repocitory.properties</value>
+                <value>classpath:craftercms/studio/studio-mongodb-repository.properties</value>
+                <value>classpath*:craftercms/extension/studio/studio-mongodb-repository.properties</value>
             </list>
         </property>
     </bean>

@@ -145,6 +145,7 @@
                             <databaseDirectory>${basedir}/target/mongo-database</databaseDirectory>
                             <randomPort>false</randomPort>
                             <logging>none</logging>
+                            <version>2.4.6</version>
                         </configuration>
                     </execution>
                     <execution>

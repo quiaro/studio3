@@ -38,7 +38,7 @@ public interface FormsManager {
      * @param filters filters
      * @return list of forms
      */
-    List<FormDefinition> list(Context context, String site, Map<String, Object> filters);
+    List<FormDefinition> list(Context context, String site, List<String> filters);
 
     /**
      * Create or update form.

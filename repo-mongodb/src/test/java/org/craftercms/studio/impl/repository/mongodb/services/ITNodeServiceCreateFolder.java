@@ -37,7 +37,7 @@ import static org.junit.Assert.fail;
  * Integration Test of Creation of a Folder
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
+@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITNodeServiceCreateFolder implements ApplicationContextAware {
 
     private static final String FOLDER_CREATOR="Philip J Fry";

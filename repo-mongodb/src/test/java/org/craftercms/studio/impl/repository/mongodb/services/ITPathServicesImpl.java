@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Test of PathServicesImpl
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
+@ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITPathServicesImpl implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;

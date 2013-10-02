@@ -39,6 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repocitory.xml")
 public class ITGridFSService implements ApplicationContextAware {
 
+
     /**
      *  Ruler of the planet Omicron Persei 8
      */
