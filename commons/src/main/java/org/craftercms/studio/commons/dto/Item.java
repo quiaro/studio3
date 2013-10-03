@@ -28,29 +28,63 @@ import java.util.Map;
  * @author Carlos Ortiz
  */
 public class Item implements Comparable<Item> {
+    // Fundamental
+    /**
+     * Crafter Studio item id
+     */
+    private ItemId id;
+    /**
+     * Object Version Number: Monotonically increasing number on persist
+     */
+    private int objectVersionNumber;
+    /**
+     * List of ancestors in TODO order
+     */
+    private List<ItemId> ancestors;
 
     // Core Metadata
-    private ItemId id;
-    private String repoId;
-    private String name;
+    /**
+     * Underlying repository id.
+     */
+    private String repoId;      // TODO think about this
+    private String label;
     private String fileName;
     private String path;
-    private String previewUrl;
-    private String studioType;
-    private String mimeType;
-    private String contentType;
-    private String state;
-    private boolean disabled;
+    private String createdBy;
+    private Date creationDate;
+    private String modifiedBy;
     private Date lastModifiedDate;
-    private String modifier;
-    private Date createDate;
-    private String creator;
+    private String type;        // Blueprint, Component, Page, Static Asset, Rendering Template, ...
+    private boolean isFolder;   // TODO think about this
+    private String state;       // TODO ENUM
+    private String workflow;    // TODO ASK ABOUT THIS ONE
+
+    // Something something properties
+    private String mimeType;
     private boolean placeInNav;
+    private boolean disabled;
+
+    ////TODO LOCK TYPE
+    /**
+     * User id of the lock owner, null if item is not locked
+     */
     private String lockOwner;
-    private boolean previewable;
+
+    /**
+     * The URL to preview this item, null if item is not previewable
+     */
+    private String previewUrl;
+
+
+    // Security Properties
+    private boolean securityInherited;
+    //private List<ACL> acls;
+
+    private String contentType;
     private List<String> renderingTemplates;
     private Date scheduledDate;
     private List<String> packages;
+
     // Additional Metadata
     private Map<String, Object> properties;
 
@@ -85,12 +119,12 @@ public class Item implements Comparable<Item> {
         this.repoId = repoId;
     }
 
-    public String getName() {
-        return this.name;
+    public String getLabel() {
+        return this.label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getFileName() {
@@ -115,14 +149,6 @@ public class Item implements Comparable<Item> {
 
     public void setPreviewUrl(String previewUrl) {
         this.previewUrl = previewUrl;
-    }
-
-    public String getStudioType() {
-        return this.studioType;
-    }
-
-    public void setStudioType(String studioType) {
-        this.studioType = studioType;
     }
 
     public String getMimeType() {
@@ -165,30 +191,6 @@ public class Item implements Comparable<Item> {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public String getModifier() {
-        return this.modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public Date getCreateDate() {
-        return this.createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreator() {
-        return this.creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     public boolean isPlaceInNav() {
         return this.placeInNav;
     }
@@ -203,14 +205,6 @@ public class Item implements Comparable<Item> {
 
     public void setLockOwner(String lockOwner) {
         this.lockOwner = lockOwner;
-    }
-
-    public boolean isPreviewable() {
-        return this.previewable;
-    }
-
-    public void setPreviewable(boolean previewable) {
-        this.previewable = previewable;
     }
 
     public List<String> getRenderingTemplates() {
