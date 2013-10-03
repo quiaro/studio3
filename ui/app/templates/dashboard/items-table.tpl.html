@@ -1,0 +1,56 @@
+<div id="{{model.id}}" class="panel panel-default {{model.class}}">
+    <div class="panel-heading">
+        <h3 class="panel-title" translate>{{model.header}}</h3>
+        <div class="filters">
+            <span class="filter type" ng-hide="!model.filterType">
+                <b>Type</b>
+                <select title="Filter by item type"
+                        class="form-control input-sm"
+                        ng-model="model.filterType">
+                  <option value="">Any</option>
+                  <option value="page">Page</option>
+                  <option value="component">Component</option>
+                  <option value="asset">Asset</option>
+                </select>
+            </span>
+            <span class="filter length" ng-hide="!model.filterLength">
+                <b>Items</b>
+                <input title="Filter by number of results"
+                       class="form-control input-sm" type="number"
+                       ng-model="model.filterLength"
+                       min="0" max="100" required />
+                of <b>{{model.data.length}}</b>
+            </span>
+        </div>
+    </div>
+        <div class="panel-body">
+        <table class="item-list" ng-init="model.getData()">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in model.columns"
+                        class="{{column.class}}"
+                        ng-class="model.setSortClass({{column.name}})"
+                        ng-click="model.changeSorting({{column.name}})"
+                        translate>{{column.header}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in recentActivity.data | orderBy : recentActivity.sort.column : recentActivity.sort.descending | limitTo : recentActivity.filterLength | typeFilter : recentActivity.filterType" >
+
+                    <!-- <td ng-repeat="column in model.columns"
+                        class="{{column.class}}"
+                        translate>{{item[column.name]}}</td> -->
+
+                    <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>
+                    <td class="operations">
+                        <a href="#">Edit</a> | <a href="#">Copy</a> | <a href="#">Paste</a>
+                    </td>
+                    <td class="page-name" title="{{item.url}}">{{item.name}}</td>
+                    <td class="last-edit">{{item.lastEdited}}</td>
+                    <td class="last-author">{{item.lastAuthor}}</td>
+                    <td class="personal-edit">{{item.lastPersonalEdit}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

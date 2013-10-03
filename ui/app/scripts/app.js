@@ -17,7 +17,17 @@ angular.module('studio-ui', [
         $routeProvider
           .when(APP_PATHS.dashboard, {
             templateUrl: '/templates/dashboard.tpl.html',
-            controller: 'DashboardCtrl'
+            controller: 'DashboardCtrl',
+            resolve: {
+                loadPrototypes : function loadPrototypes ($q, Widget) {
+                    var deferred = $q.defer();
+                    Widget.getPropertyAssets("prototypeUrl", false, Widget.processPrototype)
+                        .then( function (prototypes) {
+                            deferred.resolve(prototypes)
+                        });
+                    return deferred.promise;
+                }
+            }
           })
           .when(APP_PATHS.preview, {
             templateUrl: '/templates/preview.tpl.html',

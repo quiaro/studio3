@@ -71,6 +71,7 @@ angular.module('studio-uiDev', [
         $httpBackend.whenGET(/^\/templates\/.*\.tpl\.html/).passThrough();
         $httpBackend.whenGET(/^i18n\/.*\.json/).passThrough();
         $httpBackend.whenGET(/^\/config\/.*/).passThrough();
+        $httpBackend.whenGET(/\/plugins\/.*/).passThrough();
 
         $translate.useLoader('$translateStaticFilesLoader', {
           prefix: I18N.prefix,

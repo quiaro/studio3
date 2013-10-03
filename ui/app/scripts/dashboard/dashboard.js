@@ -2,72 +2,65 @@
 
 angular.module('dashboard', ['common'])
 
-    // Filter items depending on their category: pages, components, assets or any
+    .directive('dashboardWidgets',
+        ['$compile', 'Widget', function ($compile, Widget) {
+
+        return {
+            restrict: 'E',
+            terminal: true,
+            link : function postLink (scope, element) {
+
+                Widget.getPropertyAssets('templateUrl', true, Widget.processTemplate)
+                    .then( function (templates) {
+                        templates.forEach( function (tpl) {
+                            element.append(tpl);
+                        });
+                        // Compile the contents of the element to create bindings
+                        $compile(element.contents())(scope);
+                    });
+            }
+        };
+    }])
+
+    // Filter items depending on their type: pages, components, assets or any
     .filter('typeFilter', function() {
-        return function (items, category) {
-            if (!category || '' === category) {
+        return function (items, type) {
+            if (!type || '' === type) {
                 return items;
             }
 
             return items.filter(function(element, index, array) {
-                return element.type === category;
+                return element.type === type;
             });
         }
     })
 
     .controller('DashboardCtrl',
-		['$scope', 'repo', 'notifications', function($scope, repo, notifications) {
+		['$scope', '$route', 'Widget', 'notifications', 'repo', function($scope, $route, Widget, notifications, repo) {
 
         $scope.notifications = notifications;
 
-        var table = {
-            // real value for data property will be assigned in the getData method
-            data: {},
+        Widget.getWidgets().then( function (widgets) {
+            widgets && widgets.forEach( function (widget) {
 
-            // number of results to show
-            filterLength: 0,
+                // Identify and load the prototype object for a widget by its URL
+                var widgetPrototype = $route.current.locals.loadPrototypes[widget.prototypeUrl],
+                    widgetModel = widget.model;
 
-            getData: function getData (filterOpts) {
+                if (angular.isObject(widgetPrototype)) {
+                    // Create a widget's model based on its prototype object
+                    $scope[widget.name] = Object.create(widgetPrototype);
 
-                // We need to use call to preserve the context (this)
-                (function (filterOpts) {
-                    var that = this;
+                    // Extend the widget's model per the configuration file
+                    Object.keys(widgetModel).forEach( function(modelKey) {
+                        $scope[widget.name][modelKey] = widgetModel[modelKey];
+                    });
 
-                    repo.list(filterOpts)
-                        .then( function (data) {
-                            that.data = data;
-                            that.filterLength = data.length;
-                        });
-                }).call(this, filterOpts);
-            },
-
-            setSortClass: function setSortClass (column) {
-                var sortOrder;
-
-                sortOrder = (this.sort.descending) ? 'descending' : 'ascending';
-                return column === this.sort.column && 'sort-' + sortOrder;
-
-            },
-
-            changeSorting: function changeSorting (column) {
-                var sort = this.sort;
-                if (sort.column === column) {
-                    sort.descending = !sort.descending;
                 } else {
-                    sort.column = column;
-                    sort.descending = false;
+                    throw new Error ('Prototype object for ' + widget.name + ' is not an object');
                 }
-            }
-        };
-
-        // Dashboard tables : Make all dashboard tables inherit from the table object
-        $scope.recentActivity = Object.create(table);
-
-        $scope.recentActivity.sort = {
-            column : 'lastAuthor',
-            descending : false
-        };
-        $scope.recentActivity.filterType = '';
+            });
+        });
 
 	}]);
 
