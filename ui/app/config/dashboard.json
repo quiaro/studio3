@@ -65,6 +65,10 @@
                     "sort" : {
                         "column" : "lastAuthor",
                         "descending" : false
+                    },
+                    "filterType" : {
+                        "show" : false,
+                        "value" : ""
                     }
                 }
             }

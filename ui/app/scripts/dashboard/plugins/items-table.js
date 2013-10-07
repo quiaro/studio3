@@ -6,39 +6,43 @@
         // real value for data property will be assigned in the getAsyncData method
         data: {},
 
-        // number of results to show
-        filterLength: 0,
+        // length filter: number of results to show
+        filterLength: {
+            show: true,
+            value: 0
+        },
 
-        // type of items to show (defaults to all types)
-        filterType: '',
+        // type filter: type of items to show (defaults to all types)
+        filterType: {
+            show: true,
+            value: ''
+        },
 
         // widget's asynchronous method to load model data
         getAsyncData: function getAsyncData ($timeout) {
 
-            // We need to use call to preserve the context (this)
-            (function () {
-                var that = this;
+            // Preserve the context (this)
+            var that = this;
 
-                angular.injector(['ng', 'common']).invoke(function (repo) {
-                    // Filter options to be defined here
-                    var filterOpts = {};
+            angular.injector(['ng', 'common']).invoke(function (repo) {
+                // Filter options to be defined here; they could also be defined as
+                // a widget property -which would make them configurable
+                var filterOpts = {};
 
-                    repo.list(filterOpts)
-                        .then( function (data) {
+                repo.list(filterOpts)
+                    .then( function (data) {
 
-                            $timeout(function () {
-                                // Delay the updates to the model until it's safe
-                                // to start a new digest cycle
-                                that.data = data;
+                        $timeout(function () {
+                            // Delay the updates to the model until it's safe
+                            // to start a new digest cycle in Angular
+                            that.data = data;
 
-                                if (data.length) {
-                                    that.filterLength = data.length;
-                                }
-                            });
+                            if (data.length) {
+                                that.filterLength.value = data.length;
+                            }
                         });
-                });
-
-            }).call(this);
+                    });
+            });
         },
 
         setSortClass: function setSortClass (column) {
