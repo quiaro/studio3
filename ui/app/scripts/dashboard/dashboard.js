@@ -24,7 +24,7 @@ angular.module('dashboard', ['common'])
 
                         if (angular.isObject(widgetPrototype)) {
                             // Create a widget's model based on its prototype object
-                            scope[widgetNamespace][widget.name] = Object.create(widgetPrototype);
+                            scope[widgetNamespace][widget.name] = Widget.create(widgetPrototype);
 
                             // Extend the widget's model per the configuration file
                             Object.keys(widgetModel).forEach( function(modelKey) {

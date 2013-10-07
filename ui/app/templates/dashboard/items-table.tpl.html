@@ -36,7 +36,6 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr ng-repeat="item in widget.name.data" > -->
                 <tr ng-repeat="item in widget.name.data | orderBy : widget.name.sort.column : widget.name.sort.descending | limitTo : widget.name.filterLength.value | typeFilter : widget.name.filterType.value">
 
                     <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>

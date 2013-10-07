@@ -3,7 +3,24 @@
 
 angular.module('common', ['ui.bootstrap.dialog'])
 
-    .factory('Widget', ['$templateCache', '$http', '$q', 'CONFIG', function ($templateCache, $http, $q, CONFIG) {
+    .factory('Widget',
+        ['$templateCache', '$http', '$q', 'CONFIG',
+        function ($templateCache, $http, $q, CONFIG) {
+
+        function create (prototypeObj) {
+            var newWidget = Object.create(prototypeObj);
+
+            // Because we want to keep widgets independent of each other, we'll copy
+            // any properties that are not functions (i.e. data properties) from the prototype object
+            // into the widget's own model; otherwise, the widgets will rely on the prototype's
+            // model and share data (... and widgets will start acting strange!)
+            Object.keys(prototypeObj).forEach( function(modelKey) {
+                if (typeof prototypeObj[modelKey] !== 'function') {
+                    newWidget[modelKey] = angular.copy(prototypeObj[modelKey]);
+                }
+            });
+            return newWidget;
+        }
 
         function getWidgets(section) {
             var deferred = $q.defer();
@@ -119,6 +136,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
         }
 
         return {
+            create: create,
             getWidgets: getWidgets,
             getPropertyAssets: getPropertyAssets,
             processPrototype: processPrototype,
