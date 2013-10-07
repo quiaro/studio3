@@ -11,11 +11,6 @@
                     "class" : "recent-activity",
                     "columns" : [
                         {
-                            "name" : "selector",
-                            "header" : "",
-                            "class" : "selector"
-                        },
-                        {
                             "name" : "name",
                             "header" : "DASHBOARD.activity.page_name",
                             "class" : "page-name"
@@ -51,11 +46,6 @@
                     "id" : "my-approval-activity",
                     "class" : "approval-activity",
                     "columns" : [
-                        {
-                            "name" : "selector",
-                            "header" : "",
-                            "class" : "selector"
-                        },
                         {
                             "name" : "name",
                             "header" : "DASHBOARD.approval.page_name",

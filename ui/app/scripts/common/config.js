@@ -20,7 +20,12 @@ angular.module('common')
 
     .constant('CONFIG', {
         dashboard: '/config/dashboard.json',
-        registry: '/config/registry.json'
+        registry: '/config/registry.json',
+        widgets: {
+            tplPlaceholder: "widget.name",
+            asyncMethodName: "getAsyncData",
+            namespace: "widgets"
+        }
     })
 
 	.value('Env', {

@@ -1,54 +1,47 @@
-<div id="{{model.id}}" class="panel panel-default {{model.class}}">
+<div id="{{widget.name.id}}" class="panel panel-default {{widget.name.class}}">
     <div class="panel-heading">
-        <h3 class="panel-title" translate>{{model.header}}</h3>
+        <h3 class="panel-title" translate>{{widget.name.header}}</h3>
         <div class="filters">
-            <span class="filter type" ng-hide="!model.filterType">
+            <span class="filter type" ng-hide="!widget.name.filterType">
                 <b>Type</b>
                 <select title="Filter by item type"
                         class="form-control input-sm"
-                        ng-model="model.filterType">
+                        ng-model="widget.name.filterType">
                   <option value="">Any</option>
                   <option value="page">Page</option>
                   <option value="component">Component</option>
                   <option value="asset">Asset</option>
                 </select>
             </span>
-            <span class="filter length" ng-hide="!model.filterLength">
+            <span class="filter length" ng-hide="!widget.name.filterLength">
                 <b>Items</b>
                 <input title="Filter by number of results"
                        class="form-control input-sm" type="number"
-                       ng-model="model.filterLength"
+                       ng-model="widget.name.filterLength"
                        min="0" max="100" required />
-                of <b>{{model.data.length}}</b>
+                of <b>{{widget.name.data.length}}</b>
             </span>
         </div>
     </div>
         <div class="panel-body">
-        <table class="item-list" ng-init="model.getData()">
+        <table class="item-list">
             <thead>
                 <tr>
-                    <th ng-repeat="column in model.columns"
+                    <th class="selector">&nbsp;</th>
+                    <th ng-repeat="column in widget.name.columns"
                         class="{{column.class}}"
-                        ng-class="model.setSortClass({{column.name}})"
-                        ng-click="model.changeSorting({{column.name}})"
+                        ng-class="widget.name.setSortClass({{column.name}})"
+                        ng-click="widget.name.changeSorting({{column.name}})"
                         translate>{{column.header}}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in recentActivity.data | orderBy : recentActivity.sort.column : recentActivity.sort.descending | limitTo : recentActivity.filterLength | typeFilter : recentActivity.filterType" >
-
-                    <!-- <td ng-repeat="column in model.columns"
-                        class="{{column.class}}"
-                        translate>{{item[column.name]}}</td> -->
+                <!-- <tr ng-repeat="item in widget.name.data" > -->
+                <tr ng-repeat="item in widget.name.data | orderBy : widget.name.sort.column : widget.name.sort.descending | limitTo : widget.name.filterLength" >
 
                     <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>
-                    <td class="operations">
-                        <a href="#">Edit</a> | <a href="#">Copy</a> | <a href="#">Paste</a>
-                    </td>
-                    <td class="page-name" title="{{item.url}}">{{item.name}}</td>
-                    <td class="last-edit">{{item.lastEdited}}</td>
-                    <td class="last-author">{{item.lastAuthor}}</td>
-                    <td class="personal-edit">{{item.lastPersonalEdit}}</td>
+                    <td ng-repeat="column in widget.name.columns"
+                        class="{{column.class}}">{{item[column.name]}}</td>
                 </tr>
             </tbody>
         </table>

@@ -5,10 +5,10 @@ angular.module('common', ['ui.bootstrap.dialog'])
 
     .factory('Widget', ['$templateCache', '$http', '$q', 'CONFIG', function ($templateCache, $http, $q, CONFIG) {
 
-        function getWidgets() {
+        function getWidgets(section) {
             var deferred = $q.defer();
 
-            $http.get(CONFIG.dashboard)
+            $http.get(CONFIG[section])
                 .success(function(data) {
                     var widgets = data &&
                                     data.dashboard &&
@@ -17,7 +17,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
                     if (widgets && angular.isArray(widgets) && widgets.length) {
                         deferred.resolve(widgets);
                     } else {
-                        deferred.resolve(null);
+                        deferred.resolve([]);
                     }
                 }).error(function() {
                     deferred.reject(null);
@@ -26,6 +26,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
         }
 
         /*
+         * @param section app section for which widgets are being loaded
          * @param widgetProperty widget property pointing to an asset to be loaded asynchronously
          * @param fetchDuplicateAssets whether we should make another request for an asset we have already
          *        requested. Depending on how we want to process the asset after we retrieve it
@@ -34,13 +35,12 @@ angular.module('common', ['ui.bootstrap.dialog'])
          *        we should make a new request for it each time.
          * @param assetCallback Function called to modify and/or process each individual asset fetched before
          *        its promise is resolved
-         * @param resolveCallback Function called after all assets have been resolved
          */
-        function getPropertyAssets(widgetProperty, fetchDuplicateAssets, assetCallback, resolveCallback) {
+        function getPropertyAssets(section, widgetProperty, fetchDuplicateAssets, assetCallback) {
             var deferred = $q.defer(),
                 fetchedAssets = {};
 
-            getWidgets().then( function (widgets) {
+            getWidgets(section).then( function (widgets) {
 
                 var allPromises = [];
 
@@ -103,16 +103,28 @@ angular.module('common', ['ui.bootstrap.dialog'])
          */
         function processTemplate (templateStr, widget) {
             var widgetSpecificTpl,
-                widgetModelStr = (widget.name) ? widget.name : "model";
+                widgetModelStr = (widget.name) ? CONFIG.widgets.namespace + '.' + widget.name : CONFIG.widgets.tplPlaceholder,
+                reWidgetPlaceholder = new RegExp(CONFIG.widgets.tplPlaceholder, 'g');
 
-            return templateStr.replace(/model/g, widgetModelStr);
+            return templateStr.replace(reWidgetPlaceholder, widgetModelStr);
+        }
+
+        // Method known to be asynchronous by widgets
+        function getAsyncMethodName () {
+            return CONFIG.widgets.asyncMethodName;
+        }
+
+        function getNamespace() {
+            return CONFIG.widgets.namespace;
         }
 
         return {
             getWidgets: getWidgets,
             getPropertyAssets: getPropertyAssets,
             processPrototype: processPrototype,
-            processTemplate: processTemplate
+            processTemplate: processTemplate,
+            getAsyncMethodName : getAsyncMethodName,
+            getNamespace: getNamespace
         };
     }])
 

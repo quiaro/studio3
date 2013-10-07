@@ -3,7 +3,7 @@
 (function () {
 
     return {
-        // real value for data property will be assigned in the getData method
+        // real value for data property will be assigned in the getAsyncData method
         data: {},
 
         // number of results to show
@@ -12,21 +12,33 @@
         // type of items to show (defaults to all types)
         filterType: '',
 
-        getData: function getData (filterOpts) {
+        // widget's asynchronous method to load model data
+        getAsyncData: function getAsyncData ($timeout) {
 
             // We need to use call to preserve the context (this)
-            (function (filterOpts) {
+            (function () {
                 var that = this;
 
                 angular.injector(['ng', 'common']).invoke(function (repo) {
+                    // Filter options to be defined here
+                    var filterOpts = {};
+
                     repo.list(filterOpts)
                         .then( function (data) {
-                            that.data = data;
-                            that.filterLength = data.length;
+
+                            $timeout(function () {
+                                // Delay the updates to the model until it's safe
+                                // to start a new digest cycle
+                                that.data = data;
+
+                                if (data.length) {
+                                    that.filterLength = data.length;
+                                }
+                            });
                         });
                 });
 
-            }).call(this, filterOpts);
+            }).call(this);
         },
 
         setSortClass: function setSortClass (column) {
