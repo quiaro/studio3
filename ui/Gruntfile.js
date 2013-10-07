@@ -1,8 +1,4 @@
 'use strict';
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
-var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
 
 module.exports = function (grunt) {
   // load all grunt tasks
@@ -20,6 +16,21 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
+    express: {
+        options: {
+            port: process.env.PORT || 9000
+        },
+        dev: {
+            options: {
+                script: './server/server.js'
+            }
+        },
+        prod: {
+            options: {
+                script: './server/server.js'
+            }
+        }
+    },
     watch: {
       coffee: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
@@ -33,7 +44,7 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass']
       },
-      livereload: {
+      express: {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
           '{.tmp,<%= yeoman.app %>}/i18n/*.json',
@@ -42,40 +53,17 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/templates/**/*.html',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
-        tasks: ['livereload']
-      }
-    },
-    connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost'
-      },
-      livereload: {
+        tasks: ['express:dev'],
         options: {
-          middleware: function (connect) {
-            return [
-              lrSnippet,
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, yeomanConfig.app)
-            ];
-          }
-        }
-      },
-      test: {
-        options: {
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
-            ];
-          }
+            livereload: true,
+            nospawn: true   //Without this option specified express won't be reloaded
         }
       }
     },
+
     open: {
       server: {
-        url: 'http://localhost:<%= connect.options.port %>'
+        url: 'http://localhost:<%= express.options.port %>'
       }
     },
     clean: {
@@ -84,7 +72,7 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            'target'
+            '<%= yeoman.dist %>/*'
           ]
         }]
       },
@@ -266,7 +254,8 @@ module.exports = function (grunt) {
             'includeNgMocks': '<script src="lib/angular-mocks/js/angular-mocks.js"></script>',
             'includeTranslateErrorHandler': '<script ' +
               'src="lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
-            'includeAppDev': '<script src="scripts/appDev.js"></script>'
+            'includeAppDev': '<script src="scripts/appDev.js"></script>',
+            'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
           }
         },
         files: [
@@ -281,7 +270,8 @@ module.exports = function (grunt) {
             'dev': '',
             'includeNgMocks': '',
             'includeTranslateErrorHandler': '',
-            'includeAppDev': ''
+            'includeAppDev': '',
+            'livereload': ''
           }
         },
         files: [
@@ -301,14 +291,12 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.renameTask('regarde', 'watch');
-
   // Run unit tests on jasmine
   grunt.registerTask('test', [
     'clean:server',
     'coffee',
     // 'compass',
-    'connect:test',
+    // 'connect:test',
     'karma:dev'
   ]);
 
@@ -323,9 +311,8 @@ module.exports = function (grunt) {
     'clean:server',
     'coffee:dist',
     // 'compass:server',
-    'livereload-start',
-    'connect:livereload',
     'replace:dev',
+    'express:dev',
     'open',
     'watch'
   ]);
@@ -336,7 +323,7 @@ module.exports = function (grunt) {
     'jshint',
     'coffee',
     // 'compass:dist',
-    'connect:test',
+    // 'connect:test',
     'karma:continuous',
     'replace:build',
     'useminPrepare',
