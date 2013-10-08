@@ -79,9 +79,13 @@ angular.module('studio-ui', [
         $rootScope.$on('$routeChangeSuccess', function (evt) {
             switch ($location.path()) {
                 case APP_PATHS.dashboard:
-                    $scope.AppCtrl.appState = 'dashboard'; break;
+                    $scope.AppCtrl.appState = 'dashboard';
+                    $scope.AppCtrl.fullScreen = 'normal';
+                    break;
                 case APP_PATHS.preview:
-                    $scope.AppCtrl.appState = 'preview'; break;
+                    $scope.AppCtrl.appState = 'preview';
+                    $scope.AppCtrl.fullScreen = 'full';
+                    break;
                 default:
                     $scope.AppCtrl.appState = 'unknown';
             }

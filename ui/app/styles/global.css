@@ -44,13 +44,44 @@ html, body {
 
 #nav .logo { display: block; }
 
-#nav .user-menu { font-size: 14px; }
-#nav .user-menu li,
-#nav .user-menu a,
-#nav .user-menu li a {
-	/*color: #363636;*/
-	color: #EDEDED;
+#nav .s2do-menu { position: relative; }
+#nav .s2do-menu .options {
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
 }
+#nav .s2do-menu .options.bottom { top:100%; }
+#nav .s2do-menu .options.top { bottom:100%; }
+
+#nav .s2do-menu .options li {
+    text-align: left;
+    margin: 0;
+}
+#nav .s2do-menu .options a {
+    display: block;
+    color: #333;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+#nav .s2do-menu .options a:hover {
+    color: #FFF;
+    text-decoration: none;
+    background-color: #428BCA;
+}
+
+#nav .user-menu { font-size: 14px; }
 
 #nav .user-menu li {
 	margin: 8px 0px;
@@ -74,14 +105,56 @@ html, body {
     background-color: #FFFFFF;
     border: 1px solid #111111;
     min-width: 714px;
-    min-height: 700px;
 }
 
 /* --- Full Screen State --- */
-.full #nav { display: none; }
+#studio.full #nav {
+    display: block;
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    padding: 5px 20px;
+}
+
+#studio.full #nav .logo {
+    background: transparent url(/images/crafter-logo-min-sm.png) 0 0 no-repeat;
+    height: 40px;
+    width: 23px;
+    float: left;
+    margin-right: 5px;
+}
+
+#studio.full #nav .search,
+#studio.full #nav .project-menu {
+    float: left;
+    width: 220px;
+    margin: 5px 8px;
+}
+
+#studio.full #nav input[type='search'],
+#studio.full #nav select { border-color: #666; }
+
+#studio.full #nav .file-view { display: none; }
+#studio.full #nav .user-menu {
+    float: right;
+    margin-top: 5px;
+}
+#studio.full #nav .user-menu > .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+#studio.full #nav .user-menu .options {
+    left: auto;
+    right: 0;
+}
+
 .full #main-container .content {
     top: 0;
-    bottom: 0;
+    bottom: 50px;
     right: 0;
     left: 0;
 }
