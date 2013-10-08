@@ -7,6 +7,13 @@ angular.module('preview', ['common', 'ngEventBridge'])
 
 		$scope.notifications = notifications;
 
+        $scope.authoring = {
+            site: "/sites/unigroup.html",
+            tools: {
+                state: "on"
+            }
+        };
+
 		$scope.selectedElement = 'none';
 
 		$scope.$on('editor/element/select', function (event, args) {

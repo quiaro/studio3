@@ -11,9 +11,8 @@ angular.module('studio-ui', [
 
     .config(['$routeProvider',
            '$translateProvider',
-           '$locationProvider',
            'I18N',
-           'APP_PATHS', function ($routeProvider, $translateProvider, $locationProvider, I18N, APP_PATHS) {
+           'APP_PATHS', function ($routeProvider, $translateProvider, I18N, APP_PATHS) {
 
         $routeProvider
             .when(APP_PATHS.dashboard, {
@@ -46,7 +45,7 @@ angular.module('studio-ui', [
                 redirectTo: APP_PATHS.dashboard
             });
 
-        $locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode(true);
 
         $translateProvider
             .useStaticFilesLoader({
