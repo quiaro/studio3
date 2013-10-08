@@ -11,16 +11,3 @@
 
 	border-top: 1px solid #606060;
 }
-
-/* --- class: preview --- */
-.preview .content { left: 90px; }
-
-
-/* --- class: preview2 --- */
-.preview2 .content {
-	border: none;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 64px;
-}

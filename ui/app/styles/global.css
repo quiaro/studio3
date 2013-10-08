@@ -117,6 +117,11 @@ html, body {
     width: 100%;
     padding: 5px 20px;
 }
+#studio.full #nav .home {
+    float: left;
+    margin: 5px 5px 5px 10px;
+    color: #FFFFFF;
+}
 
 #studio.full #nav .logo {
     background: transparent url(/images/crafter-logo-min-sm.png) 0 0 no-repeat;
@@ -152,9 +157,12 @@ html, body {
     right: 0;
 }
 
-.full #main-container .content {
+#studio.full #main-container .content {
     top: 0;
     bottom: 50px;
     right: 0;
     left: 0;
+    border-top: 0 none;
+    border-right: 0 none;
+    border-left: 0 none;
 }
