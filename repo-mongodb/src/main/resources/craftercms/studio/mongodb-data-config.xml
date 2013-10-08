@@ -27,7 +27,7 @@
        http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
 
-    <bean name="studio.repo.mongo.properties"
+    <bean name="studio.repo.mongo.properties" id="studio.repo.mongo.properties"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
         <property name="locations">

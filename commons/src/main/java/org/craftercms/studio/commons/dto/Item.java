@@ -238,4 +238,76 @@ public class Item implements Comparable<Item> {
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
+
+    public int getObjectVersionNumber() {
+        return objectVersionNumber;
+    }
+
+    public void setObjectVersionNumber(final int objectVersionNumber) {
+        this.objectVersionNumber = objectVersionNumber;
+    }
+
+    public List<ItemId> getAncestors() {
+        return ancestors;
+    }
+
+    public void setAncestors(final List<ItemId> ancestors) {
+        this.ancestors = ancestors;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(final String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(final Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(final String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    public boolean isFolder() {
+        return isFolder;
+    }
+
+    public void setFolder(final boolean folder) {
+        isFolder = folder;
+    }
+
+    public String getWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(final String workflow) {
+        this.workflow = workflow;
+    }
+
+    public boolean isSecurityInherited() {
+        return securityInherited;
+    }
+
+    public void setSecurityInherited(final boolean securityInherited) {
+        this.securityInherited = securityInherited;
+    }
 }

@@ -6,7 +6,7 @@ package org.craftercms.studio.commons.dto;
 public class ItemId {
     String itemId;
 
-    ItemId(final String itemId) {
+    public ItemId(final String itemId) {
         this.itemId = itemId;
     }
 

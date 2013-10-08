@@ -17,9 +17,11 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services;
 
-import org.junit.Assert;
+import java.util.LinkedList;
+
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.services.impl.PathServicesImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -52,28 +54,73 @@ public class PathServicesImplTest {
     @Test
     public void testGetPathByItem() throws Exception {
         when(nodeService.getNode(Mockito.anyString())).thenReturn(createTree());
-        String path = pathServices.getPathByItemId("","","");
-        String exceptedPath="/A/B/C/D";
-        Assert.assertEquals(path, exceptedPath);
+        String path = pathServices.getPathByItemId("Ticket", "Site", "ItemId");
+        String exceptedPath = "/A/B/C/D";
+        Assert.assertEquals(exceptedPath, path);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testTicketNull() throws Exception {
+        pathServices.getPathByItemId(null, "Site", "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTicketIsEmpty() throws Exception {
+        pathServices.getPathByItemId("", "Site", "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTicketIsBlank() throws Exception {
+        pathServices.getPathByItemId("   ", "Site", "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSiteNull() throws Exception {
+        pathServices.getPathByItemId("Ticket", null, "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSiteIsEmpty() throws Exception {
+        pathServices.getPathByItemId("Ticket", "", "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSiteIsBlank() throws Exception {
+        pathServices.getPathByItemId("Ticket", " ", "ItemId");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testItemIdtNull() throws Exception {
+        pathServices.getPathByItemId("Ticket", "Site", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testItemIdIsEmpty() throws Exception {
+        pathServices.getPathByItemId("Ticket", "Site", "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testItemIdIsBlank() throws Exception {
+        pathServices.getPathByItemId("Ticket", "Site", "  ");
     }
 
     private Node createTree() {
         Node root = new Node();
-        root.getMetadata().setNodeName("/");
+        root.getMetadata().getCore().setNodeName("/");
         Node a = new Node();
-        a.getMetadata().setNodeName("A");
+        a.getMetadata().getCore().setNodeName("A");
         Node b = new Node();
-        b.getMetadata().setNodeName("B");
+        b.getMetadata().getCore().setNodeName("B");
         Node c = new Node();
-        c.getMetadata().setNodeName("C");
+        c.getMetadata().getCore().setNodeName("C");
         Node d = new Node();
-        d.getMetadata().setNodeName("D");
-        //Making the Tree
-        d.setParent(c);
-        c.setParent(b);
-        b.setParent(a);
-        a.setParent(root);
+        d.getMetadata().getCore().setNodeName("D");
+        LinkedList<Node> ancestoers = new LinkedList<Node>();
+        ancestoers.add(root);
+        ancestoers.add(a);
+        ancestoers.add(b);
+        ancestoers.add(c);
+        d.setAncestors(ancestoers);
         return d;
     }
 }

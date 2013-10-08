@@ -23,7 +23,9 @@
                         class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <beans:property name="supportedMediaTypes" value="application/json"/>
                 <beans:property name="prettyPrint" value="true"/>
+
                 <beans:property name="objectMapper" >
+                   
                     <beans:bean class="com.fasterxml.jackson.databind.ObjectMapper">
                         <beans:property name="dateFormat">
                             <beans:bean class="java.text.SimpleDateFormat">
@@ -31,6 +33,7 @@
                             </beans:bean>
                         </beans:property>
                     </beans:bean>
+                  
                 </beans:property>
             </beans:bean>
         </message-converters>

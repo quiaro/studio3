@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 /**
  * Spring data Repository for Node Objects.
@@ -29,25 +30,33 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface NodeDataRepository extends MongoRepository<Node, String> {
     /**
      * Finds all the Nodes with a given parent.
+     *
+     *
      * @param parent Parent to search for.
      * @return A List of nodes parent equals given parent.<br/>
-     *         Empty list if none where found.
+     * Empty list if none where found.
      */
-    List<Node> findAllByParent(Node parent);
+    List<Node> findAllByAncestors(List<Node> parent);
 
     /**
      * Finds the Root Node.
      * <b> In the case that for some external/bug there is multiple
      * root nodes, by default </b>
+     *
      * @return Returns the Root node
      */
-    Node findByParentIsNull();
+    @Query("{ ancestors: [] }")
+    //Has no ancestors AKA root
+    Node findRootNode();
 
     /**
      * Finds all Nodes with a given Name.
+     *
      * @param name Name of the Node
      * @return A list of nodes where the name is the given, <br/> empty list
      * if nothing is found.
      */
-    List<Node> findAllByMetadataNodeName(String name);
+    //List<Node> findAllByMetadataNodeName(String name);
+
+    Node findNodeByAncestorsAndMetadataCoreNodeName(List<Node> ancestors, String nodeName);
 }

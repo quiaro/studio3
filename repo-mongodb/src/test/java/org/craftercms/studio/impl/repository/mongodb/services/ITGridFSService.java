@@ -17,9 +17,11 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services;
 
-import org.craftercms.studio.api.content.PathService;
-import org.craftercms.studio.impl.repository.mongodb.domain.Node;
-import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
+
+import java.io.InputStream;
+
+import com.mongodb.gridfs.GridFSFile;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,41 +33,43 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test of PathServicesImpl
+ * Integration Test for GridFSServiceTest
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
-public class ITPathServicesImpl implements ApplicationContextAware {
+public class ITGridFSService implements ApplicationContextAware {
+
+
+    /**
+     *  Ruler of the planet Omicron Persei 8
+     */
+    private static final String FILE_NAME="Lrrr";
 
     private ApplicationContext applicationContext;
-    private PathService pathService;
+    private GridFSService gridFSService;
+
+
 
     @Before
     public void setUp() throws Exception {
-        pathService = applicationContext.getBean(PathService.class);
-
+        gridFSService = applicationContext.getBean(GridFSService.class);
     }
+
 
     @Test
-    public void testGetPathByItem() throws Exception {
-        String path = pathService.getPathByItemId("TicketID", "SITE", createSampleNodeTree());
-        System.out.println("PATh" + path);
-        Assert.assertEquals(path, "/philip_j_fry/yancy_fry_sr/yancy_fry_jr/hubert_j_farnsworth");
-    }
-
-    private String createSampleNodeTree() throws MongoRepositoryException {
-        NodeService nodeService = applicationContext.getBean(NodeService.class);
-        Node a = nodeService.createFolderNode(nodeService.getRootNode(), "philip_j_fry", "Philip J. Fry", "TestUser");
-        Node b = nodeService.createFolderNode(a, "yancy_fry_sr", "Yancy Fry, Sr.", "TestUser");
-        Node c = nodeService.createFolderNode(b, "yancy_fry_jr", "Yancy Fry", "TestUser");
-        Node d = nodeService.createFolderNode(c, "hubert_j_farnsworth", "Hubert J. Farnsworth", "TestUser");
-        return d.getId();
-
+    public void testSaveFile() throws Exception {
+        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
+        Assert.assertNotNull(testInput);
+        testInput.mark(Integer.MAX_VALUE);
+        String originalMD5 = DigestUtils.md5Hex(testInput);
+        testInput.reset();
+        GridFSFile file = gridFSService.saveFile(FILE_NAME, testInput);
+        Assert.assertEquals(FILE_NAME, file.getFilename());
+        Assert.assertEquals(file.getMD5(), originalMD5);
     }
 
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        this.applicationContext=applicationContext;
     }
 }
-

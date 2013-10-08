@@ -15,13 +15,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.impl.repository.mongodb.services;
+package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-
-import java.io.InputStream;
-
-import com.mongodb.gridfs.GridFSDBFile;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.craftercms.studio.api.content.ContentService;
+import org.craftercms.studio.commons.dto.Item;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,43 +29,43 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Integration Test for GridFSServiceTest
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
-public class ITGridFSServiceTest implements ApplicationContextAware {
+public class ITContentServiceImpl implements ApplicationContextAware {
 
-    /**
-     *  Ruler of the planet Omicron Persei 8
-     */
-    private static final String FILE_NAME="Lrrr";
 
     private ApplicationContext applicationContext;
-    private GridFSService gridFSService;
-
-
+    private ContentService contentService;
 
     @Before
     public void setUp() throws Exception {
-        gridFSService = applicationContext.getBean(GridFSService.class);
+        this.contentService = applicationContext.getBean(ContentService.class);
     }
 
+    @Test
+    public void testCreateFolder() throws Exception {
+        Item item = new Item();
+        item.setLabel("Robot Hell");
+        item.setFileName("robot-hell");
+        item.setCreatedBy("Robo Devil");
+        Item newItem = this.contentService.create("none", "ITTestSite", "/testSite", item);
+        Assert.assertNotNull(newItem);
+        Assert.assertEquals(newItem.getModifiedBy(),"Robo Devil");
+        Assert.assertEquals(newItem.getPath(), "/ITTestSite/testSite/robot-hell");
+    }
 
     @Test
-    public void testSaveFile() throws Exception {
-        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-        Assert.assertNotNull(testInput);
-        testInput.mark(Integer.MAX_VALUE);
-        String originalMD5 = DigestUtils.md5Hex(testInput);
-        testInput.reset();
-        GridFSDBFile file = (GridFSDBFile)gridFSService.saveFile(FILE_NAME, testInput);
-        Assert.assertEquals(FILE_NAME, file.getFilename());
-        Assert.assertEquals(file.getMD5(), originalMD5);
+    public void testCreateFile() throws Exception {
+
+    }
+
+    @Test
+    public void testRead() throws Exception {
+
     }
 
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext=applicationContext;
+        this.applicationContext = applicationContext;
     }
 }
