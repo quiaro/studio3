@@ -35,7 +35,8 @@ public class NodeTest {
         testNode.getMetadata().getCore().setCreator("Amy Wong");
         testNode.getMetadata().getCore().setLastModifiedDate(new Date());
         testNode.getMetadata().getCore().setModifier("Amy Wong");
-        testNode.getMetadata().getCore().setNodeName("Mars U");
+        testNode.getMetadata().getCore().setNodeName("mars-u");
+        testNode.getMetadata().getCore().setLabel("Mars U");
         Node clone = (Node)testNode.clone();
         Assert.assertEquals(testNode, clone);
         Assert.assertFalse(testNode == clone);//Should be Different mem ref
@@ -50,7 +51,8 @@ public class NodeTest {
         testNode.getMetadata().getCore().setCreator("Amy Wong");
         testNode.getMetadata().getCore().setLastModifiedDate(new Date());
         testNode.getMetadata().getCore().setModifier("Amy Wong");
-        testNode.getMetadata().getCore().setNodeName("Mars U");
+        testNode.getMetadata().getCore().setNodeName("mars-u");
+        testNode.getMetadata().getCore().setLabel("Mars U");
         Node copy = testNode.copy();
         Assert.assertEquals(testNode, copy);
         Assert.assertFalse(testNode == copy);//Should be Different mem ref

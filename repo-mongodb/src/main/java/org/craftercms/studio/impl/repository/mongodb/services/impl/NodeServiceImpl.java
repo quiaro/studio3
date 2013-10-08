@@ -26,6 +26,7 @@ import java.util.UUID;
 import com.mongodb.gridfs.GridFSFile;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
@@ -70,7 +71,7 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node createFileNode(final Node parent, final String fileName, final String creatorName,
+    public Node createFileNode(final Node parent, final String fileName, String label, final String creatorName,
                                final InputStream content) throws MongoRepositoryException {
         log.debug("Validating params for creating a new Folder Node");
         if (parent == null) {
@@ -83,7 +84,7 @@ public class NodeServiceImpl implements NodeService {
             Node newNode = new Node(parent, NodeType.FILE);
             newNode.setId(UUID.randomUUID().toString());
             try {
-                newNode.getMetadata().setCore(createNodeMetadata(fileName, creatorName, content));
+                newNode.getMetadata().setCore(createNodeMetadata(fileName, creatorName, content, label));
                 if (isNodeUniqueNodeinTree(newNode)) {
                     newNode = nodeDataRepository.save(newNode);
                     log.debug("File node  {} saved ", newNode);
@@ -109,13 +110,14 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node createFolderNode(final Node parent, final String folderName, final String creatorName) throws
-        MongoRepositoryException {
+    public Node createFolderNode(final Node parent, final String folderName, final String folderLabel,
+                                 final String creatorName) throws MongoRepositoryException {
         log.debug("Validating params for creating a new Folder Node");
         if (parent == null) {
             log.error("Trying to create a node with parent null");
             throw new IllegalArgumentException("Parent Node can't be null");
         }
+
 
         if (isNodeFolder(parent)) {
             //TODO Validate that folder with same name and ancenstor does not exist.
@@ -123,7 +125,7 @@ public class NodeServiceImpl implements NodeService {
             log.debug("Generating ID and CoreMetadata");
             Node newNode = new Node(parent, NodeType.FOLDER);
             newNode.setId(UUID.randomUUID().toString());
-            newNode.getMetadata().setCore(createBasicMetadata(folderName, creatorName));
+            newNode.getMetadata().setCore(createBasicMetadata(folderName, creatorName, folderLabel));
             log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), newNode.getMetadata());
             log.debug("Saving Folder");
             try {
@@ -175,7 +177,7 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public Node getNode(final String nodeId) throws MongoRepositoryException {
 
-        if (StringUtils.isEmpty(nodeId) || StringUtils.isBlank(nodeId)) {
+        if (StringUtils.isBlank(nodeId)) {
             log.error("Given Node Id is either null,empty or blank");
             throw new IllegalArgumentException("Node Id can't be null, empty or blank");
         }
@@ -194,7 +196,7 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public Node findNodeByAncestorsAndName(final List<Node> ancestors, final String nodeName) {
-        if (StringUtils.isEmpty(nodeName) || StringUtils.isBlank(nodeName)) {
+        if (StringUtils.isBlank(nodeName)) {
             log.debug("Node name can't be empty or blank");
             throw new IllegalArgumentException("Can't search node with name either null ,empty or blank");
         }
@@ -211,14 +213,39 @@ public class NodeServiceImpl implements NodeService {
         return findNodeByAncestorsAndName(Arrays.asList(getRootNode()), siteName);
     }
 
+    @Override
+    public Node createFolderStructure(final String path) throws MongoRepositoryException {
+        String[] pathParts = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        Node parentNode = getRootNode();
+        for (int i = 0; i < pathParts.length; i++) {
+            Node pivot = findNodeByAncestorsAndName(parentNode.getAncestors(), pathParts[i]);
+            if (pivot == null) {
+                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i],
+                    MongoRepositoryDefaults.SYSTEM_USER_NAME);
+
+            }
+        }
+        return parentNode;
+    }
+
+    @Override
+    public InputStream getFile(final String fileId) throws MongoRepositoryException {
+        if (StringUtils.isBlank(fileId)) {
+            log.debug("File Id can't be empty or blank");
+            throw new IllegalArgumentException("Can't search file if the id either null ,empty or blank");
+        }
+        return gridFSService.getFile(fileId);
+    }
+
     private boolean isNodeUniqueNodeinTree(Node nodeToValidate) {
         return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(nodeToValidate.getAncestors(),
             nodeToValidate.getMetadata().getCore().getNodeName()) == null;
     }
 
     private CoreMetadata createNodeMetadata(final String fileName, final String creatorName,
-                                            final InputStream content) throws MongoRepositoryException {
-        CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName);
+                                            final InputStream content, final String folderLabel) throws
+        MongoRepositoryException {
+        CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName, folderLabel);
         try {
             GridFSFile savedFile = gridFSService.saveFile(fileName, content);
             coreMetadata.setSize(savedFile.getLength());
@@ -231,13 +258,15 @@ public class NodeServiceImpl implements NodeService {
         return coreMetadata;
     }
 
-    private CoreMetadata createBasicMetadata(final String fileName, final String creatorName) {
+    private CoreMetadata createBasicMetadata(final String fileName, final String creatorName,
+                                             final String folderLabel) {
         CoreMetadata coreMetadata = new CoreMetadata();
         coreMetadata.setNodeName(fileName);
         coreMetadata.setCreator(creatorName);
         coreMetadata.setCreateDate(new Date());
         coreMetadata.setLastModifiedDate(new Date());
         coreMetadata.setModifier(creatorName);
+        coreMetadata.setLabel(folderLabel);
         return coreMetadata;
     }
 

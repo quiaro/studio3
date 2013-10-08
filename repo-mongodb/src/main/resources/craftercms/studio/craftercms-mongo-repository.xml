@@ -52,7 +52,7 @@
     </bean>
     <bean class="org.craftercms.studio.impl.repository.mongodb.services.impl.ContentServiceImpl" id="contentService">
         <property name="nodeServiceImpl" ref="studio.repo.mongodb.nodeService"/>
-        <property name="propertyResolver" ref="propertyResolver"/>
+
         <property name="pathServices" ref="pathServices"/>
     </bean>
     <bean class="org.craftercms.studio.impl.repository.mongodb.services.impl.PathServicesImpl" id="pathServices">

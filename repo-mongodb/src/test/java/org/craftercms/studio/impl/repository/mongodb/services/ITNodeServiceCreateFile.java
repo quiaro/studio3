@@ -37,8 +37,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITNodeServiceCreateFile implements ApplicationContextAware {
 
-    private static final String FILE_NAME = "Dr. John A. Zoiberg";
+    private static final String FILE_NAME = "john-zoiberg";
     private static final String FILE_CREATOR = "Decapod 10";
+    private static final String FILE_LABEL = "Dr. John A. Zoiberg";
     private NodeService nodeService;
     private ApplicationContext applicationContext;
 
@@ -53,7 +54,7 @@ public class ITNodeServiceCreateFile implements ApplicationContextAware {
         Node parent = nodeService.getRootNode();
         InputStream inputStream = this.getClass().getResourceAsStream("/files/index.xml");
         Assert.assertNotNull("Input Stream is null", inputStream); //make sure we read the file.
-        Node createdNode = nodeService.createFileNode(parent, FILE_NAME, FILE_CREATOR, inputStream);
+        Node createdNode = nodeService.createFileNode(parent, FILE_NAME,FILE_LABEL , FILE_CREATOR, inputStream);
         Node expectedNode = nodeService.getNode(createdNode.getId());
         Assert.assertNotNull(createdNode);
         Assert.assertNotNull(expectedNode);

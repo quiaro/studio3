@@ -44,6 +44,11 @@ public class CoreMetadata implements Cloneable {
     private String fileId;
 
     /**
+     * Node Label.
+     */
+    private String label;
+
+    /**
      * Empty default CTOR.
      */
     public CoreMetadata() {
@@ -62,6 +67,7 @@ public class CoreMetadata implements Cloneable {
         this.creator = metadata.getCreator();
         this.size = metadata.getSize();
         this.fileId = metadata.getFileId();
+        this.label = metadata.getLabel();
 
     }
 
@@ -107,6 +113,9 @@ public class CoreMetadata implements Cloneable {
         if (!nodeName.equals(that.nodeName)) {
             return false;
         }
+        if (!label.equals(that.label)) {
+            return false;
+        }
 
 
         return true;
@@ -118,7 +127,7 @@ public class CoreMetadata implements Cloneable {
         result = 31 * result + (lastModifiedDate != null? lastModifiedDate.hashCode(): 0);
         result = 31 * result + (modifier != null? modifier.hashCode(): 0);
         result = 31 * result + createDate.hashCode();
-
+        result = 31 * result + label.hashCode();
         result = 31 * result + creator.hashCode();
         result = 31 * result + (int)(size ^ (size >>> 32));
         result = 31 * result + fileId.hashCode();
@@ -134,6 +143,7 @@ public class CoreMetadata implements Cloneable {
     public String toString() {
         final StringBuilder sb = new StringBuilder("CoreMetadata{");
         sb.append("nodeName='").append(nodeName).append('\'');
+        sb.append(" label='").append(label).append('\'');
         sb.append(", lastModifiedDate=").append(lastModifiedDate);
         sb.append(", modifier='").append(modifier).append('\'');
         sb.append(", createDate=").append(createDate);
@@ -200,6 +210,11 @@ public class CoreMetadata implements Cloneable {
         this.nodeName = nodeName;
     }
 
+    public String getLabel() {
+        return label;
+    }
 
-
+    public void setLabel(final String label) {
+        this.label = label;
+    }
 }

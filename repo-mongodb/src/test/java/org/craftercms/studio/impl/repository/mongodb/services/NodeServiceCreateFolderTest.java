@@ -60,12 +60,12 @@ public class NodeServiceCreateFolderTest {
     public void testParentNodeIsNotFolder() throws Exception {
         Node badParent = new Node();
         badParent.setType(NodeType.FILE);
-        nodeService.createFolderNode(badParent, "TestBadParent", "Philip J. Fry,");
+        nodeService.createFolderNode(badParent, "TestBadParent","Test Bad Parent", "Philip J. Fry,");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentIsNull() throws Exception {
-        nodeService.createFolderNode(null, "TestBadParent", "Philip J. Fry,");
+        nodeService.createFolderNode(null, "TestBadParent","Test bad Parent", "Philip J. Fry,");
     }
 
     @Test()
@@ -78,7 +78,7 @@ public class NodeServiceCreateFolderTest {
         });
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
-        Node node = nodeService.createFolderNode(parent, "TestFolder", "Philip J. Fry");
+        Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder" ,"Philip J. Fry");
         Assert.assertNotNull(node);
         Assert.assertNotNull(node.getMetadata());
         Assert.assertEquals(node.getMetadata().getCore().getCreator(), "Philip J. Fry");
@@ -93,7 +93,7 @@ public class NodeServiceCreateFolderTest {
         when(nodeDataRepository.save(Mockito.any(Node.class))).thenThrow(DataIntegrityViolationException.class);
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
-        Node node = nodeService.createFolderNode(parent, "TestFolder", "Philip J. Fry");
+        Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder", "Philip J. Fry");
         Assert.assertTrue(nodeService.isNodeFolder(node));
     }
 

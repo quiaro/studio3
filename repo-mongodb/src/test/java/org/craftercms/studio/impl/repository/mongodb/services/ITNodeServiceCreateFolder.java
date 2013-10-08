@@ -40,9 +40,11 @@ import static org.junit.Assert.fail;
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
 public class ITNodeServiceCreateFolder implements ApplicationContextAware {
 
-    private static final String FOLDER_CREATOR="Philip J Fry";
-    private static final String FOLDER_NAME="Panucci Pizza";
-    private static final String FOLDER_NAME_2 = "Robot Arms Apts";
+    private static final String FOLDER_CREATOR = "Philip J Fry";
+    private static final String FOLDER_LABEL = "Panucci Pizza";
+    private static final String FOLDER_NAME = "panucci-pizza";
+    private static final String FOLDER_LABEL_2 = "Robot Arms Apts";
+    private static final String FOLDER_NAME_2 = "robot-arms-apts";
     private NodeService nodeService;
     private ApplicationContext applicationContext;
 
@@ -53,26 +55,26 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
 
     @Test
     public void testRootFolderIsCreated() throws Exception {
-        Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME, FOLDER_CREATOR);
+        Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME, FOLDER_LABEL,
+            FOLDER_CREATOR);
         Assert.assertNotNull(folder);
         List<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
-        for(Node n :nodes){
-            if(n.equals(folder)){ //Node.equals call also CoreMetadata Equals therefor no need to recheck
-               return ; // we found it and is equals , my job here is done.
+        for (Node n : nodes) {
+            if (n.equals(folder)) { //Node.equals call also CoreMetadata Equals therefor no need to recheck
+                return; // we found it and is equals , my job here is done.
             }
         }
         fail("Saved Folder was not found when searching for it ");
     }
 
-
     @Test(expected = IllegalArgumentException.class)
     public void testValidationOfFolderNameInPath() throws Exception {
-        Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2, FOLDER_CREATOR);
+        Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2,FOLDER_LABEL_2,
+            FOLDER_CREATOR);
         Assert.assertNotNull(folder);
-        Node folder2 = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2, FOLDER_CREATOR);
+        Node folder2 = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2,FOLDER_LABEL_2, FOLDER_CREATOR);
 
     }
-
 
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {

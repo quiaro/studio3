@@ -95,6 +95,7 @@ public class MongoStartupService implements ApplicationListener {
         metadata.setCreateDate(new Date());
         metadata.setLastModifiedDate(new Date());
         metadata.setNodeName("/");
+        metadata.setLabel("Root");
         metadata.setCreator(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setModifier(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setSize(0);
@@ -119,9 +120,9 @@ public class MongoStartupService implements ApplicationListener {
 
     private void createSiteStructure(final Node root) throws MongoRepositoryException {
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER,
-            MongoRepositoryDefaults.SYSTEM_USER_NAME);
+            MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER,
-            MongoRepositoryDefaults.SYSTEM_USER_NAME);
+            MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
     }
 
     public void setMongoTemplate(final MongoTemplate mongoTemplate) {

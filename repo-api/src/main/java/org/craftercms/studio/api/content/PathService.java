@@ -42,4 +42,25 @@ public interface PathService {
      * @return item path
      */
     String getPathByItemId(final String ticket, final String site, final String itemId) throws RepositoryException;
+
+    /**
+     * Validates that the given path is valid.<br/>
+     * A valid path is
+     * <ul>
+     *     <li>A String that it's not null empty or whitespace</li>
+     *     <li>A String that starts with '/' char </li>
+     *     <li>Only have this chars A-Z a-z 0-9 '/' '-' '_' '.'</li>
+     *     <li>Path separator is '/' </li>
+     * </ul>
+     * @param path
+     * @return
+     */
+    boolean isPathValid(String path);
+
+    /**
+     * Calculates the Full internal repo path.
+     * @param site Site name
+     * @param path Path relative to the site
+     */
+    String fullPathFor(String site, String path);
 }

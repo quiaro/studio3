@@ -50,7 +50,7 @@ public class GridFSServiceImpl implements GridFSService {
     @Override
     public GridFSFile saveFile(final String fileName, final InputStream fileInputStream) throws
         MongoRepositoryException {
-        if (StringUtils.isEmpty(fileName) || StringUtils.isBlank(fileName)) {
+        if (StringUtils.isBlank(fileName)) {
             log.error("Given fileInputStream name is null, empty or blank");
             throw new IllegalArgumentException("File name is either null,empty or blank");
         }
@@ -68,7 +68,7 @@ public class GridFSServiceImpl implements GridFSService {
 
     @Override
     public InputStream getFile(final String fileId) throws MongoRepositoryException {
-        if (StringUtils.isEmpty(fileId) || StringUtils.isBlank(fileId)) {
+        if (StringUtils.isBlank(fileId)) {
             log.error("Given Id for getting a fileInputStream is null, empty or blank, check if node is a Folder");
             throw new IllegalArgumentException("File id is either null,empty or blank");
         }

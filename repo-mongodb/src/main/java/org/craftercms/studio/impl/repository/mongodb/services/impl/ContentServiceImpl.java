@@ -19,19 +19,24 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.io.InputStream;
 import java.util.List;
+import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.craftercms.studio.api.NotImplementedException;
+import org.craftercms.studio.api.RepositoryException;
 import org.craftercms.studio.api.content.ContentService;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.exception.InvalidContextException;
 import org.craftercms.studio.commons.filter.Filter;
+import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
+import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
+import org.craftercms.studio.impl.repository.mongodb.domain.Node;
+import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.PropertyResolver;
 
 /**
  * Mongo DB implementation of ContentService.
@@ -45,7 +50,7 @@ public class ContentServiceImpl implements ContentService {
     /**
      * System properties.
      */
-    private PropertyResolver properties;
+    //  private PropertyResolver properties;
     /**
      * Logger.
      */
@@ -56,85 +61,208 @@ public class ContentServiceImpl implements ContentService {
     private PathService pathService;
 
     @Override
-    public String create(final String ticket, final String site, final String path, final InputStream content) {
-        throw new NotImplementedException("Not implemented yet");
+    public Item create(final String ticket, final String site, final String path, final Item item,
+                       final InputStream content) throws RepositoryException {
+        //Validates that all inputs are ok
+        if (StringUtils.isBlank(ticket)) {
+            throw new IllegalArgumentException("Ticket can't be null empty or whitespace");
+        }
+        if (StringUtils.isBlank(site)) {
+            throw new IllegalArgumentException("Site can't be null empty or whitespace");
+        }
+
+        if (!pathService.isPathValid(path)) {
+            throw new IllegalArgumentException("Given Path " + path + " is not valid");
+        }
+
+        if (item == null) {
+            throw new IllegalArgumentException("Item can't be null");
+        }
+
+
+        Node parent = checkParentPath(ticket, site, path, item);
+        log.debug("Saving File");
+        Node newFileNode = nodeService.createFileNode(parent, item.getFileName(), item.getLabel(),
+            item.getCreatedBy(), content);
+        if (newFileNode != null) {
+            log.debug("Folder Was created {} ", newFileNode);
+            return nodeToItem(newFileNode, ticket, site);
+        } else {
+            log.error("Folder node was not created ");
+            throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
+        }
+
+    }
+
+    private Node checkParentPath(final String ticket, final String site, final String path,
+                                 final Item item) throws MongoRepositoryException {
+        String nodeId = pathService.getItemIdByPath(ticket, site, path);
+        Node parent;
+        if (nodeId == null) {
+            log.debug("Could not found parent path {} ",path);
+            parent = null;
+        } else {
+            log.debug("Node id for path {} is {}",path, nodeId);
+            parent = nodeService.getNode(nodeId);
+        }
+
+        if (parent == null) {
+            log.debug("Folder {} not found ", parent);
+            if (true) { // TODO Do this with properties.
+                log.debug("{} is set true, creating folder structure for saving {} ({}) file",
+                    MongoRepositoryDefaults.REPO_MKDIRS, item.getLabel(), item.getFileName());
+                parent = nodeService.createFolderStructure(pathService.fullPathFor(site, path));
+            } else {
+                throw new IllegalArgumentException("Given path " + path + " for site " + site + " does not exist");
+            }
+        } else if (!nodeService.isNodeFolder(parent)) {
+            throw new IllegalArgumentException("Given parent node (base on path " + path + " ) ends with a file not a" +
+                " folder");
+        }
+        return parent;
     }
 
     @Override
-    public String create(final String ticket, final String site, final String path) throws InvalidContextException {
-
-        if (StringUtils.isEmpty(path) || StringUtils.isBlank(path)) {
-            throw new IllegalArgumentException("Path can't be null or empty");
+    public Item create(final String ticket, final String site, final String path,
+                       final Item item) throws InvalidContextException, RepositoryException {
+        //Validates that all inputs are ok
+        if (StringUtils.isBlank(ticket)) {
+            throw new IllegalArgumentException("Ticket can't be null empty or whitespace");
+        }
+        if (StringUtils.isBlank(site)) {
+            throw new IllegalArgumentException("Site can't be null empty or whitespace");
         }
 
-        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
-            throw new IllegalArgumentException("Site can't be null or empty");
+        if (!pathService.isPathValid(path)) {
+            throw new IllegalArgumentException("Given Path " + path + " is not valid");
         }
 
-        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
-            throw new IllegalArgumentException("Ticket can't be null or empty");
+        if (item == null) {
+            throw new IllegalArgumentException("Item can't be null");
         }
 
-        if (siteExists(ticket, site)) {
-            String exist = pathService.getItemIdByPath(ticket, site, path);
-            log.debug("Checking if folder/file in {} for site {} exists", path, site);
-            if (exist != null) {
-                log.debug("Folder/File {} exist for site {} ", path, site);
-                throw new InvalidContextException("Folder named " + path + " already exist in the site {}");
-            }
-            return "";
+        Node folderNode = checkParentPath(ticket, site, path, item);
+        log.debug("Saving folder with item information ", item.getFileName(), item.getLabel());
+        Node newFolderNode = nodeService.createFolderNode(folderNode, item.getFileName(), item.getLabel(),
+            item.getCreatedBy());
+        if (newFolderNode != null) {
+            log.debug("Folder Was created {} ", newFolderNode);
+            return nodeToItem(newFolderNode, ticket, site);
         } else {
-            log.debug("Site with name {} does not exist", site);
-            throw new IllegalArgumentException("Site with name " + site + " does not exist");
+            log.error("Folder node was not created ");
+            throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
+        }
+    }
+
+    private Item nodeToItem(final Node newNode, String ticket, String site) throws RepositoryException {
+        CoreMetadata core = newNode.getMetadata().getCore();
+        Item item = new Item();
+        item.setPath(pathService.getPathByItemId(ticket, site, newNode.getId()));
+        item.setId(new ItemId(newNode.getId()));
+        item.setLastModifiedDate(core.getLastModifiedDate());
+        item.setModifiedBy(core.getCreator());
+        item.setCreatedBy(core.getCreator());
+        item.setCreationDate(core.getCreateDate());
+        item.setFolder(nodeService.isNodeFolder(newNode));
+        item.setModifiedBy(core.getModifier());
+        item.setRepoId(newNode.getId());
+        item.setLabel(core.getLabel());
+        item.setFileName(core.getNodeName());
+        if (nodeService.isNodeFile(newNode)) {
+            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+            item.setMimeType(mimeTypesMap.getContentType(item.getFileName()));
+        }
+        return item;
+    }
+
+    @Override
+    public InputStream read(final String ticket, final String contentId) throws RepositoryException,
+        InvalidContextException {
+
+        //Validates that all inputs are ok
+        if (StringUtils.isBlank(ticket)) {
+            throw new IllegalArgumentException("Ticket can't be null empty or whitespace");
+        }
+        if (StringUtils.isBlank(contentId)) {
+            throw new IllegalArgumentException("Content Id can't be null empty or whitespace");
         }
 
+        log.debug("Finding inputstream for content with id " + contentId);
+
+        Node item = nodeService.getNode(contentId);
+
+        if (item == null) {
+            return null;
+        }
+        log.debug("Content found {}", item);
+        // we can't read folders
+        if (nodeService.isNodeFile(item)) {
+            log.debug("Content is a file");
+            String fileId = item.getMetadata().getCore().getFileId(); //gets the file id
+            // File id can't be null,empty or whitespace
+            if (StringUtils.isBlank(fileId)) {
+                log.error("Node {} is broken, since file id is not a valid ID", item, fileId);
+                throw new MongoRepositoryException("Content with Id " + item.toString() + "Is broken since file Id "
+                    + fileId + " is not a valid file id");
+            }
+            InputStream fileInput = nodeService.getFile(fileId);
+            // Content should exist with this id, or something is broken.
+            if (fileInput == null) {
+                log.error("File with Id {} is not found, node is broken", fileId);
+                throw new MongoRepositoryException("File with id is not found, node is broken");
+            }
+            //Now  finally return it .
+            return fileInput;
+        } else {
+            // can't read folders
+            log.debug("Content is a folder");
+            throw new InvalidContextException("Content with id " + contentId + " is a folder");
+        }
+
+    }
+
+    @Override
+    public void update(final String ticket, final Item item, final InputStream content) {
+
+    }
+
+    @Override
+    public void delete(final String ticket, final String contentId) {
+
+    }
+
+    @Override
+    public Tree<Item> getChildren(final String ticket, final String site, final String contentId, final int depth,
+                                  final List<Filter> filters) {
+        return null;
+    }
+
+    @Override
+    public void move(final String ticket, final String site, final String sourceId, final String destinationId,
+                     final boolean includeChildren) {
+
+    }
+
+    @Override
+    public List<String> getSites(final String ticket) {
+        return null;
     }
 
     private boolean siteExists(final String ticket, final String site) {
         return nodeService.getSiteNode(site) != null;
     }
 
-    @Override
-    public InputStream read(final String ticket, final String contentId) {
-        return null;
-    }
-
-    @Override
-    public void update(final String ticket, final String contentId, final InputStream content) {
-        throw new NotImplementedException("Not implemented yet");
-    }
-
-    @Override
-    public void delete(final String ticket, final String contentId) {
-        throw new NotImplementedException("Not implemented yet");
-    }
-
-    @Override
-    public Tree<Item> getChildren(final String ticket, final String site, final String contentId, final int depth,
-                                  final List<Filter> filters) {
-        throw new NotImplementedException("Not implemented yet");
-    }
-
-    @Override
-    public void move(final String ticket, final String site, final String sourceId, final String destinationId,
-                     final boolean includeChildren) {
-        throw new NotImplementedException("Not implemented yet");
-    }
-
-    @Override
-    public List<String> getSites(final String ticket) {
-        throw new NotImplementedException("Not implemented yet");
-    }
-
     public void setNodeServiceImpl(final NodeService nodeService) {
         this.nodeService = nodeService;
     }
 
-    public void setPropertyResolver(PropertyResolver propertyResolver) {
-        this.properties = propertyResolver;
-    }
+    //    public void setPropertyResolver(PropertyResolver propertyResolver) {
+    //        this.properties = propertyResolver;
+    //    }
 
     public void setPathServices(PathService pathServices) {
         this.pathService = pathServices;
     }
+
+
 }

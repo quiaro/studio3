@@ -33,6 +33,7 @@ import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
 import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
 import org.craftercms.studio.commons.dto.ModuleConfiguration;
@@ -172,7 +173,7 @@ public abstract class AbstractControllerTest {
         item.setCreator(RandomStringUtils.randomAlphabetic(10));
         item.setDisabled(false);
         item.setFileName(RandomStringUtils.randomAlphanumeric(10));
-        item.setId(UUID.randomUUID().toString());
+        item.setId(new ItemId(UUID.randomUUID().toString()));
         item.setLastModifiedDate(new Date());
         item.setLockOwner(RandomStringUtils.randomAlphabetic(10));
         item.setMimeType(RandomStringUtils.randomAlphabetic(10));

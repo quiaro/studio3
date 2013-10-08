@@ -45,21 +45,26 @@ public class PathServicesImpl implements PathService {
 
     @Override
     public String getItemIdByPath(final String ticket, final String site, final String path) {
-        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+
+        if (StringUtils.isBlank(ticket)) {
             log.debug("Given Ticket is blank or empty");
             throw new IllegalArgumentException("Given Ticket is Blank or empty");
         }
-        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
+
+        if (StringUtils.isBlank(site)) {
             log.debug("Given Site is blank or empty");
             throw new IllegalArgumentException("Given Site is Blank or empty");
         }
-        if (StringUtils.isEmpty(path) || StringUtils.isBlank(path)) {
+
+        if (!isPathValid(path)){
             log.debug("Given Path is blank or empty");
             throw new IllegalArgumentException("Given Path is Blank or empty");
         }
+
+
         log.debug("Converting {} to a path object", path);
         log.debug("Walking down the tree ");
-        String[] pathToDescent = path.substring(0).split("/");
+        String[] pathToDescent = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         Node foundNode = walkDownTheTree(pathToDescent);
         if (foundNode != null) {
             log.debug("Found a Node with path {} ,node is {}", path, foundNode);
@@ -75,15 +80,15 @@ public class PathServicesImpl implements PathService {
                                   final String itemId) throws RepositoryException {
 
 
-        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+        if (StringUtils.isBlank(ticket)) {
             log.debug("Given Ticket is blank or empty");
             throw new IllegalArgumentException("Given Ticket is Blank or empty");
         }
-        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
+        if (StringUtils.isBlank(site)) {
             log.debug("Given Site is blank or empty");
             throw new IllegalArgumentException("Given Site is Blank or empty");
         }
-        if (StringUtils.isEmpty(itemId) || StringUtils.isBlank(itemId)) {
+        if (StringUtils.isBlank(itemId)) {
             log.debug("Given Item ID is blank or empty");
             throw new IllegalArgumentException("Given Path is Blank or empty");
         }
@@ -116,6 +121,23 @@ public class PathServicesImpl implements PathService {
             log.debug("Calculated Path is {}", path);
             return path;
         }
+    }
+
+    @Override
+    public boolean isPathValid(final String path) {
+        if (StringUtils.isBlank(path)){
+            return false;
+        }
+        return path.matches(MongoRepositoryDefaults.PATH_VALIDATION_REGEX);
+    }
+
+    @Override
+    public String fullPathFor(final String site, final String path) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        builder.append(site);
+        builder.append(path);
+        return builder.toString();
     }
 
     private Node walkDownTheTree(String[] pathToDescent) {

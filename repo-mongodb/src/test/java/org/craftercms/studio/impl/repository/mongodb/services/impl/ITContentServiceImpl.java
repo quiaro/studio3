@@ -15,11 +15,10 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.impl.repository.mongodb.services;
+package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-import org.craftercms.studio.api.content.PathService;
-import org.craftercms.studio.impl.repository.mongodb.domain.Node;
-import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
+import org.craftercms.studio.api.content.ContentService;
+import org.craftercms.studio.commons.dto.Item;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,36 +29,38 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Test of PathServicesImpl
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/craftercms/studio/craftercms-mongo-repository.xml")
-public class ITPathServicesImpl implements ApplicationContextAware {
+public class ITContentServiceImpl implements ApplicationContextAware {
+
 
     private ApplicationContext applicationContext;
-    private PathService pathService;
+    private ContentService contentService;
 
     @Before
     public void setUp() throws Exception {
-        pathService = applicationContext.getBean(PathService.class);
+        this.contentService = applicationContext.getBean(ContentService.class);
+    }
+
+    @Test
+    public void testCreateFolder() throws Exception {
+        Item item = new Item();
+        item.setLabel("Robot Hell");
+        item.setFileName("robot-hell");
+        item.setCreatedBy("Robo Devil");
+        Item newItem = this.contentService.create("none", "ITTestSite", "/testSite", item);
+        Assert.assertNotNull(newItem);
+        Assert.assertEquals(newItem.getModifiedBy(),"Robo Devil");
+        Assert.assertEquals(newItem.getPath(), "/ITTestSite/testSite/robot-hell");
+    }
+
+    @Test
+    public void testCreateFile() throws Exception {
 
     }
 
     @Test
-    public void testGetPathByItem() throws Exception {
-        String path = pathService.getPathByItemId("TicketID", "SITE", createSampleNodeTree());
-        System.out.println("PATh" + path);
-        Assert.assertEquals(path, "/philip_j_fry/yancy_fry_sr/yancy_fry_jr/hubert_j_farnsworth");
-    }
-
-    private String createSampleNodeTree() throws MongoRepositoryException {
-        NodeService nodeService = applicationContext.getBean(NodeService.class);
-        Node a = nodeService.createFolderNode(nodeService.getRootNode(), "philip_j_fry", "Philip J. Fry", "TestUser");
-        Node b = nodeService.createFolderNode(a, "yancy_fry_sr", "Yancy Fry, Sr.", "TestUser");
-        Node c = nodeService.createFolderNode(b, "yancy_fry_jr", "Yancy Fry", "TestUser");
-        Node d = nodeService.createFolderNode(c, "hubert_j_farnsworth", "Hubert J. Farnsworth", "TestUser");
-        return d.getId();
+    public void testRead() throws Exception {
 
     }
 
@@ -68,4 +69,3 @@ public class ITPathServicesImpl implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 }
-

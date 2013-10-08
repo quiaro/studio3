@@ -76,7 +76,8 @@ public class NodeServiceCreateFileTest {
 
 
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-        Node fileNode = nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "Doctor John A. Zoidberg",
+        Node fileNode = nodeService.createFileNode(nodeService.getRootNode(), "TestFile","test file" ,
+            "Doctor John A. Zoidberg",
             testInput);
         Assert.assertNotNull(fileNode);
         Assert.assertNotNull(fileNode.getMetadata());
@@ -101,7 +102,7 @@ public class NodeServiceCreateFileTest {
         when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenThrow
             (DataAccessResourceFailureException.class);
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-        nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "Doctor John A. Zoidberg",
+        nodeService.createFileNode(nodeService.getRootNode(), "TestFile","Test File", "Doctor John A. Zoidberg",
             testInput);
 
     }
@@ -113,14 +114,14 @@ public class NodeServiceCreateFileTest {
         when(nodeDataRepository.save(Mockito.any(Node.class))).thenThrow(DataAccessResourceFailureException.class);
         when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new TestGridFsFile());
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-       nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "Doctor John A. Zoidberg",
+       nodeService.createFileNode(nodeService.getRootNode(), "TestFile","test File", "Doctor John A. Zoidberg",
             testInput);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentIsNull() throws MongoRepositoryException {
-        nodeService.createFileNode(null, "TestFile", "Doctor John A. Zoidberg", null);
+        nodeService.createFileNode(null, "TestFile","Test File", "Doctor John A. Zoidberg", null);
     }
 
 
@@ -128,7 +129,7 @@ public class NodeServiceCreateFileTest {
     public void testParentIsNotFolder() throws MongoRepositoryException {
         Node file = new Node();
         file.setType(NodeType.FILE);
-        nodeService.createFileNode(file, "TestFile", "Doctor John A. Zoidberg", null);
+        nodeService.createFileNode(file, "TestFile","test file", "Doctor John A. Zoidberg", null);
     }
 
     @Test
