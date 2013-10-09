@@ -15,44 +15,46 @@ angular.module('studio-ui', [
            'APP_PATHS', function ($routeProvider, $translateProvider, I18N, APP_PATHS) {
 
         $routeProvider
-          .when(APP_PATHS.dashboard, {
-            templateUrl: '/templates/dashboard.tpl.html',
-            controller: 'DashboardCtrl',
-            resolve: {
-                loadPrototypes : function loadPrototypes ($q, Widget) {
-                    var deferred = $q.defer();
-                    Widget.getPropertyAssets('dashboard', 'prototypeUrl', false, Widget.processPrototype)
-                        .then( function (prototypes) {
-                            deferred.resolve(prototypes)
-                        });
-                    return deferred.promise;
-                },
-                loadTemplates : function loadTemplates ($q, Widget) {
-                    var deferred = $q.defer();
-                    Widget.getPropertyAssets('dashboard', 'templateUrl', true, Widget.processTemplate)
-                        .then( function (templates) {
-                            deferred.resolve(templates)
-                        });
-                    return deferred.promise;
+            .when(APP_PATHS.dashboard, {
+                templateUrl: '/templates/dashboard.tpl.html',
+                controller: 'DashboardCtrl',
+                resolve: {
+                    loadPrototypes : function loadPrototypes ($q, Widget) {
+                        var deferred = $q.defer();
+                        Widget.getPropertyAssets('dashboard', 'prototypeUrl', false, Widget.processPrototype)
+                            .then( function (prototypes) {
+                                deferred.resolve(prototypes)
+                            });
+                        return deferred.promise;
+                    },
+                    loadTemplates : function loadTemplates ($q, Widget) {
+                        var deferred = $q.defer();
+                        Widget.getPropertyAssets('dashboard', 'templateUrl', true, Widget.processTemplate)
+                            .then( function (templates) {
+                                deferred.resolve(templates)
+                            });
+                        return deferred.promise;
+                    }
                 }
-            }
-          })
-          .when(APP_PATHS.preview, {
-            templateUrl: '/templates/preview.tpl.html',
-            controller: 'PreviewCtrl'
-          })
-          .otherwise({
-            redirectTo: APP_PATHS.dashboard
-          });
+            })
+            .when(APP_PATHS.preview, {
+                templateUrl: '/templates/preview.tpl.html',
+                controller: 'PreviewCtrl'
+            })
+            .otherwise({
+                redirectTo: APP_PATHS.dashboard
+            });
 
-        $translateProvider.useStaticFilesLoader({
-          prefix: I18N.prefix,
-          suffix: I18N.suffix
-        });
-        // load 'en' table on startup
-        $translateProvider.preferredLanguage('en');
-        $translateProvider.useLocalStorage();
+        // $locationProvider.html5Mode(true);
 
+        $translateProvider
+            .useStaticFilesLoader({
+                prefix: I18N.prefix,
+                suffix: I18N.suffix
+            })
+            // load 'en' table on startup
+            .preferredLanguage('en')
+            .useLocalStorage();
     }])
 
     // Application Controller: the omnipresent and omniscient controller

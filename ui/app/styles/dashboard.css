@@ -3,6 +3,8 @@
 /* ------------------ */
 .dashboard #nav { width: 280px; }
 
+.dashboard #nav .home { display: none; }
+
 .dashboard #nav .logo {
     background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat;
     height: 78px;
