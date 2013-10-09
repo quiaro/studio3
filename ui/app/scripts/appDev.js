@@ -5,8 +5,8 @@ angular.module('studio-uiDev', [
     'ngMockE2E'])
 
     .config(['$translateProvider', function ($translateProvider) {
-        // We need to mock the backend before we make any requests to it so we're going to null 
-        // the loader set in the app and redefine it again after mocking the backend. 
+        // We need to mock the backend before we make any requests to it so we're going to null
+        // the loader set in the app and redefine it again after mocking the backend.
         $translateProvider.useLoader(null, null);
         $translateProvider.useMissingTranslationHandlerLog();
     }])
@@ -14,35 +14,45 @@ angular.module('studio-uiDev', [
     .run(['$httpBackend', '$translate', 'I18N', function ($httpBackend, $translate, I18N) {
 
         var items = [{
-            'id': '1AWTX',
-            'existence': 'existing',
-            'type': 'page',
-            'status': 'editing',
-            'name': 'about',
-            'url': '/company/about',
-            'lastEdited': '02/28/13 05:36 PM',
-            'lastAuthor': 'Ben Stevenson',
-            'lastPersonalEdit': '01/16/13 02:33 PM'
+            id: '1AWTX',
+            existence: 'existing',
+            type: 'page',
+            status: 'editing',
+            name: 'about',
+            url: '/company/about',
+            lastEdited: '02/28/13 05:36 PM',
+            lastAuthor: 'Ben Stevenson',
+            lastPersonalEdit: '01/16/13 02:33 PM'
         }, {
-            'id': '3QCRS',
-            'existence': 'new',
-            'type': 'page',
-            'status': 'scheduled',
-            'name': 'products',
-            'url': '/company/products',
-            'lastEdited': '03/14/13 01:22 PM',
-            'lastAuthor': 'Mark Johnson',
-            'lastPersonalEdit': '03/14/13 01:22 PM'
+            id: '3QCRS',
+            existence: 'new',
+            type: 'page',
+            status: 'scheduled',
+            name: 'products',
+            url: '/company/products',
+            lastEdited: '03/14/13 01:22 PM',
+            lastAuthor: 'Mark Johnson',
+            lastPersonalEdit: '03/14/13 01:22 PM'
         }, {
-            'id': '9ZS8TX',
-            'existence': 'existing',
-            'type': 'component',
-            'status': 'processing',
-            'name': 'footer-disclaimer',
-            'url': '/components/footer/disclaimer',
-            'lastEdited': '02/24/13 10:36 AM',
-            'lastAuthor': 'Clyde Newman',
-            'lastPersonalEdit': '12/05/12 09:12 AM'
+            id: '9ZS8TX',
+            existence: 'existing',
+            type: 'component',
+            status: 'processing',
+            name: 'footer-disclaimer',
+            url: '/components/footer/disclaimer',
+            lastEdited: '02/24/13 10:36 AM',
+            lastAuthor: 'Clyde Newman',
+            lastPersonalEdit: '12/05/12 09:12 AM'
+        }, {
+            id: '9ZS8TX',
+            existence: 'new',
+            type: 'page',
+            status: 'editing',
+            name: 'our american stores',
+            url: '/company/about/our-american-stores',
+            lastEdited: '04/21/13 03:36 PM',
+            lastAuthor: 'Bob Lewis',
+            lastPersonalEdit: '01/08/13 12:34 PM'
         }];
 
         $httpBackend.whenGET('/api/0.1/repo/list/pebbles').respond(200, items);
@@ -61,6 +71,7 @@ angular.module('studio-uiDev', [
         $httpBackend.whenGET(/^\/templates\/.*\.tpl\.html/).passThrough();
         $httpBackend.whenGET(/^i18n\/.*\.json/).passThrough();
         $httpBackend.whenGET(/^\/config\/.*/).passThrough();
+        $httpBackend.whenGET(/\/plugins\/.*/).passThrough();
 
         $translate.useLoader('$translateStaticFilesLoader', {
           prefix: I18N.prefix,

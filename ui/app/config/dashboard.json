@@ -1,0 +1,77 @@
+{
+    "dashboard" : {
+        "widgets" : [
+            {
+                "name" : "recentActivity",
+                "templateUrl" : "/templates/dashboard/items-table.tpl.html",
+                "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
+                "model" : {
+                    "header" : "DASHBOARD.activity.header",
+                    "id" : "my-recent-activity",
+                    "class" : "recent-activity",
+                    "columns" : [
+                        {
+                            "name" : "name",
+                            "header" : "DASHBOARD.activity.page_name",
+                            "class" : "page-name"
+                        },
+                        {
+                            "name" : "lastEdited",
+                            "header" : "DASHBOARD.activity.last_edited",
+                            "class" : "last-edit"
+                        },
+                        {
+                            "name" : "lastAuthor",
+                            "header" : "DASHBOARD.activity.author",
+                            "class" : "last-author"
+                        },
+                        {
+                            "name" : "lastPersonalEdit",
+                            "header" : "DASHBOARD.activity.my_last_edit",
+                            "class" : "personal-edit"
+                        }
+                    ],
+                    "sort" : {
+                        "column" : "lastAuthor",
+                        "descending" : false
+                    }
+                }
+            },
+            {
+                "name" : "approvalActivity",
+                "templateUrl" : "/templates/dashboard/items-table.tpl.html",
+                "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
+                "model" : {
+                    "header" : "DASHBOARD.approval.header",
+                    "id" : "my-approval-activity",
+                    "class" : "approval-activity",
+                    "columns" : [
+                        {
+                            "name" : "name",
+                            "header" : "DASHBOARD.approval.page_name",
+                            "class" : "page-name"
+                        },
+                        {
+                            "name" : "lastEdited",
+                            "header" : "DASHBOARD.approval.last_edited",
+                            "class" : "last-edit"
+                        },
+                        {
+                            "name" : "lastPersonalEdit",
+                            "header" : "DASHBOARD.approval.my_last_edit",
+                            "class" : "personal-edit"
+                        }
+                    ],
+                    "sort" : {
+                        "column" : "lastAuthor",
+                        "descending" : false
+                    },
+                    "filterType" : {
+                        "show" : false,
+                        "value" : ""
+                    }
+                }
+            }
+        ]
+    }
+}

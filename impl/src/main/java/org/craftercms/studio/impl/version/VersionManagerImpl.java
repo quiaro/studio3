@@ -17,9 +17,14 @@
 
 package org.craftercms.studio.impl.version;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.api.version.VersionManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
 import org.craftercms.studio.commons.exception.NotImplementedException;
@@ -31,10 +36,20 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
  */
 public class VersionManagerImpl implements VersionManager {
 
+    VersionService versionService;
 
     @Override
     public Tree<Version> history(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+        if (StringUtils.isEmpty(itemId)) {
+            throw new IllegalArgumentException("Item id cannot be empty");
+        }
+        List<Item> versions = this.versionService.getAllVersions(context.getTicket(), itemId);
+        return createVersionTree(versions);
+    }
+
+    private Tree<Version> createVersionTree(final List<Item> versions) {
+        //TODO: implement create version tree from list of items.
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 
     @Override

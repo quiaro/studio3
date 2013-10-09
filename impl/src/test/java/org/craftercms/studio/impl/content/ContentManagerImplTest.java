@@ -28,6 +28,7 @@ import org.craftercms.studio.api.content.ContentService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
@@ -86,6 +87,17 @@ public class ContentManagerImplTest extends AbstractManagerTest {
         return sampleContent;
     }
 
+    @Test(expected = ItemNotFoundException.class)
+    public void testReadItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+
+        when(this.contentServiceMock.read(Mockito.anyString(), Mockito.anyString())).thenThrow(ItemNotFoundException.class);
+
+        this.contentManagerSUT.read(new Context(), testItemId);
+
+        verify(this.contentServiceMock, times(1)).read(Mockito.anyString(), Mockito.eq(testItemId));
+    }
+
     @Test(expected = RepositoryException.class)
     public void testReadInvalidItemId() throws Exception {
         String testItemId = UUID.randomUUID().toString();
@@ -110,7 +122,76 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testReadVersionItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+
+        when(this.contentServiceMock.read(Mockito.anyString(), Mockito.anyString())).thenReturn(getSampleContent());
+
+        this.contentManagerSUT.read(new Context(), testItemId, testVersion);
+
+        verify(this.contentServiceMock, times(1)).read(Mockito.anyString(), Mockito.eq(testItemId));
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testReadVersionInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+
+        when(this.contentServiceMock.read(Mockito.anyString(), Mockito.anyString())).thenReturn(getSampleContent());
+
+        this.contentManagerSUT.read(new Context(), testItemId, testVersion);
+
+        verify(this.contentServiceMock, times(1)).read(Mockito.anyString(), Mockito.eq(testItemId));
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testReadVersionVersionDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+
+        when(this.contentServiceMock.read(Mockito.anyString(), Mockito.anyString())).thenReturn(getSampleContent());
+
+        this.contentManagerSUT.read(new Context(), testItemId, testVersion);
+
+        verify(this.contentServiceMock, times(1)).read(Mockito.anyString(), Mockito.eq(testItemId));
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testReadVersionInvalidVersion() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+
+        when(this.contentServiceMock.read(Mockito.anyString(), Mockito.anyString())).thenReturn(getSampleContent());
+
+        this.contentManagerSUT.read(new Context(), testItemId, testVersion);
+
+        verify(this.contentServiceMock, times(1)).read(Mockito.anyString(), Mockito.eq(testItemId));
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testUpdate() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+
+        this.contentManagerSUT.update(new Context(), testItemId, getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUpdateItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+
+        this.contentManagerSUT.update(new Context(), testItemId, getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUpdateInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+
+        this.contentManagerSUT.update(new Context(), testItemId, getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUpdateContentEmpty() throws Exception {
         String testItemId = UUID.randomUUID().toString();
 
         this.contentManagerSUT.update(new Context(), testItemId, getSampleContent());
@@ -123,7 +204,43 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testOpenItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.open(new Context(), testItemId);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testOpenInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.open(new Context(), testItemId);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testSave() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.save(new Context(), testItemId, new LockHandle(), getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testSaveItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.save(new Context(), testItemId, new LockHandle(), getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testSaveInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.save(new Context(), testItemId, new LockHandle(), getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testSaveInvalidLockHandle() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.save(new Context(), testItemId, new LockHandle(), getSampleContent());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testSaveContentEmpty() throws Exception {
         String testItemId = UUID.randomUUID().toString();
         this.contentManagerSUT.save(new Context(), testItemId, new LockHandle(), getSampleContent());
     }
@@ -135,13 +252,64 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testCloseItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.close(new Context(), testItemId, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCloseInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.close(new Context(), testItemId, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCloseInvalidLockHandle() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.close(new Context(), testItemId, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testDelete() throws Exception {
         List<Item> testItems = createItemListMock();
         this.contentManagerSUT.delete(new Context(), testItems);
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testDeleteEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.delete(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDeleteItemDoesNotExist() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.delete(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testCopyIncludeChildren() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, true);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCopyIncludeChildrenEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, true);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCopyIncludeChildrenDestinationInvalid() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, true);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCopyIncludeChildrenItemsAlreadyExistOnDestination() throws Exception {
         List<Item> testItems = createItemListMock();
         String testDstPath = RandomStringUtils.randomAlphabetic(256);
         this.contentManagerSUT.copy(new Context(), testItems, testDstPath, true);
@@ -155,7 +323,42 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testCopyExcludeChildrenEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, false);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCopyExcludeChildrenInvalidDestinationPath() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, false);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testCopyExcludeChildrenItemsAlreadyExistOnDestination() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String testDstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.copy(new Context(), testItems, testDstPath, false);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testMove() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String dstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.move(new Context(), testItems, dstPath);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testMoveEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        String dstPath = RandomStringUtils.randomAlphabetic(256);
+        this.contentManagerSUT.move(new Context(), testItems, dstPath);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testMoveInvalidDestination() throws Exception {
         List<Item> testItems = createItemListMock();
         String dstPath = RandomStringUtils.randomAlphabetic(256);
         this.contentManagerSUT.move(new Context(), testItems, dstPath);
@@ -168,7 +371,37 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testLockItemDoesNotExist() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.lock(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testLockEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.lock(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testUnlock() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.unlock(new Context(), testItems, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUnlockEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.unlock(new Context(), testItems, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUnlockItemDoesNotExist() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.unlock(new Context(), testItems, new LockHandle());
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testUnlockInvalidLockHandle() throws Exception {
         List<Item> testItems = createItemListMock();
         this.contentManagerSUT.unlock(new Context(), testItems, new LockHandle());
     }
@@ -180,7 +413,31 @@ public class ContentManagerImplTest extends AbstractManagerTest {
     }
 
     @Test(expected = NotImplementedException.class)
+    public void testGetLockStatusEmptyList() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.getLockStatus(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testGetLockStatusItemDoesNotExist() throws Exception {
+        List<Item> testItems = createItemListMock();
+        this.contentManagerSUT.getLockStatus(new Context(), testItems);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testList() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.list(new Context(), testItemId);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testListItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        this.contentManagerSUT.list(new Context(), testItemId);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testListInvalidItemId() throws Exception {
         String testItemId = UUID.randomUUID().toString();
         this.contentManagerSUT.list(new Context(), testItemId);
     }

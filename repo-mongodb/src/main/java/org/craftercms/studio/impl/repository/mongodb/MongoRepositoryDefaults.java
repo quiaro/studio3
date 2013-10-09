@@ -25,6 +25,14 @@ public final class MongoRepositoryDefaults {
      * Default path separator.
      */
     public static final String REPO_DEFAULT_PATH_SEPARATOR_CHAR = "/";
+    /**
+     * Regex that validates a path.
+     */
+    public static final String PATH_VALIDATION_REGEX = "(?!.*//.*)(?!.*/ .*)/{1}([^\\\\(){}:\\*\\?<>\\|\\\"\\'])*";
+    /**
+     * If a path is not found, should the system created (like *ix mkdir -p)
+     */
+    public static final String REPO_MKDIRS = "studio.repocitory.mongodb.mkdirs";
 
     /**
      * Make sure nobody creates a instance of this class.

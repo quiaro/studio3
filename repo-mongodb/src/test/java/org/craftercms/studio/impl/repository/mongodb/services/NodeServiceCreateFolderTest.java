@@ -21,7 +21,7 @@ import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepositor
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
-import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeService;
+import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;
 import org.craftercms.studio.impl.repository.mongodb.utils.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class NodeServiceCreateFolderTest {
     /**
      * Node Service (the one to be tested)
      */
-    private NodeService nodeService;
+    private NodeServiceImpl nodeService;
     /**
      * Node Repo Mock
      */
@@ -50,7 +50,7 @@ public class NodeServiceCreateFolderTest {
 
     @Before
     public void setUp() throws Exception {
-        nodeService = new org.craftercms.studio.impl.repository.mongodb.services.impl.NodeService();
+        nodeService = new NodeServiceImpl();
         nodeDataRepository = mock(NodeDataRepository.class);
         nodeService.setNodeDataRepository(nodeDataRepository);
         // Return the same save object.
@@ -60,12 +60,12 @@ public class NodeServiceCreateFolderTest {
     public void testParentNodeIsNotFolder() throws Exception {
         Node badParent = new Node();
         badParent.setType(NodeType.FILE);
-        nodeService.createFolderNode(badParent, "TestBadParent", "Philip J. Fry,");
+        nodeService.createFolderNode(badParent, "TestBadParent","Test Bad Parent", "Philip J. Fry,");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentIsNull() throws Exception {
-        nodeService.createFolderNode(null, "TestBadParent", "Philip J. Fry,");
+        nodeService.createFolderNode(null, "TestBadParent","Test bad Parent", "Philip J. Fry,");
     }
 
     @Test()
@@ -78,11 +78,11 @@ public class NodeServiceCreateFolderTest {
         });
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
-        Node node = nodeService.createFolderNode(parent, "TestFolder", "Philip J. Fry");
+        Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder" ,"Philip J. Fry");
         Assert.assertNotNull(node);
         Assert.assertNotNull(node.getMetadata());
-        Assert.assertEquals(node.getMetadata().getCreator(), "Philip J. Fry");
-        Assert.assertEquals(node.getMetadata().getNodeName(), "TestFolder");
+        Assert.assertEquals(node.getMetadata().getCore().getCreator(), "Philip J. Fry");
+        Assert.assertEquals(node.getMetadata().getCore().getNodeName(), "TestFolder");
         Assert.assertEquals(node.getParent(), parent);
         TestUtils.isUUIDValid(node.getId());
         Assert.assertTrue(nodeService.isNodeFolder(node));
@@ -93,7 +93,7 @@ public class NodeServiceCreateFolderTest {
         when(nodeDataRepository.save(Mockito.any(Node.class))).thenThrow(DataIntegrityViolationException.class);
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
-        Node node = nodeService.createFolderNode(parent, "TestFolder", "Philip J. Fry");
+        Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder", "Philip J. Fry");
         Assert.assertTrue(nodeService.isNodeFolder(node));
     }
 

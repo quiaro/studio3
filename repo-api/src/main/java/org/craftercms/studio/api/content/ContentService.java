@@ -20,8 +20,11 @@ package org.craftercms.studio.api.content;
 import java.io.InputStream;
 import java.util.List;
 
+import org.craftercms.studio.api.RepositoryException;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.exception.InvalidContextException;
+import org.craftercms.studio.commons.exception.ObjectNotFoundException;
 import org.craftercms.studio.commons.filter.Filter;
 
 /**
@@ -35,70 +38,85 @@ public interface ContentService {
 
     /**
      * Create new content into repository.
-     * @param ticket security ticket
-     * @param site site
-     * @param path path
+     *
+     * @param ticket  security ticket
+     * @param site    site
+     * @param path    path
      * @param content content
      * @return content id
      */
-    String create(String ticket, String site, String path, InputStream content);
-
+    Item create(String ticket, String site, String path, Item item, InputStream content) throws
+        RepositoryException;
 
     /**
      * Create new folder into repository.
+     *
      * @param ticket security ticket
-     * @param site site
-     * @param path path
+     * @param site   site
+     * @param path   path
      * @return content id
      */
-    String create(String ticket, String site, String path);
+    Item create(String ticket, String site, String path, Item item) throws InvalidContextException, RepositoryException;
 
     /**
      * Read content from repository.
-     * @param ticket security ticket
+     *
+     * @param ticket    security ticket
      * @param contentId content id
      * @return content stream
+     * @throws org.craftercms.studio.api.RepositoryException                   If unable to get the actual content.
+     * @throws org.craftercms.studio.commons.exception.ObjectNotFoundException if there is no content for that file
+     *                                                                         id (must likely given id is a folder
+     *                                                                         not a file)
+     * @throws org.craftercms.studio.commons.exception.InvalidContextException If the node is a File but don't have
+     *                                                                         an inputstream (repo may be broken)
      */
-    InputStream read(String ticket, String contentId);
+    InputStream read(String ticket, String contentId) throws RepositoryException, ObjectNotFoundException,
+        InvalidContextException;
 
     /**
      * Update content in repository.
-     * @param ticket security ticket
+     *
+     * @param ticket    security ticket
      * @param contentId content id
-     * @param content content
+     * @param content   content
      */
-    void update(String ticket, String contentId, InputStream content);
+    void update(String ticket, Item item, InputStream content);
 
     /**
      * Delete content from repository.
-     * @param ticket security ticket
+     *
+     * @param ticket    security ticket
      * @param contentId content id
      */
     void delete(String ticket, String contentId);
 
     /**
      * Get children tree.
-     * @param ticket security ticket
-     * @param site site
+     *
+     * @param ticket    security ticket
+     * @param site      site
      * @param contentId content id
-     * @param depth tree max depth
-     * @param filters result filters
+     * @param depth     tree max depth
+     * @param filters   result filters
      * @return children tree
      */
     Tree<Item> getChildren(String ticket, String site, String contentId, int depth, List<Filter> filters);
 
     /**
      * Move content from source to destination.
-     * @param ticket security ticket
-     * @param site site
-     * @param sourceId source id
-     * @param destinationId destination id
+     *
+     * @param ticket          security ticket
+     * @param site            site
+     * @param sourceId        source id
+     * @param destinationId   destination id
      * @param includeChildren include children
      */
     void move(String ticket, String site, String sourceId, String destinationId, boolean includeChildren);
 
     /**
      * Get list of sites in repository.
+     *
      * @param ticket security ticket
      * @return list of site names
      */

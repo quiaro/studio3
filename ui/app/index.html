@@ -6,9 +6,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title>Crafter Studio - Build and Manage Web Content</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap@@min.css">
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme@@min.css">
@@ -23,7 +23,7 @@
 
   <body ng-app="studio-ui@@dev" ng-controller="AppCtrl">
 
-    <div id="app-container" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
+    <div id="studio" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
         <div>
             <navigation></navigation>
             <div id="main-container">
@@ -59,5 +59,6 @@
     <script src="scripts/editor/ngEventBridge.js"></script>
     <!-- endbuild -->
 
+    @@livereload
   </body>
 </html>

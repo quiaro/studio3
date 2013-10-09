@@ -12,10 +12,21 @@ angular.module('common')
         preview: '/preview'
     })
 
+    // TODO: Remove this constant in favor of CONFIG
 	.constant('REGISTRY', {
 		path: '/config/registry.json',
 		bridgedEventsKey: 'bridgedEvents'
 	})
+
+    .constant('CONFIG', {
+        dashboard: '/config/dashboard.json',
+        registry: '/config/registry.json',
+        widgets: {
+            tplPlaceholder: "widget.name",
+            asyncMethodName: "getAsyncData",
+            namespace: "widgets"
+        }
+    })
 
 	.value('Env', {
 		siteName: '',

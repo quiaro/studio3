@@ -20,14 +20,21 @@ package org.craftercms.studio.impl.version;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for Version Manager implementation.
@@ -44,10 +51,34 @@ public class VersionManagerImplTest extends AbstractManagerTest {
     @InjectMocks
     private VersionManagerImpl versionManagerSUT;
 
-    @Test(expected = NotImplementedException.class)
+    @Test
     public void testHistory() throws Exception {
+        when(this.versionServiceMock.getAllVersions(Mockito.anyString(), Mockito.anyString())).thenReturn
+            (createItemListMock());
+
         String testItemId = UUID.randomUUID().toString();
         this.versionManagerSUT.history(new Context(), testItemId);
+
+        verify(this.versionServiceMock, times(1)).getAllVersions(Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test(expected = ItemNotFoundException.class)
+    public void testHistoryItemDoesNotExist() throws Exception {
+        when(this.versionServiceMock.getAllVersions(Mockito.anyString(), Mockito.anyString())).thenThrow
+            (ItemNotFoundException.class);
+
+        String testItemId = UUID.randomUUID().toString();
+        this.versionManagerSUT.history(new Context(), testItemId);
+
+        verify(this.versionServiceMock, times(1)).getAllVersions(Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHistoryInvalidItemId() throws Exception {
+        String testItemId = StringUtils.EMPTY;
+        this.versionManagerSUT.history(new Context(), testItemId);
+
+        verify(this.versionServiceMock, times(0)).getAllVersions(Mockito.anyString(), Mockito.anyString());
     }
 
     @Test(expected = NotImplementedException.class)
@@ -57,7 +88,76 @@ public class VersionManagerImplTest extends AbstractManagerTest {
         this.versionManagerSUT.revert(new Context(), testItemId, testVersion);
     }
 
+    @Test(expected = NotImplementedException.class)
+    public void testRevertItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.revert(new Context(), testItemId, testVersion);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testRevertInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.revert(new Context(), testItemId, testVersion);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testRevertVersionDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.revert(new Context(), testItemId, testVersion);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testRevertInvalidVersion() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.revert(new Context(), testItemId, testVersion);
+    }
+
+    @Test(expected = NotImplementedException.class)
     public void testDiff() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
+        String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.diff(new Context(), testItemId, testVersion1, testVersion2);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDiffItemDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
+        String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.diff(new Context(), testItemId, testVersion1, testVersion2);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDiffInvalidItemId() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
+        String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.diff(new Context(), testItemId, testVersion1, testVersion2);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDiffVersionDoesNotExist() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
+        String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.diff(new Context(), testItemId, testVersion1, testVersion2);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDiffInvalidVersion() throws Exception {
+        String testItemId = UUID.randomUUID().toString();
+        String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
+        String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
+        this.versionManagerSUT.diff(new Context(), testItemId, testVersion1, testVersion2);
+    }
+
+    @Test(expected = NotImplementedException.class)
+    public void testDiffSameVersion() throws Exception {
         String testItemId = UUID.randomUUID().toString();
         String testVersion1 = RandomStringUtils.randomAlphanumeric(3);
         String testVersion2 = RandomStringUtils.randomAlphanumeric(3);
