@@ -63,10 +63,6 @@
         <constructor-arg ref="mongoDbFactory" />
         <constructor-arg ref="studio.repo.mongo.Converter" />
     </bean>
-    <bean class="org.craftercms.studio.impl.repository.mongodb.services.ITMongoStartupService" id=""/>
-    <bean class="org.craftercms.studio.impl.repository.mongodb.services.ITMongoStartupService" id=""/>
-
-
     <mongo:repositories base-package="org.craftercms.studio.impl.repository.mongodb.datarepos"
                         mongo-template-ref="studio.repo.mongo.mongoTemplate"
                         create-query-indexes="true"
