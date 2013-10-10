@@ -11,7 +11,6 @@ angular.module('ngEventBridge', ['common'])
 		['eventBridge', '$rootScope', 'editorId', function(eventBridge, $rootScope, editorId) {
 		return {
 			restrict: 'E',
-			scope: {},
 			replace: true,
 			template: '<iframe id="' + editorId + '">'
 		};
