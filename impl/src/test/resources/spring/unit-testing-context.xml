@@ -7,4 +7,6 @@
 
     <bean id="versionManagerSUT" class="org.craftercms.studio.impl.version.VersionManagerImpl" />
 
+    <bean id="dependencyMangerSUT" class="org.craftercms.studio.impl.dependency.DependencyManagerImpl" />
+
 </beans>
