@@ -9,4 +9,6 @@
 
     <bean id="dependencyMangerSUT" class="org.craftercms.studio.impl.dependency.DependencyManagerImpl" />
 
+    <bean id="workflowManagerSUT" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl" />
+
 </beans>

@@ -26,8 +26,10 @@ import java.util.UUID;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.dto.WorkflowTransition;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
+import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -97,5 +99,25 @@ public abstract class AbstractManagerTest {
     protected ItemExtractor createItemExtractorMock() {
         ItemExtractor extractor = new ItemExtractor();
         return extractor;
+    }
+
+    protected List<WorkflowPackageFilter> createWorkflowPackageListMock() {
+        List<WorkflowPackageFilter> workflowPackageFilterListMock = new ArrayList<>();
+        for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
+            workflowPackageFilterListMock.add(createWorkflowPackageFilterMock());
+        }
+        return workflowPackageFilterListMock;
+    }
+
+    protected WorkflowPackageFilter createWorkflowPackageFilterMock() {
+        WorkflowPackageFilter filter = new WorkflowPackageFilter();
+        return filter;
+    }
+
+    protected WorkflowTransition createWorkflowTransitionMock() {
+        WorkflowTransition transition = new WorkflowTransition();
+        transition.setId(UUID.randomUUID().toString());
+        transition.setName(RandomStringUtils.randomAlphabetic(10));
+        return transition;
     }
 }
