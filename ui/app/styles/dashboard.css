@@ -1,3 +1,9 @@
+#studio.dashboard {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#B4C3D6), color-stop(100%, #8899AD));
+    background-image: -moz-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
+    background-image: -ms-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
+}
+
 /* ------------------ */
 /* ------ #nav ------ */
 /* ------------------ */
@@ -22,7 +28,6 @@
 
 .dashboard #nav .file-view {
     background-color: #FFFFFF;
-    border: 1px solid #606060;
     height: 507px;
     margin: 5px 0;
     width: 100%;

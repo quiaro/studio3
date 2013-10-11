@@ -1,5 +1,45 @@
+/* ---------------------------------------- */
+/* -- Styles from Bootstrap v.3.0 --------- */
+/* ---------------------------------------- */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('/lib/bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('/lib/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/lib/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/lib/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/lib/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.glyphicon-arrow-up:before {
+  content: "\e093";
+}
+.glyphicon-move:before {
+  content: "\e068";
+}
+.glyphicon-pencil:before {
+  content: "\270f";
+}
+.glyphicon-remove:before {
+  content: "\e014";
+}
+/* ----- EO: styles from Bootstrap ----- */
+
 .focus-component {
-	outline: 1px dashed #808080 !important;
+    /* TODO: add position relative only if the component doesn't already have it or any other value
+       that sets a positioning context (i.e. absolute or fixed) */
+    position: relative;
+
+    -webkit-box-shadow: 1px 1px 5px 5px rgba(102, 175, 233, 0.5) !important;
+    -moz-box-shadow: 1px 1px 5px 5px rgba(102, 175, 233, 0.5) !important;
+    box-shadow: 1px 1px 5px 5px rgba(102, 175, 233, 0.5) !important;
 }
 
 #studio-preview-toolbar {
@@ -13,47 +53,33 @@
 #studio-component-controls {
 	display: block;
 	position: absolute;
-	top: -1000em;		/* Keep the control hidden until its offset is property calculated */
-	left: -1000em;	/* Keep the control hidden until its offset is property calculated */
+	top: 0;
+	right: 0;
 }
 
-#studio-component-controls .buttons { 
-	width: 138px; 
-	height: 32px; 
-	border: 1px solid #808080; 
+#studio-component-controls > ul {
+    border: 2px solid rgba(102, 175, 233, 0.5);
+    border-style: none none solid solid;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #fff;
+    list-style: none;
+    padding-left: 0;
 }
 
-#studio-component-controls .message {
-	background-color: #4889D8;
-	border: 1px solid #5B6F86;
-	-webkit-border-top-left-radius: 4px;
-	-webkit-border-top-right-radius: 4px;
-	-moz-border-radius-topleft: 4px;
-	-moz-border-radius-topright: 4px;
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-	color: #DEDEDE;
-	padding: 2px 10px;
-	line-height: 16px;
+#studio-component-controls > ul > li { display: inline-block; }
+#studio-component-controls > ul > li > a {
+    font-size: 16px;
+    color: #227BC1;
+    padding: 5px;
+}
+#studio-component-controls > ul > li > a:hover {
+    color: #9D102D;
+    text-decoration: none;
 }
 
 #studio-component-controls.hidden { display: none; }
-
-#studio-component-controls.hover .buttons { display: none; }
-#studio-component-controls.edit .message { display: none; }
-
-#studio-component-controls .studio-edit,
-#studio-component-controls .studio-move, 
-#studio-component-controls .studio-remove,
-#studio-component-controls .studio-select-parent { 
-	background-image: url(/images/operations.png); 
-	display: inline-block; 
-	width: 32px; 
-	height: 32px; 
-	border-left: 1px solid #808080; 
-}
-
-#studio-component-controls .studio-edit { background-position: 0 0; } 
-#studio-component-controls .studio-move { background-position: -42px 0; } 
-#studio-component-controls .studio-remove { background-position: -84px 0; } 
-#studio-component-controls .studio-select-parent { background-position: -134px -124px; width: 38px; } 

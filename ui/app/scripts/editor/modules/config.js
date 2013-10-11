@@ -2,33 +2,38 @@
 'use strict';
 
 define({
-  cmpIdAttr: 'data-studio-id',
-  cmpTypeAttr: 'data-studio-type',
-  cmpStatusAttr: 'data-studio-status',
-  cmpParentAttr: 'data-studio-parent',
-  cmpFocusClass: 'focus-component',
-
-  cmpControlId: 'studio-component-controls',
-  cmpControlBindAttr: 'data-studio-bound',
-  cmpControlMsg: 'Click to Select',
-  cmpControlButtons : [
-    {
-      content: 'Edit',
-      classes: 'studio-edit'
+    cmp: {
+        idAttr: 'data-studio-id',
+        typeAttr: 'data-studio-type',
+        statusAttr: 'data-studio-status',
+        parentAttr: 'data-studio-parent',
+        focusClass: 'focus-component'
     },
-    {
-      content: 'Move',
-      classes: 'studio-move'
+    cmpControls: {
+        id: 'studio-component-controls',
+        bindAttr: 'data-bound-to',
+        buttons: [{
+            name: 'edit',
+            text: 'Edit',
+            class: 's2do-edit',
+            iconClass: 'glyphicon glyphicon-pencil'
+        }, {
+            name: 'move',
+            text: 'Move',
+            class: 's2do-move',
+            iconClass: 'glyphicon glyphicon-move'
+        }, {
+            name: 'remove',
+            text: 'Remove',
+            class: 's2do-remove',
+            iconClass: 'glyphicon glyphicon-remove'
+        }, {
+            name: 'parent',
+            text: 'Select Parent',
+            class: 's2do-parent',
+            iconClass: 'glyphicon glyphicon-arrow-up'
+        }]
     },
-    {
-      content: 'Remove',
-      classes: 'studio-remove'
-    },
-    {
-      content: 'Select Parent',
-      classes: 'studio-select-parent'
-    }
-  ],
 
   cmpInlineStyles: {
     locked: {
