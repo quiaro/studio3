@@ -11,7 +11,9 @@ require.config({
 		'domReady' : 'lib/requirejs-domready/js/domReady',
 		'jquery' : 'lib/jquery/js/jquery',
 		'jquery-private' : 'scripts/editor/modules/jquery-private',
-		'pubsub' : 'lib/pubsub-js/pubsub'
+		'pubsub' : 'lib/pubsub-js/pubsub',
+        'css' : 'lib/require-css/js/css',
+        'editor-css' : 'styles/editor'
 	},
 	shim: {
 		'ckeditor' : {
@@ -34,18 +36,18 @@ require(['config',
 	'ckeditor',
 	'pubsub',
 	'event-bridge',
-	'lib/require-css/js/css!styles/editor'],
+	'lib/require-css/js/css!editor-css'],
 		function (config, domReady, $, ckeditor, PubSub) {
 
 	// Disable inline CKEditors
-  CKEDITOR.disableAutoInline = true;
+    CKEDITOR.disableAutoInline = true;
 
 	// Load CKEditor custom toolbar configs
-  // The "instanceCreated" event is fired for every editor instance created.
+    // The "instanceCreated" event is fired for every editor instance created.
 	CKEDITOR.on( 'instanceCreated', function( event ) {
 		var editor = event.editor,
 			element = editor.element,
-			type = element.getAttribute(config.cmpTypeAttr);
+			type = element.getAttribute(config.cmp.typeAttr);
 
 		// Change the first letter of the 'type' string to uppercase
 		// e.g. "list" => "List"
@@ -58,7 +60,7 @@ require(['config',
 
 	});
 
-  domReady(function () {
+    domReady(function () {
 		var activeElement, fm, cc;
 
 		function changeElementState(el, state, inlineStyles) {
@@ -74,7 +76,7 @@ require(['config',
 			if (typeof el === 'object' && el !== null) {
 				for (var st in inlineStyles) {
 					if (st === state) {
-						$(el).attr(config.cmpStatusAttr, state);
+						$(el).attr(config.cmp.statusAttr, state);
 
 						inlineStyles[state].elements.forEach( setInlineStyles );
 						return;
@@ -102,10 +104,10 @@ require(['config',
 		}
 
 		/*
-     * @param: Element to reset
-     * @param: UI configuration object
-     * Reset the element's styles (i.e. remove any studio styles from the element)
-     */
+         * @param: Element to reset
+         * @param: UI configuration object
+         * Reset the element's styles (i.e. remove any studio styles from the element)
+         */
 		function resetElementState(el, inlineStyles) {
 			var state;
 
@@ -120,15 +122,15 @@ require(['config',
 			}
 
 			if (typeof el === 'object' && el !== null) {
-				state = $(el).attr(config.cmpStatusAttr);
+				state = $(el).attr(config.cmp.statusAttr);
 
 				if (state) {
 					Object.keys(inlineStyles).forEach( function(key) {
 						if (key === state) {
-							$(el).removeAttr(config.cmpStatusAttr);
+							$(el).removeAttr(config.cmp.statusAttr);
 
 							// Make component fields un-editable again
-							$('[' + config.cmpParentAttr + '="' + el.getAttribute(config.cmpIdAttr) +'"]')
+							$('[' + config.cmp.parentAttr + '="' + el.getAttribute(config.cmp.idAttr) +'"]')
 								.attr('contenteditable', false);
 
 							inlineStyles[state].elements.forEach( rmElementStyles );
@@ -140,12 +142,12 @@ require(['config',
 			}
 		}
 
-    /*
-     * Create RTE's for all editable children fields of parentEl
-     */
+        /*
+         * Create RTE's for all editable children fields of parentEl
+         */
 		function setupEditors (parentEl) {
-			var parentId = $(parentEl).attr(config.cmpIdAttr),
-					editableFields = $('[' + config.cmpParentAttr + '="' + parentId +'"]'),
+			var parentId = $(parentEl).attr(config.cmp.idAttr),
+					editableFields = $('[' + config.cmp.parentAttr + '="' + parentId +'"]'),
 					el;
 
 			if (editableFields.length) {
@@ -165,36 +167,37 @@ require(['config',
 		/*
 		 * Menu with controls for components
 		 * @param controlsArr : An array of control objects, for example:
-														{ content: "Read", 
-															classes: "studio-read"
-														}
-     */
+								{ content: "Read",
+								  classes: "studio-read"
+								}
+        */
 		function ComponentControls (controlsArr) {
 
 			var $controlEl,
-					control,
-					buttons = '',
-
-					// Pixels to subtract from the controls default position (top, left corner of the component)
-					topOffset = 22;
+				buttons = '',
+                $body = $('body');
 
 			// Add the controls container
-			$('<div id="' + config.cmpControlId + '" class="hover hidden">' +
-					'<div class="message">' + config.cmpControlMsg + '</div>' +
-					'<div class="buttons"></div>' +
+			$('<div id="' + config.cmpControls.id + '" class="hidden">' +
+					'<ul class="btn-container"></ul>' +
 				'</div>').appendTo('body');
 
-			$controlEl = $('#' + config.cmpControlId);
+			$controlEl = $('#' + config.cmpControls.id);
 
-			// Append the buttons to the controls container
-			for (var i in controlsArr) {
-				if (controlsArr.hasOwnProperty(i)) {
-					control = controlsArr[i];
-					buttons += '<a href="#" class="' + control.classes + '" title="' + control.content + '">';
-					buttons += control.content + '</a>';
-				}
-			}
-			$controlEl.children('.buttons').append(buttons);
+            if ($controlEl.length) {
+                // Append the buttons to the controls container
+                controlsArr.forEach( function (controlObj) {
+                    buttons += '<li>';
+                    buttons += '  <a href="#" class="s2do-btn ' + controlObj.class + '" title="' + controlObj.text + '">';
+                    buttons += '    <i class="' + controlObj.iconClass + '" ></i>'
+                    buttons += '  </a>'
+                    buttons += '</li>';
+                })
+
+                $controlEl.children('.btn-container').append(buttons);
+            } else {
+                throw new Error('Component controls element with id: ' + config.cmpControls.id + ' doesn\'t exist');
+            }
 
 			function add (control) {
 				// TO-DO: how do we plug in a new control?
@@ -204,22 +207,19 @@ require(['config',
 
 			function hide () {
 				$controlEl
-					.offset({ top: -1000, left: -1000})
 					.addClass('hidden')
-					.removeAttr(config.cmpControlBindAttr);
+                    .appendTo($body)
+					.removeAttr(config.cmpControls.bindAttr);
 			}
 
-			/*
-       * @param component : jquery object of component over which we want to show the controls
-       */
+		    /*
+             * @param component : jquery object of component over which we want to show the controls
+             */
 			function show ($component) {
-				var pos = $component.offset();
-				pos.top -= topOffset;
-
 				$controlEl
+                    .prependTo($component)
 					.removeClass('hidden')
-					.offset(pos)
-					.attr(config.cmpControlBindAttr, $component.attr(config.cmpIdAttr));
+					.attr(config.cmpControls.bindAttr, $component.attr(config.cmp.idAttr));
 			}
 
 			return {
@@ -232,9 +232,9 @@ require(['config',
 
 
 		/*
-     * Determines which component should be given focus or be blurred
-     * @param delayFocus : Number of milliseconds before the focus is finally carried out
-     */
+         * Determines which component should be given focus or be blurred
+         * @param delayFocus : Number of milliseconds before the focus is finally carried out
+         */
 		function FocusManager (delayFocus, componentControls) {
 			var componentQueue = {},
 					focusTimer = null,
@@ -247,7 +247,7 @@ require(['config',
 						component,
 						numParentsComponent;
 
-				// Find the component to focus on based on the greatest number of parents 
+				// Find the component to focus on based on the greatest number of parents
 				// (the more the parents, the deeper the component is in the tree)
 				for (var componentId in componentQueue) {
 					if (componentQueue.hasOwnProperty(componentId)) {
@@ -271,7 +271,7 @@ require(['config',
 				cmpToFocus = findComponentToFocus();
 
 				if (cmpToFocus) {
-					$cmpFocused = $('.' + config.cmpFocusClass);
+					$cmpFocused = $('.' + config.cmp.focusClass);
 					cmpFocused = $cmpFocused.get(0);
 
 					if (cmpFocused) {
@@ -279,12 +279,12 @@ require(['config',
 						// If the component focused and the component to focus are the same, then there's nothing to do
 						if (cmpFocused !== cmpToFocus) {
 							cmpControls.hide();
-							$cmpFocused.removeClass(config.cmpFocusClass);
-							$(cmpToFocus).addClass(config.cmpFocusClass);
+							$cmpFocused.removeClass(config.cmp.focusClass);
+							$(cmpToFocus).addClass(config.cmp.focusClass);
 							cmpControls.show($(cmpToFocus));
 						}
 					} else {
-						$(cmpToFocus).addClass(config.cmpFocusClass);
+						$(cmpToFocus).addClass(config.cmp.focusClass);
 						cmpControls.show($(cmpToFocus));
 					}
 				}
@@ -294,7 +294,7 @@ require(['config',
 			}
 
 			function processFocus (evtObj) {
-				var componentId = evtObj.currentTarget.getAttribute(config.cmpIdAttr);
+				var componentId = evtObj.currentTarget.getAttribute(config.cmp.idAttr);
 
 				if (focusTimer) {
 					// Cancel the current timer
@@ -312,16 +312,16 @@ require(['config',
 			function processBlur (evtObj) {
 				var component = evtObj.currentTarget,
 						$component = $(component),
-						componentId = component.getAttribute(config.cmpIdAttr),
+						componentId = component.getAttribute(config.cmp.idAttr),
 						fakeEvtObj = {},
 						cmpToFocus = null;
 
-				// Remove the component from the component queue 
+				// Remove the component from the component queue
 				delete componentQueue[componentId];
-				if ($component.hasClass(config.cmpFocusClass)) {
+				if ($component.hasClass(config.cmp.focusClass)) {
 					// The element might have already been blurred so check if it still has the "focus class"
 					cmpControls.hide();
-					$(component).removeClass(config.cmpFocusClass);
+					$(component).removeClass(config.cmp.focusClass);
 
 					cmpToFocus = findComponentToFocus();
 					if (cmpToFocus) {
@@ -341,7 +341,7 @@ require(['config',
 
 
 		/* --- Initialize the app --- */
-		cc = ComponentControls(config.cmpControlButtons);
+		cc = ComponentControls(config.cmpControls.buttons);
 		fm = FocusManager(500, cc);
 
 		$('body').on('click', function () {
@@ -367,7 +367,7 @@ require(['config',
 				activeElement = this;
 
 				PubSub.publish('editor/element/select', {
-					id: this.getAttribute(config.cmpIdAttr)
+					id: this.getAttribute(config.cmp.idAttr)
 				});
 
 				setupEditors(activeElement);
@@ -382,7 +382,7 @@ require(['config',
 			var el;
 
 			if (data.id && data.state) {
-				el = $('[' + config.cmpIdAttr + '="' + data.id + '"]')[0];
+				el = $('[' + config.cmp.idAttr + '="' + data.id + '"]')[0];
 				if (el) {
 					changeElementState(el, data.state, config.cmpInlineStyles);
 				}
