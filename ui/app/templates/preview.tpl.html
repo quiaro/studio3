@@ -1,6 +1,6 @@
 
 <!-- If this div is moved after the iframe, it won't be rendered! -->
-<div id="authoring-tools" class="{{authoring.tools.state}}">
+<div id="authoring-tools" class="{{authoring.tools.state}}" style="height:{{authoring.tools.height}}%;">
     <div class="content">
     	<p class="intro">Element selected: [<span id="element-id">{{selectedElement}}</span>]</p>
         <form>
@@ -32,4 +32,4 @@
     </div>
 </div>
 
-<editor-iframe frameborder="0" ng-src="{{authoring.site}}" height="80%" width="100%" />
+<editor-iframe frameborder="0" ng-src="{{authoring.site}}" height="{{100 - authoring.tools.height}}%" width="100%" />

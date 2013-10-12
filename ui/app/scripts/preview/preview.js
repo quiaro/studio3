@@ -2,7 +2,7 @@
 
 angular.module('preview', ['common', 'ngEventBridge'])
 
-  .controller('PreviewCtrl',
+    .controller('PreviewCtrl',
 		['$scope', 'notifications', function($scope, notifications) {
 
 		$scope.notifications = notifications;
@@ -10,17 +10,27 @@ angular.module('preview', ['common', 'ngEventBridge'])
         $scope.authoring = {
             site: "/sites/unigroup.html",
             tools: {
-                state: "on"
+                state: "off",
+                height: 0
             }
         };
 
 		$scope.selectedElement = 'none';
 
-		$scope.$on('editor/element/select', function (event, args) {
+		$scope.$on('editor/element/edit', function (event, args) {
 			$scope.$apply(function () {
-				$scope.selectedElement = args.id;
+				$scope.authoring.tools = {
+                    state: "on",
+                    height: 20
+                }
 			});
 		});
+
+        $scope.$on('editor/element/select', function (event, args) {
+            $scope.$apply(function () {
+                $scope.selectedElement = args.id;
+            });
+        });
 
 	}]);
 
