@@ -51,7 +51,7 @@ require(['config',
 
 		// Change the first letter of the 'type' string to uppercase
 		// e.g. "list" => "List"
-		type = type.replace(/^[a-z]/, type.charAt(0).toUpperCase());
+		type = type && type.replace(/^[a-z]/, type.charAt(0).toUpperCase());
 
 		// Customize editors depending on their type
 		editor.on( 'configLoaded', function() {
@@ -166,16 +166,67 @@ require(['config',
 
 		/*
 		 * Menu with controls for components
-		 * @param controlsArr : An array of control objects, for example:
-								{ content: "Read",
-								  classes: "studio-read"
-								}
-        */
-		function ComponentControls (controlsArr) {
+		 * @param buttonsArr : An array of button objects
+         */
+		function ComponentControls (buttonsArr) {
 
-			var $controlEl,
-				buttons = '',
+            var $controlEl,
+                $btnContainer,
+                buttons = '',
                 $body = $('body');
+
+            function createButton (btnObj) {
+                var btnStr, $btn;
+
+                btnStr =  '<li>';
+                btnStr += '  <a href="#" class="s2do-btn ' + btnObj.class + '" title="' + btnObj.text + '">';
+                btnStr += '    <i class="' + btnObj.iconClass + '" ></i>'
+                btnStr += '  </a>'
+                btnStr += '</li>';
+
+                $btn = $(btnStr);
+
+                if (btnObj.events) {
+                    btnObj.events.forEach ( function(evtObj) {
+
+                        $btn.children('.s2do-btn').on(evtObj.on, function (evt) {
+                            var self = this;
+
+                            evt.preventDefault();
+                            PubSub.publish(evtObj.publish, {
+                                // TODO: function that extracts the value of evtObj.data (e.g. if it's "component",
+                                // the component should be returned; if it's "parent", the component's parent
+                                // should be returned)
+                                data: evtObj.data
+                            });
+                        })
+                    })
+                }
+                return $btn;
+            }
+
+            function add (control) {
+                // TO-DO: how do we plug in a new control?
+                // if (control instanceof ComponentControl) {
+                // }
+            }
+
+            function hide () {
+                $controlEl
+                    .addClass('hidden')
+                    .appendTo($body)
+                    .removeAttr(config.cmpControls.bindAttr);
+            }
+
+            /*
+             * @param component : jquery object of component over which we want to show the controls
+             */
+            function show ($component) {
+                $controlEl
+                    .prependTo($component)
+                    .removeClass('hidden')
+                    .attr(config.cmpControls.bindAttr, $component.attr(config.cmp.idAttr));
+            }
 
 			// Add the controls container
 			$('<div id="' + config.cmpControls.id + '" class="hidden">' +
@@ -185,42 +236,17 @@ require(['config',
 			$controlEl = $('#' + config.cmpControls.id);
 
             if ($controlEl.length) {
-                // Append the buttons to the controls container
-                controlsArr.forEach( function (controlObj) {
-                    buttons += '<li>';
-                    buttons += '  <a href="#" class="s2do-btn ' + controlObj.class + '" title="' + controlObj.text + '">';
-                    buttons += '    <i class="' + controlObj.iconClass + '" ></i>'
-                    buttons += '  </a>'
-                    buttons += '</li>';
+                $btnContainer = $controlEl.children('.btn-container');
+
+                // Append each buttons to the button container
+                buttonsArr.forEach( function (btnObj) {
+                    var $btn = createButton(btnObj);
+                    $btnContainer.append($btn);
                 })
 
-                $controlEl.children('.btn-container').append(buttons);
             } else {
                 throw new Error('Component controls element with id: ' + config.cmpControls.id + ' doesn\'t exist');
             }
-
-			function add (control) {
-				// TO-DO: how do we plug in a new control?
-				// if (control instanceof ComponentControl) {
-				// }
-			}
-
-			function hide () {
-				$controlEl
-					.addClass('hidden')
-                    .appendTo($body)
-					.removeAttr(config.cmpControls.bindAttr);
-			}
-
-		    /*
-             * @param component : jquery object of component over which we want to show the controls
-             */
-			function show ($component) {
-				$controlEl
-                    .prependTo($component)
-					.removeClass('hidden')
-					.attr(config.cmpControls.bindAttr, $component.attr(config.cmp.idAttr));
-			}
 
 			return {
 				add: add,

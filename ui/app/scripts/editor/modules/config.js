@@ -16,7 +16,12 @@ define({
             name: 'edit',
             text: 'Edit',
             class: 's2do-edit',
-            iconClass: 'glyphicon glyphicon-pencil'
+            iconClass: 'glyphicon glyphicon-pencil',
+            events: [{
+                on: 'click',
+                publish: 'editor/element/edit',
+                data: 'component'
+            }]
         }, {
             name: 'move',
             text: 'Move',
