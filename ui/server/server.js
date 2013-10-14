@@ -4,9 +4,6 @@ var express = require('express'),
     path = require('path'),
     config = require('./config.js');
 
-// Mock data
-var items = require(config.server.mockFolder + '/items');
-
 var app = express();
 
 // all environments
@@ -29,7 +26,7 @@ if ('production' === app.get('env')) {
 }
 
 app.get( "/api/0.1/repo/list/pebbles", function( req, res ) {
-    res.json( items );
+    res.json( require(config.server.mockFolder + '/dashboard/items') );
 });
 
 app.get( /^\/sites\/(.+)$/, function( req, res ) {
