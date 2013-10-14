@@ -20,7 +20,7 @@
 
         // default sorting values
         sort: {
-            column : "name",
+            column : 'name',
             descending : false
         },
 

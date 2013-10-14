@@ -8,9 +8,9 @@ angular.module('preview', ['common', 'ngEventBridge'])
 		$scope.notifications = notifications;
 
         $scope.authoring = {
-            site: "/sites/unigroup.html",
+            site: '/sites/unigroup.html',
             tools: {
-                state: "off",
+                state: 'off',
                 height: 0
             }
         };
@@ -20,9 +20,9 @@ angular.module('preview', ['common', 'ngEventBridge'])
 		$scope.$on('editor/element/edit', function (event, args) {
 			$scope.$apply(function () {
 				$scope.authoring.tools = {
-                    state: "on",
+                    state: 'on',
                     height: 20
-                }
+                };
 			});
 		});
 

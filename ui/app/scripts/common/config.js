@@ -22,9 +22,9 @@ angular.module('common')
         dashboard: '/config/dashboard.json',
         registry: '/config/registry.json',
         widgets: {
-            tplPlaceholder: "widget.name",
-            asyncMethodName: "getAsyncData",
-            namespace: "widgets"
+            tplPlaceholder: 'widget.name',
+            asyncMethodName: 'getAsyncData',
+            namespace: 'widgets'
         }
     })
 

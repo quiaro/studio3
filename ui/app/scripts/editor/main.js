@@ -172,7 +172,6 @@ require(['config',
 
             var $controlEl,
                 $btnContainer,
-                buttons = '',
                 $body = $('body');
 
             function createButton (btnObj) {
@@ -180,8 +179,8 @@ require(['config',
 
                 btnStr =  '<li>';
                 btnStr += '  <a href="#" class="s2do-btn ' + btnObj.class + '" title="' + btnObj.text + '">';
-                btnStr += '    <i class="' + btnObj.iconClass + '" ></i>'
-                btnStr += '  </a>'
+                btnStr += '    <i class="' + btnObj.iconClass + '" ></i>';
+                btnStr += '  </a>';
                 btnStr += '</li>';
 
                 $btn = $(btnStr);
@@ -190,7 +189,6 @@ require(['config',
                     btnObj.events.forEach ( function(evtObj) {
 
                         $btn.children('.s2do-btn').on(evtObj.on, function (evt) {
-                            var self = this;
 
                             evt.preventDefault();
                             PubSub.publish(evtObj.publish, {
@@ -199,8 +197,8 @@ require(['config',
                                 // should be returned)
                                 data: evtObj.data
                             });
-                        })
-                    })
+                        });
+                    });
                 }
                 return $btn;
             }
@@ -242,7 +240,7 @@ require(['config',
                 buttonsArr.forEach( function (btnObj) {
                     var $btn = createButton(btnObj);
                     $btnContainer.append($btn);
-                })
+                });
 
             } else {
                 throw new Error('Component controls element with id: ' + config.cmpControls.id + ' doesn\'t exist');
