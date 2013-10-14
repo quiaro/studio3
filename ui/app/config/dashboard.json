@@ -7,18 +7,13 @@
                 "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
                 "model" : {
                     "header" : "DASHBOARD.activity.header",
-                    "id" : "my-recent-activity",
-                    "class" : "recent-activity",
+                    "id" : "recent-activity-widget",
+                    "class" : "dashboard-widget",
                     "columns" : [
                         {
                             "name" : "name",
                             "header" : "DASHBOARD.activity.page_name",
                             "class" : "page-name"
-                        },
-                        {
-                            "name" : "lastEdited",
-                            "header" : "DASHBOARD.activity.last_edited",
-                            "class" : "last-edit"
                         },
                         {
                             "name" : "lastAuthor",
@@ -30,11 +25,34 @@
                             "header" : "DASHBOARD.activity.my_last_edit",
                             "class" : "personal-edit"
                         }
-                    ],
-                    "sort" : {
-                        "column" : "lastAuthor",
-                        "descending" : false
-                    }
+                    ]
+                }
+            },
+            {
+                "name" : "liveActivity",
+                "templateUrl" : "/templates/dashboard/items-table.tpl.html",
+                "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
+                "model" : {
+                    "header" : "DASHBOARD.live.header",
+                    "id" : "live-activity-widget",
+                    "class" : "dashboard-widget",
+                    "columns" : [
+                        {
+                            "name" : "name",
+                            "header" : "DASHBOARD.live.page_name",
+                            "class" : "page-name"
+                        },
+                        {
+                            "name" : "lastAuthor",
+                            "header" : "DASHBOARD.live.author",
+                            "class" : "last-author"
+                        },
+                        {
+                            "name" : "lastEdited",
+                            "header" : "DASHBOARD.live.last_edited",
+                            "class" : "last-edit"
+                        }
+                    ]
                 }
             },
             {
@@ -43,8 +61,8 @@
                 "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
                 "model" : {
                     "header" : "DASHBOARD.approval.header",
-                    "id" : "my-approval-activity",
-                    "class" : "approval-activity",
+                    "id" : "approval-activity-widget",
+                    "class" : "dashboard-widget",
                     "columns" : [
                         {
                             "name" : "name",
@@ -52,23 +70,46 @@
                             "class" : "page-name"
                         },
                         {
+                            "name" : "lastAuthor",
+                            "header" : "DASHBOARD.approval.author",
+                            "class" : "last-author"
+                        },
+                        {
                             "name" : "lastEdited",
                             "header" : "DASHBOARD.approval.last_edited",
                             "class" : "last-edit"
-                        },
-                        {
-                            "name" : "lastPersonalEdit",
-                            "header" : "DASHBOARD.approval.my_last_edit",
-                            "class" : "personal-edit"
                         }
                     ],
-                    "sort" : {
-                        "column" : "lastAuthor",
-                        "descending" : false
-                    },
                     "filterType" : {
-                        "show" : false,
-                        "value" : ""
+                        "show" : false
+                    },
+                    "filterLength" : {
+                        "show" : false
+                    }
+                }
+            },
+            {
+                "name" : "scheduledActivity",
+                "templateUrl" : "/templates/dashboard/items-table.tpl.html",
+                "prototypeUrl" : "/scripts/dashboard/plugins/items-table.js",
+                "model" : {
+                    "header" : "DASHBOARD.scheduled.header",
+                    "id" : "scheduled-activity-widget",
+                    "class" : "dashboard-widget",
+                    "columns" : [
+                        {
+                            "name" : "name",
+                            "header" : "DASHBOARD.scheduled.page_name",
+                            "class" : "page-name"
+                        },
+                        {
+                            "name" : "lastEdited",
+                            "header" : "DASHBOARD.scheduled.last_edited",
+                            "class" : "last-edit"
+                        }
+                    ],
+                    "filterLength" : {
+                        "show" : false
                     }
                 }
             }
