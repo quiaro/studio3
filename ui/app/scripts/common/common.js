@@ -61,7 +61,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
 
                 var allPromises = [];
 
-                widgets && widgets.forEach( function (widget) {
+                widgets.forEach( function (widget) {
                     var assetPromise;
 
                     if (widget[widgetProperty]) {
@@ -93,7 +93,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
                             allPromises.push(assetPromise.promise);
                         }
                     } else {
-                        throw new Error ("Widget " + widget.name + " is missing property: " + widgetProperty);
+                        throw new Error ('Widget ' + widget.name + ' is missing property: ' + widgetProperty);
                     }
                 });
 
@@ -112,6 +112,7 @@ angular.module('common', ['ui.bootstrap.dialog'])
         }
 
         function processPrototype (prototypeStr, widget) {
+            /*jshint evil:true */
             return eval(prototypeStr);
         }
 
@@ -119,8 +120,8 @@ angular.module('common', ['ui.bootstrap.dialog'])
          * specific to the widgets' model
          */
         function processTemplate (templateStr, widget) {
-            var widgetSpecificTpl,
-                widgetModelStr = (widget.name) ? CONFIG.widgets.namespace + '.' + widget.name : CONFIG.widgets.tplPlaceholder,
+            var widgetModelStr = (widget.name) ? CONFIG.widgets.namespace + '.' + widget.name :
+                                                    CONFIG.widgets.tplPlaceholder,
                 reWidgetPlaceholder = new RegExp(CONFIG.widgets.tplPlaceholder, 'g');
 
             return templateStr.replace(reWidgetPlaceholder, widgetModelStr);

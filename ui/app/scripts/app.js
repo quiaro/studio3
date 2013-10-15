@@ -23,7 +23,7 @@ angular.module('studio-ui', [
                         var deferred = $q.defer();
                         Widget.getPropertyAssets('dashboard', 'prototypeUrl', false, Widget.processPrototype)
                             .then( function (prototypes) {
-                                deferred.resolve(prototypes)
+                                deferred.resolve(prototypes);
                             });
                         return deferred.promise;
                     },
@@ -31,7 +31,7 @@ angular.module('studio-ui', [
                         var deferred = $q.defer();
                         Widget.getPropertyAssets('dashboard', 'templateUrl', true, Widget.processTemplate)
                             .then( function (templates) {
-                                deferred.resolve(templates)
+                                deferred.resolve(templates);
                             });
                         return deferred.promise;
                     }
