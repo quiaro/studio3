@@ -8,7 +8,7 @@ angular.module('preview', ['common', 'ngEventBridge'])
 		$scope.notifications = notifications;
 
         $scope.authoring = {
-            site: '/sites/unigroup.html',
+            site: '/sites/crafter_community.html',
             tools: {
                 state: 'off',
                 height: 0

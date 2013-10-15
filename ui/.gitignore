@@ -1,6 +1,6 @@
 target
 components
-server/sites
+server/sites/others
 .tmp
 .sass-cache
 .DS_Store
