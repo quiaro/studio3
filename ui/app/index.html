@@ -21,7 +21,7 @@
     <!-- endbuild -->
   </head>
 
-  <body ng-app="studio-ui@@dev" ng-controller="AppCtrl">
+  <body ng-app="studio-ui" ng-controller="AppCtrl">
 
     <div id="studio" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
         <div>
@@ -43,9 +43,7 @@
     <script src="lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
     <script src="lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
     <script src="lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
-    @@includeNgMocks
     @@includeTranslateErrorHandler
-    @@includeAppDev
 
     <!-- build:js scripts/scripts.js -->
     <script src="scripts/app.js"></script>
