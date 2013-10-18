@@ -11,4 +11,14 @@
 
     <bean id="workflowManagerSUT" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl" />
 
+    <bean id="deploymentManagerSUT" class="org.craftercms.studio.impl.deployment.DeploymentManagerImpl" />
+
+    <bean id="lifecycleManagerSUT" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
+
+    <bean id="auditManagerSUT" class="org.craftercms.studio.impl.audit.AuditManagerImpl" />
+
+    <bean id="formsManagerSUT" class="org.craftercms.studio.impl.forms.FormsManagerImpl" />
+
+    <bean id="blueprintsManagerSUT" class="org.craftercms.studio.impl.blueprints.BlueprintsManagerImpl" />
+
 </beans>

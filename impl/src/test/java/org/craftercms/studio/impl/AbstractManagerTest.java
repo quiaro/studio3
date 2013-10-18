@@ -21,9 +21,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.dto.DeploymentChannel;
+import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.WorkflowTransition;
@@ -119,5 +123,76 @@ public abstract class AbstractManagerTest {
         transition.setId(UUID.randomUUID().toString());
         transition.setName(RandomStringUtils.randomAlphabetic(10));
         return transition;
+    }
+
+    protected List<String> createStringListMock() {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
+            list.add(RandomStringUtils.randomAlphanumeric(25));
+        }
+        return list;
+    }
+
+    protected DeploymentChannel createDeploymentChannelMock() {
+        DeploymentChannel channel = new DeploymentChannel();
+        channel.setVersionUrl(RandomStringUtils.randomAlphabetic(150));
+        channel.setType(RandomStringUtils.randomAlphabetic(10));
+        channel.setTarget(RandomStringUtils.randomAlphanumeric(20));
+        channel.setStatusUrl(RandomStringUtils.randomAlphabetic(150));
+        channel.setDisabled(false);
+        channel.setId(UUID.randomUUID().toString());
+        channel.setName(RandomStringUtils.randomAlphabetic(15));
+        channel.setExcludePatterns(createStringListMock());
+        channel.setIncludePatterns(createStringListMock());
+        channel.setHost(RandomStringUtils.randomAlphabetic(10));
+        channel.setPort(RandomStringUtils.randomNumeric(4));
+        channel.setPublishingUrl(RandomStringUtils.randomAlphabetic(150));
+        channel.setPublishMetadata(false);
+        return channel;
+    }
+
+    protected List<String> createItemIdListMock() {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
+            list.add(UUID.randomUUID().toString());
+        }
+        return list;
+    }
+
+    protected Activity createActivityMock() {
+        Activity activity = new Activity();
+        activity.setId(UUID.randomUUID().toString());
+        activity.setCreator(RandomStringUtils.randomAlphabetic(10));
+        activity.setDate(new Date());
+        activity.setSiteId(RandomStringUtils.randomAlphabetic(10));
+        activity.setSiteName(RandomStringUtils.randomAlphabetic(20));
+        activity.setTarget(RandomStringUtils.randomAlphanumeric(20));
+        Map<String, Object> props = new HashMap<String, Object>();
+        props.put("param1", "param1");
+        props.put("param2", "param2");
+        activity.setTargetProperties(props);
+        activity.setType(RandomStringUtils.randomAlphabetic(10));
+        return activity;
+    }
+
+    protected FormDefinition createFormDefinitionMock() {
+        FormDefinition form = new FormDefinition();
+        form.setId(UUID.randomUUID().toString());
+        form.setName(RandomStringUtils.randomAlphabetic(20));
+        form.setSiteName(RandomStringUtils.randomAlphabetic(10));
+        form.setSiteId(RandomStringUtils.randomAlphabetic(10));
+        Map<String, Object> schema = new HashMap<String, Object>();
+        schema.put("param1", "param1");
+        schema.put("param2", "param2");
+        form.setSchema(schema);
+        return form;
+    }
+
+    protected Map<String, Object> createMapMock() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        for (int i = 0; i < 5 + (int)(Math.random() * ((10 - 5) + 1)); i++) {
+            map.put(RandomStringUtils.randomAlphabetic(10), RandomStringUtils.randomAlphanumeric(20));
+        }
+        return map;
     }
 }
