@@ -166,7 +166,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.craftercms.studio.impl.repository.mongodb.tools.RepoFS</mainClass>
+                            <mainClass>org.craftercms.studio.impl.repository.mongodb.tools.RepoConsole</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Implementation-Build>${buildNumber}</Implementation-Build>

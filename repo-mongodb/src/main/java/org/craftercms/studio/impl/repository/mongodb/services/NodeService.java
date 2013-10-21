@@ -159,4 +159,12 @@ public interface NodeService {
      *                                                                                           InputStream.
      */
     InputStream getFile(String fileId) throws MongoRepositoryException;
+
+    /**
+     * Gets all the children nodes for the given node<br/>
+     * (Children  are nodes which ancestors are the same of the  given nodeId + the given Node)
+     * @param nodeId Node id of the parent
+     * @return A List of nodes that are children of
+     */
+    List<Node> getChildren(String nodeId) throws MongoRepositoryException;
 }

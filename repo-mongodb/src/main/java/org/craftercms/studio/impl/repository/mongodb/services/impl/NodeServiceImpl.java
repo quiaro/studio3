@@ -20,6 +20,7 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -235,6 +236,17 @@ public class NodeServiceImpl implements NodeService {
             throw new IllegalArgumentException("Can't search file if the id either null ,empty or blank");
         }
         return gridFSService.getFile(fileId);
+    }
+
+    @Override
+    public List<Node> getChildren(final String nodeId) throws MongoRepositoryException {
+        if (!StringUtils.isBlank(nodeId)) {
+            Node parent = getNode(nodeId);
+            LinkedList<Node> ancestors = parent.getAncestors();
+            ancestors.add(parent);
+            return nodeDataRepository.findAllByAncestors(ancestors);
+        }
+        return null;
     }
 
     private boolean isNodeUniqueNodeinTree(Node nodeToValidate) {

@@ -28,6 +28,7 @@ import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.dto.TreeNode;
 import org.craftercms.studio.commons.exception.InvalidContextException;
 import org.craftercms.studio.commons.filter.Filter;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
@@ -99,10 +100,10 @@ public class ContentServiceImpl implements ContentService {
         String nodeId = pathService.getItemIdByPath(ticket, site, path);
         Node parent;
         if (nodeId == null) {
-            log.debug("Could not found parent path {} ",path);
+            log.debug("Could not found parent path {} ", path);
             parent = null;
         } else {
-            log.debug("Node id for path {} is {}",path, nodeId);
+            log.debug("Node id for path {} is {}", path, nodeId);
             parent = nodeService.getNode(nodeId);
         }
 
@@ -233,8 +234,49 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public Tree<Item> getChildren(final String ticket, final String site, final String contentId, final int depth,
-                                  final List<Filter> filters) {
-        return null;
+                                  final List<Filter> filters) throws RepositoryException {
+        if (StringUtils.isBlank(ticket)) {
+            throw new IllegalArgumentException("Ticket can't be null");
+        }
+        if (StringUtils.isBlank(site)) {
+            throw new IllegalArgumentException("Site can't be null");
+        }
+        if (StringUtils.isBlank(contentId)) {
+            throw new IllegalArgumentException("Content Id can't be null");
+        }
+
+        Node rootNode = nodeService.getNode(contentId);
+        if (rootNode == null) {
+            log.debug("Node with Id {} does not exist ", contentId);
+            return null;
+        }
+        Tree<Item> resultTree = new Tree<>();
+        TreeNode<Item> root = new TreeNode<>();
+        root.setValue(nodeToItem(rootNode, ticket, site));
+        buildChildrenTree(root, depth, rootNode, ticket, site);
+        resultTree.setRootNode(root);
+        return resultTree;
+    }
+
+    private void buildChildrenTree(final TreeNode<Item> root, final int depth, final Node parent,
+                                   final String ticket, final String site) throws RepositoryException {
+        List<Node> children = nodeService.getChildren(root.getValue().getId().toString());
+        if (children != null) {
+            if (!children.isEmpty()) {
+                for (Node child : children) {
+                    TreeNode<Item> leaf = new TreeNode<>();
+                    leaf.setValue(nodeToItem(child, ticket, site));
+                    if (depth == -1 || depth >  0) {
+                        buildChildrenTree(leaf, (depth - 1), child, ticket, site);
+                    }
+                    root.addChild(leaf);
+                }
+            } else {
+                log.debug("Node {} does not have any children", parent);
+            }
+        } else {
+            log.debug("Could not find nodes with id {}", root.getValue().getId().toString());
+        }
     }
 
     @Override

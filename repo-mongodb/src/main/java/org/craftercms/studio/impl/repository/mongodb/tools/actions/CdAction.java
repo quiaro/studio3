@@ -20,10 +20,10 @@ package org.craftercms.studio.impl.repository.mongodb.tools.actions;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
-import org.craftercms.studio.impl.repository.mongodb.tools.Action;
+import org.craftercms.studio.impl.repository.mongodb.tools.AbstractAction;
 import org.craftercms.studio.impl.repository.mongodb.tools.ActionContext;
 
-public class CdAction extends Action {
+public class CdAction extends AbstractAction {
     @Override
     public boolean responseTo(final String action) {
         return "cd".equals(action);

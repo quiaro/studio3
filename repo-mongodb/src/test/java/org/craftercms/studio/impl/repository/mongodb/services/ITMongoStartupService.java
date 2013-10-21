@@ -27,6 +27,9 @@ public class ITMongoStartupService implements ApplicationContextAware {
     private NodeService nodeService;
     private ApplicationContext applicationContext;
 
+    public ITMongoStartupService() {
+    }
+
     @Before
     public void setUp() throws Exception {
         nodeService = applicationContext.getBean(NodeService.class);
