@@ -1,7 +1,15 @@
+#studio.dashboard {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#B4C3D6), color-stop(100%, #8899AD));
+    background-image: -moz-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
+    background-image: -ms-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
+}
+
 /* ------------------ */
 /* ------ #nav ------ */
 /* ------------------ */
 .dashboard #nav { width: 280px; }
+
+.dashboard #nav .home { display: none; }
 
 .dashboard #nav .logo {
     background: transparent url(/images/crafter-logo.png) 10px 0 no-repeat;
@@ -20,7 +28,6 @@
 
 .dashboard #nav .file-view {
     background-color: #FFFFFF;
-    border: 1px solid #606060;
     height: 507px;
     margin: 5px 0;
     width: 100%;
@@ -50,10 +57,14 @@
     font-size: 12px;
     margin: 15px 20px;
 }
-.dashboard .panel-heading { overflow: hidden; }
+.dashboard .panel-heading {
+    overflow: hidden;
+    padding: 5px 20px;
+}
 .dashboard .panel-heading .panel-title {
     float: left;
     line-height: 1.5;
+    font-size: 14px;
 }
 
 .dashboard .panel-heading .filters { float: right; }
@@ -84,7 +95,27 @@
 
 .dashboard .panel-body .item-list th,
 .dashboard .panel-body .item-list td {
-    padding: 2px 10px 2px 5px;
+    border-left: 2px solid #FFFFFF;
+    border-right: 2px solid #FFFFFF;
+}
+.dashboard .panel-body .item-list th {
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #ECF2FA;
+}
+.dashboard .panel-body .item-list th.sort-ascending {
+    background: #E1EAF7 url(/images/sort-order.png) no-repeat right 13px;
+}
+.dashboard .panel-body .item-list th.sort-descending {
+    background: #E1EAF7 url(/images/sort-order.png) no-repeat right -19px;
+}
+
+.dashboard .panel-body .item-list td {
+    padding: 4px 12px;
+}
+
+.dashboard .panel-body .item-list th:first-child {
+    background-color: transparent;
 }
 .dashboard .panel-body .item-list th:first-child,
 .dashboard .panel-body .item-list td:first-child {

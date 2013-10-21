@@ -18,6 +18,12 @@
             value: ''
         },
 
+        // default sorting values
+        sort: {
+            column : 'name',
+            descending : false
+        },
+
         // widget's asynchronous method to load model data
         getAsyncData: function getAsyncData ($timeout) {
 
@@ -27,7 +33,8 @@
             angular.injector(['ng', 'common']).invoke(function (repo) {
                 // Filter options to be defined here; they could also be defined as
                 // a widget property -which would make them configurable
-                var filterOpts = {};
+                var filterOpts = {},
+                    numResults = that.filterLength.value;
 
                 repo.list(filterOpts)
                     .then( function (data) {
@@ -38,7 +45,7 @@
                             that.data = data;
 
                             if (data.length) {
-                                that.filterLength.value = data.length;
+                                that.filterLength.value = (numResults) ? numResults : data.length;
                             }
                         });
                     });

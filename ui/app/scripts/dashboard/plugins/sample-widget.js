@@ -4,12 +4,12 @@
 
     return {
 
-        class: "sample-widget",
+        class: 'sample-widget',
 
-        header: "It's Friday, yay!",
+        header: 'Greetings Earthlings!',
 
-        body: "Let's have some fun!!"
+        body: 'We have established contact.'
 
     };
-    
+
 }) ();

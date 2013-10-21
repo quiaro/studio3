@@ -169,27 +169,22 @@ public abstract class AbstractControllerTest {
     protected Item createItemMock() {
         Item item = new Item();
         item.setContentType(RandomStringUtils.randomAlphabetic(10));
-        item.setCreateDate(new Date());
-        item.setCreator(RandomStringUtils.randomAlphabetic(10));
         item.setDisabled(false);
         item.setFileName(RandomStringUtils.randomAlphanumeric(10));
         item.setId(new ItemId(UUID.randomUUID().toString()));
         item.setLastModifiedDate(new Date());
         item.setLockOwner(RandomStringUtils.randomAlphabetic(10));
         item.setMimeType(RandomStringUtils.randomAlphabetic(10));
-        item.setModifier(RandomStringUtils.randomAlphabetic(10));
-        item.setName(RandomStringUtils.randomAlphabetic(10));
         item.setPackages(new ArrayList<String>());
         item.setPath(RandomStringUtils.randomAlphabetic(100));
         item.setPlaceInNav(true);
-        item.setPreviewable(true);
         item.setPreviewUrl(RandomStringUtils.randomAlphabetic(100));
         item.setProperties(new HashMap<String, Object>());
         item.setRenderingTemplates(new ArrayList<String>());
         item.setRepoId(RandomStringUtils.randomAlphabetic(10));
         item.setScheduledDate(new Date());
         item.setState(RandomStringUtils.randomAlphabetic(10));
-        item.setStudioType(RandomStringUtils.randomAlphabetic(10));
+        item.setLabel(RandomStringUtils.randomAlphabetic(10));
         return item;
     }
 

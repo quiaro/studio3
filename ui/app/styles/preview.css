@@ -1,26 +1,75 @@
 /* ------------------ */
 /* ----- Preview ---- */
 /* ------------------ */
-.preview .toolbar {
-	background-color: #E2E2E2;
+#tools-panel {
+	background-color: #E7E7E7;
+    background: -webkit-linear-gradient(top, #E7E7E7, #D5D5D5);
+    background: -moz-linear-gradient(top, #E7E7E7, #D5D5D5);
+    background: linear-gradient(top, #E7E7E7, #D5D5D5);
 	position: absolute;
 	bottom: 0;
-	height: 20%;
 	left: 0;
 	width: 100%;
-
 	border-top: 1px solid #606060;
 }
+#tools-panel.off { display: none; }
+#tools-panel.on { display: block; }
 
-/* --- class: preview --- */
-.preview .content { left: 90px; }
+#component-navigator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    width: 300px;
+    border: 1px solid #919191;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+}
 
+#tools-area {
+    position: absolute;
+    top: 0;
+    left: 325px;
+    bottom: 0;
+    right: 10px;
+}
 
-/* --- class: preview2 --- */
-.preview2 .content {
-	border: none;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 64px;
+#tools-area .nav-tabs {
+    border-bottom: 0 none;
+    margin-top: 10px;
+}
+#tools-area .nav-tabs > li > a {
+    color: #FFFFFF;
+    background-color: #A3ACB8;
+    padding: 5px 18px;
+}
+#tools-area .nav-tabs > li > a:hover,
+#tools-area .nav-tabs > li > a:active {
+    background-color: #99B6DB;
+    border-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+#tools-area .nav-tabs > li.active > a,
+#tools-area .nav-tabs > li.active > a:hover,
+#tools-area .nav-tabs > li.active > a:focus {
+    background-color: #648AB8;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+#tools-area .tab-content > .content {
+    position: absolute;
+    top: 42px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #919191;
+    border-bottom: 0 none;
+    border-top-right-radius: 4px;
+    overflow: scroll;
+}
+
+#tools-area .tab-content > .content > div {
+    color: #3F3F3F;
 }

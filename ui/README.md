@@ -31,14 +31,6 @@ To install this application (assuming that the whole repository -studio3- has al
 
     `$ npm install -g grunt-cli bower`
 
-3.   Fetch all package dependencies
-
-    `$ npm install`
-
-4.   Fetch all component dependencies
-
-    `$ bower install`
-
 
 ### Automatic Install for Mac OS X and *nix systems
 

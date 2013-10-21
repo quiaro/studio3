@@ -4,8 +4,8 @@ html, body {
 }
 
 #studio {
-    /* background-color: #ABC7E7; lighter blue: not good for background color ... maybe for small details; */
 	background-color: #8899AD;
+
     color: #333;
 	display: table;
 	border-spacing: 0;
@@ -41,6 +41,10 @@ html, body {
     padding: 10px 15px;
     margin-right: 20px;
 }
+
+#nav input,
+#nav select,
+#nav .file-view { border: 1px solid #919191; }
 
 #nav .logo { display: block; }
 
@@ -89,7 +93,6 @@ html, body {
 }
 
 #nav .user-menu a:hover {
-	/*color: #000000;*/
 	color: #FFFFFF;
 	text-decoration: none;
 }
@@ -103,8 +106,12 @@ html, body {
     bottom: 15px;
     right: 15px;
     background-color: #FFFFFF;
-    border: 1px solid #111111;
+    border: 1px solid #7C7C7C;
     min-width: 714px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: scroll;
 }
 
 /* --- Full Screen State --- */
@@ -116,6 +123,16 @@ html, body {
     position: absolute;
     width: 100%;
     padding: 5px 20px;
+
+    background-color: #8899AD;
+    background: -webkit-linear-gradient(top, #B4C3D6, #8899AD);
+    background: -moz-linear-gradient(top, #B4C3D6, #8899AD);
+    background: linear-gradient(top, #B4C3D6, #8899AD);
+}
+#studio.full #nav .home {
+    float: left;
+    margin: 5px 5px 5px 10px;
+    color: #FFFFFF;
 }
 
 #studio.full #nav .logo {
@@ -152,9 +169,12 @@ html, body {
     right: 0;
 }
 
-.full #main-container .content {
+#studio.full #main-container > .content {
     top: 0;
     bottom: 50px;
     right: 0;
     left: 0;
+    border-top: 0 none;
+    border-right: 0 none;
+    border-left: 0 none;
 }

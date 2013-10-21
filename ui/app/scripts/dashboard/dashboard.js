@@ -68,7 +68,7 @@ angular.module('dashboard', ['common'])
             return items.filter(function(element, index, array) {
                 return element.type === type;
             });
-        }
+        };
     })
 
     .controller('DashboardCtrl',

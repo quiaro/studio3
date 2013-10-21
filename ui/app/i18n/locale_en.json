@@ -6,7 +6,7 @@
 			"operations" : "Operations",
 			"url" : "URL",
 			"last_edited" : "Last Edited",
-			"author" : "Author",
+			"author" : "Last Edited By",
 			"my_last_edit" : "My Last Edit",
 			"edit_link" : "Edit"
 		},
@@ -16,9 +16,29 @@
             "operations" : "Operations",
             "url" : "URL",
             "last_edited" : "Last Edited",
-            "author" : "Author",
+            "author" : "Last Edited By",
             "my_last_edit" : "My Last Edit",
             "edit_link" : "Edit"
-		}
+		},
+        "scheduled" : {
+            "header" : "Scheduled Items",
+            "page_name" : "Page Name",
+            "operations" : "Operations",
+            "url" : "URL",
+            "last_edited" : "Last Edited",
+            "author" : "Last Edited By",
+            "my_last_edit" : "My Last Edit",
+            "edit_link" : "Edit"
+        },
+        "live" : {
+            "header" : "Live Items",
+            "page_name" : "Page Name",
+            "operations" : "Operations",
+            "url" : "URL",
+            "last_edited" : "Last Edited",
+            "author" : "Last Edited By",
+            "my_last_edit" : "My Last Edit",
+            "edit_link" : "Edit"
+        }
 	}
 }

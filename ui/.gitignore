@@ -1,6 +1,6 @@
 target
-test-sites
 components
+server/sites/others
 .tmp
 .sass-cache
 .DS_Store

@@ -2,18 +2,54 @@
 
 angular.module('preview', ['common', 'ngEventBridge'])
 
-  .controller('PreviewCtrl',
+    .controller('PreviewCtrl',
 		['$scope', 'notifications', function($scope, notifications) {
 
 		$scope.notifications = notifications;
 
+        $scope.authoring = {
+            site: '/sites/crafter_community.html',
+            tools: {
+                state: 'off',
+                height: 0,
+                tabs: [{
+                    name: 'content',
+                    title: 'Content',
+                    contentUrl: '/templates/preview/tabs/content.html'
+                }, {
+                    name: 'template',
+                    title: 'Template',
+                    contentUrl: '/templates/preview/tabs/template.html'
+                }, {
+                    name: 'revisions',
+                    title: 'Revisions',
+                    contentUrl: '/templates/preview/tabs/revisions.html'
+                }, {
+                    name: 'info',
+                    title: 'Info',
+                    contentUrl: '/templates/preview/tabs/info.html'
+                }],
+                activeTab: 'content'
+            },
+            setActiveTab: function setActiveTab (tabName) {
+                this.tools.activeTab = tabName;
+            }
+        };
+
 		$scope.selectedElement = 'none';
 
-		$scope.$on('editor/element/select', function (event, args) {
+		$scope.$on('editor/element/edit', function (event, args) {
 			$scope.$apply(function () {
-				$scope.selectedElement = args.id;
+				$scope.authoring.tools.state = 'on';
+                $scope.authoring.tools.height = 30;
 			});
 		});
+
+        $scope.$on('editor/element/select', function (event, args) {
+            $scope.$apply(function () {
+                $scope.selectedElement = args.id;
+            });
+        });
 
 	}]);
 
