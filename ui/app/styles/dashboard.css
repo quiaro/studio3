@@ -104,10 +104,10 @@
     background-color: #ECF2FA;
 }
 .dashboard .panel-body .item-list th.sort-ascending {
-    background: #ECF2FA url(/images/sort-order.png) no-repeat right 13px;
+    background: #E1EAF7 url(/images/sort-order.png) no-repeat right 13px;
 }
 .dashboard .panel-body .item-list th.sort-descending {
-    background: #ECF2FA url(/images/sort-order.png) no-repeat right -19px;
+    background: #E1EAF7 url(/images/sort-order.png) no-repeat right -19px;
 }
 
 .dashboard .panel-body .item-list td {

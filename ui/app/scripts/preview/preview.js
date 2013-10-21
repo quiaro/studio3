@@ -11,7 +11,28 @@ angular.module('preview', ['common', 'ngEventBridge'])
             site: '/sites/crafter_community.html',
             tools: {
                 state: 'off',
-                height: 0
+                height: 0,
+                tabs: [{
+                    name: 'content',
+                    title: 'Content',
+                    contentUrl: '/templates/preview/tabs/content.html'
+                }, {
+                    name: 'template',
+                    title: 'Template',
+                    contentUrl: '/templates/preview/tabs/template.html'
+                }, {
+                    name: 'revisions',
+                    title: 'Revisions',
+                    contentUrl: '/templates/preview/tabs/revisions.html'
+                }, {
+                    name: 'info',
+                    title: 'Info',
+                    contentUrl: '/templates/preview/tabs/info.html'
+                }],
+                activeTab: 'content'
+            },
+            setActiveTab: function setActiveTab (tabName) {
+                this.tools.activeTab = tabName;
             }
         };
 
@@ -19,10 +40,8 @@ angular.module('preview', ['common', 'ngEventBridge'])
 
 		$scope.$on('editor/element/edit', function (event, args) {
 			$scope.$apply(function () {
-				$scope.authoring.tools = {
-                    state: 'on',
-                    height: 20
-                };
+				$scope.authoring.tools.state = 'on';
+                $scope.authoring.tools.height = 30;
 			});
 		});
 

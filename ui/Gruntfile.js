@@ -250,11 +250,8 @@ module.exports = function (grunt) {
         options: {
           variables: {
             'min': '',
-            'dev': 'Dev',
-            'includeNgMocks': '<script src="lib/angular-mocks/js/angular-mocks.js"></script>',
             'includeTranslateErrorHandler': '<script ' +
               'src="lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
-            'includeAppDev': '<script src="scripts/appDev.js"></script>',
             'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
           }
         },
@@ -267,10 +264,7 @@ module.exports = function (grunt) {
         options: {
           variables: {
             'min': '.min',
-            'dev': '',
-            'includeNgMocks': '',
             'includeTranslateErrorHandler': '',
-            'includeAppDev': '',
             'livereload': ''
           }
         },
