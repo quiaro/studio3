@@ -9,19 +9,20 @@
     <title>Crafter Studio - Build and Manage Web Content</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap@@min.css">
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme@@min.css">
-    <link rel="stylesheet" href="lib/toastr/css/toastr@@min.css">
 
-    <!-- build:css styles/studio.css -->
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <link rel="stylesheet" href="styles/preview.css">
+    <link rel="icon" href="studio-ui/images/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="studio-ui/lib/bootstrap/css/bootstrap@@min.css">
+    <link rel="stylesheet" href="studio-ui/lib/bootstrap/css/bootstrap-theme@@min.css">
+    <link rel="stylesheet" href="studio-ui/lib/toastr/css/toastr@@min.css">
+
+    <!-- build:css studio-ui/styles/studio.css -->
+    <link rel="stylesheet" href="studio-ui/styles/global.css">
+    <link rel="stylesheet" href="studio-ui/styles/dashboard.css">
+    <link rel="stylesheet" href="studio-ui/styles/preview.css">
     <!-- endbuild -->
   </head>
 
-  <body ng-app="studio-ui@@dev" ng-controller="AppCtrl">
+  <body ng-app="studio-ui" ng-controller="AppCtrl">
 
     <div id="studio" class="{{AppCtrl.appState}} {{AppCtrl.fullScreen}}">
         <div>
@@ -32,31 +33,29 @@
         </div>
     </div>
 
-    <script src="lib/jquery/js/jquery@@min.js"></script>
-    <script src="lib/toastr/js/toastr@@min.js"></script>
-    <script src="lib/angular/js/angular@@min.js"></script>
-    <script src="lib/angular-bootstrap/js/ui-bootstrap@@min.js"></script>
-    <script src="lib/angular-resource/js/angular-resource@@min.js"></script>
-    <script src="lib/angular-sanitize/js/angular-sanitize@@min.js"></script>
-    <script src="lib/angular-cookies/js/angular-cookies@@min.js"></script>
-    <script src="lib/angular-translate/js/angular-translate@@min.js"></script>
-    <script src="lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
-    <script src="lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
-    <script src="lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
-    @@includeNgMocks
+    <script src="studio-ui/lib/jquery/js/jquery@@min.js"></script>
+    <script src="studio-ui/lib/toastr/js/toastr@@min.js"></script>
+    <script src="studio-ui/lib/angular/js/angular@@min.js"></script>
+    <script src="studio-ui/lib/angular-bootstrap/js/ui-bootstrap@@min.js"></script>
+    <script src="studio-ui/lib/angular-resource/js/angular-resource@@min.js"></script>
+    <script src="studio-ui/lib/angular-sanitize/js/angular-sanitize@@min.js"></script>
+    <script src="studio-ui/lib/angular-cookies/js/angular-cookies@@min.js"></script>
+    <script src="studio-ui/lib/angular-translate/js/angular-translate@@min.js"></script>
+    <script src="studio-ui/lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
+    <script src="studio-ui/lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
+    <script src="studio-ui/lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
     @@includeTranslateErrorHandler
-    @@includeAppDev
 
-    <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/common/common.js"></script>
-    <script src="scripts/common/config.js"></script>
-    <script src="scripts/common/directives.js"></script>
-    <script src="scripts/common/services/repo.js"></script>
-    <script src="scripts/navigation/navigation.js"></script>
-    <script src="scripts/dashboard/dashboard.js"></script>
-    <script src="scripts/preview/preview.js"></script>
-    <script src="scripts/editor/ngEventBridge.js"></script>
+    <!-- build:js studio-ui/scripts/scripts.js -->
+    <script src="studio-ui/scripts/app.js"></script>
+    <script src="studio-ui/scripts/common/common.js"></script>
+    <script src="studio-ui/scripts/common/config.js"></script>
+    <script src="studio-ui/scripts/common/directives.js"></script>
+    <script src="studio-ui/scripts/common/services/repo.js"></script>
+    <script src="studio-ui/scripts/navigation/navigation.js"></script>
+    <script src="studio-ui/scripts/dashboard/dashboard.js"></script>
+    <script src="studio-ui/scripts/preview/preview.js"></script>
+    <script src="studio-ui/scripts/editor/ngEventBridge.js"></script>
     <!-- endbuild -->
 
     @@livereload

@@ -7,24 +7,24 @@ basePath = '.';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'app/lib/angular/js/angular.min.js',
-  'app/lib/toastr/js/toastr.min.js',
-  'app/lib/angular-translate/js/angular-translate.min.js',
-  'app/lib/requirejs/js/require.js',
-  'app/lib/angular-*/js/*.min.js',
-  'app/lib/angular-mocks/js/angular-mocks.js',
-  'app/lib/jquery/js/jquery.min.js',
+  'app/studio-ui/lib/angular/js/angular.min.js',
+  'app/studio-ui/lib/toastr/js/toastr.min.js',
+  'app/studio-ui/lib/angular-translate/js/angular-translate.min.js',
+  'app/studio-ui/lib/requirejs/js/require.js',
+  'app/studio-ui/lib/angular-*/js/*.min.js',
+  'app/studio-ui/lib/angular-mocks/js/angular-mocks.js',
+  'app/studio-ui/lib/jquery/js/jquery.min.js',
 
-  'app/scripts/**/*.js',
+  'app/studio-ui/scripts/**/*.js',
    // 'test/mock/**/*.js',
   'test/spec/**/*.js'
 ];
 
 // list of files to exclude
 exclude = [
-	'app/lib/require-css/js/css-builder.js',
-	'app/scripts/editor/main.js',
-	'app/scripts/editor/modules/*.js',
+	'app/studio-ui/lib/require-css/js/css-builder.js',
+	'app/studio-ui/scripts/editor/main.js',
+	'app/studio-ui/scripts/editor/modules/*.js',
  ];
 
 // test results reporter to use
