@@ -8,6 +8,11 @@
     <name>Crafter Studio Parent</name>
     <description>Crafter Studio</description>
     <packaging>pom</packaging>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <organization>
         <name>CrafterCMS</name>
