@@ -1,0 +1,12 @@
+{
+  "name": "ckeditor",
+  "homepage": "https://github.com/ckeditor/ckeditor-releases",
+  "_release": "cc3a6f403a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "stable/full",
+    "commit": "cc3a6f403a9d529d96b1b3a350610a4b8e89f4dd"
+  },
+  "_source": "https://github.com/ckeditor/ckeditor-releases.git",
+  "_target": "stable/full"
+}
