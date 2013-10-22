@@ -125,7 +125,7 @@ module.exports = function (grunt) {
         cssDir: '.tmp/styles',
         imagesDir: '<%= yeoman.app %>/studio-ui/images',
         javascriptsDir: '<%= yeoman.app %>/studio-ui/scripts',
-        fontsDir: '<%= yeoman.app %>/studio-ui/styles/fonts',
+        fontsDir: '<%= yeoman.app %>/studio-ui/fonts',
         importPath: '<%= yeoman.app %>/studio-ui/components',
         relativeAssets: true
       },
@@ -216,7 +216,7 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/studio-ui/scripts/**/*.js',
             '<%= yeoman.dist %>/studio-ui/styles/**/*.css',
             '<%= yeoman.dist %>/studio-ui/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-            '<%= yeoman.dist %>/studio-ui/styles/fonts/*'
+            '<%= yeoman.dist %>/studio-ui/fonts/*'
           ]
         }
       }
@@ -231,13 +231,24 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,txt}',
             'studio-ui/i18n/*.json',
+            'studio-ui/config/*.json',
             'studio-ui/lib/**/*.min.js',
-            'studio-ui/lib/require*/**/*.js',
             'studio-ui/lib/**/*.min.css',
             'studio-ui/images/**/*.{gif,webp,ico}',
             'studio-ui/styles/**/*.min.css',
             'studio-ui/styles/studio.css',
-            'studio-ui/templates/**/*.tpl.html'
+            'studio-ui/templates/**/*.tpl.html',
+
+            // Special cases
+            'studio-ui/lib/jquery/js/*.js',
+            'studio-ui/lib/jquery/js/*.map',
+            'studio-ui/lib/toastr/js/*.js',
+            'studio-ui/lib/toastr/js/*.map',
+            'studio-ui/lib/require*/**/*.js',
+            'studio-ui/lib/bootstrap/fonts/*',
+
+            // TODO: remove line below after creating space for plugins
+            'studio-ui/scripts/dashboard/plugins/*.js'
           ]
         }]
       }

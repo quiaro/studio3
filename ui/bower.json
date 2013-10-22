@@ -40,10 +40,10 @@
             "fonts": "./dist/fonts/*"
         },
         "jquery": {
-            "js": "*.js"
+            "js": "*.{js,map}"
         },
         "toastr": {
-            "js": "*.js",
+            "js": "*.{js,map}",
             "css": "*.css"
         },
         "require*": {
