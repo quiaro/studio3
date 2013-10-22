@@ -1,7 +1,7 @@
 /**
  * angular-translate - v1.1.0 - 2013-09-02
  * http://github.com/PascalPrecht/angular-translate
- * Copyright (c) 2013 ; Licensed
+ * Copyright (c) 2013 ; Licensed 
  */
 angular.module('pascalprecht.translate', ['ng']).run([
   '$translate',
@@ -295,11 +295,6 @@ angular.module('pascalprecht.translate').provider('$translate', [
         };
         $translate.storageKey = function () {
           return storageKey();
-        };
-        $translate.useLoader = function (loaderFactory, options) {
-          $loaderFactory = loaderFactory;
-          $loaderOptions = options || {};
-          return this;
         };
         $translate.refresh = function (langKey) {
           var deferred = $q.defer();
