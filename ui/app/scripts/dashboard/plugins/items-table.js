@@ -30,13 +30,13 @@
             // Preserve the context (this)
             var that = this;
 
-            angular.injector(['ng', 'common']).invoke(function (repo) {
+            angular.injector(['ng', 'common']).invoke(function (audit) {
                 // Filter options to be defined here; they could also be defined as
                 // a widget property -which would make them configurable
-                var filterOpts = {},
+                var filterOpts = { argumentA: false },
                     numResults = that.filterLength.value;
 
-                repo.list(filterOpts)
+                audit.activity(filterOpts)
                     .then( function (data) {
 
                         $timeout(function () {

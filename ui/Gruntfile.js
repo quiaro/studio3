@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   // configurable paths
   var yeomanConfig = {
     app: 'app',
-    dist: 'target/META-INF/resources'
+    dist: 'target/META-INF/resources/studio-ui'
   };
 
   try {

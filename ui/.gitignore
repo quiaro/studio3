@@ -1,10 +1,8 @@
 target
 components
-server/sites/others
 .tmp
 .sass-cache
 .DS_Store
 *.iml
 .idea
 node_modules/grunt-newer/.cache
-app/lib/angular-translate/js/angular-translate.js

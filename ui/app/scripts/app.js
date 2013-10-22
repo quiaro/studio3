@@ -113,5 +113,5 @@ angular.module('studio-ui', [
     // Initialize the application
     .run(function (util) {
         // In real life, when the UI loads, siteName will be passed as a parameter in the URL
-        util.setEnvProperty('siteName', 'pebbles');
+        util.setEnvProperty('siteName', 'mango');
   });

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('common')
-	.factory('repo', ['$http', '$q', 'util', 'alertDialog', function($http, $q, util, alertDialog) {
+	.factory('audit', ['$http', '$q', 'util', 'alertDialog', function($http, $q, util, alertDialog) {
 
-	var api = 'repo';
+	var api = 'audit';
 
 	function makeServiceCall (url, deferred) {
 		$http.get(url).success(function(data) {
@@ -14,7 +14,7 @@ angular.module('common')
 		});
 	}
 
-	function list(filtersObj) {
+	function activity(filtersObj) {
 
 		var url,
 			searchStr = '',
@@ -25,19 +25,21 @@ angular.module('common')
 				searchStr += filter + '=' + filtersObj[filter];
 			}
 		}
-		url = util.getServiceURL(api, 'list', searchStr);
+		url = util.getServiceURL(api, 'activity', searchStr);
+
+        console.log("Making call to: " + url);
 
 		makeServiceCall(url, deferred);
 		return deferred.promise;
 	}
 
-	function read(item, version) {
+	function log(item, version) {
 
 		var searchStr, url,
 			deferred = $q.defer();
 
 		searchStr = 'item=' + item + 'version=' + version;
-		url = util.getServiceURL(api, 'read', searchStr);
+		url = util.getServiceURL(api, 'log', searchStr);
 
 		makeServiceCall(url, deferred);
 		return deferred.promise;
@@ -45,7 +47,7 @@ angular.module('common')
 
 	// expose the API to the user
 	return {
-		list: list,
-		read: read
+		activity: activity,
+		log: log
 	};
 }]);

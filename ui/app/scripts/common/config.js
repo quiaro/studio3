@@ -29,7 +29,7 @@ angular.module('common')
     })
 
 	.value('Env', {
-		siteName: '',
+		siteName: 'mango',
 		urlBase: 'api',
-		apiVersion: '0.1'
+		apiVersion: '1'
 	});
