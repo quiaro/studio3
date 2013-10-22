@@ -33,6 +33,7 @@ import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
 import org.craftercms.studio.commons.dto.Site;
 import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
@@ -45,75 +46,75 @@ import org.craftercms.studio.commons.filter.ItemFilter;
 public class ContentManagerMock implements ContentManager {
     @Override
     public InputStream read(final Context context, final String itemId) throws StudioException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public InputStream read(final Context context, final String itemId, final String version) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void update(final Context context, final String itemId, final InputStream content) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public LockHandle open(final Context context, final String itemId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void save(final Context context, final String itemId, final LockHandle lockHandle, final InputStream
         content) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void close(final Context context, final String itemId, final LockHandle lockHandle) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void delete(final Context context, final List<Item> itemsToDelete) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void copy(final Context context, final List<Item> itemsToCopy, final String destinationPath,
                      final boolean includeChildren) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void move(final Context context, final List<Item> itemsToMove, final String destinationPath) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public LockHandle lock(final Context context, final List<Item> itemsToLock) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public void unlock(final Context context, final List<Item> itemsToUnlock, final LockHandle lockHandle) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public List<LockStatus> getLockStatus(final Context context, final List<Item> items) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public List<Item> list(final Context context, final String itemId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
     public Tree<Item> tree(final Context context, final String itemId, final int depth,
                            final List<ItemFilter> filters, final List<ItemExtractor> extractors) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override

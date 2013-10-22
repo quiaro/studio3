@@ -167,7 +167,7 @@ public abstract class AbstractManagerTest {
         activity.setSiteId(RandomStringUtils.randomAlphabetic(10));
         activity.setSiteName(RandomStringUtils.randomAlphabetic(20));
         activity.setTarget(RandomStringUtils.randomAlphanumeric(20));
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, String> props = new HashMap<String, String>();
         props.put("param1", "param1");
         props.put("param2", "param2");
         activity.setTargetProperties(props);

@@ -123,9 +123,9 @@ public abstract class AbstractControllerTest {
             activity1.setType("SAVED");
             activity1.setCreator("Carlos Ortiz");
         }
-        HashMap<String, Object> targetProperties = new HashMap<>();
+        HashMap<String, String> targetProperties = new HashMap<>();
         targetProperties.put("targetProp1", "Hello");
-        targetProperties.put("targetProp2", new Date());
+        targetProperties.put("targetProp2", (new Date()).toString());
         activity1.setTargetProperties(targetProperties);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(activity1);
@@ -139,9 +139,9 @@ public abstract class AbstractControllerTest {
         activity1.setSiteName("testSite");
         activity1.setTarget("testTarget");
         activity1.setSiteName("");
-        HashMap<String, Object> targetProperties = new HashMap<>();
+        HashMap<String, String> targetProperties = new HashMap<>();
         targetProperties.put("targetProp1", "Hello");
-        targetProperties.put("targetProp2", new Date());
+        targetProperties.put("targetProp2", (new Date()).toString());
         activity1.setTargetProperties(targetProperties);
         // 2
         Activity activit2 = new Activity();
@@ -151,9 +151,9 @@ public abstract class AbstractControllerTest {
         activit2.setSiteName("testSite");
         activit2.setTarget("testTarget");
         activit2.setSiteName("");
-        HashMap<String, Object> targetProperties2 = new HashMap<>();
+        HashMap<String, String> targetProperties2 = new HashMap<>();
         targetProperties2.put("targetProp1", "World");
-        targetProperties2.put("targetProp2", new Date());
+        targetProperties2.put("targetProp2", (new Date()).toString());
         activit2.setTargetProperties(targetProperties2);
         return Arrays.asList(activity1, activit2);
     }

@@ -15,17 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.mock.content;
+package org.craftercms.studio.mock.audit;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.dto.Activity;
 
 /**
- * Site DTO Mock
+ * Activity DTO mock.
+ *
+ * @author Dejan Brkic
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SiteMock extends Site {
+public class ActivityMock extends Activity {
+
 }
