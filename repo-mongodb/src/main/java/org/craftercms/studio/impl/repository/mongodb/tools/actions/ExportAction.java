@@ -20,16 +20,18 @@ package org.craftercms.studio.impl.repository.mongodb.tools.actions;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.craftercms.studio.api.RepositoryException;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.TreeNode;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.craftercms.studio.impl.repository.mongodb.tools.AbstractAction;
-import org.craftercms.studio.impl.repository.mongodb.tools.ActionContext;
+import org.craftercms.studio.impl.repository.mongodb.tools.RepoShellContext;
 
 public class ExportAction extends AbstractAction {
 
@@ -39,7 +41,7 @@ public class ExportAction extends AbstractAction {
     }
 
     @Override
-    public void run(final ActionContext context, final String[] args) throws StudioException {
+    public void run(final RepoShellContext context, final String[] args) throws StudioException {
         if (args.length == 2) {
 
             String parentID = context.getPathService().getItemIdByPath("INTERNAL", "INTERNAL", args[0]);
@@ -49,13 +51,10 @@ public class ExportAction extends AbstractAction {
             }
             Tree<Item> toExport = context.getContentService().getChildren("Internal", "Internal", parentID, -1, null);
             try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(new File(args[1])))) {
-
-                final ZipEntry testEntry = new ZipEntry("TestingOfAzip.txt");
-                testEntry.setMethod(ZipEntry.DEFLATED);
-                zipOutputStream.putNextEntry(testEntry);
-                zipOutputStream.write("Hello World".getBytes(Charset.forName("UTF-8")));
+                ZipEntry rootEntry = new ZipEntry(toExport.getRootNode().getValue().getFileName()+File.separator);
+                buildZip(toExport.getRootNode(), zipOutputStream, context, rootEntry);
                 zipOutputStream.flush();
-                zipOutputStream.closeEntry();
+                zipOutputStream.close();
             } catch (IOException ex) {
                 context.getOut().printf("Unable to export due %s", ex.getMessage());
             }
@@ -65,8 +64,33 @@ public class ExportAction extends AbstractAction {
         }
     }
 
-    private void buildZip(final TreeNode<Item> treeNode, final ZipEntry entry,) {
-
+    private void buildZip(final TreeNode<Item> treeNode, final ZipOutputStream zipOutputStream,
+                          final RepoShellContext context, final ZipEntry parentFolder) throws IOException,
+        RepositoryException {
+        NodeService nodeService = context.getNodeService();
+        ZipEntry newEntry = new ZipEntry(parentFolder.getName() + treeNode.getValue().getFileName()+File.separator );
+        zipOutputStream.putNextEntry(newEntry);
+        Item item = treeNode.getValue();
+        if (item.isFolder()) {
+            if (treeNode.getChildren() != null) {
+                for (TreeNode<Item> itemTreeNode : treeNode.getChildren()) {
+                    buildZip(itemTreeNode, zipOutputStream, context, newEntry);
+                }
+            }
+        } else {
+            String fileId = nodeService.getNode(treeNode.getValue().getRepoId()).getMetadata().getCore().getFileId();
+            try (InputStream file = nodeService.getFile(fileId)) {
+                if (file != null) {
+                    byte[] buffer = new byte[1024];
+                    while (file.read(buffer) != -1) {
+                        zipOutputStream.write(buffer);
+                    }
+                }
+            } catch (IOException ex) {
+                context.getOut().println("Error while reading repo file");
+            }
+        }
+        zipOutputStream.closeEntry();
     }
 
     @Override

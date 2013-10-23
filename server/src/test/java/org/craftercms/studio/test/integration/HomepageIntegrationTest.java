@@ -18,6 +18,7 @@
 package org.craftercms.studio.test.integration;
 
 import org.craftercms.studio.testing.integration.AbstractIntegrationTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -29,6 +30,7 @@ public class HomepageIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void testISaidHello(){
         driver.get(baseUrl + "/");
         final String htmlText = driver.findElement(By.tagName("h2")).getText();

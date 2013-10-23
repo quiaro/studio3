@@ -379,13 +379,11 @@
         <module>commons</module>
 
         <module>repo-api</module>
-        <module>repo-cmis</module>
-        <!-- module>repo-mongodb</module -->
-
+        <!--<module>repo-cmis</module>-->
+        <module>repo-mongodb</module>
         <module>api</module>
         <module>impl</module>
         <module>mock</module>
-
         <module>ui</module>
         <module>server</module>
 

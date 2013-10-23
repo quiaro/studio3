@@ -24,8 +24,12 @@ import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.tools.AbstractAction;
-import org.craftercms.studio.impl.repository.mongodb.tools.ActionContext;
+import org.craftercms.studio.impl.repository.mongodb.tools.RepoShellContext;
 
+/**
+ * Returns a list of the files in the current directory.<br/>
+ * This function returns with output relative to the current shell session, and does not impact the repository.
+ */
 public class LsAction extends AbstractAction {
     @Override
     public boolean responseTo(final String action) {
@@ -33,7 +37,7 @@ public class LsAction extends AbstractAction {
     }
 
     @Override
-    public void run(final ActionContext context, final String[] args) throws StudioException {
+    public void run(final RepoShellContext context, final String[] args) throws StudioException {
         if (args == null || args.length == 0) {
             lsCurrentNode(context);
         } else if (args[0].startsWith(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
@@ -43,18 +47,18 @@ public class LsAction extends AbstractAction {
         }
     }
 
-    private void lsFromPath(final String arg, final ActionContext context) throws RepositoryException {
+    private void lsFromPath(final String arg, final RepoShellContext context) throws RepositoryException {
 
         String id = context.getPathService().getItemIdByPath("INTERNAL", "INTERNAL", arg);
         ls(context.getNodeService().getChildren(id), context);
     }
 
-    private void lsCurrentNode(final ActionContext context) throws RepositoryException {
+    private void lsCurrentNode(final RepoShellContext context) throws RepositoryException {
         List<Node> children = context.getNodeService().getChildren(context.getCurrentNode().getId());
         ls(children, context);
     }
 
-    private void ls(List<Node> children, ActionContext context) {
+    private void ls(List<Node> children, RepoShellContext context) {
         for (Node node : children) {
             context.getOut().print("\t");
             if (context.getNodeService().isNodeFolder(node)) {

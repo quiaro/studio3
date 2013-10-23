@@ -21,8 +21,11 @@ import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.tools.AbstractAction;
-import org.craftercms.studio.impl.repository.mongodb.tools.ActionContext;
+import org.craftercms.studio.impl.repository.mongodb.tools.RepoShellContext;
 
+/**
+ * Changes the directory context of the repo mongo shell and has no effect on the Repository.
+ */
 public class CdAction extends AbstractAction {
     @Override
     public boolean responseTo(final String action) {
@@ -30,7 +33,7 @@ public class CdAction extends AbstractAction {
     }
 
     @Override
-    public void run(final ActionContext context, final String[] args) throws StudioException {
+    public void run(final RepoShellContext context, final String[] args) throws StudioException {
         if (args.length == 1) {
             String path = args[0];
             if (!path.startsWith(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {

@@ -188,6 +188,13 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.craftercms</groupId>
+            <artifactId>studio-ui</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>studio</finalName>
