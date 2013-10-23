@@ -52,8 +52,9 @@ mock.services.forEach( function(serviceObj) {
     });
 });
 
-app.get( "/site/:site/:pageName", function( req, res ) {
-    res.sendfile( config[req.params.site].sitesFolder + '/' + req.params.pageName);
+app.get( "/site/:site/*", function( req, res ) {
+    // The string value of the wildcard (*) will be stored in req.params[0]
+    res.sendfile( config[req.params.site].sitesFolder + '/' + req.params[0]);
 });
 
 http.createServer(app).listen(app.get('port'), function () {

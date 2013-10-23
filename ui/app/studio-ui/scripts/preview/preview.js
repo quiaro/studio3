@@ -8,26 +8,26 @@ angular.module('preview', ['common', 'ngEventBridge'])
 		$scope.notifications = notifications;
 
         $scope.authoring = {
-            site: '/sites/crafter_community.html',
+            site: '/site/mango/crafter_community.html',
             tools: {
                 state: 'off',
                 height: 0,
                 tabs: [{
                     name: 'content',
                     title: 'Content',
-                    contentUrl: '/templates/preview/tabs/content.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/content.html'
                 }, {
                     name: 'template',
                     title: 'Template',
-                    contentUrl: '/templates/preview/tabs/template.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/template.html'
                 }, {
                     name: 'revisions',
                     title: 'Revisions',
-                    contentUrl: '/templates/preview/tabs/revisions.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/revisions.html'
                 }, {
                     name: 'info',
                     title: 'Info',
-                    contentUrl: '/templates/preview/tabs/info.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/info.html'
                 }],
                 activeTab: 'content'
             },
