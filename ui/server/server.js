@@ -26,6 +26,11 @@ if ('production' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
+// Any requests to preview will be sent to index.html where they'll be redirected accordingly
+app.get( "/preview", function( req, res ) {
+    res.redirect( '/#/preview' );
+});
+
 // set responses for all the services defined
 mock.services.forEach( function(serviceObj) {
 
