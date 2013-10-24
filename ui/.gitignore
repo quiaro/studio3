@@ -1,5 +1,5 @@
 target
-studio-ui/components
+app/studio-ui/components
 .tmp
 .sass-cache
 .DS_Store
