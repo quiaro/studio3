@@ -12,8 +12,7 @@
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
-    </parent<name />
-
+    </parent>
     <organization>
         <name>CrafterCMS</name>
         <url>http://craftercms.org</url>
