@@ -1,6 +1,6 @@
-'use strict';
-
 (function () {
+
+    'use strict';
 
     return {
         // real value for data property will be assigned in the getAsyncData method
