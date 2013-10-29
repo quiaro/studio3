@@ -25,7 +25,7 @@ import org.openqa.selenium.By;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class HomepageIntegrationTest extends AbstractIntegrationTest {
+    public class HomepageIntegrationTest extends AbstractIntegrationTest {
 
     public HomepageIntegrationTest() throws Exception {
     }
