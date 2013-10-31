@@ -32,14 +32,6 @@ module.exports = function (grunt) {
         }
     },
     watch: {
-      coffee: {
-        files: ['<%= yeoman.app %>/studio-ui/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:dist']
-      },
-      coffeeTest: {
-        files: ['test/spec/{,*/}*.coffee'],
-        tasks: ['coffee:test']
-      },
       compass: {
         files: ['<%= yeoman.app %>/studio-ui/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass']
@@ -97,26 +89,6 @@ module.exports = function (grunt) {
       dev: {
         autoWatch: true,
         singleRun: false
-      }
-    },
-    coffee: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/studio-ui/scripts',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
       }
     },
     compass: {
@@ -296,7 +268,6 @@ module.exports = function (grunt) {
   // Run unit tests on jasmine
   grunt.registerTask('test', [
     'clean:server',
-    'coffee',
     // 'compass',
     // 'connect:test',
     'karma:dev'
@@ -311,7 +282,6 @@ module.exports = function (grunt) {
   // Test look and feel locally
   grunt.registerTask('server', [
     'clean:server',
-    'coffee:dist',
     // 'compass:server',
     'replace:dev',
     'express:dev',
@@ -323,7 +293,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
-    'coffee',
     // 'compass:dist',
     // 'connect:test',
     'karma:continuous',
