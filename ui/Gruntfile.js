@@ -32,9 +32,9 @@ module.exports = function (grunt) {
         }
     },
     watch: {
-      compass: {
-        files: ['<%= yeoman.app %>/studio-ui/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass']
+      recess: {
+        files: ['<%= yeoman.app %>/studio-ui/styles/**/*.less'],
+        tasks: ['recess:server']
       },
       express: {
         files: [
@@ -108,6 +108,27 @@ module.exports = function (grunt) {
         }
       }
     },
+    recess: {
+        options: {
+            compile: true
+        },
+        dist: {
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/studio-ui/styles',
+                src: '/**/*.less',
+                dest: '.tmp/styles/',
+                ext: '.css'
+            }]
+        },
+        server: {
+            files: {
+                '.tmp/studio-ui/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/styles/**/*.less'
+                ]
+            }
+        }
+    },
     useminPrepare: {
       html: '<%= yeoman.app %>/index.html',
       options: {
@@ -129,14 +150,6 @@ module.exports = function (grunt) {
           src: '**/*.{png,jpg,jpeg}',
           dest: '<%= yeoman.dist %>/studio-ui/images'
         }]
-      }
-    },
-    cssmin: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
-            '<%= yeoman.app %>/studio-ui/styles/*.css'
-          ]}
       }
     },
     htmlmin: {
@@ -282,7 +295,7 @@ module.exports = function (grunt) {
   // Test look and feel locally
   grunt.registerTask('server', [
     'clean:server',
-    // 'compass:server',
+    'recess:server',
     'replace:dev',
     'express:dev',
     'open',
@@ -301,7 +314,6 @@ module.exports = function (grunt) {
     'imagemin',
     'htmlmin',
     'concat',
-    // 'cssmin',
     'copy',
     'ngmin',
     // 'uglify',
