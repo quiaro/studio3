@@ -32,17 +32,9 @@ module.exports = function (grunt) {
         }
     },
     watch: {
-      coffee: {
-        files: ['<%= yeoman.app %>/studio-ui/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:dist']
-      },
-      coffeeTest: {
-        files: ['test/spec/{,*/}*.coffee'],
-        tasks: ['coffee:test']
-      },
-      compass: {
-        files: ['<%= yeoman.app %>/studio-ui/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass']
+      recess: {
+        files: ['<%= yeoman.app %>/studio-ui/styles/**/*.less'],
+        tasks: ['recess:server']
       },
       express: {
         files: [
@@ -99,26 +91,6 @@ module.exports = function (grunt) {
         singleRun: false
       }
     },
-    coffee: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/studio-ui/scripts',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
-      }
-    },
     compass: {
       options: {
         sassDir: '<%= yeoman.app %>/studio-ui/styles',
@@ -136,18 +108,43 @@ module.exports = function (grunt) {
         }
       }
     },
+    recess: {
+        options: {
+            compile: true
+        },
+        dist: {
+            files: {
+                '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/styles/global.less',
+                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
+                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                ]
+            }
+        },
+        server: {
+            files: {
+                '.tmp/studio-ui/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/styles/global.less',
+                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
+                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                ]
+            }
+        }
+    },
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>'
-      }
+        options: {
+            dest: '<%= yeoman.dist %>'
+        },
+        html: '<%= yeoman.app %>/index.html'
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/**/*.html'],
-      css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css'],
-      options: {
-        dirs: ['<%= yeoman.dist %>']
-      }
+        options: {
+            dirs: ['<%= yeoman.dist %>']
+        },
+        html: ['<%= yeoman.dist %>/**/*.html'],
+        css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css']
     },
     imagemin: {
       dist: {
@@ -157,14 +154,6 @@ module.exports = function (grunt) {
           src: '**/*.{png,jpg,jpeg}',
           dest: '<%= yeoman.dist %>/studio-ui/images'
         }]
-      }
-    },
-    cssmin: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
-            '<%= yeoman.app %>/studio-ui/styles/*.css'
-          ]}
       }
     },
     htmlmin: {
@@ -235,7 +224,6 @@ module.exports = function (grunt) {
             'studio-ui/lib/**/*.min.js',
             'studio-ui/lib/**/*.min.css',
             'studio-ui/images/**/*.{gif,webp,ico}',
-            'studio-ui/styles/**/*.min.css',
             'studio-ui/styles/studio.css',
             'studio-ui/templates/**/*.tpl.html',
 
@@ -296,7 +284,6 @@ module.exports = function (grunt) {
   // Run unit tests on jasmine
   grunt.registerTask('test', [
     'clean:server',
-    'coffee',
     // 'compass',
     // 'connect:test',
     'karma:dev'
@@ -311,8 +298,7 @@ module.exports = function (grunt) {
   // Test look and feel locally
   grunt.registerTask('server', [
     'clean:server',
-    'coffee:dist',
-    // 'compass:server',
+    'recess:server',
     'replace:dev',
     'express:dev',
     'open',
@@ -323,8 +309,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
-    'coffee',
-    // 'compass:dist',
+    'recess:dist',
     // 'connect:test',
     'karma:continuous',
     'replace:build',
@@ -332,7 +317,6 @@ module.exports = function (grunt) {
     'imagemin',
     'htmlmin',
     'concat',
-    // 'cssmin',
     'copy',
     'ngmin',
     // 'uglify',

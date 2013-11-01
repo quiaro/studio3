@@ -1,0 +1,243 @@
+html, body {
+    height: 100%;
+    min-width: 1024px;
+}
+
+#studio {
+	background-color: #8899AD;
+
+    color: #333;
+	display: table;
+	border-spacing: 0;
+    border-collapse: collapse;
+	height: 100%;
+	width: 100%;
+}
+#studio > div { display: table-row; width: 100%; }
+
+/* --- Animations --- */
+#nav {
+    transition: width 1s;
+    -webkit-transition: width 1s;
+}
+
+#main-container .content {
+    transition: top 1s;
+    -webkit-transition: top 1s;
+
+    transition: right 1s;
+    -webkit-transition: right 1s;
+
+    transition: bottom 1s;
+    -webkit-transition: bottom 1s;
+
+    transition: left 1s;
+    -webkit-transition: left 1s;
+}
+
+/* ------------ */
+/* --- #nav --- */
+#nav {
+    display: table-cell;
+    padding: 10px 15px;
+    margin-right: 20px;
+}
+
+#nav input,
+#nav select,
+#nav .file-view { border: 1px solid #919191; }
+
+#nav .logo { display: block; }
+
+#nav .s2do-menu { position: relative; }
+#nav .s2do-menu .options {
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+#nav .s2do-menu .options.bottom { top:100%; }
+#nav .s2do-menu .options.top { bottom:100%; }
+
+#nav .s2do-menu .options li {
+    text-align: left;
+    margin: 0;
+}
+#nav .s2do-menu .options a {
+    display: block;
+    color: #333;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+#nav .s2do-menu .options a:hover {
+    color: #FFF;
+    text-decoration: none;
+    background-color: #428BCA;
+}
+
+#nav .user-menu { font-size: 14px; }
+
+#nav .user-menu li {
+	margin: 8px 0px;
+	padding: 0 2px;
+}
+
+#nav .user-menu a:hover {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/* ------------ */
+
+
+/* ---------------- */
+/* --- treeview --- */
+div[data-angular-treeview] {
+  /* prevent user selection */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* default */
+  font-family: Tahoma;
+  font-size:13px;
+  color: #555;
+  text-decoration: none;
+}
+
+div[data-tree-model] ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none;
+  overflow: hidden;
+}
+
+div[data-tree-model] li {
+  position: relative;
+  padding: 0 0 0 20px;
+  line-height: 20px;
+}
+
+div[data-tree-model] li .expanded {
+  padding: 1px 10px;
+  background-image: url("/studio-ui/images/icons/folder.png");
+  background-repeat: no-repeat;
+}
+
+div[data-tree-model] li .collapsed {
+  padding: 1px 10px;
+  background-image: url("/studio-ui/images/icons/folder-closed.png");
+  background-repeat: no-repeat;
+}
+
+div[data-tree-model] li .normal {
+  padding: 1px 10px;
+  background-image: url("/studio-ui/images/icons/file.png");
+  background-repeat: no-repeat;
+}
+
+div[data-tree-model] li i, div[data-tree-model] li span {
+  cursor: pointer;
+}
+
+div[data-tree-model] li .selected {
+  font-weight: bold;
+}
+/* ---------------- */
+
+
+/* ---------------------- */
+/* --- Main Container --- */
+#main-container { display: table-cell; }
+
+#main-container > .content {
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    right: 15px;
+    background-color: #FFFFFF;
+    border: 1px solid #7C7C7C;
+    min-width: 714px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: scroll;
+}
+
+/* --- Full Screen State --- */
+#studio.full #nav {
+    display: block;
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    padding: 5px 20px;
+
+    background-color: #8899AD;
+    background: -webkit-linear-gradient(top, #B4C3D6, #8899AD);
+    background: -moz-linear-gradient(top, #B4C3D6, #8899AD);
+    background: linear-gradient(top, #B4C3D6, #8899AD);
+}
+#studio.full #nav .home {
+    float: left;
+    margin: 5px 5px 5px 10px;
+    color: #FFFFFF;
+}
+
+#studio.full #nav .logo {
+    background: transparent url(/studio-ui/images/crafter-logo-min-sm.png) 0 0 no-repeat;
+    height: 40px;
+    width: 23px;
+    float: left;
+    margin-right: 5px;
+}
+
+#studio.full #nav .search,
+#studio.full #nav .project-menu {
+    float: left;
+    width: 220px;
+    margin: 5px 8px;
+}
+
+#studio.full #nav input[type='search'],
+#studio.full #nav select { border-color: #666; }
+
+#studio.full #nav .file-view { display: none; }
+#studio.full #nav .user-menu {
+    float: right;
+    margin-top: 5px;
+}
+#studio.full #nav .user-menu > .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+#studio.full #nav .user-menu .options {
+    left: auto;
+    right: 0;
+}
+
+#studio.full #main-container > .content {
+    top: 0;
+    bottom: 50px;
+    right: 0;
+    left: 0;
+    border-top: 0 none;
+    border-right: 0 none;
+    border-left: 0 none;
+}
