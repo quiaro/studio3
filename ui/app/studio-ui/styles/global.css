@@ -136,7 +136,7 @@ html, body {
 }
 
 #studio.full #nav .logo {
-    background: transparent url(/images/crafter-logo-min-sm.png) 0 0 no-repeat;
+    background: transparent url(/studio-ui/images/crafter-logo-min-sm.png) 0 0 no-repeat;
     height: 40px;
     width: 23px;
     float: left;

@@ -114,7 +114,7 @@ define({
   },
 
   REGISTRY: {
-    path: '/config/registry.json',
+    path: '/studio-ui/config/registry.json',
     bridgedEventsKey: 'bridgedEvents'
   }
 
