@@ -113,34 +113,38 @@ module.exports = function (grunt) {
             compile: true
         },
         dist: {
-            files: [{
-                expand: true,
-                cwd: '<%= yeoman.app %>/studio-ui/styles',
-                src: '/**/*.less',
-                dest: '.tmp/styles/',
-                ext: '.css'
-            }]
+            files: {
+                '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/styles/global.less',
+                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
+                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                ]
+            }
         },
         server: {
             files: {
                 '.tmp/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/**/*.less'
+                    '<%= yeoman.app %>/studio-ui/styles/global.less',
+                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
+                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
                 ]
             }
         }
     },
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>'
-      }
+        options: {
+            dest: '<%= yeoman.dist %>'
+        },
+        html: '<%= yeoman.app %>/index.html'
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/**/*.html'],
-      css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css'],
-      options: {
-        dirs: ['<%= yeoman.dist %>']
-      }
+        options: {
+            dirs: ['<%= yeoman.dist %>']
+        },
+        html: ['<%= yeoman.dist %>/**/*.html'],
+        css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css']
     },
     imagemin: {
       dist: {
@@ -220,7 +224,6 @@ module.exports = function (grunt) {
             'studio-ui/lib/**/*.min.js',
             'studio-ui/lib/**/*.min.css',
             'studio-ui/images/**/*.{gif,webp,ico}',
-            'studio-ui/styles/**/*.min.css',
             'studio-ui/styles/studio.css',
             'studio-ui/templates/**/*.tpl.html',
 
@@ -306,7 +309,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
-    // 'compass:dist',
+    'recess:dist',
     // 'connect:test',
     'karma:continuous',
     'replace:build',
