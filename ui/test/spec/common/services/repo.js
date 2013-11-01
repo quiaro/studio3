@@ -7,7 +7,7 @@ describe('Module: Common', function () {
 
   beforeEach( function () {
 
-    module('common', function ($provide) {
+    module('crafter.studio.common', function ($provide) {
       $provide.value('util', {
           getServiceURL : function () {
             return '/url/to/backend/service';

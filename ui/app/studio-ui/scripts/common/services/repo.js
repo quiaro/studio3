@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('common')
+angular.module('crafter.studio.common')
 	.factory('audit', ['$http', '$q', 'util', 'alertDialog', function($http, $q, util, alertDialog) {
 
 	var api = 'audit';

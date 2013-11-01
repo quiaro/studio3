@@ -6,7 +6,7 @@ describe('Module: Common', function () {
 
   beforeEach( function () {
 
-    module('common', function ($provide) {
+    module('crafter.studio.common', function ($provide) {
       $provide.constant('REGISTRY', {
         path : '/url/to/registry'
       });
@@ -35,7 +35,7 @@ describe('Module: Common', function () {
 
       url = utilService.getServiceURL('category','method','stringWithSearchParams');
       res = '/' + urlBase + '/' + apiVersion + '/category/method/' + siteName + '?stringWithSearchParams';
-      expect(url).toBe(res);  
+      expect(url).toBe(res);
     });
 
     it('should return the registry', inject(function ($httpBackend) {
@@ -48,7 +48,7 @@ describe('Module: Common', function () {
 
       promise.then( function (data) {
         expect(data).toEqual({ "key": "value" });
-      });  
+      });
 
       httpBackend.flush();
 
@@ -57,5 +57,5 @@ describe('Module: Common', function () {
     }));
 
   });
-  
+
 });

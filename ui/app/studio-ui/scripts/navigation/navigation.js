@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('navigation', ['common'])
+angular.module('crafter.studio.navigation', ['crafter.studio.common'])
 
   .controller('NavigationCtrl',
         ['$scope', function($scope) {

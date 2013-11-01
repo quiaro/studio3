@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('preview', ['common', 'ngEventBridge'])
+angular.module('crafter.studio.preview', ['crafter.studio.common', 'crafter.studio.ngEventBridge'])
 
     .controller('PreviewCtrl',
 		['$scope', 'notifications', function($scope, notifications) {
