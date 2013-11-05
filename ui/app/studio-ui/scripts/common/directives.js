@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('common')
+angular.module('crafter.studio.common')
 
 	.directive('navigation', function () {
 		return {

@@ -30,7 +30,7 @@
             // Preserve the context (this)
             var that = this;
 
-            angular.injector(['ng', 'common']).invoke(function (audit) {
+            angular.injector(['ng', 'crafter.studio.common']).invoke(function (audit) {
                 // Filter options to be defined here; they could also be defined as
                 // a widget property -which would make them configurable
                 var filterOpts = { argumentA: false },

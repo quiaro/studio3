@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ngEventBridge', ['common'])
+angular.module('crafter.studio.ngEventBridge', ['crafter.studio.common'])
 
 	.value('editorId', 'editor-iframe')
 

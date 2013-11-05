@@ -5,7 +5,7 @@ describe('Module: Dashboard', function () {
   beforeEach( function () {
 
     // load dependency
-    module('common', function ($provide) {
+    module('crafter.studio.common', function ($provide) {
       $provide.value('util', {
           getServiceURL : function () {
             return '/url/to/backend/service';
@@ -13,7 +13,7 @@ describe('Module: Dashboard', function () {
       });
     });
 
-    module('dashboard');
+    module('crafter.studio.dashboard');
   });
 
   describe('Controller: DashboardCtrl', function () {
