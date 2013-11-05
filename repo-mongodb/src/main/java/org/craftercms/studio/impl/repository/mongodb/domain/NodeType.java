@@ -15,5 +15,26 @@ public enum NodeType {
      * This means that nodes of this type can be parent of other nodes
      * and they will never have a fileId associated to them.
      */
-    FOLDER
+    FOLDER;
+
+
+    @Override
+    public String toString() {
+        switch (this){
+            case FOLDER:
+                return "FOLDER";
+            case FILE :
+                return "FILE";
+            default:
+                return "OTHER";
+        }
+    }
+
+    public static NodeType fromString(String nodeType) {
+        if (nodeType.equalsIgnoreCase("FILE")) {
+            return NodeType.FILE;
+        } else {
+            return NodeType.FOLDER;
+        }
+    }
 }

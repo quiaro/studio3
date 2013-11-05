@@ -60,5 +60,5 @@
     </bean>
 
 
-    <import resource="classpath*:craftercms/extension/studio/*-mongo-repo-ext.xml"/>
+    <import resource="classpath*:/craftercms/extension/studio/*-mongo-repo-ext.xml"/>
 </beans>
