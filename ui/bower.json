@@ -3,10 +3,9 @@
     "version": "0.1.0",
     "dependencies": {
         "angular": "~1.0.8",
-        "angular-resource": "~1.0.5",
-        "angular-sanitize": "~1.0.6",
         "angular-bootstrap": "~0.3.0",
         "angular-cookies": "~1.0.0",
+        "angular-ui-router": "0.2.0",
         "angular-translate": "1.1.0",
         "angular-translate-storage-cookie": "0.1.5",
         "angular-translate-storage-local": "0.1.5",
@@ -28,6 +27,9 @@
     "exportsOverride": {
         "angular": {
             "js": "*.js"
+        },
+        "angular-ui-router": {
+            "js": "./release/*.js"
         },
         "angular-scenario": {
             "js": "angular-scenario.js"
