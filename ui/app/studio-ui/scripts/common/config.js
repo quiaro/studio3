@@ -14,7 +14,7 @@ angular.module('common')
 
     // TODO: Remove this constant in favor of CONFIG
 	.constant('REGISTRY', {
-		path: '/config/registry.json',
+		path: 'studio-ui/config/registry.json',
 		bridgedEventsKey: 'bridgedEvents'
 	})
 

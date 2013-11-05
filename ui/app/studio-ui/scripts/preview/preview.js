@@ -8,26 +8,26 @@ angular.module('preview', ['common', 'ngEventBridge'])
 		$scope.notifications = notifications;
 
         $scope.authoring = {
-            site: '/sites/crafter_community.html',
+            site: '/site/mango/crafter_community.html',
             tools: {
                 state: 'off',
                 height: 0,
                 tabs: [{
                     name: 'content',
                     title: 'Content',
-                    contentUrl: '/templates/preview/tabs/content.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/content.html'
                 }, {
                     name: 'template',
                     title: 'Template',
-                    contentUrl: '/templates/preview/tabs/template.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/template.html'
                 }, {
                     name: 'revisions',
                     title: 'Revisions',
-                    contentUrl: '/templates/preview/tabs/revisions.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/revisions.html'
                 }, {
                     name: 'info',
                     title: 'Info',
-                    contentUrl: '/templates/preview/tabs/info.html'
+                    contentUrl: '/studio-ui/templates/preview/tabs/info.html'
                 }],
                 activeTab: 'content'
             },
@@ -50,6 +50,45 @@ angular.module('preview', ['common', 'ngEventBridge'])
                 $scope.selectedElement = args.id;
             });
         });
+
+        $scope.navigatorModel = [{
+                'roleName': 'User',
+                'roleId': 'role1',
+                'children': [{
+                    'roleName': 'subUser1',
+                    'roleId': 'role11',
+                    'children': []
+                }, {
+                    'roleName': 'subUser2',
+                    'roleId': 'role12',
+                    'children': [{
+                        'roleName': 'subUser2-1',
+                        'roleId': 'role121',
+                        'children': [{
+                            'roleName': 'subUser2-1-1',
+                            'roleId': 'role1211',
+                            'children': []
+                        }, {
+                            'roleName': 'subUser2-1-2',
+                            'roleId': 'role1212',
+                            'children': []
+                        }]
+                    }]
+                }]
+            },
+
+            {
+                'roleName': 'Admin',
+                'roleId': 'role2',
+                'children': []
+            },
+
+            {
+                'roleName': 'Guest',
+                'roleId': 'role3',
+                'children': []
+            }
+        ];
 
 	}]);
 

@@ -3,7 +3,7 @@
 
 /* --- Preview Editor config --- */
 require.config({
-	baseUrl: '/',
+	baseUrl: '/studio-ui/',
 	paths: {
 		'ckeditor' : 'lib/ckeditor/ckeditor',
 		'config' : 'scripts/editor/modules/config',
