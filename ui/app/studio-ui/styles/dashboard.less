@@ -1,131 +1,145 @@
-#studio.dashboard {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#B4C3D6), color-stop(100%, #8899AD));
-    background-image: -moz-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
-    background-image: -ms-linear-gradient(90deg, #8899AD 0%, #B4C3D6);
+#studio.dashboard { #gradient.directional(@color-primary, @color-secondary, 90deg); }
+
+.dashboard {
+
+    #nav {
+        width: 280px;
+
+        .home { display: none; }
+
+        .logo {
+            background: transparent url(/studio-ui/images/crafter-logo.png) 10px 0 no-repeat;
+            .size(100%, 78px);
+        }
+
+        .search { margin: 5px 0; }
+
+        .project-menu,
+        .project-menu > button { width: 100%; }
+
+        .project-menu {
+            margin: 5px 0;
+
+            > button { text-align: left; }
+        }
+
+        .file-view {
+            background-color: @section-background;
+            border-radius: @section-border-radius;
+            .size(100%, 507px);
+            margin: 5px 0;
+        }
+
+        .user-menu {
+            float: right;
+            margin: 5px 0;
+        }
+
+        .project-menu .options {
+            width: 100%;
+        }
+    }
+
+    .content {
+        left: 280px;
+        min-height: 700px;
+    }
+
+    h1 { padding: 15px 20px 0 20px; }
+
+    .panel {
+        font-size: 12px;
+        margin: 15px 20px;
+    }
+
+    .panel-heading {
+        overflow: hidden;
+        padding: 5px 20px;
+
+        .panel-title {
+            float: left;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+    }
+
+    .filters {
+        float: right;
+
+        .filter {
+            margin-left: 12px;
+            display: inline-block;
+
+            b:first-child {
+                margin-right: 3px;
+            }
+        }
+
+        input[type='number'],
+        select {
+            display: inline-block;
+            padding: 2px 5px;
+            height: 24px;
+        }
+
+        .type select {
+            width: 110px;
+        }
+
+        input[type='number'] {
+            width: 45px;
+        }
+
+        input.ng-invalid {
+            border: 1px solid red;
+        }
+    }
+
+    .panel-body .item-list {
+        th, td {
+            border-left: 2px solid #FFFFFF;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        th {
+            cursor: pointer;
+            padding: 8px 12px;
+            background-color: @table-header-background;
+
+            &.sort-ascending {
+                background: @table-active-column url(/studio-ui/images/sort-order.png) no-repeat right 13px;
+            }
+            &.sort-descending {
+                background: @table-active-column url(/studio-ui/images/sort-order.png) no-repeat right -19px;
+            }
+
+            &:first-child {
+                background-color: transparent;
+                padding-right: 5px;
+            }
+        }
+
+        td {
+            padding: 4px 12px;
+
+            &:first-child {
+                padding-right: 5px;
+            }
+
+            &.operations { font-size: 10px }
+        }
+
+        .selector { min-width: 22px; }
+
+        .page-name { min-width: 140px; }
+
+        .operations { width: 105px; }
+
+        .last-edit { min-width: 115px; }
+
+        .last-author { min-width: 135px; }
+
+        .personal-edit { min-width: 115px; }
+    }
 }
 
-/* ------------------ */
-/* ------ #nav ------ */
-/* ------------------ */
-.dashboard #nav { width: 280px; }
-
-.dashboard #nav .home { display: none; }
-
-.dashboard #nav .logo {
-    background: transparent url(/studio-ui/images/crafter-logo.png) 10px 0 no-repeat;
-    height: 78px;
-    width: 100%;
-}
-
-.dashboard #nav .search { margin: 5px 0; }
-
-.dashboard #nav .project-menu,
-.dashboard #nav .project-menu > button { width: 100%; }
-
-.dashboard #nav .project-menu { margin: 5px 0; }
-.dashboard #nav .project-menu > button { text-align: left; }
-
-
-.dashboard #nav .file-view {
-    background-color: #FFFFFF;
-    height: 507px;
-    margin: 5px 0;
-    width: 100%;
-    border-radius: 5px;
-}
-
-.dashboard #nav .user-menu {
-    float: right;
-    margin: 5px 0;
-}
-
-.dashboard #nav .project-menu .options {
-    width: 100%;
-}
-
-/* ------------------ */
-/* --- Dashboard ---- */
-/* ------------------ */
-.dashboard .content {
-    left: 280px;
-    min-height: 700px;
-};
-
-.dashboard h1 { padding: 15px 20px 0 20px; }
-
-.dashboard .panel {
-    font-size: 12px;
-    margin: 15px 20px;
-}
-.dashboard .panel-heading {
-    overflow: hidden;
-    padding: 5px 20px;
-}
-.dashboard .panel-heading .panel-title {
-    float: left;
-    line-height: 1.5;
-    font-size: 14px;
-}
-
-.dashboard .panel-heading .filters { float: right; }
-
-.dashboard .panel-heading .filters .filter {
-    margin-left: 12px;
-    display: inline-block;
-}
-.dashboard .panel-heading .filters .filter b:first-child {
-    margin-right: 3px;
-}
-
-.dashboard .panel-heading .filters input[type='number'],
-.dashboard .panel-heading .filters select {
-    display: inline-block;
-    padding: 2px 5px;
-    height: 24px;
-}
-.dashboard .panel-heading .filters .type select {
-    width: 110px;
-}
-.dashboard .panel-heading .filters input[type='number'] {
-    width: 45px;
-}
-.dashboard .panel-heading .filters input.ng-invalid {
-    border: 1px solid red;
-}
-
-.dashboard .panel-body .item-list th,
-.dashboard .panel-body .item-list td {
-    border-left: 2px solid #FFFFFF;
-    border-right: 2px solid #FFFFFF;
-}
-.dashboard .panel-body .item-list th {
-    cursor: pointer;
-    padding: 8px 12px;
-    background-color: #ECF2FA;
-}
-.dashboard .panel-body .item-list th.sort-ascending {
-    background: #E1EAF7 url(/studio-ui/images/sort-order.png) no-repeat right 13px;
-}
-.dashboard .panel-body .item-list th.sort-descending {
-    background: #E1EAF7 url(/studio-ui/images/sort-order.png) no-repeat right -19px;
-}
-
-.dashboard .panel-body .item-list td {
-    padding: 4px 12px;
-}
-
-.dashboard .panel-body .item-list th:first-child {
-    background-color: transparent;
-}
-.dashboard .panel-body .item-list th:first-child,
-.dashboard .panel-body .item-list td:first-child {
-    padding-right: 5px;
-}
-
-.dashboard .panel-body .item-list .selector { min-width: 22px; }
-.dashboard .panel-body .item-list .page-name { min-width: 140px; }
-.dashboard .panel-body .item-list .operations { width: 105px; }
-.dashboard .panel-body .item-list td.operations { font-size: 10px }
-.dashboard .panel-body .item-list .last-edit { min-width: 115px; }
-.dashboard .panel-body .item-list .last-author { min-width: 135px; }
-.dashboard .panel-body .item-list .personal-edit { min-width: 115px; }
