@@ -167,4 +167,6 @@ public interface NodeService {
      * @return A List of nodes that are children of
      */
     List<Node> getChildren(String nodeId) throws MongoRepositoryException;
+
+    String getNodePath(Node node);
 }

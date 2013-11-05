@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-import java.util.ListIterator;
+import java.util.LinkedList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
@@ -33,10 +33,7 @@ import org.slf4j.LoggerFactory;
  * Default Path implementation for Mongodb repository.
  */
 public class PathServicesImpl implements PathService {
-    /**
-     * Initial size of StringBuilder.
-     */
-    private static final int DEFAULT_BUILDER_SIZE = 512;
+
     /**
      * Node Service.
      */
@@ -101,29 +98,7 @@ public class PathServicesImpl implements PathService {
             return null;
         } else {
             log.debug("Node Found {}", node);
-            //make it bigger so it will not have to resize it for a bit.
-            StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
-            //First Add the Node with the given ID
-
-            ListIterator<Node> nodeListIterator = node.getAncestors().listIterator();
-            while (nodeListIterator.hasNext()) {
-                Node tmpNode = nodeListIterator.next();
-                if (nodeListIterator.previousIndex() > 0) { // if don't have next is the root node, ignore it
-                    builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
-                    builder.append(tmpNode.getMetadata().getCore().getNodeName());
-
-                }
-
-            }
-
-            if (!node.getMetadata().getCore().getNodeName().equals(MongoRepositoryDefaults
-                .REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
-                builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
-            }
-            builder.append(node.getMetadata().getCore().getNodeName());
-            String path = builder.toString();
-            log.debug("Calculated Path is {}", path);
-            return path;
+            return nodeService.getNodePath(node);
         }
     }
 
@@ -151,8 +126,10 @@ public class PathServicesImpl implements PathService {
             if(StringUtils.isBlank(pathToDescent[i])){
                 return nodeService.getRootNode();
             }
-            tempNode = nodeService.findNodeByAncestorsAndName(tempNode.getAncestors(), pathToDescent[i]);
-            if (tempNode == null) {
+            LinkedList<Node> ancestors = (LinkedList<Node>)tempNode.getAncestors().clone();
+            ancestors.addLast(tempNode);
+            tempNode = nodeService.findNodeByAncestorsAndName(ancestors, pathToDescent[i]);
+            if (tempNode == null){
                 break;
             }
         }

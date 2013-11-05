@@ -39,7 +39,11 @@ public class CdAction extends AbstractAction {
             if (!path.startsWith(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
                 String tmp=context.getPathService().getPathByItemId("INTERNAL","INTERNAL",
                     context.getCurrentNode().getId());
-                path=tmp+path;
+                if(!tmp.equals(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)){
+                    path=tmp+MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR+path;
+                }else{
+                    path=tmp+path;
+                }
             }
             String id = context.getPathService().getItemIdByPath("InternalTooling", "InternalSite", path);
 

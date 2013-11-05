@@ -1,7 +1,9 @@
 package org.craftercms.studio.impl.repository.mongodb.domain;
 
 import java.util.LinkedList;
+import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -124,6 +126,16 @@ public class Node implements Cloneable {
 
     public void setMetadata(final Metadata metadata) {
         this.metadata = metadata;
+    }
+
+    /**
+     * This will get the full Ancestry for this <b>Node Including it self</b>.
+     * @return a Unmodifiable List of the Ancestry for this node <b>Including It self.</b>
+     */
+    public List<Node> getAncestry(){
+        LinkedList<Node> tmp = (LinkedList<Node>)ancestors.clone();
+        tmp.addLast(this);
+        return ListUtils.unmodifiableList(tmp);
     }
 
     @Override

@@ -31,7 +31,6 @@ import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.TreeNode;
 import org.craftercms.studio.commons.exception.InvalidContextException;
 import org.craftercms.studio.commons.filter.Filter;
-import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -81,12 +80,12 @@ public class ContentServiceImpl implements ContentService {
         }
 
 
-        Node parent = checkParentPath(ticket, site, path, item);
+        Node parent = checkParentPath(ticket, site, path, true /* TODO: Make this a Property */);
         log.debug("Saving File");
         Node newFileNode = nodeService.createFileNode(parent, item.getFileName(), item.getLabel(),
             item.getCreatedBy(), content);
         if (newFileNode != null) {
-            log.debug("Folder Was created {} ", newFileNode);
+            log.debug("File Was created {} ", newFileNode);
             return nodeToItem(newFileNode, ticket, site);
         } else {
             log.error("Folder node was not created ");
@@ -95,32 +94,34 @@ public class ContentServiceImpl implements ContentService {
 
     }
 
+    /**
+     * Checks if a path exists.<br/>
+     * If mkdirs is true will create the path.
+     * Node information will be default.
+     *
+     * @param ticket Security Ticket
+     * @param site   Site
+     * @param path   Path to check or create
+     * @param mkdirs if True creates directories, if false throws a Error.
+     * @return the Node of the given path.
+     * @throws MongoRepositoryException           If a Error happens while r/w
+     * @throws java.lang.IllegalArgumentException if a portion of the path does not exist and mkdirs is set to false.
+     */
     private Node checkParentPath(final String ticket, final String site, final String path,
-                                 final Item item) throws MongoRepositoryException {
+                                 final boolean mkdirs) throws MongoRepositoryException {
         String nodeId = pathService.getItemIdByPath(ticket, site, path);
-        Node parent;
-        if (nodeId == null) {
-            log.debug("Could not found parent path {} ", path);
-            parent = null;
+        if (!StringUtils.isBlank(nodeId)) {
+            return nodeService.getNode(nodeId);
         } else {
-            log.debug("Node id for path {} is {}", path, nodeId);
-            parent = nodeService.getNode(nodeId);
-        }
-
-        if (parent == null) {
-            log.debug("Folder {} not found ", parent);
-            if (true) { // TODO Do this with properties.
-                log.debug("{} is set true, creating folder structure for saving {} ({}) file",
-                    MongoRepositoryDefaults.REPO_MKDIRS, item.getLabel(), item.getFileName());
-                parent = nodeService.createFolderStructure(pathService.fullPathFor(site, path));
+            log.debug("Portions of {} don't exist", path);
+            if (mkdirs) {
+                log.debug("Mkdirs is on , Creating missing path portions");
+                    return nodeService.createFolderStructure(path);
             } else {
-                throw new IllegalArgumentException("Given path " + path + " for site " + site + " does not exist");
+                log.debug("Mkdirs is off");
+                throw new IllegalArgumentException("Path " + path + " does not exist");
             }
-        } else if (!nodeService.isNodeFolder(parent)) {
-            throw new IllegalArgumentException("Given parent node (base on path " + path + " ) ends with a file not a" +
-                " folder");
         }
-        return parent;
     }
 
     @Override
@@ -142,13 +143,10 @@ public class ContentServiceImpl implements ContentService {
             throw new IllegalArgumentException("Item can't be null");
         }
 
-        Node folderNode = checkParentPath(ticket, site, path, item);
-        log.debug("Saving folder with item information ", item.getFileName(), item.getLabel());
-        Node newFolderNode = nodeService.createFolderNode(folderNode, item.getFileName(), item.getLabel(),
-            item.getCreatedBy());
-        if (newFolderNode != null) {
-            log.debug("Folder Was created {} ", newFolderNode);
-            return nodeToItem(newFolderNode, ticket, site);
+        Node folderNode = checkParentPath(ticket, site, path, true/*TODO: Make this a property*/);
+        if (folderNode != null) {
+            log.debug("Folder Was created {} ", folderNode);
+            return nodeToItem(folderNode, ticket, site);
         } else {
             log.error("Folder node was not created ");
             throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
@@ -266,7 +264,7 @@ public class ContentServiceImpl implements ContentService {
                 for (Node child : children) {
                     TreeNode<Item> leaf = new TreeNode<>();
                     leaf.setValue(nodeToItem(child, ticket, site));
-                    if (depth == -1 || depth >  0) {
+                    if (depth == -1 || depth > 0) {
                         buildChildrenTree(leaf, (depth - 1), child, ticket, site);
                     }
                     root.addChild(leaf);
