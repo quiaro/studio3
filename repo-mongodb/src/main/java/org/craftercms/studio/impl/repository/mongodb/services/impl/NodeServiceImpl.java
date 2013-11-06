@@ -218,14 +218,13 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node createFolderStructure(final String path) throws MongoRepositoryException {
+    public Node createFolderStructure(final String path,final String creator) throws MongoRepositoryException {
         String[] pathParts = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         Node parentNode = getRootNode();
         for (int i = 0; i < pathParts.length; i++) {
             Node pivot = findNodeByAncestorsAndName(parentNode.getAncestry(), pathParts[i]);
             if (pivot == null) {
-                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i],
-                    MongoRepositoryDefaults.SYSTEM_USER_NAME);
+                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i], creator);
 
             }else{
                 parentNode=pivot;
