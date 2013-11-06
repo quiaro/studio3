@@ -142,9 +142,11 @@ public interface NodeService {
      * Creates a folder tree base on the given path, starts from the last know leaf.
      *
      * @param path Path to create.
+     * @param creator Creator of this folder.
      * @return Node from representing the last leaf.
+     *
      */
-    Node createFolderStructure(String path) throws MongoRepositoryException;
+    Node createFolderStructure(String path,final String creator) throws MongoRepositoryException;
 
     /**
      * Search and returns a InputStream for a file with the given Id.

@@ -48,10 +48,11 @@ public class ITContentServiceImpl implements ApplicationContextAware {
         item.setLabel("Robot Hell");
         item.setFileName("robot-hell");
         item.setCreatedBy("Robo Devil");
-        Item newItem = this.contentService.create("none", "ITTestSite", "/testSite", item);
+        item.setModifiedBy("Robo Devil");
+        Item newItem = this.contentService.create("None", "ITTestSite", "/ITTestSite/testSite", item);
         Assert.assertNotNull(newItem);
-        Assert.assertEquals(newItem.getModifiedBy(),"Robo Devil");
-        Assert.assertEquals(newItem.getPath(), "/ITTestSite/testSite/robot-hell");
+        Assert.assertEquals("Robo Devil", newItem.getModifiedBy());
+        Assert.assertEquals("/ITTestSite/testSite/robot-hell", newItem.getPath());
     }
 
     @Test

@@ -80,7 +80,7 @@ public class ContentServiceImpl implements ContentService {
         }
 
 
-        Node parent = checkParentPath(ticket, site, path, true /* TODO: Make this a Property */);
+        Node parent = checkParentPath(ticket, site, path, true /* TODO: Make this a Property */,item.getCreatedBy());
         log.debug("Saving File");
         Node newFileNode = nodeService.createFileNode(parent, item.getFileName(), item.getLabel(),
             item.getCreatedBy(), content);
@@ -108,7 +108,7 @@ public class ContentServiceImpl implements ContentService {
      * @throws java.lang.IllegalArgumentException if a portion of the path does not exist and mkdirs is set to false.
      */
     private Node checkParentPath(final String ticket, final String site, final String path,
-                                 final boolean mkdirs) throws MongoRepositoryException {
+                                 final boolean mkdirs, final String creator) throws MongoRepositoryException {
         String nodeId = pathService.getItemIdByPath(ticket, site, path);
         if (!StringUtils.isBlank(nodeId)) {
             return nodeService.getNode(nodeId);
@@ -116,7 +116,7 @@ public class ContentServiceImpl implements ContentService {
             log.debug("Portions of {} don't exist", path);
             if (mkdirs) {
                 log.debug("Mkdirs is on , Creating missing path portions");
-                    return nodeService.createFolderStructure(path);
+                    return nodeService.createFolderStructure(path, creator);
             } else {
                 log.debug("Mkdirs is off");
                 throw new IllegalArgumentException("Path " + path + " does not exist");
@@ -143,10 +143,12 @@ public class ContentServiceImpl implements ContentService {
             throw new IllegalArgumentException("Item can't be null");
         }
 
-        Node folderNode = checkParentPath(ticket, site, path, true/*TODO: Make this a property*/);
+        Node folderNode = checkParentPath(ticket, site, path, true/*TODO: Make this a property*/, item.getCreatedBy());
         if (folderNode != null) {
+            Node createdFolder = nodeService.createFolderNode(folderNode,item.getFileName(),item.getLabel(),
+                item.getCreatedBy());
             log.debug("Folder Was created {} ", folderNode);
-            return nodeToItem(folderNode, ticket, site);
+            return nodeToItem(createdFolder, ticket, site);
         } else {
             log.error("Folder node was not created ");
             throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
