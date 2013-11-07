@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboard', ['common'])
+angular.module('crafter.studio.dashboard', ['crafter.studio.common'])
 
     .directive('widgets',
         ['$compile', '$route', '$timeout', 'Widget', function ($compile, $route, $timeout, Widget) {

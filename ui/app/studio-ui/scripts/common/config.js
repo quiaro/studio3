@@ -1,5 +1,5 @@
 
-angular.module('common')
+angular.module('crafter.studio.common')
 
 	// App configuration values
 	.constant('I18N', {

@@ -142,9 +142,11 @@ public interface NodeService {
      * Creates a folder tree base on the given path, starts from the last know leaf.
      *
      * @param path Path to create.
+     * @param creator Creator of this folder.
      * @return Node from representing the last leaf.
+     *
      */
-    Node createFolderStructure(String path) throws MongoRepositoryException;
+    Node createFolderStructure(String path,final String creator) throws MongoRepositoryException;
 
     /**
      * Search and returns a InputStream for a file with the given Id.
@@ -159,4 +161,14 @@ public interface NodeService {
      *                                                                                           InputStream.
      */
     InputStream getFile(String fileId) throws MongoRepositoryException;
+
+    /**
+     * Gets all the children nodes for the given node<br/>
+     * (Children  are nodes which ancestors are the same of the  given nodeId + the given Node)
+     * @param nodeId Node id of the parent
+     * @return A List of nodes that are children of
+     */
+    List<Node> getChildren(String nodeId) throws MongoRepositoryException;
+
+    String getNodePath(Node node);
 }

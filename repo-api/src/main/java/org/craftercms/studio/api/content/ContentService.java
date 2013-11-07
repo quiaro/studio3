@@ -101,7 +101,8 @@ public interface ContentService {
      * @param filters   result filters
      * @return children tree
      */
-    Tree<Item> getChildren(String ticket, String site, String contentId, int depth, List<Filter> filters);
+    Tree<Item> getChildren(String ticket, String site, String contentId, int depth, List<Filter> filters) throws
+        RepositoryException;
 
     /**
      * Move content from source to destination.

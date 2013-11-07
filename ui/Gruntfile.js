@@ -115,9 +115,9 @@ module.exports = function (grunt) {
         dist: {
             files: {
                 '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/global.less',
-                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
-                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                ],
+                '<%= yeoman.dist %>/studio-ui/styles/editor.css': [
                     '<%= yeoman.app %>/studio-ui/styles/editor.less'
                 ]
             }
@@ -125,9 +125,9 @@ module.exports = function (grunt) {
         server: {
             files: {
                 '.tmp/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/global.less',
-                    '<%= yeoman.app %>/studio-ui/styles/dashboard.less',
-                    '<%= yeoman.app %>/studio-ui/styles/preview.less',
+                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                ],
+                '.tmp/studio-ui/styles/editor.css': [
                     '<%= yeoman.app %>/studio-ui/styles/editor.less'
                 ]
             }

@@ -10,10 +10,8 @@ public class TreeNode<T extends Comparable<T>> {
 
     @JsonProperty
     private T value;
-
     @JsonIgnore
     private TreeNode<T> parent;
-
     @JsonProperty
     private Set<TreeNode<T>> children;
 
@@ -27,11 +25,14 @@ public class TreeNode<T extends Comparable<T>> {
     }
 
     public void addChild(T child) {
-        TreeNode<T> node = new TreeNode<T>(child, this, null);
+        addChild(new TreeNode<>(child, this, null));
+    }
+
+    public void addChild(TreeNode<T> treeNode) {
         if (this.children == null) {
             children = new HashSet<TreeNode<T>>();
         }
-        this.children.add(node);
+        this.children.add(treeNode);
     }
 
     @JsonProperty

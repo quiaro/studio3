@@ -122,7 +122,7 @@ public class MongoStartupService implements ApplicationListener {
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER,
             MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER,
-            MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
+            MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
     }
 
     public void setMongoTemplate(final MongoTemplate mongoTemplate) {

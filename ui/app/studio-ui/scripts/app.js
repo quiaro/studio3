@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('studio-ui', [
-        'navigation',
-        'dashboard',
-        'preview',
-        'common',
+        'crafter.studio.navigation',
+        'crafter.studio.dashboard',
+        'crafter.studio.preview',
+        'crafter.studio.common',
         'pascalprecht.translate',
         'ngCookies'
     ])

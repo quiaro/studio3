@@ -1,7 +1,7 @@
 /* global toastr */
 'use strict';
 
-angular.module('common', ['ui.bootstrap.dialog'])
+angular.module('crafter.studio.common', ['ui.bootstrap.dialog'])
 
     .factory('Widget',
         ['$templateCache', '$http', '$q', 'CONFIG',

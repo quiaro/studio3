@@ -13,6 +13,7 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
+
     <organization>
         <name>CrafterCMS</name>
         <url>http://craftercms.org</url>
@@ -164,14 +165,6 @@
             <artifactId>logback-classic</artifactId>
             <version>${ch.qos.logback.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- Utils Libs -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -402,15 +395,11 @@
     </build>
     <modules>
         <module>commons</module>
-
         <module>repo-api</module>
-        <module>repo-cmis</module>
-        <!-- module>repo-mongodb</module -->
-
+        <module>repo-mongodb</module>
         <module>api</module>
         <module>impl</module>
         <module>mock</module>
-
         <module>ui</module>
         <module>server</module>
 
