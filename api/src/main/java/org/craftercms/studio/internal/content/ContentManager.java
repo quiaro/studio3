@@ -16,19 +16,11 @@
  */
 package org.craftercms.studio.internal.content;
 
-import java.io.InputStream;
-import java.util.List;
-
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.LockHandle;
-import org.craftercms.studio.commons.dto.Site;
-import org.craftercms.studio.commons.dto.Tree;
-import org.craftercms.studio.commons.exception.StaleItemException;
 import org.craftercms.studio.commons.exception.StudioException;
-import org.craftercms.studio.commons.extractor.ItemExtractor;
-import org.craftercms.studio.commons.filter.ItemFilter;
+
+import java.io.InputStream;
 
 /**
  * Repository Manager.
