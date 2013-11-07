@@ -61,7 +61,15 @@ public class ContentManagerMock implements ContentManager {
 
     @Override
     public LockHandle open(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+        try {
+            JAXBContext jc = JAXBContext.newInstance(LockHandleMock.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            InputStream is = this.getClass().getResourceAsStream("open.xml");
+            return (LockHandleMock)unmarshaller.unmarshal(is);
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
     }
 
     @Override
@@ -93,7 +101,15 @@ public class ContentManagerMock implements ContentManager {
 
     @Override
     public LockHandle lock(final Context context, final List<Item> itemsToLock) {
-        throw new NotImplementedException("Not implemented yet!");
+        try {
+            JAXBContext jc = JAXBContext.newInstance(LockHandleMock.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            InputStream is = this.getClass().getResourceAsStream("lock.xml");
+            return (LockHandleMock)unmarshaller.unmarshal(is);
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
     }
 
     @Override
@@ -103,12 +119,34 @@ public class ContentManagerMock implements ContentManager {
 
     @Override
     public List<LockStatus> getLockStatus(final Context context, final List<Item> items) {
-        throw new NotImplementedException("Not implemented yet!");
+        try {
+            JAXBContext jc = JAXBContext.newInstance(LockStatusListMock.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            InputStream is = this.getClass().getResourceAsStream("get_lock_status.xml");
+            LockStatusListMock lockStatusList = (LockStatusListMock)unmarshaller.unmarshal(is);
+            if (lockStatusList != null) {
+                return lockStatusList.getLockStatusList();
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
     }
 
     @Override
     public List<Item> list(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+        try {
+            JAXBContext jc = JAXBContext.newInstance(ItemListMock.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            InputStream is = this.getClass().getResourceAsStream("list.xml");
+            ItemListMock itemList = (ItemListMock)unmarshaller.unmarshal(is);
+            if (itemList != null) {
+                return itemList.getItemList();
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
     }
 
     @Override

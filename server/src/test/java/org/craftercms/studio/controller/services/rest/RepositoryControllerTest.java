@@ -795,6 +795,8 @@ public class RepositoryControllerTest extends AbstractControllerTest {
             Mockito.anyListOf(ItemFilter.class), Mockito.anyListOf(ItemExtractor.class))).thenReturn(generateItemTreeMock
             ());
 
+        System.out.println(generateRequestBody(generateItemTreeMock()));
+
         this.mockMvc.perform(
             get("/api/1/content/tree/site?itemId=1&depth=1").accept(MediaType.ALL))
             .andExpect(status().isOk());
