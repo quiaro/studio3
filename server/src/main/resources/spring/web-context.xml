@@ -40,7 +40,7 @@
 
     </annotation-driven>
 
-    <resources mapping="/resources/**" location="/resources"/>
+    <resources mapping="/studio-ui/**" location="/studio-ui/"/>
 
     <beans:bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

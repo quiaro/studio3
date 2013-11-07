@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.UUID;
 
 import com.mongodb.gridfs.GridFSFile;
@@ -63,6 +64,11 @@ public class NodeServiceImpl implements NodeService {
      * Path Services
      */
     private PathService pathServices;
+
+    /**
+     * String Buffer Size.
+     */
+    private static final int DEFAULT_BUILDER_SIZE = 512;
 
     /**
      * Default CTOR.
@@ -147,8 +153,6 @@ public class NodeServiceImpl implements NodeService {
             log.error("Trying to create a node with a non folder parent");
             throw new IllegalArgumentException("Parent Node has to be a folder Type");
         }
-
-
     }
 
     @Override
@@ -214,15 +218,16 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node createFolderStructure(final String path) throws MongoRepositoryException {
+    public Node createFolderStructure(final String path,final String creator) throws MongoRepositoryException {
         String[] pathParts = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         Node parentNode = getRootNode();
         for (int i = 0; i < pathParts.length; i++) {
-            Node pivot = findNodeByAncestorsAndName(parentNode.getAncestors(), pathParts[i]);
+            Node pivot = findNodeByAncestorsAndName(parentNode.getAncestry(), pathParts[i]);
             if (pivot == null) {
-                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i],
-                    MongoRepositoryDefaults.SYSTEM_USER_NAME);
+                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i], creator);
 
+            }else{
+                parentNode=pivot;
             }
         }
         return parentNode;
@@ -235,6 +240,39 @@ public class NodeServiceImpl implements NodeService {
             throw new IllegalArgumentException("Can't search file if the id either null ,empty or blank");
         }
         return gridFSService.getFile(fileId);
+    }
+
+    @Override
+    public List<Node> getChildren(final String nodeId) throws MongoRepositoryException {
+        if (!StringUtils.isBlank(nodeId)) {
+            Node parent = getNode(nodeId);
+            return nodeDataRepository.findAllByAncestors(parent.getAncestry());
+        }
+        return null;
+    }
+
+    @Override
+    public String getNodePath(Node node){
+        //make it bigger so it will not have to resize it for a bit.
+        StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
+        //First Add the Node with the given ID
+
+        ListIterator<Node> nodeListIterator = node.getAncestors().listIterator();
+        while (nodeListIterator.hasNext()) {
+            Node tmpNode = nodeListIterator.next();
+            if (nodeListIterator.previousIndex() > 0) { // if don't have next is the root node, ignore it
+                builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+                builder.append(tmpNode.getMetadata().getCore().getNodeName());
+            }
+        }
+        if (!node.getMetadata().getCore().getNodeName().equals(MongoRepositoryDefaults
+            .REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
+            builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        }
+        builder.append(node.getMetadata().getCore().getNodeName());
+        String path = builder.toString();
+        log.debug("Calculated Path is {}", path);
+        return path;
     }
 
     private boolean isNodeUniqueNodeinTree(Node nodeToValidate) {

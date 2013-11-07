@@ -1,0 +1,145 @@
+#studio.dashboard { #gradient.directional(@color-primary, @color-secondary, 90deg); }
+
+.dashboard {
+
+    #nav {
+        width: 280px;
+
+        .home { display: none; }
+
+        .logo {
+            background: transparent url(/studio-ui/images/crafter-logo.png) 10px 0 no-repeat;
+            .size(100%, 78px);
+        }
+
+        .search { margin: 5px 0; }
+
+        .project-menu,
+        .project-menu > button { width: 100%; }
+
+        .project-menu {
+            margin: 5px 0;
+
+            > button { text-align: left; }
+        }
+
+        .file-view {
+            background-color: @section-background;
+            border-radius: @section-border-radius;
+            .size(100%, 507px);
+            margin: 5px 0;
+        }
+
+        .user-menu {
+            float: right;
+            margin: 5px 0;
+        }
+
+        .project-menu .options {
+            width: 100%;
+        }
+    }
+
+    .content {
+        left: 280px;
+        min-height: 700px;
+    }
+
+    h1 { padding: 15px 20px 0 20px; }
+
+    .panel {
+        font-size: 12px;
+        margin: 15px 20px;
+    }
+
+    .panel-heading {
+        overflow: hidden;
+        padding: 5px 20px;
+
+        .panel-title {
+            float: left;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+    }
+
+    .filters {
+        float: right;
+
+        .filter {
+            margin-left: 12px;
+            display: inline-block;
+
+            b:first-child {
+                margin-right: 3px;
+            }
+        }
+
+        input[type='number'],
+        select {
+            display: inline-block;
+            padding: 2px 5px;
+            height: 24px;
+        }
+
+        .type select {
+            width: 110px;
+        }
+
+        input[type='number'] {
+            width: 45px;
+        }
+
+        input.ng-invalid {
+            border: 1px solid red;
+        }
+    }
+
+    .panel-body .item-list {
+        th, td {
+            border-left: 2px solid #FFFFFF;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        th {
+            cursor: pointer;
+            padding: 8px 12px;
+            background-color: @table-header-background;
+
+            &.sort-ascending {
+                background: @table-active-column url(/studio-ui/images/sort-order.png) no-repeat right 13px;
+            }
+            &.sort-descending {
+                background: @table-active-column url(/studio-ui/images/sort-order.png) no-repeat right -19px;
+            }
+
+            &:first-child {
+                background-color: transparent;
+                padding-right: 5px;
+            }
+        }
+
+        td {
+            padding: 4px 12px;
+
+            &:first-child {
+                padding-right: 5px;
+            }
+
+            &.operations { font-size: 10px }
+        }
+
+        .selector { min-width: 22px; }
+
+        .page-name { min-width: 140px; }
+
+        .operations { width: 105px; }
+
+        .last-edit { min-width: 115px; }
+
+        .last-author { min-width: 135px; }
+
+        .personal-edit { min-width: 115px; }
+    }
+}
+

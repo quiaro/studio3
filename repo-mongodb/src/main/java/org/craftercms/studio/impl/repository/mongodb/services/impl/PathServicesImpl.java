@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-import java.util.ListIterator;
+import java.util.LinkedList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
@@ -33,10 +33,7 @@ import org.slf4j.LoggerFactory;
  * Default Path implementation for Mongodb repository.
  */
 public class PathServicesImpl implements PathService {
-    /**
-     * Initial size of StringBuilder.
-     */
-    private static final int DEFAULT_BUILDER_SIZE = 512;
+
     /**
      * Node Service.
      */
@@ -56,9 +53,9 @@ public class PathServicesImpl implements PathService {
             throw new IllegalArgumentException("Given Site is Blank or empty");
         }
 
-        if (!isPathValid(path)){
+        if (!isPathValid(path)) {
             log.debug("Given Path is blank or empty");
-            throw new IllegalArgumentException("Given Path is Blank or empty");
+            throw new IllegalArgumentException("Given Path is not a valid path");
         }
 
 
@@ -101,31 +98,13 @@ public class PathServicesImpl implements PathService {
             return null;
         } else {
             log.debug("Node Found {}", node);
-            //make it bigger so it will not have to resize it for a bit.
-            StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
-            //First Add the Node with the given ID
-
-            ListIterator<Node> nodeListIterator = node.getAncestors().listIterator();
-            while (nodeListIterator.hasNext()) {
-                Node tmpNode = nodeListIterator.next();
-                if (nodeListIterator.previousIndex()>0) { // if don't have next is the root node, ignore it
-                    builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
-                    builder.append(tmpNode.getMetadata().getCore().getNodeName());
-
-                }
-
-            }
-            builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
-            builder.append(node.getMetadata().getCore().getNodeName());
-            String path = builder.toString();
-            log.debug("Calculated Path is {}", path);
-            return path;
+            return nodeService.getNodePath(node);
         }
     }
 
     @Override
     public boolean isPathValid(final String path) {
-        if (StringUtils.isBlank(path)){
+        if (StringUtils.isBlank(path)) {
             return false;
         }
         return path.matches(MongoRepositoryDefaults.PATH_VALIDATION_REGEX);
@@ -142,9 +121,15 @@ public class PathServicesImpl implements PathService {
 
     private Node walkDownTheTree(String[] pathToDescent) {
         Node tempNode = nodeService.getRootNode();
+        //If pathToDescent length is 0 then you are getting root path right?
         for (int i = 0; i < pathToDescent.length; i++) {
-            tempNode = nodeService.findNodeByAncestorsAndName(tempNode.getAncestors(), pathToDescent[i]);
-            if (tempNode == null) {
+            if(StringUtils.isBlank(pathToDescent[i])){
+                return nodeService.getRootNode();
+            }
+            LinkedList<Node> ancestors = (LinkedList<Node>)tempNode.getAncestors().clone();
+            ancestors.addLast(tempNode);
+            tempNode = nodeService.findNodeByAncestorsAndName(ancestors, pathToDescent[i]);
+            if (tempNode == null){
                 break;
             }
         }

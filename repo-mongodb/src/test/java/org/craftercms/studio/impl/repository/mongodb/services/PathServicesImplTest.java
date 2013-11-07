@@ -20,11 +20,14 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 import java.util.LinkedList;
 
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
+import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;
 import org.craftercms.studio.impl.repository.mongodb.services.impl.PathServicesImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -54,6 +57,13 @@ public class PathServicesImplTest {
     @Test
     public void testGetPathByItem() throws Exception {
         when(nodeService.getNode(Mockito.anyString())).thenReturn(createTree());
+        when(nodeService.getNodePath(Mockito.any(Node.class))).then(new Answer<Object>() {
+            @Override
+            public Object answer(final InvocationOnMock invocation) throws Throwable {
+                Node n = (Node)invocation.getArguments()[0];
+                return new NodeServiceImpl().getNodePath(n);
+            }
+        });
         String path = pathServices.getPathByItemId("Ticket", "Site", "ItemId");
         String exceptedPath = "/A/B/C/D";
         Assert.assertEquals(exceptedPath, path);

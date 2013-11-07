@@ -46,6 +46,13 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.craftercms</groupId>
+            <artifactId>studio-ui</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <!--Spring MVC -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -188,6 +195,7 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
     <build>
         <finalName>studio</finalName>
