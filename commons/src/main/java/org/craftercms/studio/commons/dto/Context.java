@@ -16,74 +16,26 @@
  */
 package org.craftercms.studio.commons.dto;
 
-import java.util.List;
-
 /**
  * Security context.
  *
  * @author Sumer Jabri
- * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class Context {
-
-    private String username;
+public final class Context {
     private String ticket;
-    private List<SecurityPermission> permissions;
-    private List<SecurityGroup> groups;
-    private List<SecurityRole> roles;
-    private long ttl;
+    private Tenant tenant;
 
-    public Context() {
-    }
+    public Context(final String ticket, final Tenant tenant) {
 
-    // Getters and setters
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        this.ticket = ticket;
+        this.tenant = tenant;
     }
 
     public String getTicket() {
-        return this.ticket;
+        return ticket;
     }
 
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public List<SecurityPermission> getPermissions() {
-        return this.permissions;
-    }
-
-    public void setPermissions(List<SecurityPermission> permissions) {
-        this.permissions = permissions;
-    }
-
-    public List<SecurityGroup> getGroups() {
-        return this.groups;
-    }
-
-    public void setGroups(List<SecurityGroup> groups) {
-        this.groups = groups;
-    }
-
-    public List<SecurityRole> getRoles() {
-        return this.roles;
-    }
-
-    public void setRoles(List<SecurityRole> roles) {
-        this.roles = roles;
-    }
-
-    public long getTtl() {
-        return this.ttl;
-    }
-
-    public void setTtl(long ttl) {
-        this.ttl = ttl;
+    public Tenant getTenant() {
+        return tenant;
     }
 }

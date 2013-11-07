@@ -17,16 +17,14 @@
 
 package org.craftercms.studio.mock.content;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.craftercms.studio.api.content.ContentManager;
+import org.craftercms.studio.org.craftercms.studio.api.internal.content.ContentManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;

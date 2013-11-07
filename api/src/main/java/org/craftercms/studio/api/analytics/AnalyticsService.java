@@ -26,22 +26,21 @@ import org.craftercms.studio.commons.exception.ItemNotFoundException;
  * Analytics Manager.
  *
  * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public interface AnalyticsManager {
+public interface AnalyticsService {
     /**
      * Runs and return a report.
      *
-     * @param context context for the report
-     * @param site    target
-     * @param report  report name
-     * @param params  report parameters
+     * @param context  context for the report
+     * @param site     target
+     * @param reportId report name
+     * @param params   report parameters
      * @return the analytics report <b>never null</b>
      * @throws ItemNotFoundException if report with given named is not found or site is not found.
-     *                               ReportException       if the report can't be generated.
+     * @throws ReportException       if the report can't be generated.
      */
-    AnalyticsReport report(Context context, String site, String report, Map<String,
-        Object> params) throws ItemNotFoundException, ReportException;
+    AnalyticsReport generateReport(Context context, String site, String reportId, Map<String,
+            Object> params) throws ItemNotFoundException, ReportException;
 
 }

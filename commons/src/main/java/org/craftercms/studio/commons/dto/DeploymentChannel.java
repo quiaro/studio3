@@ -21,8 +21,6 @@ import java.util.List;
 /**
  * Deployment Channel.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public class DeploymentChannel {

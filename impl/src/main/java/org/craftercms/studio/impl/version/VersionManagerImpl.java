@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.VersionService;
-import org.craftercms.studio.api.version.VersionManager;
+import org.craftercms.studio.api.content.VersionManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Item;

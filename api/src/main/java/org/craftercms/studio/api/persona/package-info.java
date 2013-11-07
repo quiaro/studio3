@@ -21,6 +21,6 @@
  *
  * @since 3.0
  */
-package org.craftercms.studio.api.persona;
+package org.craftercms.studio.api.;
 
 
