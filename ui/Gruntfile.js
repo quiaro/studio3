@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'app',
+    app: 'client',
     dist: 'target/META-INF/resources'
   };
 
@@ -33,17 +33,16 @@ module.exports = function (grunt) {
     },
     watch: {
       recess: {
-        files: ['<%= yeoman.app %>/studio-ui/styles/**/*.less'],
+        files: ['<%= yeoman.app %>/src/modules/*/styles/*.less', '<%= yeoman.app %>/src/plugins/*/styles/*.css'],
         tasks: ['recess:server']
       },
       express: {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/i18n/*.json',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/styles/**/*.css',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/scripts/**/*.js',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/templates/**/*.html',
-          '<%= yeoman.app %>/studio-ui/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
+          '{.tmp,<%= yeoman.app %>}/src/modules/*/styles/*.less',
+          '{.tmp,<%= yeoman.app %>}/src/modules/*/scripts/**/*.js',
+          '{.tmp,<%= yeoman.app %>}/src/modules/*/templates/**/*.html',
+          '<%= yeoman.app %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
         ],
         tasks: ['express:dev'],
         options: {
@@ -76,7 +75,8 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/studio-ui/scripts/**/*.js'
+        '<%= yeoman.app %>/src/modules/*/scripts/**/*.js',
+        '<%= yeoman.app %>/src/plugins/*/scripts/**/*.js'
       ]
     },
     karma: {
@@ -91,44 +91,27 @@ module.exports = function (grunt) {
         singleRun: false
       }
     },
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/studio-ui/styles',
-        cssDir: '.tmp/styles',
-        imagesDir: '<%= yeoman.app %>/studio-ui/images',
-        javascriptsDir: '<%= yeoman.app %>/studio-ui/scripts',
-        fontsDir: '<%= yeoman.app %>/studio-ui/fonts',
-        importPath: '<%= yeoman.app %>/studio-ui/components',
-        relativeAssets: true
-      },
-      dist: {},
-      server: {
-        options: {
-          debugInfo: true
-        }
-      }
-    },
     recess: {
         options: {
             compile: true
         },
         dist: {
             files: {
-                '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                '<%= yeoman.dist %>/src/styles/studio.css': [
+                    '<%= yeoman.app %>/src/style.less'
                 ],
-                '<%= yeoman.dist %>/studio-ui/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                '<%= yeoman.dist %>/src/styles/editor.css': [
+                    '<%= yeoman.app %>/src/modules/editor/style.less'
                 ]
             }
         },
         server: {
             files: {
-                '.tmp/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                '.tmp/src/styles/studio.css': [
+                    '<%= yeoman.app %>/src/style.less'
                 ],
-                '.tmp/studio-ui/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                '.tmp/src/styles/editor.css': [
+                    '<%= yeoman.app %>/src/modules/editor/style.less'
                 ]
             }
         }
@@ -143,16 +126,19 @@ module.exports = function (grunt) {
         options: {
             dirs: ['<%= yeoman.dist %>']
         },
-        html: ['<%= yeoman.dist %>/**/*.html'],
-        css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css']
+        html: ['<%= yeoman.dist %>/index.html',
+               '<%= yeoman.dist %>/src/modules/*/templates/*.html',
+               '<%= yeoman.dist %>/src/modules/*/plugins/*.html'],
+        css: ['<%= yeoman.dist %>/src/styles/studio.css',
+              '<%= yeoman.dist %>/src/plugins/*/styles/*.css']
     },
     imagemin: {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/studio-ui/images',
+          cwd: '<%= yeoman.app %>/src/images',
           src: '**/*.{png,jpg,jpeg}',
-          dest: '<%= yeoman.dist %>/studio-ui/images'
+          dest: '<%= yeoman.dist %>/src/images'
         }]
       }
     },
@@ -173,7 +159,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['studio-ui/templates/**/*.tpl.html'],
+          src: ['src/modules/*/templates/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -182,17 +168,17 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/studio-ui/scripts',
-          src: '*.js',
-          dest: '<%= yeoman.dist %>/studio-ui/scripts'
+          cwd: '<%= yeoman.dist %>/src/modules/*/scripts',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/src/modules/*/scripts'
         }]
       }
     },
     uglify: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/studio-ui/scripts/scripts.js': [
-            '<%= yeoman.dist %>/studio-ui/scripts/scripts.js'
+          '<%= yeoman.dist %>/src/scripts.js': [
+            '<%= yeoman.dist %>/src/scripts.js'
           ]
         }
       }
@@ -201,11 +187,11 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/studio-ui/templates/**/*.tpl.html',
-            '<%= yeoman.dist %>/studio-ui/scripts/**/*.js',
-            '<%= yeoman.dist %>/studio-ui/styles/**/*.css',
-            '<%= yeoman.dist %>/studio-ui/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-            '<%= yeoman.dist %>/studio-ui/fonts/*'
+            '<%= yeoman.dist %>/src/templates/**/*.tpl.html',
+            '<%= yeoman.dist %>/src/scripts/**/*.js',
+            '<%= yeoman.dist %>/src/styles/**/*.css',
+            '<%= yeoman.dist %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
+            '<%= yeoman.dist %>/src/fonts/*'
           ]
         }
       }
@@ -219,24 +205,20 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             '*.{ico,txt}',
-            'studio-ui/i18n/*.json',
-            'studio-ui/config/*.json',
-            'studio-ui/lib/**/*.min.js',
-            'studio-ui/lib/**/*.min.css',
-            'studio-ui/images/**/*.{gif,webp,ico}',
-            'studio-ui/styles/studio.css',
-            'studio-ui/templates/**/*.tpl.html',
+            'src/config/*.json',
+            'src/lib/**/*.min.js',
+            'src/lib/**/*.min.css',
+            'src/images/**/*.{gif,webp,ico}',
+            'src/styles/studio.css',
+            'src/templates/**/*.tpl.html',
 
             // Special cases
-            'studio-ui/lib/jquery/js/*.js',
-            'studio-ui/lib/jquery/js/*.map',
-            'studio-ui/lib/toastr/js/*.js',
-            'studio-ui/lib/toastr/js/*.map',
-            'studio-ui/lib/require*/**/*.js',
-            'studio-ui/lib/bootstrap/fonts/*',
-
-            // TODO: remove line below after creating space for plugins
-            'studio-ui/scripts/dashboard/plugins/*.js'
+            'src/lib/jquery/js/*.js',
+            'src/lib/jquery/js/*.map',
+            'src/lib/toastr/js/*.js',
+            'src/lib/toastr/js/*.map',
+            'src/lib/require*/**/*.js',
+            'src/lib/bootstrap/fonts/*'
           ]
         }]
       }
@@ -247,7 +229,7 @@ module.exports = function (grunt) {
           variables: {
             'min': '',
             'includeTranslateErrorHandler': '<script ' +
-              'src="studio-ui/lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
+              'src="src/lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
             'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
           }
         },
@@ -273,7 +255,7 @@ module.exports = function (grunt) {
     bower: {
       install: {
         options : {
-          targetDir: './app/studio-ui/lib',
+          targetDir: './client/src/lib',
           layout: 'byComponent',
           verbose: true
         }
@@ -284,8 +266,6 @@ module.exports = function (grunt) {
   // Run unit tests on jasmine
   grunt.registerTask('test', [
     'clean:server',
-    // 'compass',
-    // 'connect:test',
     'karma:dev'
   ]);
 
@@ -310,7 +290,6 @@ module.exports = function (grunt) {
     'clean:dist',
     'jshint',
     'recess:dist',
-    // 'connect:test',
     'karma:continuous',
     'replace:build',
     'useminPrepare',

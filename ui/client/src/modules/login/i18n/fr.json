@@ -1,0 +1,24 @@
+{
+	"DASHBOARD" : {
+		"activity" : {
+			"header" : "Mon Activité Recente",
+			"page_name" : "Nom de la Page",
+			"operations" : "Opérations",
+			"url" : "URL",
+			"last_edited" : "Dernière Edition",
+			"author" : "Auteur",
+			"my_last_edit" : "Ma Dernière Edition",
+			"edit_link" : "Editer"
+		},
+		"approval" : {
+            "header" : "En Attente d'Approbation",
+            "page_name" : "Nom de la Page",
+            "operations" : "Opérations",
+            "url" : "URL",
+            "last_edited" : "Dernière Edition",
+            "author" : "Auteur",
+            "my_last_edit" : "Ma Dernière Edition",
+            "edit_link" : "Editer"
+		}
+	}
+}

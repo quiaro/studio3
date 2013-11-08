@@ -1,4 +1,4 @@
 {
-  "directory": "app/studio-ui/components",
+  "directory": "client/src/components",
   "json": "bower.json"
 }

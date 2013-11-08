@@ -1,0 +1,230 @@
+html, body {
+    height: 100%;
+    min-width: 1024px;
+}
+
+#studio {
+    background-color: @color-background;
+    color: @gray-dark;
+    display: table;
+    border-spacing: 0;
+    border-collapse: collapse;
+    .size(100%, 100%);
+
+    > div { display: table-row; width: 100%; }
+}
+
+/* --- animations --- */
+#nav {
+    .transition(width);
+    .transition-duration(1s);
+}
+
+#main-container .content {
+    .transition(top);
+    .transition(right);
+    .transition(bottom);
+    .transition(left);
+    .transition-duration(1s);
+}
+
+/* --- navigation --- */
+#nav {
+    display: table-cell;
+    padding: 10px 15px;
+    margin-right: 20px;
+
+    input, select, .file-view { border: 1px solid @section-border; }
+
+    .logo { display: block; }
+
+    .s2do-menu {
+      position: relative;
+
+      .options {
+        background-color: @section-background;
+        position: absolute;
+        left: 0;
+        z-index: 100;
+        min-width: @menu-width;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        list-style: none;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        .box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
+        border-radius: @section-border-radius;
+        background-clip: padding-box;
+
+        &.bottom { top:100%; };
+        &.top { bottom:100%; };
+
+        li {
+          text-align: left;
+          margin: 0;
+
+          a {
+            display: block;
+            color: @gray-dark;
+            padding: 4px 10px;
+            white-space: nowrap;
+
+            &:hover {
+              color: @menu-link-hover;
+              text-decoration: none;
+              background-color: @menu-link-hover-background;
+            }
+          }
+        }
+
+      }
+    }
+
+    .user-menu {
+      font-size: 14px;
+
+      li {
+        margin: 8px 0px;
+        padding: 0 2px;
+
+        a:hover {
+          color: @menu-link-hover;
+          text-decoration: none;
+        }
+      }
+    }
+}
+
+/* --- treeview --- */
+div[data-angular-treeview] {
+  /* prevent user selection */
+  .user-select(none);
+
+  /* default */
+  font-size:13px;
+  color: @gray;
+  text-decoration: none;
+}
+
+div[data-tree-model] ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none;
+  overflow: hidden;
+
+  li {
+    position: relative;
+    padding: 0 0 0 20px;
+    line-height: 20px;
+
+    i, span {
+      cursor: pointer;
+    }
+
+    .expanded {
+      padding: 1px 10px;
+      background-image: url("/studio-ui/images/icons/folder.png");
+      background-repeat: no-repeat;
+    }
+
+    .collapsed {
+      padding: 1px 10px;
+      background-image: url("/studio-ui/images/icons/folder-closed.png");
+      background-repeat: no-repeat;
+    }
+
+    .normal {
+      padding: 1px 10px;
+      background-image: url("/studio-ui/images/icons/file.png");
+      background-repeat: no-repeat;
+    }
+
+    .selected {
+      font-weight: bold;
+    }
+  }
+}
+
+/* --- main container --- */
+#main-container {
+  display: table-cell;
+
+  > .content {
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    right: 15px;
+    background-color: @section-background;
+    border: 1px solid @section-border;
+    min-width: 714px;
+    border-radius: @section-border-radius;
+    overflow: scroll;
+  }
+}
+
+
+/* --- Full Screen State --- */
+#studio.full #nav {
+    display: block;
+    height: @nav-height;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    padding: 5px 20px;
+
+    background-color: @color-primary;
+    background: -webkit-linear-gradient(top, @color-secondary, @color-primary);
+    background: -moz-linear-gradient(top, @color-secondary, @color-primary);
+    background: linear-gradient(top, @color-secondary, @color-primary);
+}
+#studio.full #nav .home {
+    float: left;
+    margin: 5px 5px 5px 10px;
+    color: #FFFFFF;
+}
+
+#studio.full #nav .logo {
+    background: transparent url(/studio-ui/images/crafter-logo-min-sm.png) 0 0 no-repeat;
+    height: 40px;
+    width: 23px;
+    float: left;
+    margin-right: 5px;
+}
+
+#studio.full #nav .search,
+#studio.full #nav .project-menu {
+    float: left;
+    width: 220px;
+    margin: 5px 8px;
+}
+
+#studio.full #nav input[type='search'],
+#studio.full #nav select { border-color: #666; }
+
+#studio.full #nav .file-view { display: none; }
+#studio.full #nav .user-menu {
+    float: right;
+    margin-top: 5px;
+}
+#studio.full #nav .user-menu > .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+#studio.full #nav .user-menu .options {
+    left: auto;
+    right: 0;
+}
+
+#studio.full #main-container > .content {
+    top: 0;
+    bottom: 50px;
+    right: 0;
+    left: 0;
+    border-top: 0 none;
+    border-right: 0 none;
+    border-left: 0 none;
+}

@@ -1,0 +1,77 @@
+#tools-panel {
+    background-color: @tools-panel-gradient-top;
+    #gradient.vertical(@tools-panel-gradient-top, @tools-panel-gradient-bottom);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	border-top: 1px solid @tools-panel-border;
+
+    &.off { display: none; }
+
+    &.on { display: block; }
+}
+
+#component-navigator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    width: 300px;
+    border: 1px solid @section-border;
+    background-color: @section-background;
+    border-radius: @section-border-radius;
+}
+
+#tools-area {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    left: 325px;
+
+    .nav-tabs {
+        border-bottom: 0 none;
+        margin-top: 10px;
+
+        > li > a {
+            color: @tools-panel-link;
+            background-color: @tools-panel-link-background;
+            padding: 5px 18px;
+
+            &:hover, &:active {
+                background-color: @tools-panel-link-background-hover;
+                border-color: @tools-panel-link-border;
+                cursor: pointer;
+            }
+        }
+
+        > li.active > a {
+            background-color: @tools-panel-link-background-active;
+            border-color: @tools-panel-link-border;
+
+            &:hover, &:active {
+                background-color: @tools-panel-link-background-active;
+                border-color: @tools-panel-link-border;
+            }
+        }
+    }
+
+    .tab-content > .content {
+        position: absolute;
+        top: 42px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background-color: @section-background;
+        border: 1px solid @section-border;
+        border-top-right-radius: @section-border-radius;
+        border-bottom: 0 none;
+        overflow: scroll;
+
+        > div {
+            color: #3F3F3F;
+        }
+    }
+}

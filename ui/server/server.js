@@ -22,7 +22,7 @@ if ('production' === app.get('env')) {
 } else {
     // Paths are relative to this file
     app.use(express.static(path.join(__dirname, '../.tmp')));
-    app.use(express.static(path.join(__dirname, '../app')));
+    app.use(express.static(path.join(__dirname, '../client')));
     app.use(express.errorHandler());
 }
 
