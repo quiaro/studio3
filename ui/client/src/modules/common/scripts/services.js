@@ -134,18 +134,18 @@ angular.module('crafter.studio.common')
     }])
 
     .factory('AuthenticationService', [ function() {
-        var signIn = false;
+        var loggedIn = false;
 
-        function isSignedIn () {
-            return signIn;
+        function isLoggedIn () {
+            return loggedIn;
         }
 
         return {
-            isSignedIn: isSignedIn
+            isLoggedIn: isLoggedIn
         };
     }])
 
-    .factory('notifications', ['toastr', function (toastr) {
+    .factory('NotificationService', ['toastr', function (toastr) {
         var queue = [];
 
         return {

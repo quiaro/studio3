@@ -40,8 +40,8 @@ module.exports = function (grunt) {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
           '{.tmp,<%= yeoman.app %>}/src/modules/*/styles/*.less',
-          '{.tmp,<%= yeoman.app %>}/src/modules/*/scripts/**/*.js',
-          '{.tmp,<%= yeoman.app %>}/src/modules/*/templates/**/*.html',
+          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.js',
+          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.html',
           '<%= yeoman.app %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
         ],
         tasks: ['express:dev'],

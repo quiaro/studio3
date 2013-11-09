@@ -10,6 +10,9 @@ var app = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 
+app.set('views', path.join(__dirname, '../.tmp'));
+app.engine('.html', require('ejs').renderFile);
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -26,10 +29,10 @@ if ('production' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
-// Any requests to preview will be sent to index.html where they'll be redirected accordingly
-app.get( "/preview", function( req, res ) {
-    res.redirect( '/#/preview' );
-});
+// Any requests will be sent to index.html where they'll be redirected accordingly
+// app.get( "/dashboard", function( req, res ) {
+//     res.redirect( '/#/dashboard' );
+// });
 
 // set responses for all the services defined
 mock.services.forEach( function(serviceObj) {
@@ -57,9 +60,26 @@ mock.services.forEach( function(serviceObj) {
     });
 });
 
-app.get( "/site/:site/*", function( req, res ) {
+app.get( '/site/:site/*', function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
     res.sendfile( config[req.params.site].sitesFolder + '/' + req.params[0]);
+});
+
+app.get( '*', function( req, res ) {
+
+    // Assets will be loaded from the client root (except for the files listed in tmpFiles)
+    var assetUrlRe = /[\w\/\-:]*\.[\w]+/,
+        fileName = req.url.substr(req.url.lastIndexOf("/") + 1);
+
+    if (config.tmpFiles.indexOf(fileName) >= 0) {
+        res.sendfile( config.tmpRoot + req.url);
+
+    } else if (!assetUrlRe.test(req.url)) {
+        res.render('index.html');
+
+    } else {
+        res.sendfile( config.clientRoot + req.url);
+    }
 });
 
 http.createServer(app).listen(app.get('port'), function () {

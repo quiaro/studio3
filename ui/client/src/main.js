@@ -6,52 +6,40 @@ angular.module('studio-ui', [
         'crafter.studio.authoring',
         'crafter.studio.common',
         'pascalprecht.translate',
-        'ngCookies'
+        'ngCookies',
+        'ui.router'
     ])
 
-    .config(['$locationProvider', function ($locationProvider) {
+    .config(['$locationProvider',
+        '$urlRouterProvider',
+        '$httpProvider', function ($locationProvider, $urlRouterProvider, $httpProvider) {
 
-        // $routeProvider
-        //     .when(APP_PATHS.dashboard, {
-        //         templateUrl: 'studio-ui/templates/dashboard.tpl.html',
-        //         controller: 'DashboardCtrl',
-        //         resolve: {
-        //             loadPrototypes : function loadPrototypes ($q, Widget) {
-        //                 var deferred = $q.defer();
-        //                 Widget.getPropertyAssets('dashboard', 'prototypeUrl', false, Widget.processPrototype)
-        //                     .then( function (prototypes) {
-        //                         deferred.resolve(prototypes);
-        //                     });
-        //                 return deferred.promise;
-        //             },
-        //             loadTemplates : function loadTemplates ($q, Widget) {
-        //                 var deferred = $q.defer();
-        //                 Widget.getPropertyAssets('dashboard', 'templateUrl', true, Widget.processTemplate)
-        //                     .then( function (templates) {
-        //                         deferred.resolve(templates);
-        //                     });
-        //                 return deferred.promise;
-        //             }
-        //         }
-        //     })
-        //     .when(APP_PATHS.preview, {
-        //         templateUrl: 'studio-ui/templates/preview.tpl.html',
-        //         controller: 'PreviewCtrl'
-        //     })
-        //     .otherwise({
-        //         redirectTo: APP_PATHS.dashboard
-        //     });
+        var logOutUserOn401 = ['$q', '$location',
+            function($q, $location) {
+                var success = function(response) {
+                    return response;
+                };
 
+                var error = function(response) {
+                    if (response.status === 401) {
+                        //redirect them back to login page
+                        $location.path('/login');
+
+                        return $q.reject(response);
+                    } else {
+                        return $q.reject(response);
+                    }
+                };
+
+                return function(promise) {
+                    return promise.then(success, error);
+                };
+            }];
+
+        $httpProvider.responseInterceptors.push(logOutUserOn401);
+
+        $urlRouterProvider.otherwise('/dashboard');
         $locationProvider.html5Mode(true);
-
-        // $translateProvider
-        //     .useStaticFilesLoader({
-        //         prefix: I18N.prefix,
-        //         suffix: I18N.suffix
-        //     })
-        //     // load 'en' table on startup
-        //     .preferredLanguage('en')
-        //     .useLocalStorage();
     }])
 
     // Application Controller: the omnipresent and omniscient controller
@@ -60,8 +48,24 @@ angular.module('studio-ui', [
         '$scope',
         '$translate', function ($scope, $translate) {
 
-        // $scope.AppCtrl.changeLanguage = function changeLanguage (langKey) {
-        //   $translate.uses(langKey);
-        // };
+    }])
+
+    // Initialize the application
+    .run(['$rootScope',
+        '$location',
+        '$state',
+        'AuthenticationService', function ($rootScope, $location, $state, AuthenticationService) {
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.requireAuth && !AuthenticationService.isLoggedIn()) {
+
+                event.preventDefault();
+
+                console.log("Sorry! Not logged in.");
+
+                $state.go('login');
+            }
+        });
+
     }]);
 

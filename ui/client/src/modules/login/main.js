@@ -2,14 +2,22 @@
 
 angular.module('crafter.studio.login', ['ui.router'])
 
-    .config(['$stateProvider', function ($stateProvider) {
+    .constant('CONFIG', {
+        baseUrl: '/src/modules/login/'
+    })
+
+    .config(['$stateProvider',
+        '$urlRouterProvider',
+        'CONFIG', function ($stateProvider, $urlRouterProvider, CONFIG) {
 
         $stateProvider
-            .state('login', {});
+            .state('login', {
+                url: '/login',
+                templateUrl: CONFIG.baseUrl + 'templates/login.tpl.html',
+                controller: 'LoginCtrl'
+            });
     }])
 
-    // Application Controller: the omnipresent and omniscient controller
-    // Handles route event logic and minor functions exposed throughout the whole app
     .controller('LoginCtrl', ['$scope', function ($scope) {
 
     }]);

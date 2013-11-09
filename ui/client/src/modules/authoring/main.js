@@ -67,10 +67,8 @@ angular.module('crafter.studio.authoring', ['crafter.studio.common'])
 
     }])
 
-    .controller('PreviewCtrl',
-		['$scope', 'notifications', function($scope, notifications) {
-
-		$scope.notifications = notifications;
+    .controller('AuthoringCtrl',
+		['$scope', 'NotificationService', function($scope, NotificationService) {
 
         $scope.authoring = {
             site: '/site/mango/crafter_community.html',
