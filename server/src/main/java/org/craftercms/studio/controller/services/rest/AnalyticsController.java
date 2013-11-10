@@ -57,7 +57,7 @@ public class AnalyticsController {
         log.debug("Filtering \"report\",\"security\" from params map");
         RestControllerUtils.removeParamters(params,"report","security");
         log.debug("Final map is {}",params);
-        log.debug("Calling AnalyticsManager#report");
+        log.debug("Calling AnalyticsService#report");
         return this.analyticsManager.report(new Context(), site, report, params);
     }
 

@@ -17,10 +17,10 @@
 
 /**
  * Provides the necessary definitions and transport
- * objects for component module.
+ * objects for concurrency module.
  *
  * @since 3.0
  */
-package org.craftercms.studio.api.component;
+package org.craftercms.studio.api.internal.concurrency;
 
 

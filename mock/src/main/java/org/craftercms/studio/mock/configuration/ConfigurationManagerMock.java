@@ -20,9 +20,9 @@ package org.craftercms.studio.mock.configuration;
 import java.io.InputStream;
 
 import org.craftercms.studio.api.configuration.ConfigurationManager;
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
@@ -33,13 +33,13 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
 public class ConfigurationManagerMock implements ConfigurationManager {
 
     @Override
-    public ModuleConfiguration getConfiguration(final Context context, final String site, final String module) {
+    public Configuration getConfiguration(final Context context, final String site, final String module) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
-    public void configure(final Context context, final String site, final String module, final ModuleConfiguration
-        moduleConfiguration) {
+    public void configure(final Context context, final String site, final String module, final Configuration
+        configuration) {
         throw new NotImplementedException("Not implemented yet!");
     }
 

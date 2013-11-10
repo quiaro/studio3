@@ -20,7 +20,7 @@ package org.craftercms.studio.impl.content;
 import java.io.InputStream;
 import java.util.List;
 
-import org.craftercms.studio.api.content.ContentManager;
+import org.craftercms.studio.org.craftercms.studio.api.internal.content.ContentManager;
 import org.craftercms.studio.api.content.ContentService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;

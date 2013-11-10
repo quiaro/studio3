@@ -17,10 +17,10 @@
 
 /**
  * Provides the necessary definitions and transport
- * objects for state module.
+ * objects for concurrency module.
  *
  * @since 3.0
  */
-package org.craftercms.studio.api.state;
+package org.craftercms.studio.org.craftercms.studio.api.internal.content;
 
 

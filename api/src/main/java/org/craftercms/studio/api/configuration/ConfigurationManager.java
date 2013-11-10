@@ -18,15 +18,13 @@ package org.craftercms.studio.api.configuration;
 
 import java.io.InputStream;
 
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
 
 /**
  * Configuration Manager.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public interface ConfigurationManager {
@@ -39,7 +37,7 @@ public interface ConfigurationManager {
      * @param module  module
      * @return module configuration
      */
-    ModuleConfiguration getConfiguration(Context context, String site, String module);
+    Configuration getConfiguration(Context context, String site, String module);
 
     /**
      * Create or update module configuration.
@@ -47,9 +45,9 @@ public interface ConfigurationManager {
      * @param context             context
      * @param site                site
      * @param module              module
-     * @param moduleConfiguration module configuration
+     * @param configuration module configuration
      */
-    void configure(Context context, String site, String module, ModuleConfiguration moduleConfiguration);
+    void configure(Context context, String site, String module, Configuration configuration);
 
     /**
      * Get configuration object.

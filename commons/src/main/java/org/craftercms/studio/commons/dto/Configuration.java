@@ -19,11 +19,11 @@ package org.craftercms.studio.commons.dto;
 /**
  * Module Configuration.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
+ * @author Sumer Jabri
  */
-public class ModuleConfiguration<T> {
+public class Configuration<T> {
+    //todo change to kvp of kvp (list of lists)
 
     private String moduleName;
     private String moduleType;

@@ -22,12 +22,10 @@ import java.util.Map;
 /**
  * Activity.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public class Activity {
-
+    // todo activities need props
 
     private String siteId;
     private String siteName;

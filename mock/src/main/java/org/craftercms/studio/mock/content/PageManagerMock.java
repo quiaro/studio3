@@ -17,16 +17,14 @@
 
 package org.craftercms.studio.mock.content;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.craftercms.studio.api.content.ContentManager;
+import org.craftercms.studio.api.content.PageManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
@@ -43,23 +41,23 @@ import org.craftercms.studio.commons.filter.ItemFilter;
  *
  * @author Dejan Brkic
  */
-public class ContentManagerMock implements ContentManager {
-    @Override
+public class PageManagerMock implements PageManager {
+
     public InputStream read(final Context context, final String itemId) throws StudioException {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public InputStream read(final Context context, final String itemId, final String version) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public void update(final Context context, final String itemId, final InputStream content) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public LockHandle open(final Context context, final String itemId) {
         try {
             JAXBContext jc = JAXBContext.newInstance(LockHandleMock.class);
@@ -72,34 +70,34 @@ public class ContentManagerMock implements ContentManager {
         return null;
     }
 
-    @Override
+
     public void save(final Context context, final String itemId, final LockHandle lockHandle, final InputStream
         content) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public void close(final Context context, final String itemId, final LockHandle lockHandle) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public void delete(final Context context, final List<Item> itemsToDelete) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public void copy(final Context context, final List<Item> itemsToCopy, final String destinationPath,
                      final boolean includeChildren) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public void move(final Context context, final List<Item> itemsToMove, final String destinationPath) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public LockHandle lock(final Context context, final List<Item> itemsToLock) {
         try {
             JAXBContext jc = JAXBContext.newInstance(LockHandleMock.class);
@@ -112,12 +110,12 @@ public class ContentManagerMock implements ContentManager {
         return null;
     }
 
-    @Override
+
     public void unlock(final Context context, final List<Item> itemsToUnlock, final LockHandle lockHandle) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
-    @Override
+
     public List<LockStatus> getLockStatus(final Context context, final List<Item> items) {
         try {
             JAXBContext jc = JAXBContext.newInstance(LockStatusListMock.class);
@@ -133,7 +131,7 @@ public class ContentManagerMock implements ContentManager {
         return null;
     }
 
-    @Override
+
     public List<Item> list(final Context context, final String itemId) {
         try {
             JAXBContext jc = JAXBContext.newInstance(ItemListMock.class);
@@ -149,7 +147,7 @@ public class ContentManagerMock implements ContentManager {
         return null;
     }
 
-    @Override
+
     public Tree<Item> tree(final Context context, final String itemId, final int depth,
                            final List<ItemFilter> filters, final List<ItemExtractor> extractors) {
         throw new NotImplementedException("Not implemented yet!");
@@ -168,7 +166,7 @@ public class ContentManagerMock implements ContentManager {
         */
     }
 
-    @Override
+
     public List<Site> getSiteList(final Context context) {
         try {
             JAXBContext jc = JAXBContext.newInstance(SiteListMock.class);

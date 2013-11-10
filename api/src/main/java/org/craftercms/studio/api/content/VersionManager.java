@@ -14,13 +14,12 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.version;
+package org.craftercms.studio.api.content;
 
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
-
 
 /**
  * Version Manager.
@@ -29,28 +28,30 @@ public interface VersionManager {
 
     /**
      * Get version history for item
+     *
      * @param context context
-     * @param itemId itemId
+     * @param itemId  itemId
      * @return tree of version history
      */
     Tree<Version> history(Context context, String itemId);
 
     /**
      * Revert version for item
-     * @param context context
-     * @param itemId itemId
+     *
+     * @param context       context
+     * @param itemId        itemId
      * @param revertVersion revertVersion
      */
     void revert(Context context, String itemId, String revertVersion);
 
     /**
      * Difference between two versions
-     * @param context context
-     * @param itemId item id
+     *
+     * @param context  context
+     * @param itemId   item id
      * @param version1 version1
      * @param version2 version2
      * @return differences
      */
-    DiffResult diff(Context context, String itemId, String version1,
-                    String version2);
+    DiffResult diff(Context context, String itemId, String version1, String version2);
 }

@@ -25,12 +25,10 @@ import org.craftercms.studio.commons.dto.Context;
  * Blueprints Manager.
  * Install, remove, list and create blueprints.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
+ * @author Sumer Jabri
  */
 public interface BlueprintsManager {
-
     /**
      * List blueprints.
      *
