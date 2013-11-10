@@ -23,6 +23,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,10 +36,12 @@ import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.Site;
+import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
+import org.craftercms.studio.mock.content.TreeMock;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -795,7 +802,16 @@ public class RepositoryControllerTest extends AbstractControllerTest {
             Mockito.anyListOf(ItemFilter.class), Mockito.anyListOf(ItemExtractor.class))).thenReturn(generateItemTreeMock
             ());
 
-        System.out.println(generateRequestBody(generateItemTreeMock()));
+        Tree<Item> tree = generateItemTreeMock();
+        System.out.println(generateRequestBody(tree));
+
+        try {
+            JAXBContext jc = JAXBContext.newInstance(Tree.class);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.marshal(tree, System.out);
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
         this.mockMvc.perform(
             get("/api/1/content/tree/site?itemId=1&depth=1").accept(MediaType.ALL))

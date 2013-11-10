@@ -153,6 +153,19 @@ public class ContentManagerMock implements ContentManager {
     public Tree<Item> tree(final Context context, final String itemId, final int depth,
                            final List<ItemFilter> filters, final List<ItemExtractor> extractors) {
         throw new NotImplementedException("Not implemented yet!");
+        /*
+        try {
+            JAXBContext jc = JAXBContext.newInstance(TreeMock.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            InputStream is = this.getClass().getResourceAsStream("tree.xml");
+            TreeMock tree = (TreeMock)unmarshaller.unmarshal(is);
+            //return tree;
+
+        } catch (JAXBException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+        */
     }
 
     @Override
