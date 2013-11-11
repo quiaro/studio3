@@ -28,9 +28,9 @@ import javax.validation.Valid;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.configuration.ConfigurationManager;
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
 import org.craftercms.studio.controller.services.rest.dto.ConfigurationWriteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,22 +61,22 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/configuration/{site}", method = RequestMethod.GET)
     @ResponseBody
-    public ModuleConfiguration configuration(@PathVariable final String site,
+    public Configuration configuration(@PathVariable final String site,
                                              @RequestParam(required = true) final String module) {
-        return this.configurationManager.getConfiguration(new Context(), site, module);
+        return this.configurationManager.getConfiguration(null, site, module);
     }
 
     @RequestMapping(value = "/configure/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void configure(@PathVariable final String site, @RequestParam(required = true) final String module,
-                          @Valid @RequestBody final ModuleConfiguration moduleConfiguration) {
-        this.configurationManager.configure(new Context(), site, module, moduleConfiguration);
+                          @Valid @RequestBody final Configuration moduleConfiguration) {
+        this.configurationManager.configure(null, site, module, moduleConfiguration);
     }
 
     @RequestMapping(value = "/content/{site}", method = RequestMethod.GET)
     public void content(@PathVariable final String site, @RequestParam(required = true) final String object,
                         final HttpServletRequest request, HttpServletResponse response) {
-        final InputStream content = this.configurationManager.getContent(new Context(), site, new ItemId(object));
+        final InputStream content = this.configurationManager.getContent(null, site, new ItemId(object));
         try {
             final OutputStream out = response.getOutputStream();
             IOUtils.copy(content, out);
@@ -90,6 +90,6 @@ public class ConfigurationController {
     public void write(@PathVariable final String site, @RequestParam(required = true) final String object,
                       @Valid @RequestBody(required = true) final ConfigurationWriteRequest writeRequest) {
         InputStream contentStream = IOUtils.toInputStream(writeRequest.getContent());
-        this.configurationManager.write(new Context(), site, new ItemId(object), contentStream);
+        this.configurationManager.write(null, site, new ItemId(object), contentStream);
     }
 }

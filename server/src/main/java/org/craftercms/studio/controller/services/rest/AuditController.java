@@ -49,7 +49,7 @@ public class AuditController {
     public List<Activity> getActivities(@PathVariable final String site,
                                         @RequestParam(required = false) final List<String> filters) {
         this.log.debug("Retrieving list of activities for {} using filters {}", site, filters);
-        return this.auditManager.getActivities(new Context(), site, filters);
+        return this.auditManager.getActivities(null, site, filters);
     }
 
     /**
@@ -74,7 +74,7 @@ public class AuditController {
             throw validationException;
         } else {
             this.log.debug("Calling AuditManager#logActivity with {}", activity);
-            return this.auditManager.logActivity(new Context(), site, activity);
+            return this.auditManager.logActivity(null, site, activity);
         }
     }
 

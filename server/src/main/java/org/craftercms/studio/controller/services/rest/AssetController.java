@@ -17,37 +17,46 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.craftercms.studio.api.lifecycle.Action;
-import org.craftercms.studio.api.lifecycle.LifecycleManager;
-import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.api.content.AssetService;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Lifecycle controller.
+ * Asset controller.
+ * Defines restful services for assets.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 @Controller
-@RequestMapping("/api/1/lifecycle")
-public class LifecycleController {
+@RequestMapping(value = "/api/1/asset")
+public class AssetController {
 
     @Autowired
-    private LifecycleManager lifecycleManager;
+    private AssetService assetService;
 
-    @RequestMapping(value = "/actions/{site}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Action> actions(@PathVariable final String site, @RequestParam(required = true) final List<String>
-        itemIds) {
-        return this.lifecycleManager.getPossibleActions(null, site, itemIds);
+    @RequestMapping(value = "/create/{site}")
+    public void create(@PathVariable String site, @RequestParam String path, @RequestParam MultipartFile file) throws
+        StudioException{
+
+        /** TODO:
+         * Provide security context
+         * Extract metadata
+         */
+
+        InputStream contentStream = null;
+        try {
+            contentStream = file.getInputStream();
+        } catch (IOException e) {
+            throw new StudioException("Error getting content from multipart request") {};
+        }
+        assetService.create(null, site, path, null, contentStream);
     }
 }

@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import org.craftercms.studio.api.version.VersionManager;
+import org.craftercms.studio.api.content.VersionManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.junit.After;
 import org.junit.Test;

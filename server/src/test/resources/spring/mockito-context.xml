@@ -9,12 +9,12 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <beans:bean id="contentManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.content.ContentManager" />
+    <beans:bean id="assetService" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.content.AssetService"/>
     </beans:bean>
 
-    <beans:bean id="analyticsManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.analytics.AnalyticsManager" />
+    <beans:bean id="analyticsService" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.analytics.AnalyticsService" />
     </beans:bean>
 
 
@@ -27,7 +27,7 @@
     </beans:bean>
 
     <beans:bean id="versionManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.version.VersionManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.content.VersionManager" />
     </beans:bean>
 
     <beans:bean id="dependencyManager" class="org.mockito.Mockito" factory-method="mock">

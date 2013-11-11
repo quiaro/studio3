@@ -46,28 +46,28 @@ public class AuditManagerImplTest extends AbstractManagerTest {
 
     @Test(expected = NotImplementedException.class)
     public void testGetActivities() throws Exception {
-        this.auditManagerSUT.getActivities(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.auditManagerSUT.getActivities(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testGetActivitiesInvalidSite() throws Exception {
-        this.auditManagerSUT.getActivities(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.auditManagerSUT.getActivities(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testLogActivity() throws Exception {
-        this.auditManagerSUT.logActivity(new Context(), RandomStringUtils.randomAlphabetic(10), createActivityMock());
+        this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testLogActivityInvalidSite() throws Exception {
-        this.auditManagerSUT.logActivity(new Context(), RandomStringUtils.randomAlphabetic(10), createActivityMock());
+        this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testLogActivityInvalidActivity() throws Exception {
-        this.auditManagerSUT.logActivity(new Context(), RandomStringUtils.randomAlphabetic(10), createActivityMock());
+        this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }
 }

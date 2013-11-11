@@ -48,62 +48,62 @@ public class BlueprintsManagerImplTest extends AbstractManagerTest {
 
     @Test(expected = NotImplementedException.class)
     public void testList() throws Exception {
-        this.blueprintsManagerSUT.list(new Context(), createMapMock());
+        this.blueprintsManagerSUT.list(null, createMapMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemove() throws Exception {
-        this.blueprintsManagerSUT.remove(new Context(), UUID.randomUUID().toString());
+        this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveInvalidBlueprintId() throws Exception {
-        this.blueprintsManagerSUT.remove(new Context(), UUID.randomUUID().toString());
+        this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveBlueprintDoesNotExist() throws Exception {
-        this.blueprintsManagerSUT.remove(new Context(), UUID.randomUUID().toString());
+        this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testInstall() throws Exception {
-        this.blueprintsManagerSUT.install(new Context(), RandomStringUtils.randomAlphabetic(20));
+        this.blueprintsManagerSUT.install(null, RandomStringUtils.randomAlphabetic(20));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSite() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSiteInvalidSite() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSiteInvalidBlueprintName() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSiteInvalidDestination() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSiteDestinationDoesNotExist() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCreateBlueprintFromSiteBlueprintExistsOnDestination() throws Exception {
-        this.blueprintsManagerSUT.createBlueprintFromSite(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 }

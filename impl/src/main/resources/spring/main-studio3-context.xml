@@ -3,6 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <import resource="classpath*:craftercms/studio/craftercms-mongo-repository.xml"/>
+
+    <bean id="AssetService" class="org.craftercms.studio.impl.content.AssetServiceImpl">
+        <property name="contentManager" ref="ContentManager"/>
+    </bean>
+
+    <bean id="ContentManager" class="org.craftercms.studio.internal.content.impl.ContentManagerImpl">
+        <property name="contentService" ref="contentService"/>
+    </bean>
+
     <import resource="classpath*:spring/*-studio3-ext-context.xml"/>
     <import resource="classpath*:extension/studio3/*-studio3-ext-context.xml"/>
 

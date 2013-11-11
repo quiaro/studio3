@@ -48,98 +48,98 @@ public class FormsManagerImplTest extends AbstractManagerTest {
 
     @Test(expected = NotImplementedException.class)
     public void testList() throws Exception {
-        this.formsManagerSUT.list(new Context(), RandomStringUtils.randomAlphabetic(10), createStringListMock());
+        this.formsManagerSUT.list(null, RandomStringUtils.randomAlphabetic(10), createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testListInvalidSite() throws Exception {
-        this.formsManagerSUT.list(new Context(), RandomStringUtils.randomAlphabetic(10), createStringListMock());
+        this.formsManagerSUT.list(null, RandomStringUtils.randomAlphabetic(10), createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdate() throws Exception {
-        this.formsManagerSUT.update(new Context(), RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
+        this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateInvalidSite() throws Exception {
-        this.formsManagerSUT.update(new Context(), RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
+        this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateInvalidFormDefinition() throws Exception {
-        this.formsManagerSUT.update(new Context(), RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
+        this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateNewFormDefinition() throws Exception {
-        this.formsManagerSUT.update(new Context(), RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
+        this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateExistingFormDefinition() throws Exception {
-        this.formsManagerSUT.update(new Context(), RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
+        this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemove() throws Exception {
-        this.formsManagerSUT.remove(new Context(), RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
+        this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveInvalidSite() throws Exception {
-        this.formsManagerSUT.remove(new Context(), RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
+        this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveInvalidFormId() throws Exception {
-        this.formsManagerSUT.remove(new Context(), RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
+        this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveFormDoesNotExist() throws Exception {
-        this.formsManagerSUT.remove(new Context(), RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
+        this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopy() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopyInvalidSite() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopyInvalidSource() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopyEmptySource() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopyInvalidDestination() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopyDestinationDoesNotExist() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testCopySourceExistsAtDestination() throws Exception {
-        this.formsManagerSUT.copy(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 }

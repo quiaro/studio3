@@ -30,13 +30,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.lifecycle.Action;
 import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
 import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
 import org.craftercms.studio.commons.dto.ResultSet;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.Site;
@@ -237,7 +237,7 @@ public abstract class AbstractControllerTest {
 
     protected LockHandle createLockHandleMock() {
         LockHandle lockHandle = new LockHandle();
-        lockHandle.setId(UUID.randomUUID().toString());
+        lockHandle.setItemId(UUID.randomUUID().toString());
         return lockHandle;
     }
 
@@ -403,8 +403,8 @@ public abstract class AbstractControllerTest {
         return form;
     }
 
-    protected ModuleConfiguration createModuleConfigurationMock() {
-        ModuleConfiguration module = new ModuleConfiguration();
+    protected Configuration createModuleConfigurationMock() {
+        Configuration module = new Configuration();
         module.setModuleName(RandomStringUtils.randomAlphabetic(10));
         module.setModuleType(RandomStringUtils.randomAlphabetic(10));
         return module;

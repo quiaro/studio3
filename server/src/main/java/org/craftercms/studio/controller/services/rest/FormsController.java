@@ -51,25 +51,25 @@ public class FormsController {
     @ResponseBody
     public List<FormDefinition> list(@PathVariable final String site,
                                      @RequestParam(required = false) final List<String> filters) {
-        return formsManager.list(new Context(), site, filters);
+        return formsManager.list(null, site, filters);
     }
 
     @RequestMapping(value = "/update/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void update(@PathVariable final String site, @Valid @RequestBody final FormDefinition form) {
-        this.formsManager.update(new Context(), site, form);
+        this.formsManager.update(null, site, form);
     }
 
     @RequestMapping(value = "/remove/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void remove(@PathVariable final String site, @RequestParam(required = true) final String type) {
-        this.formsManager.remove(new Context(), site, type);
+        this.formsManager.remove(null, site, type);
     }
 
     @RequestMapping(value = "/copy/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void copy(@PathVariable final String site, @RequestParam(required = true) final String src,
                      @RequestParam(required = true) final String dst) {
-        this.formsManager.copy(new Context(), site, src, dst);
+        this.formsManager.copy(null, site, src, dst);
     }
 }

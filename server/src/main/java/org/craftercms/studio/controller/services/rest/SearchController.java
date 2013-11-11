@@ -56,6 +56,6 @@ public class SearchController {
     @ResponseBody
     public ResultSet search(@PathVariable final String site, @RequestParam(required = true) final String query,
                        final HttpServletRequest request, final HttpServletResponse response) {
-        return this.searchManager.find(new Context(), query);
+        return this.searchManager.find(null, query);
     }
 }

@@ -40,11 +40,12 @@ public class VersionManagerImpl implements VersionManager {
 
     @Override
     public Tree<Version> history(final Context context, final String itemId) {
-        if (StringUtils.isEmpty(itemId)) {
+        throw new NotImplementedException("Not implemented yet!");
+        /*if (StringUtils.isEmpty(itemId)) {
             throw new IllegalArgumentException("Item id cannot be empty");
         }
         List<Item> versions = this.versionService.getAllVersions(context.getTicket(), itemId);
-        return createVersionTree(versions);
+        return createVersionTree(versions);*/
     }
 
     private Tree<Version> createVersionTree(final List<Item> versions) {

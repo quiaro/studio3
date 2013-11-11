@@ -78,7 +78,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     @Test
     public void testLogin() throws Exception {
         when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(new Context());
+            Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
             post("/api/1/security/login")
@@ -94,7 +94,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     @Test
     public void testLoginMissingUsername() throws Exception {
         when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(new Context());
+            Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
             post("/api/1/security/login")
@@ -109,7 +109,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     @Test
     public void testLoginMissingPassword() throws Exception {
         when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(new Context());
+            Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
             post("/api/1/security/login")
@@ -124,7 +124,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     @Test
     public void testLoginEmptyUsername() throws Exception {
         when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(new Context());
+            Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
             post("/api/1/security/login")
@@ -140,7 +140,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     @Test
     public void testLoginEmptyPassword() throws Exception {
         when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(new Context());
+            Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
             post("/api/1/security/login")

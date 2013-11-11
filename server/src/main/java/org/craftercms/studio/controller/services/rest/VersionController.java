@@ -16,7 +16,7 @@
  */
 package org.craftercms.studio.controller.services.rest;
 
-import org.craftercms.studio.api.version.VersionManager;
+import org.craftercms.studio.api.content.VersionManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
@@ -52,7 +52,7 @@ public class VersionController {
     @ResponseBody
     public Tree<Version> getVersionHistory(@PathVariable final String site, @RequestParam(required = true) final
             String itemId, final HttpServletRequest request, final HttpServletResponse response) {
-        return this.versionManager.history(new Context(), itemId);
+        return this.versionManager.history(null, itemId);
     }
 
     /**
@@ -67,6 +67,6 @@ public class VersionController {
     public void revert(@PathVariable final String site, @RequestParam(required = true) final String itemId,
         @RequestParam(required = true) final String versionToRevertTo,
                        final HttpServletRequest request, final HttpServletResponse response) {
-        this.versionManager.revert(new Context(), itemId, versionToRevertTo);
+        this.versionManager.revert(null, itemId, versionToRevertTo);
     }
 }

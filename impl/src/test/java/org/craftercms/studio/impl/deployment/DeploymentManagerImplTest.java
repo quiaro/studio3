@@ -36,182 +36,182 @@ public class DeploymentManagerImplTest extends AbstractManagerTest {
 
     @Test(expected = NotImplementedException.class)
     public void testHistory() throws Exception {
-        this.deploymentManagerSUT.history(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.history(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testHistoryInvalidSite() throws Exception {
-        this.deploymentManagerSUT.history(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.history(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testChannels() throws Exception {
-        this.deploymentManagerSUT.channels(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.channels(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(10));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testChannelsInvalidSite() throws Exception {
-        this.deploymentManagerSUT.channels(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.channels(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(10));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testChannelsInvalidEnvironment() throws Exception {
-        this.deploymentManagerSUT.channels(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.channels(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(10));
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateChannel() throws Exception {
-        this.deploymentManagerSUT.updateChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.updateChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateChannelInvalidSite() throws Exception {
-        this.deploymentManagerSUT.updateChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.updateChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateChannelNewChannel() throws Exception {
-        this.deploymentManagerSUT.updateChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.updateChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateChannelExistingChannel() throws Exception {
-        this.deploymentManagerSUT.updateChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.updateChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testUpdateChannelInvalidChannel() throws Exception {
-        this.deploymentManagerSUT.updateChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.updateChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveChannel() throws Exception {
-        this.deploymentManagerSUT.removeChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.removeChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveChannelInvalidSite() throws Exception {
-        this.deploymentManagerSUT.removeChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.removeChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveChannelInvalidChannel() throws Exception {
-        this.deploymentManagerSUT.removeChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.removeChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testRemoveChannelChannelDoesNotExist() throws Exception {
-        this.deploymentManagerSUT.removeChannel(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.removeChannel(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testDeploy() throws Exception {
-        this.deploymentManagerSUT.deploy(new Context(), RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
+        this.deploymentManagerSUT.deploy(null, RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testDeployInvalidSite() throws Exception {
-        this.deploymentManagerSUT.deploy(new Context(), RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
+        this.deploymentManagerSUT.deploy(null, RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testDeployInvalidItemList() throws Exception {
-        this.deploymentManagerSUT.deploy(new Context(), RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
+        this.deploymentManagerSUT.deploy(null, RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testDeployEmptyItemList() throws Exception {
-        this.deploymentManagerSUT.deploy(new Context(), RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
+        this.deploymentManagerSUT.deploy(null, RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testDeployItemDoesNotExist() throws Exception {
-        this.deploymentManagerSUT.deploy(new Context(), RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
+        this.deploymentManagerSUT.deploy(null, RandomStringUtils.randomAlphabetic(10), createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testStatus() throws Exception {
-        this.deploymentManagerSUT.status(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.status(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testStatusInvalidSite() throws Exception {
-        this.deploymentManagerSUT.status(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.status(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testStatusInvalidChannel() throws Exception {
-        this.deploymentManagerSUT.status(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.status(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testStatusChannelUnavailable() throws Exception {
-        this.deploymentManagerSUT.status(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.status(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testVersion() throws Exception {
-        this.deploymentManagerSUT.version(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.version(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testVersionInvalidSite() throws Exception {
-        this.deploymentManagerSUT.version(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.version(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testVersionInvalidChannel() throws Exception {
-        this.deploymentManagerSUT.version(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.version(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testVersionChannelUnavailable() throws Exception {
-        this.deploymentManagerSUT.version(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.version(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testAbort() throws Exception {
-        this.deploymentManagerSUT.abort(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.abort(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testAbortInvalidSite() throws Exception {
-        this.deploymentManagerSUT.abort(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.abort(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testAbortInvalidChannel() throws Exception {
-        this.deploymentManagerSUT.abort(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.abort(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testAbortChannelUnavailable() throws Exception {
-        this.deploymentManagerSUT.abort(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.deploymentManagerSUT.abort(null, RandomStringUtils.randomAlphabetic(10),
             createDeploymentChannelMock());
     }
 }

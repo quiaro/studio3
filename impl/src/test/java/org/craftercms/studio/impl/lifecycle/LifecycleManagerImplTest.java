@@ -40,31 +40,31 @@ public class LifecycleManagerImplTest extends AbstractManagerTest {
 
     @Test(expected = NotImplementedException.class)
     public void testGetPossibleActions() throws Exception {
-        this.lifecycleManagerSUT.getPossibleActions(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testGetPossibleActionsInvalidSite() throws Exception {
-        this.lifecycleManagerSUT.getPossibleActions(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testGetPossibleActionsInvalidItemList() throws Exception {
-        this.lifecycleManagerSUT.getPossibleActions(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testGetPossibleActionsEmptyItemList() throws Exception {
-        this.lifecycleManagerSUT.getPossibleActions(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
     @Test(expected = NotImplementedException.class)
     public void testGetPossibleActionsItemDoesNotExist() throws Exception {
-        this.lifecycleManagerSUT.getPossibleActions(new Context(), RandomStringUtils.randomAlphabetic(10),
+        this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 }
