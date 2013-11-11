@@ -13,7 +13,7 @@ import java.io.InputStream;
  */
 public interface AssetService {
     /**
-     * create an asset file in the repository.
+     * Create an asset file in the repository.
      *
      * @param context         context
      * @param destinationPath path to write to
