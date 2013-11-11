@@ -134,15 +134,48 @@ angular.module('crafter.studio.common')
     }])
 
     .factory('AuthenticationService', [ function() {
-        var loggedIn = false;
+        var loggedIn = true;
+
+        function logIn () {
+            // TODO: replace this with a call to an authentication service in the back-end
+            loggedIn = true;
+        }
 
         function isLoggedIn () {
+            // TODO: replace this with a call to an authentication service in the back-end
             return loggedIn;
         }
 
         return {
+            logIn: logIn,
             isLoggedIn: isLoggedIn
         };
+    }])
+
+    .factory('UserService', [ function() {
+        var userRoles;
+
+        function getUserRoles () {
+            // TODO: replace this with a call to an authentication service in the back-end
+            userRoles = ['author'];
+            return userRoles || [];
+        }
+
+        return {
+            getUserRoles: getUserRoles
+        }
+    }])
+
+    .factory('UtilsService', [ function() {
+        function arrayIntersection (array1, array2) {
+            return array1.filter( function (el) {
+                return array2.indexOf(el) != -1;
+            })
+        }
+
+        return {
+            arrayIntersection: arrayIntersection
+        }
     }])
 
     .factory('NotificationService', ['toastr', function (toastr) {

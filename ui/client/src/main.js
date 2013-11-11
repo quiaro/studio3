@@ -10,9 +10,15 @@ angular.module('studio-ui', [
         'ui.router'
     ])
 
+    .constant('CONFIG', {
+        baseUrl: '/src/modules/common/'
+    })
+
     .config(['$locationProvider',
+        '$stateProvider',
         '$urlRouterProvider',
-        '$httpProvider', function ($locationProvider, $urlRouterProvider, $httpProvider) {
+        '$httpProvider',
+        'CONFIG', function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, CONFIG) {
 
         var logOutUserOn401 = ['$q', '$location',
             function($q, $location) {
@@ -38,6 +44,12 @@ angular.module('studio-ui', [
 
         $httpProvider.responseInterceptors.push(logOutUserOn401);
 
+        $stateProvider
+            .state('unauthorized', {
+                url: '/unauthorized',
+                templateUrl: CONFIG.baseUrl + 'templates/unauthorized.tpl.html'
+            });
+
         $urlRouterProvider.otherwise('/dashboard');
         $locationProvider.html5Mode(true);
     }])
@@ -54,16 +66,39 @@ angular.module('studio-ui', [
     .run(['$rootScope',
         '$location',
         '$state',
-        'AuthenticationService', function ($rootScope, $location, $state, AuthenticationService) {
+        'AuthenticationService',
+        'UserService',
+        'UtilsService',
+        function ($rootScope, $location, $state, AuthenticationService, UserService, UtilsService) {
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            if (toState.requireAuth && !AuthenticationService.isLoggedIn()) {
+            var roles, roleIntersection;
 
-                event.preventDefault();
+            if (toState.requireAuth) {
 
-                console.log("Sorry! Not logged in.");
+                if (!AuthenticationService.isLoggedIn()) {
+                    // The module requires authentication, but the user is not logged in => send user
+                    // to login state.
 
-                $state.go('login');
+                    event.preventDefault();
+                    console.log("Sorry! Not logged in.");
+                    $state.go('login');
+                } else {
+                    // The module requires authentication and the user is logged in.
+
+                    if (toState.rolesAllowed && toState.rolesAllowed.length) {
+                        // The modules restricts access to only certain roles. Check if the user has
+                        // any of these roles.
+                        roles = UserService.getUserRoles();
+                        roleIntersection = UtilsService.arrayIntersection(toState.rolesAllowed, roles);
+
+                        if (!roleIntersection.length) {
+                            event.preventDefault();
+                            console.log("Sorry! You do not have access to this module.");
+                            $state.go('unauthorized');
+                        }
+                    }
+                }
             }
         });
 
