@@ -10,6 +10,7 @@ import java.io.InputStream;
  * Asset Manager interface
  *
  * @author Sumer Jabri
+ * @author Dejan Brkic
  */
 public interface AssetService {
     /**
@@ -34,4 +35,7 @@ public interface AssetService {
      * @return content
      */
     InputStream read(Context context, String itemId) throws StudioException;
+
+
+    // TODO: Consider adding update and delete methods
 }

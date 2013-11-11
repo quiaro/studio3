@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.craftercms.studio.api.content.ContentService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.internal.content.ContentManager;
@@ -19,8 +20,10 @@ public class ContentManagerImpl implements ContentManager {
     private ContentService contentService;
 
     @Override
-    public void create(final Context context, final String site, final String path, final Item item, final InputStream content) throws StudioException {
-        contentService.create(context.getTicket(), site, path, item, content);
+    public ItemId create(final Context context, final String site, final String path, final Item item,
+                    final InputStream content) throws StudioException {
+        Item newItem = contentService.create(context.getTicket(), site, path, item, content);
+        return newItem.getId();
     }
 
     @Override

@@ -17,6 +17,7 @@
 
 package org.craftercms.studio.impl.content;
 
+import java.io.File;
 import java.io.InputStream;
 
 import org.craftercms.studio.api.content.AssetService;
@@ -36,9 +37,31 @@ public class AssetServiceImpl implements AssetService {
 
     private ContentManager contentManager;
 
+    /**
+     * Create asset item in repository.
+     *
+     * @param context         context
+     * @param site            site
+     * @param destinationPath path to write to
+     * @param fileName        file name of asset
+     * @param content         content input stream, can be null if creating a 0 byte file
+     * @param mimeType        mimeType of asset, can be null if unknown
+     * @return item id
+     * @throws StudioException
+     */
     @Override
     public ItemId create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType) throws StudioException {
-        throw new NotImplementedException("Not implemented yet!");
+        StringBuilder sb = new StringBuilder(destinationPath);
+        sb.append(File.pathSeparator);
+        sb.append(fileName);
+        Item item = createAssetItem();
+        return contentManager.create(context, site, sb.toString(), item, content);
+    }
+
+    // TODO: review this function ..
+    // Content manager requires Item object to add new item to repository
+    private Item createAssetItem() {
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 
     @Override

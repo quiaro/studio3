@@ -18,6 +18,7 @@ package org.craftercms.studio.internal.content;
 
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
 
 import java.io.InputStream;
@@ -36,7 +37,7 @@ public interface ContentManager {
      * @param item    item meta-data
      * @param content content
      */
-    void create(Context context, String site, String path, Item item, InputStream content) throws StudioException;
+    ItemId create(Context context, String site, String path, Item item, InputStream content) throws StudioException;
 
     /**
      * Read content for given item id.
