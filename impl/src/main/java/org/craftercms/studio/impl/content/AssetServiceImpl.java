@@ -22,6 +22,7 @@ import java.io.InputStream;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.internal.content.ContentManager;
@@ -36,8 +37,7 @@ public class AssetServiceImpl implements AssetService {
     private ContentManager contentManager;
 
     @Override
-    public void create(final Context context, final String site, final String path, final Item item, final InputStream content) throws StudioException {
-        contentManager.create(context, site, path, item, content);
+    public ItemId create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType) throws StudioException {
         throw new NotImplementedException("Not implemented yet!");
     }
 

@@ -43,7 +43,8 @@ public class AssetController {
     private AssetService assetService;
 
     @RequestMapping(value = "/create/{site}")
-    public void create(@PathVariable String site, @RequestParam String path, @RequestParam MultipartFile file) throws
+    public void create(@PathVariable String site, @RequestParam String destinationPath, @RequestParam String fileName,
+                       @RequestParam MultipartFile file, @RequestParam String mimeType) throws
         StudioException{
 
         /** TODO:
@@ -57,6 +58,6 @@ public class AssetController {
         } catch (IOException e) {
             throw new StudioException("Error getting content from multipart request") {};
         }
-        assetService.create(null, site, path, null, contentStream);
+        assetService.create(null, site, destinationPath, fileName, contentStream, mimeType);
     }
 }
