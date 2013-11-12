@@ -20,6 +20,7 @@ package org.craftercms.studio.impl.content;
 import java.io.File;
 import java.io.InputStream;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
@@ -52,21 +53,25 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public ItemId create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType) throws StudioException {
         StringBuilder sb = new StringBuilder(destinationPath);
-        sb.append(File.pathSeparator);
+        sb.append(File.separator);
         sb.append(fileName);
-        Item item = createAssetItem();
+        Item item = createAssetItem(fileName);
         return contentManager.create(context, site, sb.toString(), item, content);
     }
 
     // TODO: review this function ..
     // Content manager requires Item object to add new item to repository
-    private Item createAssetItem() {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    private Item createAssetItem(String fileName) {
+        Item item = new Item();
+        item.setCreatedBy(RandomStringUtils.random(10));
+        item.setFileName(fileName);
+        item.setLabel(fileName);
+        return item;
     }
 
     @Override
     public InputStream read(final Context context, final String itemId) throws StudioException {
-        throw new NotImplementedException("Not implemented yet!");
+        return contentManager.read(context, itemId);
     }
 
     // Getters and setters

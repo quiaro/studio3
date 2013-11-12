@@ -28,7 +28,7 @@ public class ContentManagerImpl implements ContentManager {
 
     @Override
     public InputStream read(final Context context, final String itemId) throws StudioException {
-        throw new NotImplementedException("Not implemented yet!");
+        return contentService.read(context.getTicket(), itemId);
     }
 
     // Getters and setters
