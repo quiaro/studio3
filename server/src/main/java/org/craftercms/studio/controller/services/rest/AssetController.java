@@ -28,7 +28,6 @@ import javax.validation.Valid;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tenant;
 import org.craftercms.studio.commons.exception.NotImplementedException;
@@ -117,9 +116,6 @@ public class AssetController {
         try {
             final OutputStream out = response.getOutputStream();
             IOUtils.copy(content, out);
-            Item item = assetService.getAssetItem(context, itemId);
-            response.setContentType(item.getContentType());
-            // add other headers ...
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
