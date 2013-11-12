@@ -75,7 +75,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/src/modules/*/scripts/**/*.js'
+        '<%= yeoman.app %>/src/modules/**/*.js'
       ]
     },
     karma: {
