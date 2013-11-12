@@ -33,13 +33,13 @@ module.exports = function (grunt) {
     },
     watch: {
       recess: {
-        files: ['<%= yeoman.app %>/src/modules/*/styles/*.less', '<%= yeoman.app %>/src/plugins/*/styles/*.css'],
+        files: ['<%= yeoman.app %>/src/modules/**/*.less'],
         tasks: ['recess:server']
       },
       express: {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
-          '{.tmp,<%= yeoman.app %>}/src/modules/*/styles/*.less',
+          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.less',
           '{.tmp,<%= yeoman.app %>}/src/modules/**/*.js',
           '{.tmp,<%= yeoman.app %>}/src/modules/**/*.html',
           '<%= yeoman.app %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
@@ -75,8 +75,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/src/modules/*/scripts/**/*.js',
-        '<%= yeoman.app %>/src/plugins/*/scripts/**/*.js'
+        '<%= yeoman.app %>/src/modules/*/scripts/**/*.js'
       ]
     },
     karma: {
@@ -127,10 +126,8 @@ module.exports = function (grunt) {
             dirs: ['<%= yeoman.dist %>']
         },
         html: ['<%= yeoman.dist %>/index.html',
-               '<%= yeoman.dist %>/src/modules/*/templates/*.html',
-               '<%= yeoman.dist %>/src/modules/*/plugins/*.html'],
-        css: ['<%= yeoman.dist %>/src/styles/studio.css',
-              '<%= yeoman.dist %>/src/plugins/*/styles/*.css']
+               '<%= yeoman.dist %>/src/modules/*/templates/*.html'],
+        css: ['<%= yeoman.dist %>/src/styles/studio.css']
     },
     imagemin: {
       dist: {
@@ -206,19 +203,19 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,txt}',
             'src/config/*.json',
-            'src/lib/**/*.min.js',
-            'src/lib/**/*.min.css',
+            'lib/**/*.min.js',
+            'lib/**/*.min.css',
             'src/images/**/*.{gif,webp,ico}',
             'src/styles/studio.css',
             'src/templates/**/*.tpl.html',
 
             // Special cases
-            'src/lib/jquery/js/*.js',
-            'src/lib/jquery/js/*.map',
-            'src/lib/toastr/js/*.js',
-            'src/lib/toastr/js/*.map',
-            'src/lib/require*/**/*.js',
-            'src/lib/bootstrap/fonts/*'
+            'lib/jquery/js/*.js',
+            'lib/jquery/js/*.map',
+            'lib/toastr/js/*.js',
+            'lib/toastr/js/*.map',
+            'lib/require*/**/*.js',
+            'lib/bootstrap/fonts/*'
           ]
         }]
       }
@@ -229,7 +226,7 @@ module.exports = function (grunt) {
           variables: {
             'min': '',
             'includeTranslateErrorHandler': '<script ' +
-              'src="src/lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
+              'src="lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
             'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
           }
         },
@@ -255,7 +252,7 @@ module.exports = function (grunt) {
     bower: {
       install: {
         options : {
-          targetDir: './client/src/lib',
+          targetDir: './client/lib',
           layout: 'byComponent',
           verbose: true
         }
@@ -278,8 +275,8 @@ module.exports = function (grunt) {
   // Test look and feel locally
   grunt.registerTask('server', [
     'clean:server',
-    'recess:server',
     'replace:dev',
+    'recess:server',
     'express:dev',
     'open',
     'watch'

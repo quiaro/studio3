@@ -1,31 +1,6 @@
-html, body {
-    height: 100%;
-    min-width: 1024px;
-}
-
 #studio {
     background-color: @color-background;
     color: @gray-dark;
-    display: table;
-    border-spacing: 0;
-    border-collapse: collapse;
-    .size(100%, 100%);
-
-    > div { display: table-row; width: 100%; }
-}
-
-/* --- animations --- */
-#nav {
-    .transition(width);
-    .transition-duration(1s);
-}
-
-#main-container .content {
-    .transition(top);
-    .transition(right);
-    .transition(bottom);
-    .transition(left);
-    .transition-duration(1s);
 }
 
 /* --- navigation --- */

@@ -50,7 +50,7 @@ angular.module('studio-ui', [
                 templateUrl: CONFIG.baseUrl + 'templates/unauthorized.tpl.html'
             });
 
-        $urlRouterProvider.otherwise('/dashboard');
+        $urlRouterProvider.otherwise('/login');
         $locationProvider.html5Mode(true);
     }])
 

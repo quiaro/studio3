@@ -1,9 +1,28 @@
+.login.container {
+    border: @section-border;
+    border-radius: @border-radius-large;
+    .box-shadow(0 4px 24px rgba(0,0,0,.3));
+    margin-top: 40px;
+    padding-top: 25px;
+    #gradient.directional(@content-top, @content-bottom, 135deg);
+    min-width: 970px;
+}
+
+
+.login .footer {
+    height: @nav-height;
+
+    .logo {
+        height: inherit;
+        background: url(/src/images/crafter-logo-sm.png) no-repeat left center;
+    }
+}
+
 /* ------------------ */
 /* ----- Preview ---- */
 /* ------------------ */
 #tools-panel {
     background-color: @tools-panel-gradient-top;
-    #gradient.vertical(@tools-panel-gradient-top, @tools-panel-gradient-bottom);
 	position: absolute;
 	bottom: 0;
 	left: 0;

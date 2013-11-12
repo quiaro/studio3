@@ -16,7 +16,7 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
                 templateUrl: CONFIG.baseUrl + 'templates/dashboard.tpl.html',
                 controller: 'DashboardCtrl',
                 requireAuth: true,
-                rolesAllowed: ['admin', 'editor', 'author']
+                rolesAllowed: ['admin', 'editor']
             });
     }])
 
