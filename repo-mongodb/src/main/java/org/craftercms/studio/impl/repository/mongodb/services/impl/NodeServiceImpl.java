@@ -20,15 +20,19 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.UUID;
 
 import com.mongodb.gridfs.GridFSFile;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
-import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
+import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryQueries;
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataServiceUtils;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
@@ -37,29 +41,25 @@ import org.craftercms.studio.impl.repository.mongodb.services.GridFSService;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.mongodb.core.MongoTemplate;
+
 
 /**
  * Default Implementation of {@link org.craftercms.studio.impl.repository.mongodb.services.NodeService}.
  */
 public class NodeServiceImpl implements NodeService {
+
+
+
     /**
      * Logger.
      */
     private Logger log = LoggerFactory.getLogger(NodeServiceImpl.class);
-    /**
-     * Data Repository.
-     */
-    private NodeDataRepository nodeDataRepository;
+
     /**
      * Grid FS Helper Services.
      */
     private GridFSService gridFSService;
-    /**
-     * Mongo Template for support.
-     */
-    private MongoTemplate mongoTemplate;
+
     /**
      * Path Services
      */
@@ -69,6 +69,11 @@ public class NodeServiceImpl implements NodeService {
      * String Buffer Size.
      */
     private static final int DEFAULT_BUILDER_SIZE = 512;
+    /**
+     * Data Service.
+     */
+    private MongodbDataService dataService;
+
 
     /**
      * Default CTOR.
@@ -90,21 +95,17 @@ public class NodeServiceImpl implements NodeService {
             Node newNode = new Node(parent, NodeType.FILE);
             newNode.setId(UUID.randomUUID().toString());
             try {
-                newNode.getMetadata().setCore(createNodeMetadata(fileName, creatorName, content, label));
-                if (isNodeUniqueNodeinTree(newNode)) {
-                    newNode = nodeDataRepository.save(newNode);
+                newNode.setCore(createNodeMetadata(fileName, creatorName, content, label));
+                if (isNodeUniqueNodeInTree(newNode)) {
+                    dataService.save(NODES_COLLECTION, newNode);
                     log.debug("File node  {} saved ", newNode);
                     return newNode;
                 } else {
                     log.debug("Node with name {} is already exist on given tree path {}",
-                        newNode.getMetadata().getCore().getNodeName(), newNode.getAncestors());
+                        newNode.getCore().getNodeName(), newNode.getAncestors());
                     throw new IllegalArgumentException("Node named " + fileName + " Already exist in given path " +
-                        parent.getMetadata().getCore().getNodeName());
+                        parent.getCore().getNodeName());
                 }
-            } catch (DataAccessException ex) {
-                log.error("Unable to save node {} due a DataAccessException", newNode);
-                log.error("DataAccessException ", ex);
-                throw new MongoRepositoryException("Unable to save Node due a DataAccessException", ex);
             } catch (MongoRepositoryException e) {
                 log.error("Unable to save node {} because file was unable to be saved {}", newNode, e.toString());
                 throw new MongoRepositoryException("Unable to save node because file was unable to be saved", e);
@@ -126,27 +127,24 @@ public class NodeServiceImpl implements NodeService {
 
 
         if (isNodeFolder(parent)) {
-            //TODO Validate that folder with same name and ancenstor does not exist.
+            //TODO Validate that folder with same name and ancestor does not exist.
             log.debug("Params for new Folder node are ok");
             log.debug("Generating ID and CoreMetadata");
             Node newNode = new Node(parent, NodeType.FOLDER);
             newNode.setId(UUID.randomUUID().toString());
-            newNode.getMetadata().setCore(createBasicMetadata(folderName, creatorName, folderLabel));
-            log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), newNode.getMetadata());
+            newNode.setCore(createBasicMetadata(folderName, creatorName, folderLabel));
+            log.debug("Generated Id {} , and coreMetadata {}", newNode.getId(), newNode);
             log.debug("Saving Folder");
-            try {
-                if (isNodeUniqueNodeinTree(newNode)) {
-                    newNode = nodeDataRepository.save(newNode);
-                } else {
-                    log.debug("Node with name {} is already exist on given tree path {}",
-                        newNode.getMetadata().getCore().getNodeName(), newNode.getAncestors());
-                    throw new IllegalArgumentException("Node named " + folderName + " Already exist in given path " +
-                        parent.getMetadata().getCore().getNodeName());
-                }
-            } catch (DataAccessException ex) {
-                log.error("Unable to save Folder Node ", ex);
-                throw new MongoRepositoryException("Unable to save Folder Node", ex);
+
+            if (isNodeUniqueNodeInTree(newNode)) {
+                dataService.save(NODES_COLLECTION, newNode);
+            } else {
+                log.debug("Node with name {} is already exist on given tree path {}",
+                    newNode.getCore().getNodeName(), newNode.getAncestors());
+                throw new IllegalArgumentException("Node named " + folderName + " Already exist in given path " +
+                    parent.getCore().getNodeName());
             }
+
             log.debug("Node saved, returning node {}", newNode);
             return newNode;
         } else {
@@ -156,16 +154,30 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public List<Node> findNodesByParents(final List<Node> parents) {
+    public Iterable<Node> findNodesByParents(final List<Node> parents) throws MongoRepositoryException {
         log.debug("Finding all children of {}", parents);
-        List<Node> foundNodes = nodeDataRepository.findAllByAncestors(parents);
+        Iterable<Node> foundNodes = dataService.find(NODES_COLLECTION, Node.class,
+            MongoRepositoryQueries.GET_BY_ANCESTORS, MongodbDataServiceUtils.collectionToString(nodeListToIdList
+            (parents)));
+        log.debug("Found {} children nodes ", foundNodes);
+        return foundNodes;
+    }
+
+
+    @Override
+    public Iterable<Node> findNodeByParent(final Node node) throws MongoRepositoryException {
+        log.debug("Finding all children of {}", node);
+        Iterable<Node> foundNodes = dataService.find(NODES_COLLECTION, Node.class, MongoRepositoryQueries
+            .GET_BY_ANCESTORS, node.getId());
         log.debug("Found {} children nodes ", foundNodes);
         return foundNodes;
     }
 
     @Override
-    public Node getRootNode() {
-        return nodeDataRepository.findRootNode();
+    public Node getRootNode() throws MongoRepositoryException {
+
+        return dataService.findOne(NODES_COLLECTION, MongoRepositoryQueries.GET_ROOT_NODE, Node.class);
+
     }
 
     @Override
@@ -180,54 +192,49 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public Node getNode(final String nodeId) throws MongoRepositoryException {
-
         if (StringUtils.isBlank(nodeId)) {
             log.error("Given Node Id is either null,empty or blank");
             throw new IllegalArgumentException("Node Id can't be null, empty or blank");
         }
-
         log.debug("Getting node by id = {}", nodeId);
-        try {
-            Node foundNode = nodeDataRepository.findOne(nodeId);
-            log.debug("Found {} ", foundNode);
-            return foundNode;
-        } catch (DataAccessException ex) {
-            log.error("Unable to find Node with id {} due a DataAccessException", nodeId);
-            log.error("DataAccessException is ", ex);
-            throw new MongoRepositoryException("Unable to find Node ", ex);
-        }
+        Node foundNode = dataService.findById(NODES_COLLECTION, nodeId, Node.class);
+        log.debug("Found {} ", foundNode);
+        return foundNode;
     }
 
     @Override
-    public Node findNodeByAncestorsAndName(final List<Node> ancestors, final String nodeName) {
+    public Node findNodeByAncestorsAndName(final List<Node> ancestors, final String nodeName) throws
+        MongoRepositoryException {
         if (StringUtils.isBlank(nodeName)) {
             log.debug("Node name can't be empty or blank");
             throw new IllegalArgumentException("Can't search node with name either null ,empty or blank");
         }
         if (ancestors == null || ancestors.isEmpty()) {                      //Quick List of 1
-            return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(Arrays.asList(getRootNode()),
-                nodeName);
+            return dataService.findOne(NODES_COLLECTION, Node.class,
+                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, getRootNode().getId(), nodeName);
         } else {
-            return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(ancestors, nodeName);
+            return dataService.findOne(NODES_COLLECTION, Node.class,
+                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, MongodbDataServiceUtils.collectionToString
+                (nodeListToIdList(ancestors)), nodeName);
         }
     }
 
     @Override
-    public Node getSiteNode(String siteName) {
+    public Node getSiteNode(String siteName) throws MongoRepositoryException {
         return findNodeByAncestorsAndName(Arrays.asList(getRootNode()), siteName);
     }
 
     @Override
-    public Node createFolderStructure(final String path,final String creator) throws MongoRepositoryException {
+    public Node createFolderStructure(final String path, final String creator) throws MongoRepositoryException {
         String[] pathParts = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         Node parentNode = getRootNode();
         for (int i = 0; i < pathParts.length; i++) {
             Node pivot = findNodeByAncestorsAndName(parentNode.getAncestry(), pathParts[i]);
             if (pivot == null) {
-                parentNode=createFolderNode(parentNode, pathParts[i], pathParts[i], creator);
+                parentNode = createFolderNode(parentNode, pathParts[i], pathParts[i], creator);
 
-            }else{
-                parentNode=pivot;
+            } else {
+                parentNode = pivot;
             }
         }
         return parentNode;
@@ -243,56 +250,64 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public List<Node> getChildren(final String nodeId) throws MongoRepositoryException {
+    public Iterable<Node> getChildren(final String nodeId) throws MongoRepositoryException {
         if (!StringUtils.isBlank(nodeId)) {
             Node parent = getNode(nodeId);
-            return nodeDataRepository.findAllByAncestors(parent.getAncestry());
+            return findNodesByParents(Arrays.asList(parent));
         }
         return null;
     }
 
     @Override
-    public String getNodePath(Node node){
+    public String getNodePath(Node node) throws MongoRepositoryException {
         //make it bigger so it will not have to resize it for a bit.
         StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
         //First Add the Node with the given ID
 
-        ListIterator<Node> nodeListIterator = node.getAncestors().listIterator();
+        Iterator<Node> nodeListIterator = (Iterator<Node>)dataService.find(NODES_COLLECTION, Node.class,
+            MongoRepositoryQueries.GET_ANCESTORS, MongodbDataServiceUtils.collectionToString(node.getAncestors()));
         while (nodeListIterator.hasNext()) {
             Node tmpNode = nodeListIterator.next();
-            if (nodeListIterator.previousIndex() > 0) { // if don't have next is the root node, ignore it
-                builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
-                builder.append(tmpNode.getMetadata().getCore().getNodeName());
-            }
+            builder.append(tmpNode.getCore().getNodeName());
         }
-        if (!node.getMetadata().getCore().getNodeName().equals(MongoRepositoryDefaults
-            .REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
+        if (!node.getCore().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
             builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         }
-        builder.append(node.getMetadata().getCore().getNodeName());
+        builder.append(node.getCore().getNodeName());
         String path = builder.toString();
         log.debug("Calculated Path is {}", path);
         return path;
     }
 
-    private boolean isNodeUniqueNodeinTree(Node nodeToValidate) {
-        return nodeDataRepository.findNodeByAncestorsAndMetadataCoreNodeName(nodeToValidate.getAncestors(),
-            nodeToValidate.getMetadata().getCore().getNodeName()) == null;
+    @Override
+    public void countRootNodes() {
+        long count = dataService.getCollection(NODES_COLLECTION).count(MongoRepositoryQueries.GET_ROOT_NODE);
+        if (count > 1) {
+            log.error("Found {} root nodes, stopping repository to prevent it's corruption or data loses", count);
+            throw new IllegalStateException("Multiple Root Nodes found");
+        }
+    }
+
+    //ToDo JDK8 Do this in a nice Lambda Exp.
+    private List<String> nodeListToIdList(final List<Node> nodes) {
+        List ids = ListUtils.transformedList(nodes, new NodesToIdTransformer());
+        return ids;
+    }
+
+
+    private boolean isNodeUniqueNodeInTree(Node nodeToValidate) throws MongoRepositoryException {
+        return dataService.findOne(NODES_COLLECTION, Node.class, MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME,
+            nodeToValidate.getId(), nodeToValidate.getCore().getNodeName()) == null;
     }
 
     private CoreMetadata createNodeMetadata(final String fileName, final String creatorName,
                                             final InputStream content, final String folderLabel) throws
         MongoRepositoryException {
         CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName, folderLabel);
-        try {
-            GridFSFile savedFile = gridFSService.saveFile(fileName, content);
-            coreMetadata.setSize(savedFile.getLength());
-            coreMetadata.setFileId(savedFile.getId().toString());
-        } catch (DataAccessException ex) {
-            log.error("Unable to save {} file due a DataAccessException", fileName);
-            log.error("DataAccessException thrown ", ex);
-            throw new MongoRepositoryException("Unable to save file due a DataAccessException", ex);
-        }
+        GridFSFile savedFile = gridFSService.saveFile(fileName, content);
+        coreMetadata.setSize(savedFile.getLength());
+        coreMetadata.setFileId(savedFile.getId().toString());
+
         return coreMetadata;
     }
 
@@ -308,19 +323,25 @@ public class NodeServiceImpl implements NodeService {
         return coreMetadata;
     }
 
-    public void setNodeDataRepository(final NodeDataRepository nodeDataRepository) {
-        this.nodeDataRepository = nodeDataRepository;
-    }
 
     public void setGridFSService(final GridFSService gridFSService) {
         this.gridFSService = gridFSService;
     }
 
-    public void setMongoTemplate(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
-
     public void setPathServices(PathService pathServices) {
         this.pathServices = pathServices;
+    }
+
+    public void setDataService(MongodbDataService dataService) {
+        this.dataService = dataService;
+    }
+
+
+    class NodesToIdTransformer implements Transformer {
+
+        @Override
+        public Object transform(final Object input) {
+            return ((Node)input).getId();
+        }
     }
 }

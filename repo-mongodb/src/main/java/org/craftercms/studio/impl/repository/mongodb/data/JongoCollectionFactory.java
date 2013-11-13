@@ -52,12 +52,15 @@ public class JongoCollectionFactory {
         jongo = new Jongo(db);
     }
 
+    public DB getDatabase(){
+        return db;
+    }
 
     public void setMongo(MongoClient mongo) {
         this.mongo = mongo;
     }
 
-    private void setDatabase(String database) {
+    public void setDatabase(String database) {
         this.database = database;
     }
 

@@ -17,7 +17,10 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services;
 
-import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
+import java.io.InputStream;
+
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -29,8 +32,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.dao.DataIntegrityViolationException;
 
+
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,13 +51,13 @@ public class NodeServiceCreateFolderTest {
     /**
      * Node Repo Mock
      */
-    private NodeDataRepository nodeDataRepository;
+    private MongodbDataService dataService;
 
     @Before
     public void setUp() throws Exception {
         nodeService = new NodeServiceImpl();
-        nodeDataRepository = mock(NodeDataRepository.class);
-        nodeService.setNodeDataRepository(nodeDataRepository);
+        dataService = mock(MongodbDataService.class);
+        nodeService.setDataService(dataService);
         // Return the same save object.
     }
 
@@ -70,27 +75,29 @@ public class NodeServiceCreateFolderTest {
 
     @Test()
     public void testCreate() throws Exception {
-        when(nodeDataRepository.save(Mockito.any(Node.class))).thenAnswer(new Answer<Object>() {
+        doAnswer(new Answer<Void>() {
             @Override
-            public Object answer(final InvocationOnMock invocation) throws Throwable {
-                return invocation.getArguments()[0];
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
             }
-        });
+        }).when(dataService).save(Mockito.anyString(), Mockito.any(Node.class));
+
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
         Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder" ,"Philip J. Fry");
         Assert.assertNotNull(node);
-        Assert.assertNotNull(node.getMetadata());
-        Assert.assertEquals(node.getMetadata().getCore().getCreator(), "Philip J. Fry");
-        Assert.assertEquals(node.getMetadata().getCore().getNodeName(), "TestFolder");
-        Assert.assertEquals(node.getParent(), parent);
+        Assert.assertNotNull(node);
+        Assert.assertEquals(node.getCore().getCreator(), "Philip J. Fry");
+        Assert.assertEquals(node.getCore().getNodeName(), "TestFolder");
+        Assert.assertEquals(node.getParentId(), parent);
         TestUtils.isUUIDValid(node.getId());
         Assert.assertTrue(nodeService.isNodeFolder(node));
     }
 
     @Test(expected = MongoRepositoryException.class)
     public void testCreateDataException() throws Exception {
-        when(nodeDataRepository.save(Mockito.any(Node.class))).thenThrow(DataIntegrityViolationException.class);
+        doThrow(MongoRepositoryException.class).when(dataService).save(Mockito.anyString(), Mockito.any(Node.class));
         Node parent = new Node();
         parent.setType(NodeType.FOLDER);
         Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder", "Philip J. Fry");

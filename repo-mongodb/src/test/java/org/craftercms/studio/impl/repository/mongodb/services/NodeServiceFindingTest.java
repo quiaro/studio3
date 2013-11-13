@@ -19,7 +19,6 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.util.UUID;
 
-import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;

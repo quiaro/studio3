@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
-import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -48,7 +47,7 @@ public class NodeServiceCreateFileTest {
      * Node Service (the one to be tested)
      */
     private NodeServiceImpl nodeService;
-    private NodeDataRepository nodeDataRepository;
+
     private GridFSService gridFSService;
 
     @Before
@@ -83,7 +82,7 @@ public class NodeServiceCreateFileTest {
         Assert.assertNotNull(fileNode.getMetadata());
         Assert.assertEquals(fileNode.getMetadata().getCore().getCreator(), "Doctor John A. Zoidberg");
         Assert.assertEquals(fileNode.getMetadata().getCore().getNodeName(), "TestFile");
-        Assert.assertEquals(fileNode.getParent(), nodeService.getRootNode());
+        Assert.assertEquals(fileNode.getParentId(), nodeService.getRootNode());
         TestUtils.isUUIDValid(fileNode.getId());
         Assert.assertTrue(nodeService.isNodeFile(fileNode));
     }

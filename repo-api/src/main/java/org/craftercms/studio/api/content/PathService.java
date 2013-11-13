@@ -26,12 +26,13 @@ public interface PathService {
 
     /**
      * Get item id by path.
+     *
      * @param ticket security ticket
      * @param site site
      * @param path item pah
      * @return item id
      */
-    String getItemIdByPath(String ticket, String site,  String path);
+    String getItemIdByPath(final String ticket, final String site,  final String path) throws RepositoryException;
 
     /**
      * Get item path by item id.

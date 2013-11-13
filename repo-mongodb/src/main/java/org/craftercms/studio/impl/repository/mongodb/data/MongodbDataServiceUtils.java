@@ -17,5 +17,24 @@
 
 package org.craftercms.studio.impl.repository.mongodb.data;
 
-public class MongodbDataServiceUtils {
+import java.util.List;
+
+public final class MongodbDataServiceUtils {
+
+    private MongodbDataServiceUtils() {
+    }
+
+
+    public static <T> String collectionToString(final List<T> list) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < list.size(); i++) {
+            buffer.append("\"");
+            buffer.append(list.get(i));
+            buffer.append("\"");
+            if (i != list.size()) {
+                buffer.append(",");
+            }
+        }
+        return buffer.toString();
+    }
 }

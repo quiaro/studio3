@@ -19,19 +19,17 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.io.InputStream;
 
+import com.mongodb.MongoException;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
 import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
+import org.bson.types.ObjectId;
+import org.craftercms.studio.impl.repository.mongodb.data.JongoCollectionFactory;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.GridFSService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
 
 /**
  * Default GridFS implementation.
@@ -43,9 +41,14 @@ public class GridFSServiceImpl implements GridFSService {
      */
     private Logger log = LoggerFactory.getLogger(GridFSServiceImpl.class);
     /**
+     * Mongo client. Jongo does not have interface for GridFS therefor all
+     * GridFs actions are done using the Driver.
+     */
+    private GridFS gridFs;
+
+    /**
      * Spring GridFsTemplate.
      */
-    private GridFsTemplate gridFsTemplate;
 
     @Override
     public GridFSFile saveFile(final String fileName, final InputStream fileInputStream) throws
@@ -59,10 +62,10 @@ public class GridFSServiceImpl implements GridFSService {
             throw new IllegalArgumentException("Given File inputStream is null");
         }
         try {
-            return gridFsTemplate.store(fileInputStream, fileName);
-        } catch (DataAccessException ex) {
-            log.error("Unable to save File {} due a error {} ", fileName, ex.getMessage());
-            throw new MongoRepositoryException("Unable to save fileInputStream ", ex);
+            return gridFs.createFile(fileInputStream, fileName, true);
+        } catch (MongoException ex) {
+            log.error("Unable to save \"" + fileName + "\"file in GridFs due a error", ex);
+            throw new MongoRepositoryException("Unable to save File", ex);
         }
     }
 
@@ -74,8 +77,7 @@ public class GridFSServiceImpl implements GridFSService {
         }
         log.debug("Getting fileInputStream with Id {}", fileId);
         try {
-            GridFSDBFile foundFile = gridFsTemplate.findOne(Query.query(Criteria.where(MongoRepositoryDefaults
-                .MONGODB_ID_KEY).is(fileId)));
+            GridFSDBFile foundFile = gridFs.findOne(new ObjectId(fileId));
             if (foundFile == null) {
                 log.debug("Unable to find a fileInputStream with id {}", fileId);
                 log.debug("If this Id was obtain using a node, this node may be broken");
@@ -85,14 +87,14 @@ public class GridFSServiceImpl implements GridFSService {
                     foundFile.getFilename(), foundFile.getMD5());
                 return foundFile.getInputStream();
             }
-        } catch (DataAccessException ex) {
-            log.error("Unable to get File with id {} due a DataAccessException {} ", fileId, ex.getMessage());
+        } catch (MongoException ex) {
+            log.error("Unable to get File with id {} due a MongoException {} ", fileId, ex.getMessage());
             log.error("DataAccessException is ", ex);
             throw new MongoRepositoryException("Unable to get File", ex);
         }
     }
 
-    public void setGridFsTemplate(final GridFsTemplate gridFsTemplate) {
-        this.gridFsTemplate = gridFsTemplate;
+    public void setJongoCollectionFactory(JongoCollectionFactory jongoCollectionFactory) {
+        this.gridFs = new GridFS(jongoCollectionFactory.getDatabase());
     }
 }

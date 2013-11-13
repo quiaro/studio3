@@ -78,7 +78,7 @@ public class ExportAction extends AbstractAction {
                 }
             }
         } else {
-            String fileId = nodeService.getNode(treeNode.getValue().getRepoId()).getMetadata().getCore().getFileId();
+            String fileId = nodeService.getNode(treeNode.getValue().getRepoId()).getCore().getFileId();
             try (InputStream file = nodeService.getFile(fileId)) {
                 if (file != null) {
                     byte[] buffer = new byte[1024];

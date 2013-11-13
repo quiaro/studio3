@@ -80,7 +80,7 @@ public class ContentServiceImpl implements ContentService {
         }
 
 
-        Node parent = checkParentPath(ticket, site, path, true /* TODO: Make this a Property */,item.getCreatedBy());
+        Node parent = checkParentPath(ticket, site, path, true /* TODO: Make this a Property */, item.getCreatedBy());
         log.debug("Saving File");
         Node newFileNode = nodeService.createFileNode(parent, item.getFileName(), item.getLabel(),
             item.getCreatedBy(), content);
@@ -107,8 +107,8 @@ public class ContentServiceImpl implements ContentService {
      * @throws MongoRepositoryException           If a Error happens while r/w
      * @throws java.lang.IllegalArgumentException if a portion of the path does not exist and mkdirs is set to false.
      */
-    private Node checkParentPath(final String ticket, final String site, final String path,
-                                 final boolean mkdirs, final String creator) throws MongoRepositoryException {
+    private Node checkParentPath(final String ticket, final String site, final String path, final boolean mkdirs,
+                                 final String creator) throws RepositoryException {
         String nodeId = pathService.getItemIdByPath(ticket, site, path);
         if (!StringUtils.isBlank(nodeId)) {
             return nodeService.getNode(nodeId);
@@ -116,7 +116,7 @@ public class ContentServiceImpl implements ContentService {
             log.debug("Portions of {} don't exist", path);
             if (mkdirs) {
                 log.debug("Mkdirs is on , Creating missing path portions");
-                    return nodeService.createFolderStructure(path, creator);
+                return nodeService.createFolderStructure(path, creator);
             } else {
                 log.debug("Mkdirs is off");
                 throw new IllegalArgumentException("Path " + path + " does not exist");
@@ -145,7 +145,7 @@ public class ContentServiceImpl implements ContentService {
 
         Node folderNode = checkParentPath(ticket, site, path, true/*TODO: Make this a property*/, item.getCreatedBy());
         if (folderNode != null) {
-            Node createdFolder = nodeService.createFolderNode(folderNode,item.getFileName(),item.getLabel(),
+            Node createdFolder = nodeService.createFolderNode(folderNode, item.getFileName(), item.getLabel(),
                 item.getCreatedBy());
             log.debug("Folder Was created {} ", folderNode);
             return nodeToItem(createdFolder, ticket, site);
@@ -156,7 +156,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     private Item nodeToItem(final Node newNode, String ticket, String site) throws RepositoryException {
-        CoreMetadata core = newNode.getMetadata().getCore();
+        CoreMetadata core = newNode.getCore();
         Item item = new Item();
         item.setPath(pathService.getPathByItemId(ticket, site, newNode.getId()));
         item.setId(new ItemId(newNode.getId()));
@@ -199,7 +199,7 @@ public class ContentServiceImpl implements ContentService {
         // we can't read folders
         if (nodeService.isNodeFile(item)) {
             log.debug("Content is a file");
-            String fileId = item.getMetadata().getCore().getFileId(); //gets the file id
+            String fileId = item.getCore().getFileId(); //gets the file id
             // File id can't be null,empty or whitespace
             if (StringUtils.isBlank(fileId)) {
                 log.error("Node {} is broken, since file id is not a valid ID", item, fileId);
@@ -260,19 +260,17 @@ public class ContentServiceImpl implements ContentService {
 
     private void buildChildrenTree(final TreeNode<Item> root, final int depth, final Node parent,
                                    final String ticket, final String site) throws RepositoryException {
-        List<Node> children = nodeService.getChildren(root.getValue().getId().toString());
+        Node templateNode = new Node();
+        templateNode.setId(root.getValue().getRepoId());
+        Iterable<Node> children = nodeService.findNodeByParent(templateNode);
         if (children != null) {
-            if (!children.isEmpty()) {
-                for (Node child : children) {
-                    TreeNode<Item> leaf = new TreeNode<>();
-                    leaf.setValue(nodeToItem(child, ticket, site));
-                    if (depth == -1 || depth > 0) {
-                        buildChildrenTree(leaf, (depth - 1), child, ticket, site);
-                    }
-                    root.addChild(leaf);
+            for (Node child : children) {
+                TreeNode<Item> leaf = new TreeNode<>();
+                leaf.setValue(nodeToItem(child, ticket, site));
+                if (depth == -1 || depth > 0) {
+                    buildChildrenTree(leaf, (depth - 1), child, ticket, site);
                 }
-            } else {
-                log.debug("Node {} does not have any children", parent);
+                root.addChild(leaf);
             }
         } else {
             log.debug("Could not find nodes with id {}", root.getValue().getId().toString());
@@ -290,7 +288,7 @@ public class ContentServiceImpl implements ContentService {
         return null;
     }
 
-    private boolean siteExists(final String ticket, final String site) {
+    private boolean siteExists(final String ticket, final String site) throws MongoRepositoryException {
         return nodeService.getSiteNode(site) != null;
     }
 

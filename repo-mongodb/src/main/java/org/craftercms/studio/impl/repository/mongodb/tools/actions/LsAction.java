@@ -54,17 +54,17 @@ public class LsAction extends AbstractAction {
     }
 
     private void lsCurrentNode(final RepoShellContext context) throws RepositoryException {
-        List<Node> children = context.getNodeService().getChildren(context.getCurrentNode().getId());
+        Iterable<Node> children = context.getNodeService().getChildren(context.getCurrentNode().getId());
         ls(children, context);
     }
 
-    private void ls(List<Node> children, RepoShellContext context) {
+    private void ls(Iterable<Node> children, RepoShellContext context) {
         for (Node node : children) {
             context.getOut().print("\t");
             if (context.getNodeService().isNodeFolder(node)) {
-                context.getOut().printf("/%s", node.getMetadata().getCore().getNodeName());
+                context.getOut().printf("/%s", node.getCore().getNodeName());
             } else {
-                context.getOut().printf("%s", node.getMetadata().getCore().getNodeName());
+                context.getOut().printf("%s", node.getCore().getNodeName());
             }
             context.getOut().print("\n");
         }

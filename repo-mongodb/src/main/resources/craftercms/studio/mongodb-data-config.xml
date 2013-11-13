@@ -17,7 +17,63 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean class="com.mongodb.MongoClient">
+        <constructor-arg>
+            <list>
+                <ref bean="studio3.repo.mongo.mainServer"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg ref="studio3.repo.mongo.optionsFactory"/>
+    </bean>
+
+    <bean id="studio3.repo.mongo.mainServer" class="com.mongodb.ServerAddress">
+        <constructor-arg value="${studio.repository.mongodb.connection.host}"/>
+        <constructor-arg value="${studio.repository.mongodb.connection.port}"/>
+    </bean>
+
+
+
+    <bean id="studio3.repo.mongo.optionsFactory"
+          class="org.craftercms.studio.impl.repository.mongodb.data.ClientOptionsFactory">
+        <property name="autoConnectRetry" value="${studio.repository.mongodb.connection.autoConnectRetry}"/>
+        <property name="connectionsPerHost" value="${studio.repository.mongodb.connection.connectionsPerHost}"/>
+        <property name="maxAutoConnectRetryTime" value="${studio.repository.mongodb.connection.maxWaitTime}"/>
+        <property name="socketKeepAlive" value="${studio.repository.mongodb.connection.socketKeepAlive}"/>
+        <property name="threadsAllowedToBlockForConnectionMultiplier"
+                  value="${studio.repository.mongodb.connection.threadsAllowedToBlockForConnectionMultiplier}"/>
+        <property name="connectTimeout" value="${studio.repository.mongodb.connection.connectTimeout}"/>
+        <property name="writeConcern" value="${studio.repository.mongodb.connection.writeConcern}"/>
+        <property name="readPreference" value="${studio.repository.mongodb.connection.readPreference}"/>
+    </bean>
+
+    <bean class="org.craftercms.studio.impl.repository.mongodb.data.JongoCollectionFactory"
+          id="studio3.repo.mongo.collectionFactory"
+          init-method="init">
+        <property name="mongo" ref="com.mongodb.MongoClient"/>
+        <property name="userName" value="${studio.repository.mongodb.connection.dbUser}"/>
+        <property name="password" value="${studio.repository.mongodb.connection.dbPassword}"/>
+        <property name="database" value="${studio.repository.mongodb.connection.db}"/>
+    </bean>
+
+
+    <bean class="org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService" id="studio3.repo.mongo.dataService">
+        <property name="jongoCollectionFactory" ref="studio3.repo.mongo.collectionFactory"/>
+        <property name="jongoQueries" ref="studio3.repo.mongo.defaultQueries"/>
+    </bean>
+
+    <!-- Try to find a more spring way to do it  -->
+    <bean id="studio3.repo.mongo.defaultQueries" class="org.craftercms.studio.impl.repository.mongodb.data.JongoQueries">
+        <property name="queryFiles">
+          <list>
+              <value>classpath:/craftercms/studio/mongodb/default-queries.xml</value>
+              <value>classpath*:craftercms/extension/studio/mongodb/custom-queries.properties</value>
+          </list>
+        </property>
+
+    </bean>
 
 </beans>

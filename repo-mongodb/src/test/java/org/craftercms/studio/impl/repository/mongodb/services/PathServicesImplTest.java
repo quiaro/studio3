@@ -18,6 +18,7 @@
 package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;
@@ -116,20 +117,25 @@ public class PathServicesImplTest {
 
     private Node createTree() {
         Node root = new Node();
-        root.getMetadata().getCore().setNodeName("/");
+        root.getCore().setNodeName("/");
+        root.setId(UUID.randomUUID().toString());
         Node a = new Node();
-        a.getMetadata().getCore().setNodeName("A");
+        a.getCore().setNodeName("A");
+        a.setId(UUID.randomUUID().toString());
         Node b = new Node();
-        b.getMetadata().getCore().setNodeName("B");
+        b.getCore().setNodeName("B");
+        b.setId(UUID.randomUUID().toString());
         Node c = new Node();
-        c.getMetadata().getCore().setNodeName("C");
+        c.getCore().setNodeName("C");
+        c.setId(UUID.randomUUID().toString());
         Node d = new Node();
-        d.getMetadata().getCore().setNodeName("D");
-        LinkedList<Node> ancestoers = new LinkedList<Node>();
-        ancestoers.add(root);
-        ancestoers.add(a);
-        ancestoers.add(b);
-        ancestoers.add(c);
+        d.getCore().setNodeName("D");
+        d.setId(UUID.randomUUID().toString());
+        LinkedList<String> ancestoers = new LinkedList<String>();
+        ancestoers.add(root.getId());
+        ancestoers.add(a.getId());
+        ancestoers.add(b.getId());
+        ancestoers.add(c.getId());
         d.setAncestors(ancestoers);
         return d;
     }
