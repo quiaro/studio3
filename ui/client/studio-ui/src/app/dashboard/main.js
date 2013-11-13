@@ -3,7 +3,7 @@
 angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'])
 
     .constant('CONFIG', {
-        baseUrl: '/src/app/dashboard/'
+        baseUrl: '/studio-ui/src/app/dashboard/'
     })
 
     .config(['$stateProvider',

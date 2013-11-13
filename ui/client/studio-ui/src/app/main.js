@@ -11,7 +11,7 @@ angular.module('studio-ui', [
     ])
 
     .constant('CONFIG', {
-        baseUrl: '/src/app/common/'
+        baseUrl: '/studio-ui/src/app/common/'
     })
 
     .config(['$locationProvider',
