@@ -92,7 +92,7 @@ public class GridFSServiceTest {
 
     @Test()
     public void testSave() throws Exception {
-        TestGridFsFile mockSavedFile = new TestGridFsFile();
+        TestGridFsFile mockSavedFile = new TestGridFsFile(null);
         when(gridFS.createFile((InputStream)Mockito.any(),Mockito.anyString(),
             Mockito.anyBoolean())).thenReturn(mockSavedFile);
         InputStream inputStream = this.getClass().getResourceAsStream("/files/index.xml");
