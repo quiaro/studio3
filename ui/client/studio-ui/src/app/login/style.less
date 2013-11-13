@@ -8,167 +8,107 @@
     min-width: 970px;
 }
 
-.login .main {
-    border-bottom: @nav-border-width solid @nav-border;
+.login {
 
-    article {
-        .header {
-            margin-top: 10px;
-            img {
-                float: left;
-                width: 210px;
+    .main {
+        border-bottom: @nav-border-width solid @nav-border;
+
+        article {
+            .header {
+                margin-top: 10px;
+                img {
+                    float: left;
+                    width: 210px;
+                }
+                h2 {
+                    clear: both;
+                    padding-top: 20px;
+                    line-height: 1.3;
+                    padding-bottom: 20px;
+                }
             }
-            h2 {
-                clear: both;
-                padding-top: 20px;
-                line-height: 1.3;
-                padding-bottom: 20px;
+            .description {
+                padding-left: 60px;
+                font-size: 24px;
+
+                li {
+                    line-height: 1.8;
+                }
             }
         }
-        .description {
-            padding-left: 60px;
-            font-size: 24px;
+
+        .panel {
+            border-color: rgb(143, 143, 143);
+
+            .panel-heading {
+                padding-left: 30px;
+            }
+            .panel-body > form {
+                padding: 0 @form-space-base;
+
+                .form-group {
+                    margin-bottom: @form-space-base;
+
+                    .form-control {
+                        margin-bottom: @form-space-base;
+                    }
+                    .btn {
+                        text-shadow: none;
+                        width: 50%;
+                        float: right;
+                    }
+                    .help-link {
+                        margin-left: 3px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+
+    .footer {
+        height: @nav-height;
+        .border-bottom-radius(@border-radius-large);
+        #gradient.vertical(@nav-background-top, @nav-background-bottom);
+
+        .logo {
+            height: inherit;
+            background: url("@{IMAGE-ROOT}crafter-logo-sm.png") no-repeat 30px center;
+        }
+
+        .links {
+            list-style: none;
+            text-align: right;
+            margin-bottom: 0;
 
             li {
-                line-height: 1.8;
-            }
-        }
-    }
+                display: inline-block;
+                line-height: @nav-height;
+                margin: 0 10px;
 
-    .panel {
-        border-color: rgb(143, 143, 143);
-
-        .panel-heading {
-            padding-left: 30px;
-        }
-        .panel-body > form {
-            padding: 0 10px;
-
-            .form-group {
-                margin-bottom: 10px;
-
-                .form-control {
-                    margin-bottom: 10px;
-                }
-                .btn {
-                    text-shadow: none;
-                    width: 50%;
-                    float: right;
-                }
-                .help-link {
-                    margin-left: 3px;
-                    font-size: 12px;
-                    line-height: 20px;
-                    display: inline-block;
+                a {
+                    color: @nav-link;
                 }
             }
         }
     }
 }
 
-.login .footer {
-    height: @nav-height;
-    .border-bottom-radius(@border-radius-large);
-    #gradient.vertical(@nav-background-top, @nav-background-bottom);
+.pwd-recovery {
+    width: 500px;
 
-    .logo {
-        height: inherit;
-        background: url("@{IMAGE-ROOT}crafter-logo-sm.png") no-repeat 30px center;
-    }
-
-    .links {
-        list-style: none;
-        text-align: right;
+    .modal-body .form-group {
         margin-bottom: 0;
+        .clearfix();
 
-        li {
-            display: inline-block;
-            line-height: @nav-height;
-            margin: 0 10px;
-
-            a {
-                color: @nav-link;
-            }
+        .form-control {
+            margin-bottom: @form-space-base;
         }
-    }
-}
-
-/* ------------------ */
-/* ----- Preview ---- */
-/* ------------------ */
-#tools-panel {
-    background-color: @tools-panel-gradient-top;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	border-top: 1px solid @tools-panel-border;
-
-    &.off { display: none; }
-
-    &.on { display: block; }
-}
-
-#component-navigator {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    bottom: 10px;
-    width: 300px;
-    border: 1px solid @section-border;
-    background-color: @section-background;
-    border-radius: @section-border-radius;
-}
-
-#tools-area {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    bottom: 0;
-    left: 325px;
-
-    .nav-tabs {
-        border-bottom: 0 none;
-        margin-top: 10px;
-
-        > li > a {
-            color: @tools-panel-link;
-            background-color: @tools-panel-link-background;
-            padding: 5px 18px;
-
-            &:hover, &:active {
-                background-color: @tools-panel-link-background-hover;
-                border-color: @tools-panel-link-border;
-                cursor: pointer;
-            }
-        }
-
-        > li.active > a {
-            background-color: @tools-panel-link-background-active;
-            border-color: @tools-panel-link-border;
-
-            &:hover, &:active {
-                background-color: @tools-panel-link-background-active;
-                border-color: @tools-panel-link-border;
-            }
-        }
-    }
-
-    .tab-content > .content {
-        position: absolute;
-        top: 42px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 20px;
-        background-color: @section-background;
-        border: 1px solid @section-border;
-        border-top-right-radius: @section-border-radius;
-        border-bottom: 0 none;
-        overflow: scroll;
-
-        > div {
-            color: #3F3F3F;
+        button {
+            float: right;
+            margin-left: @form-space-base;
         }
     }
 }

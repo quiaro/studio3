@@ -1,6 +1,31 @@
+/* --- GLOBAL.LESS --- */
 #studio {
     background-color: @color-background;
     color: @gray-dark;
+}
+
+// --- Modal Dialogs
+.modal.fade.in {
+    display: block;
+    top: 20%;
+
+    .modal-header {
+        color: @modal-header;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        .border-top-radius(@border-radius-base);
+        #gradient.vertical(lighten(@nav-background-top, 20%), lighten(@nav-background-bottom, 20%));
+
+        .close {
+            color: @modal-header;
+            .opacity(1);
+            text-shadow: 0 1px 0 rgb(0, 0, 0);
+        }
+
+        .modal-title {
+            font-size: 16px;
+        }
+    }
 }
 
 /* --- navigation --- */
@@ -203,3 +228,4 @@ div[data-tree-model] ul {
     border-right: 0 none;
     border-left: 0 none;
 }
+/* --- EO: GLOBAL.LESS --- */
