@@ -33,15 +33,15 @@ module.exports = function (grunt) {
     },
     watch: {
       recess: {
-        files: ['<%= yeoman.app %>/src/modules/**/*.less'],
+        files: ['<%= yeoman.app %>/src/app/**/*.less'],
         tasks: ['recess:server']
       },
       express: {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
-          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.less',
-          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.js',
-          '{.tmp,<%= yeoman.app %>}/src/modules/**/*.html',
+          '{.tmp,<%= yeoman.app %>}/src/app/**/*.less',
+          '{.tmp,<%= yeoman.app %>}/src/app/**/*.js',
+          '{.tmp,<%= yeoman.app %>}/src/app/**/*.html',
           '<%= yeoman.app %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
         ],
         tasks: ['express:dev'],
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/src/modules/**/*.js'
+        '<%= yeoman.app %>/src/app/**/*.js'
       ]
     },
     karma: {
@@ -97,20 +97,20 @@ module.exports = function (grunt) {
         dist: {
             files: {
                 '<%= yeoman.dist %>/src/styles/studio.css': [
-                    '<%= yeoman.app %>/src/style.less'
+                    '<%= yeoman.app %>/src/app/style.less'
                 ],
                 '<%= yeoman.dist %>/src/styles/editor.css': [
-                    '<%= yeoman.app %>/src/modules/editor/style.less'
+                    '<%= yeoman.app %>/src/app/editor/style.less'
                 ]
             }
         },
         server: {
             files: {
                 '.tmp/src/styles/studio.css': [
-                    '<%= yeoman.app %>/src/style.less'
+                    '<%= yeoman.app %>/src/app/style.less'
                 ],
                 '.tmp/src/styles/editor.css': [
-                    '<%= yeoman.app %>/src/modules/editor/style.less'
+                    '<%= yeoman.app %>/src/app/editor/style.less'
                 ]
             }
         }
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
             dirs: ['<%= yeoman.dist %>']
         },
         html: ['<%= yeoman.dist %>/index.html',
-               '<%= yeoman.dist %>/src/modules/*/templates/*.html'],
+               '<%= yeoman.dist %>/src/app/*/templates/*.html'],
         css: ['<%= yeoman.dist %>/src/styles/studio.css']
     },
     imagemin: {
@@ -156,7 +156,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['src/modules/*/templates/**/*.html'],
+          src: ['src/app/*/templates/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -165,9 +165,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/src/modules/*/scripts',
+          cwd: '<%= yeoman.dist %>/src/app/**/*.js',
           src: '**/*.js',
-          dest: '<%= yeoman.dist %>/src/modules/*/scripts'
+          dest: '<%= yeoman.dist %>/src/app/**/*.js'
         }]
       }
     },
@@ -184,11 +184,10 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/src/templates/**/*.tpl.html',
-            '<%= yeoman.dist %>/src/scripts/**/*.js',
-            '<%= yeoman.dist %>/src/styles/**/*.css',
-            '<%= yeoman.dist %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-            '<%= yeoman.dist %>/src/fonts/*'
+            '<%= yeoman.dist %>/src/app/**/*.tpl.html',
+            '<%= yeoman.dist %>/src/app/**/*.js',
+            '<%= yeoman.dist %>/src/app/**/*.css',
+            '<%= yeoman.dist %>/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
           ]
         }
       }
@@ -201,13 +200,11 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,txt}',
-            'src/config/*.json',
             'lib/**/*.min.js',
             'lib/**/*.min.css',
             'src/images/**/*.{gif,webp,ico}',
             'src/styles/studio.css',
-            'src/templates/**/*.tpl.html',
+            'src/app/**/*.tpl.html',
 
             // Special cases
             'lib/jquery/js/*.js',

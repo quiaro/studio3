@@ -6,11 +6,11 @@ require.config({
 	baseUrl: '/studio-ui/',
 	paths: {
 		'ckeditor' : 'lib/ckeditor/ckeditor',
-		'config' : 'scripts/editor/modules/config',
-		'event-bridge' : 'scripts/editor/modules/eventBridge',
+		'config' : 'scripts/editor/config',
+		'event-bridge' : 'scripts/editor/scripts/eventBridge',
 		'domReady' : 'lib/requirejs-domready/js/domReady',
 		'jquery' : 'lib/jquery/js/jquery',
-		'jquery-private' : 'scripts/editor/modules/jquery-private',
+		'jquery-private' : 'scripts/editor/scripts/jquery-private',
 		'pubsub' : 'lib/pubsub-js/pubsub',
         'css' : 'lib/require-css/js/css',
         'editor-css' : 'styles/editor'

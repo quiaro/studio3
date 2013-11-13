@@ -3,7 +3,7 @@
 angular.module('crafter.studio.login', ['ui.router'])
 
     .constant('CONFIG', {
-        baseUrl: '/src/modules/login/'
+        baseUrl: '/src/app/login/'
     })
 
     .config(['$stateProvider',
