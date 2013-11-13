@@ -19,6 +19,7 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.util.UUID;
 
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl;
@@ -26,7 +27,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.dao.DataAccessResourceFailureException;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,13 +43,13 @@ public class NodeServiceFindingTest {
     /**
      * Node Repo Mock
      */
-    private NodeDataRepository nodeDataRepository;
+    private MongodbDataService mongodbDataService;
 
     @Before
     public void setUp() throws Exception {
         nodeService = new NodeServiceImpl();
-        nodeDataRepository = mock(NodeDataRepository.class);
-        nodeService.setNodeDataRepository(nodeDataRepository);
+        mongodbDataService = mock(MongodbDataService.class);
+        nodeService.setDataService(mongodbDataService);
         // Return the same save object.
     }
 
@@ -70,21 +70,22 @@ public class NodeServiceFindingTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindNodeNotFound() throws Exception {
-        when(nodeDataRepository.findOne(Mockito.anyString())).thenReturn(null);
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(null);
         Node n = nodeService.getNode(null);
         Assert.assertNull(n);
     }
 
     @Test(expected = MongoRepositoryException.class)
     public void testFindNodeDataAccessException() throws Exception {
-        when(nodeDataRepository.findOne(Mockito.anyString())).thenThrow(DataAccessResourceFailureException.class);
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenThrow
+            (MongoRepositoryException.class);
         nodeService.getNode(UUID.randomUUID().toString());
     }
 
 
     @Test
     public void testFindNode() throws Exception {
-        when(nodeDataRepository.findOne(Mockito.anyString())).thenReturn(new Node());
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(new Node());
         Node foundNode = nodeService.getNode(UUID.randomUUID().toString());
         Assert.assertNotNull(foundNode);
     }
