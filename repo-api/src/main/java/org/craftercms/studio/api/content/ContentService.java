@@ -63,7 +63,7 @@ public interface ContentService {
      *
      * @param ticket    security ticket
      * @param contentId content id
-     * @return content stream
+     * @return content item
      * @throws org.craftercms.studio.api.RepositoryException                   If unable to get the actual content.
      * @throws org.craftercms.studio.commons.exception.ObjectNotFoundException if there is no content for that file
      *                                                                         id (must likely given id is a folder
@@ -71,7 +71,7 @@ public interface ContentService {
      * @throws org.craftercms.studio.commons.exception.InvalidContextException If the node is a File but don't have
      *                                                                         an inputstream (repo may be broken)
      */
-    InputStream read(String ticket, String contentId) throws RepositoryException, ObjectNotFoundException,
+    Item read(String ticket, String contentId) throws RepositoryException, ObjectNotFoundException,
         InvalidContextException;
 
     /**
