@@ -2,12 +2,10 @@ package org.craftercms.studio.impl.repository.mongodb.domain;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import javolution.util.FastMap;
 import org.apache.commons.collections.ListUtils;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Content Node.
@@ -16,33 +14,35 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Sumer Jabri.
  * @author Dejan Brkic.
  */
-@Document(collection = "nodes")//Sets collection name
+//Sets collection name
 public class Node implements Cloneable {
 
     /**
+     * Core metadata.
+     */
+    private CoreMetadata core;
+    /**
      * Node Id.
      */
-    @Id //Forces MongoMapper to use this as a ID instead ObjectId of mongo.
-    @Indexed(unique = true)//make sure is Unique
     private String id;
     /**
      * Parent Node can't be null.
      */
-    @DBRef
-    @Indexed
-    private LinkedList<Node> ancestors;
+    private LinkedList<String> ancestors;
     /**
      * Node Type.
      */
     private NodeType type;
+
     /**
-     * Metadata of this node.
+     * Pretty much everything else.
      */
-    private Metadata metadata;
+    private Map<String, Object> additional;
 
     public Node() {
         ancestors = new LinkedList<>();
-        metadata = new Metadata();
+        core = new CoreMetadata();
+        additional = new FastMap<>();
     }
 
     /**
@@ -54,9 +54,10 @@ public class Node implements Cloneable {
     public Node(final Node parent, final NodeType type) {
         ancestors = new LinkedList<>(parent.getAncestors());
         //Collections.copy(ancestors, parent.getAncestors());
-        ancestors.addLast(parent);// new node is child of its parent. added to his ancestry line
+        ancestors.addLast(parent.getId());// new node is child of its parent. added to his ancestry line
         this.type = type;
-        metadata = new Metadata();
+        core = new CoreMetadata();
+        additional = new FastMap<>();
     }
 
     /**
@@ -68,7 +69,8 @@ public class Node implements Cloneable {
         this.id = node.getId();
         this.ancestors = node.getAncestors();
         this.type = node.getType();
-        this.metadata = node.getMetadata().copy();//also Copy the Metadata Object.
+        this.core = node.getCore().copy();
+        this.additional = new FastMap<>(node.getAdditional());
     }
 
     /**
@@ -85,16 +87,6 @@ public class Node implements Cloneable {
         return copy();
     }
 
-    @Override
-    public String toString() {
-        //Ignoring the Ancestors to make ToString fast.
-        final StringBuilder sb = new StringBuilder("Node{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", type=").append(type);
-        sb.append(", metadata=").append(metadata);
-        sb.append('}');
-        return sb.toString();
-    }
 
     public String getId() {
         return id;
@@ -112,30 +104,53 @@ public class Node implements Cloneable {
         this.type = type;
     }
 
-    public LinkedList<Node> getAncestors() {
+    public LinkedList<String> getAncestors() {
         return ancestors;
     }
 
-    public void setAncestors(final LinkedList<Node> ancestors) {
+    public void setAncestors(final LinkedList<String> ancestors) {
         this.ancestors = ancestors;
     }
 
-    public Metadata getMetadata() {
-        return metadata;
+    public CoreMetadata getCore() {
+        return core;
     }
 
-    public void setMetadata(final Metadata metadata) {
-        this.metadata = metadata;
+    public Map<String, Object> getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(final Map<String, Object> additional) {
+        this.additional = additional;
     }
 
     /**
      * This will get the full Ancestry for this <b>Node Including it self</b>.
+     *
      * @return a Unmodifiable List of the Ancestry for this node <b>Including It self.</b>
      */
-    public List<Node> getAncestry(){
+    public List<Node> getAncestry() {
         LinkedList<Node> tmp = (LinkedList<Node>)ancestors.clone();
         tmp.addLast(this);
         return ListUtils.unmodifiableList(tmp);
+    }
+
+    public void setCore(final CoreMetadata core) {
+        this.core = core;
+    }
+
+    /**
+     * Gets current Node parent.
+     *
+     * @return current node parent <br/>
+     * Null if there is no parent.
+     */
+    public String getParentId() {
+        if (!ancestors.isEmpty()) {
+            return ancestors.getLast();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -143,19 +158,22 @@ public class Node implements Cloneable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Node)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         final Node node = (Node)o;
 
+        if (!additional.equals(node.additional)) {
+            return false;
+        }
         if (!ancestors.equals(node.ancestors)) {
             return false;
         }
-        if (!id.equals(node.id)) {
+        if (!core.equals(node.core)) {
             return false;
         }
-        if (!metadata.equals(node.metadata)) {
+        if (!id.equals(node.id)) {
             return false;
         }
         if (type != node.type) {
@@ -167,27 +185,25 @@ public class Node implements Cloneable {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = core.hashCode();
+        result = 31 * result + id.hashCode();
         result = 31 * result + ancestors.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + metadata.hashCode();
+        result = 31 * result + additional.hashCode();
         return result;
     }
 
-    /**
-     * Gets current Node parent.
-     *
-     * @return current node parent <br/>
-     * Null if there is no parent.
-     */
-    public Node getParent() {
-        if (!ancestors.isEmpty()) {
-            return ancestors.getLast();
-        } else {
-            return null;
-        }
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Node{");
+        sb.append("core=").append(core);
+        sb.append(", id='").append(id).append('\'');
+        sb.append(", ancestors=").append(ancestors);
+        sb.append(", type=").append(type);
+        sb.append(", additional=").append(additional);
+        sb.append('}');
+        return sb.toString();
     }
-
 }
 
 

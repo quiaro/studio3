@@ -16,66 +16,64 @@
   ~   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/data/mongo
-       http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-    <bean name="studio.repo.mongo.properties" id="studio.repo.mongo.properties"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="false"/>
-        <property name="locations">
+    <bean class="com.mongodb.MongoClient">
+        <constructor-arg>
             <list>
-                <value>classpath:craftercms/studio/studio-mongodb-repository.properties</value>
-                <value>classpath*:craftercms/extension/studio/studio-mongodb-repository.properties</value>
+                <ref bean="studio3.repo.mongo.mainServer"/>
             </list>
+        </constructor-arg>
+        <constructor-arg ref="studio3.repo.mongo.optionsFactory"/>
+    </bean>
+
+    <bean id="studio3.repo.mongo.mainServer" class="com.mongodb.ServerAddress">
+        <constructor-arg value="${studio.repository.mongodb.connection.host}"/>
+        <constructor-arg value="${studio.repository.mongodb.connection.port}"/>
+    </bean>
+
+
+
+    <bean id="studio3.repo.mongo.optionsFactory"
+          class="org.craftercms.studio.impl.repository.mongodb.data.ClientOptionsFactory">
+        <property name="autoConnectRetry" value="${studio.repository.mongodb.connection.autoConnectRetry}"/>
+        <property name="connectionsPerHost" value="${studio.repository.mongodb.connection.connectionsPerHost}"/>
+        <property name="maxAutoConnectRetryTime" value="${studio.repository.mongodb.connection.maxWaitTime}"/>
+        <property name="socketKeepAlive" value="${studio.repository.mongodb.connection.socketKeepAlive}"/>
+        <property name="threadsAllowedToBlockForConnectionMultiplier"
+                  value="${studio.repository.mongodb.connection.threadsAllowedToBlockForConnectionMultiplier}"/>
+        <property name="connectTimeout" value="${studio.repository.mongodb.connection.connectTimeout}"/>
+        <property name="writeConcern" value="${studio.repository.mongodb.connection.writeConcern}"/>
+        <property name="readPreference" value="${studio.repository.mongodb.connection.readPreference}"/>
+    </bean>
+
+    <bean class="org.craftercms.studio.impl.repository.mongodb.data.JongoCollectionFactory"
+          id="studio3.repo.mongo.collectionFactory"
+          init-method="init">
+        <property name="mongo" ref="com.mongodb.MongoClient"/>
+        <property name="userName" value="${studio.repository.mongodb.connection.dbUser}"/>
+        <property name="password" value="${studio.repository.mongodb.connection.dbPassword}"/>
+        <property name="database" value="${studio.repository.mongodb.connection.db}"/>
+    </bean>
+
+
+    <bean class="org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService" id="studio3.repo.mongo.dataService">
+        <property name="jongoCollectionFactory" ref="studio3.repo.mongo.collectionFactory"/>
+        <property name="jongoQueries" ref="studio3.repo.mongo.defaultQueries"/>
+    </bean>
+
+    <!-- Try to find a more spring way to do it  -->
+    <bean id="studio3.repo.mongo.defaultQueries" class="org.craftercms.studio.impl.repository.mongodb.data.JongoQueries">
+        <property name="queryFiles">
+          <list>
+              <value>classpath:/craftercms/studio/mongodb/default-queries.xml</value>
+              <value>classpath*:craftercms/extension/studio/mongodb/custom-queries.properties</value>
+          </list>
         </property>
+
     </bean>
-
-
-    <mongo:mongo host="${studio.repocitory.mongodb.connection.host}" id="studio.repo.mongo.mongo" port="${studio.repocitory.mongodb.connection.port}"
-                 write-concern="${studio.repocitory.mongodb.connection.writeConcern}">
-        <mongo:options connections-per-host="${studio.repocitory.mongodb.connection.connectionsPerHost}"
-                       threads-allowed-to-block-for-connection-multiplier="${studio.repocitory.mongodb.connection.threadsAllowedToBlockForConnectionMultiplier}"
-                       connect-timeout="${studio.repocitory.mongodb.connection.connectTimeout}"
-                       max-wait-time="${studio.repocitory.mongodb.connection.maxWaitTime}"
-                       auto-connect-retry="${studio.repocitory.mongodb.connection.autoConnectRetry}"
-                       socket-keep-alive="${studio.repocitory.mongodb.connection.socketKeepAlive}"
-                       slave-ok="${studio.repocitory.mongodb.connection.slaveOk}"
-                       write-number="${studio.repocitory.mongodb.connection.writeNumber}"
-                       write-timeout="${studio.repocitory.mongodb.connection.writeTimeout}"
-                       write-fsync="${studio.repocitory.mongodb.connection.writeFsync}"
-                />
-    </mongo:mongo>
-
-    <bean id="studio.repo.mongo.mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-    </bean>
-
-    <bean name="studio.repo.mongo.gridFsTemplate"
-          class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-        <constructor-arg ref="mongoDbFactory" />
-        <constructor-arg ref="studio.repo.mongo.Converter" />
-    </bean>
-    <mongo:repositories base-package="org.craftercms.studio.impl.repository.mongodb.datarepos"
-                        mongo-template-ref="studio.repo.mongo.mongoTemplate"
-                        create-query-indexes="true"
-            />
-
-    <!-- Quick Notes (cortiz)-->
-    <!-- It seems that there is a issue if someone change the id of  DBFactory bean -->
-    <mongo:db-factory dbname="${studio.repocitory.mongodb.connection.db}"
-                      username="${studio.repocitory.mongodb.connection.dbUser}"
-                      password="${studio.repocitory.mongodb.connection.dbPassword}"
-                      mongo-ref="studio.repo.mongo.mongo"
-                      />
-
-    <mongo:mapping-converter id="studio.repo.mongo.Converter" />
 
 </beans>

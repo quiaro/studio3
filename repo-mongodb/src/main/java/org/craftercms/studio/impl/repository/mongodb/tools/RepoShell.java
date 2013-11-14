@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.content.ContentService;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.GridFSService;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
@@ -91,9 +92,13 @@ public class RepoShell {
         ClassNotFoundException {
         in = new BufferedReader(new InputStreamReader(System.in));
         out = System.out;
-        this.context = new RepoShellContext(ctx.getBean(NodeService.class).getRootNode(),
-            ctx.getBean(NodeService.class), ctx.getBean(PathService.class), ctx.getBean(GridFSService.class),
-            ctx.getBean(ContentService.class), System.out, in);
+        try {
+            this.context = new RepoShellContext(ctx.getBean(NodeService.class).getRootNode(),
+                ctx.getBean(NodeService.class), ctx.getBean(PathService.class), ctx.getBean(GridFSService.class),
+                ctx.getBean(ContentService.class), System.out, in);
+        } catch (MongoRepositoryException e) {
+            throw new IllegalStateException("Unable to get Root Node");
+        }
         loadActions();
     }
 

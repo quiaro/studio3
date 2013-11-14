@@ -9,6 +9,29 @@
         <property name="contentManager" ref="ContentManager"/>
     </bean>
 
+    <bean id="AnalyticsService" class="org.craftercms.studio.impl.analytics.AnalyticsServiceImpl">
+    </bean>
+
+    <bean id="AuditManager" class="org.craftercms.studio.impl.audit.AuditManagerImpl" />
+
+    <bean id="ConfigurationManager" class="org.craftercms.studio.impl.configuration.ConfigurationManagerImpl"/>
+
+    <bean id="DependencyManager" class="org.craftercms.studio.impl.dependency.DependencyManagerImpl" />
+
+    <bean id="DeploymentManager" class="org.craftercms.studio.impl.deployment.DeploymentManagerImpl" />
+
+    <bean id="FormsManager" class="org.craftercms.studio.impl.forms.FormsManagerImpl" />
+
+    <bean id="LifecycleManager" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
+
+    <bean id="SearchManager" class="org.craftercms.studio.impl.search.SearchManagerImpl"/>
+
+    <bean id="SecurityManager" class="org.craftercms.studio.impl.security.SecurityManagerImpl" />
+
+    <bean id="VersionManager" class="org.craftercms.studio.impl.content.VersionManagerImpl"/>
+
+    <bean id="WorkflowManager" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl"/>
+
     <bean id="ContentManager" class="org.craftercms.studio.internal.content.impl.ContentManagerImpl">
         <property name="contentService" ref="contentService"/>
     </bean>

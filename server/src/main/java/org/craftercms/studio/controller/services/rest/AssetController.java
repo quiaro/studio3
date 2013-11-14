@@ -19,13 +19,20 @@ package org.craftercms.studio.controller.services.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.AssetService;
+import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.dto.Tenant;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.utils.RestControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,13 +67,13 @@ public class AssetController {
      * @throws StudioException
      */
     @RequestMapping(value = "/create/{site}",
-        params = {"site", "destination_path", "file_name", "file", "mime_type"},
+        params = {"destination_path", "file_name", "mime_type"},
         method = RequestMethod.POST
     )
     @ResponseBody
     public ItemId create(@PathVariable String site,
-                       @Valid @RequestParam(value = "destination_path") String destinationPath,
-                       @Valid @RequestParam(value = "file_name") String fileName,
+                       @RequestParam(value = "destination_path") String destinationPath,
+                       @RequestParam(value = "file_name") String fileName,
                        @RequestParam(value = "file") MultipartFile file,
                        @RequestParam(value = "mime_type") String mimeType)
         throws StudioException {
@@ -81,7 +88,8 @@ public class AssetController {
         } catch (IOException e) {
             throw new StudioException("Error getting content from multipart request") {};
         }
-        return assetService.create(null, site, destinationPath, fileName, contentStream, mimeType);
+        Context context = RestControllerUtils.createMockContext();
+        return assetService.create(context, site, destinationPath, fileName, contentStream, mimeType);
     }
 
     /**
@@ -95,16 +103,22 @@ public class AssetController {
                     params = { "item_id" },
                     method = RequestMethod.GET
     )
-    @ResponseBody
-    public InputStream read(@PathVariable String site,
-                            @Valid @RequestParam(value = "item_id", required = true) String itemId)
+    public void read(@PathVariable String site,
+                            @Valid @RequestParam(value = "item_id", required = true) String itemId,
+                            HttpServletResponse response)
         throws StudioException {
 
         /** TODO:
          * Provide security context
          */
-
-        return assetService.read(null, itemId);
+        Context context = RestControllerUtils.createMockContext();
+        final InputStream content = assetService.read(context, itemId);
+        try {
+            final OutputStream out = response.getOutputStream();
+            IOUtils.copy(content, out);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     /**

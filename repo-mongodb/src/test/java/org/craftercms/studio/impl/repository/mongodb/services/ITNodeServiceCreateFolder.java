@@ -58,7 +58,7 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
         Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME, FOLDER_LABEL,
             FOLDER_CREATOR);
         Assert.assertNotNull(folder);
-        List<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
+        Iterable<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
         for (Node n : nodes) {
             if (n.equals(folder)) { //Node.equals call also CoreMetadata Equals therefor no need to recheck
                 return; // we found it and is equals , my job here is done.

@@ -24,6 +24,7 @@ import org.craftercms.studio.api.RepositoryException;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
+import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class PathServicesImpl implements PathService {
     private Logger log = LoggerFactory.getLogger(PathServicesImpl.class);
 
     @Override
-    public String getItemIdByPath(final String ticket, final String site, final String path) {
+    public String getItemIdByPath(final String ticket, final String site, final String path) throws RepositoryException {
 
         if (StringUtils.isBlank(ticket)) {
             log.debug("Given Ticket is blank or empty");
@@ -119,21 +120,23 @@ public class PathServicesImpl implements PathService {
         return builder.toString();
     }
 
-    private Node walkDownTheTree(String[] pathToDescent) {
+    private Node walkDownTheTree(String[] pathToDescent) throws MongoRepositoryException {
+
         Node tempNode = nodeService.getRootNode();
         //If pathToDescent length is 0 then you are getting root path right?
         for (int i = 0; i < pathToDescent.length; i++) {
-            if(StringUtils.isBlank(pathToDescent[i])){
+            if (StringUtils.isBlank(pathToDescent[i])) {
                 return nodeService.getRootNode();
             }
             LinkedList<Node> ancestors = (LinkedList<Node>)tempNode.getAncestors().clone();
             ancestors.addLast(tempNode);
             tempNode = nodeService.findNodeByAncestorsAndName(ancestors, pathToDescent[i]);
-            if (tempNode == null){
+            if (tempNode == null) {
                 break;
             }
         }
         return tempNode;
+
     }
 
     public void setNodeServiceImpl(final NodeService nodeService) {

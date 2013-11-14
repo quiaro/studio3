@@ -297,7 +297,7 @@
             <dependencies>
                 <dependency>
                     <groupId>org.craftercms</groupId>
-                    <artifactId>studio-repo-cmis</artifactId>
+                    <artifactId>studio-repo-mongodb</artifactId>
                     <version>3.0.0-SNAPSHOT</version>
                 </dependency>
             </dependencies>

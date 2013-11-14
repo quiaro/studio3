@@ -21,7 +21,7 @@ import java.io.InputStream;
 
 import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
-import org.craftercms.studio.impl.repository.mongodb.datarepos.NodeDataRepository;
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -33,8 +33,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.dao.DataAccessResourceFailureException;
 
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,15 +49,17 @@ public class NodeServiceCreateFileTest {
      * Node Service (the one to be tested)
      */
     private NodeServiceImpl nodeService;
-    private NodeDataRepository nodeDataRepository;
+
     private GridFSService gridFSService;
+
+    private MongodbDataService mongodbDataService;
 
     @Before
     public void setUp() throws Exception {
         nodeService = new NodeServiceImpl();
-        nodeDataRepository = mock(NodeDataRepository.class);
+        mongodbDataService = mock(MongodbDataService.class);
         gridFSService = mock(GridFSService.class);
-        nodeService.setNodeDataRepository(nodeDataRepository);
+        nodeService.setDataService(mongodbDataService);
         nodeService.setGridFSService(gridFSService);
         // Return the same save object.
 
@@ -65,13 +68,17 @@ public class NodeServiceCreateFileTest {
     @Test
     public void testCreateFile() throws Exception {
 
-        when(nodeDataRepository.save(Mockito.any(Node.class))).thenAnswer(new Answer<Object>() {
+        doAnswer(new Answer<Void>() {
             @Override
-            public Object answer(final InvocationOnMock invocation) throws Throwable {
-                return invocation.getArguments()[0];
+            public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return null;
             }
-        });
-        when(nodeDataRepository.findRootNode()).thenReturn(new Node(new Node(), NodeType.FOLDER));
+        }).when(mongodbDataService).save(Mockito.anyString(), Mockito.any(Node.class));
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
+            Node.class)).thenReturn(new Node(new
+            Node(),
+            NodeType.FOLDER));
         when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new TestGridFsFile());
 
 
@@ -80,10 +87,9 @@ public class NodeServiceCreateFileTest {
             "Doctor John A. Zoidberg",
             testInput);
         Assert.assertNotNull(fileNode);
-        Assert.assertNotNull(fileNode.getMetadata());
-        Assert.assertEquals(fileNode.getMetadata().getCore().getCreator(), "Doctor John A. Zoidberg");
-        Assert.assertEquals(fileNode.getMetadata().getCore().getNodeName(), "TestFile");
-        Assert.assertEquals(fileNode.getParent(), nodeService.getRootNode());
+        Assert.assertEquals(fileNode.getCore().getCreator(), "Doctor John A. Zoidberg");
+        Assert.assertEquals(fileNode.getCore().getNodeName(), "TestFile");
+        Assert.assertEquals(fileNode.getParentId(), nodeService.getRootNode());
         TestUtils.isUUIDValid(fileNode.getId());
         Assert.assertTrue(nodeService.isNodeFile(fileNode));
     }
@@ -91,16 +97,11 @@ public class NodeServiceCreateFileTest {
 
     @Test(expected = MongoRepositoryException.class)
     public void testCreateFileGridFSError() throws Exception {
-        when(nodeDataRepository.findRootNode()).thenReturn(new Node(new Node(), NodeType.FOLDER));
-        when(nodeDataRepository.save(Mockito.any(Node.class))).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(final InvocationOnMock invocation) throws Throwable {
-                return invocation.getArguments()[0];
-            }
-        });
-
-        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenThrow
-            (DataAccessResourceFailureException.class);
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
+            Node.class)).thenReturn(new Node(new Node(),
+            NodeType.FOLDER));
+        doThrow(MongoRepositoryException.class).when(gridFSService.saveFile(Mockito.anyString(),
+            (InputStream)Mockito.any()));
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
         nodeService.createFileNode(nodeService.getRootNode(), "TestFile","Test File", "Doctor John A. Zoidberg",
             testInput);
@@ -110,8 +111,9 @@ public class NodeServiceCreateFileTest {
 
     @Test(expected = MongoRepositoryException.class)
     public void testCreateFileModeServiceError() throws Exception {
-        when(nodeDataRepository.findRootNode()).thenReturn(new Node(new Node(), NodeType.FOLDER));
-        when(nodeDataRepository.save(Mockito.any(Node.class))).thenThrow(DataAccessResourceFailureException.class);
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(new Node(new Node(), NodeType.FOLDER));
+        doThrow(MongoRepositoryException.class).when(mongodbDataService).save(Mockito.anyString(),
+            Mockito.any(Node.class));
         when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new TestGridFsFile());
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
        nodeService.createFileNode(nodeService.getRootNode(), "TestFile","test File", "Doctor John A. Zoidberg",

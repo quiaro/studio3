@@ -81,12 +81,12 @@ public class ContentServiceImplTest {
 
     private Node newMockNode() {
         Node root = new Node();
-        root.getMetadata().getCore().setLabel("root");
-        root.getMetadata().getCore().setNodeName("/");
+        root.getCore().setLabel("root");
+        root.getCore().setNodeName("/");
         root.setType(NodeType.FOLDER);
         Node testRoot = new Node(root, NodeType.FOLDER);
-        testRoot.getMetadata().getCore().setLabel("Test Root");
-        testRoot.getMetadata().getCore().setNodeName("test");
+        testRoot.getCore().setLabel("Test Root");
+        testRoot.getCore().setNodeName("test");
         testRoot.setId(UUID.randomUUID().toString());
         return testRoot;
     }

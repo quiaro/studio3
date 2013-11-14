@@ -30,6 +30,10 @@ import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryE
  * usage outside this artifact could break or corrupt the repository</b>
  */
 public interface NodeService {
+    /**
+     * Node Collection name.
+     */
+     static final String NODES_COLLECTION = "nodes";
 
     /**
      * Creates a File Node.
@@ -82,18 +86,21 @@ public interface NodeService {
      * Finds all nodes for a given parent.
      * Sending parent as null is equivalent to call getRootNode()
      *
+     *
      * @param parent parent to look for
      * @return Empty List if given node has no children.
      * List of all nodes that are children of the given node.
      */
-    List<Node> findNodesByParents(List<Node> parent);
+    Iterable<Node> findNodesByParents(List<Node> parent) throws MongoRepositoryException;
+
+    Iterable<Node> findNodeByParent(Node node) throws MongoRepositoryException;
 
     /**
      * Gets the Root node.
      *
      * @return the Root node , <b>Never Null</b>
      */
-    Node getRootNode();
+    Node getRootNode() throws MongoRepositoryException;
 
     /**
      * Checks if the node is a Folder.
@@ -128,7 +135,7 @@ public interface NodeService {
      * @param nodeName  Name of the node looking for.
      * @return The node with given ancenstors and given name. Null if nothing is found.
      */
-    Node findNodeByAncestorsAndName(List<Node> ancestors, String nodeName);
+    Node findNodeByAncestorsAndName(List<Node> ancestors, String nodeName) throws MongoRepositoryException;
 
     /**
      * Gets the site Root node, null if the site node does not exist (site haven't been created or deleted).
@@ -136,7 +143,7 @@ public interface NodeService {
      * @param siteName Site name.
      * @return the node that represents the site root, null if not found.
      */
-    Node getSiteNode(String siteName);
+    Node getSiteNode(String siteName) throws MongoRepositoryException;
 
     /**
      * Creates a folder tree base on the given path, starts from the last know leaf.
@@ -165,10 +172,17 @@ public interface NodeService {
     /**
      * Gets all the children nodes for the given node<br/>
      * (Children  are nodes which ancestors are the same of the  given nodeId + the given Node)
+     *
      * @param nodeId Node id of the parent
      * @return A List of nodes that are children of
      */
-    List<Node> getChildren(String nodeId) throws MongoRepositoryException;
+    Iterable<Node> getChildren(String nodeId) throws MongoRepositoryException;
 
-    String getNodePath(Node node);
+    String getNodePath(Node node) throws MongoRepositoryException;
+
+    /**
+     * Counts how many Root nodes they are.
+     * if there is more that 1, throw a Execution
+     */
+    void countRootNodes();
 }
