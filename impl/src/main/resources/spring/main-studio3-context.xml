@@ -33,7 +33,7 @@
     <bean id="WorkflowManager" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl"/>
 
     <bean id="ContentManager" class="org.craftercms.studio.internal.content.impl.ContentManagerImpl">
-        <property name="contentService" ref="contentService"/>
+            <property name="contentService" ref="studio.repo.contentService"/>
     </bean>
 
     <import resource="classpath*:spring/*-studio3-ext-context.xml"/>

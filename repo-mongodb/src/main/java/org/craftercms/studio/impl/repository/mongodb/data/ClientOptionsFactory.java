@@ -22,6 +22,9 @@ import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import org.springframework.beans.factory.FactoryBean;
 
+/**
+ * Spring helper for Create a MongoClient
+ */
 public class ClientOptionsFactory implements FactoryBean<MongoClientOptions> {
 
     private static final int PRIMARY_READ_PREFERENCE = 1;
