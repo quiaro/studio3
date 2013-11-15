@@ -56,21 +56,26 @@ public class JongoQueries {
 
     public void init() {
         for (Resource queryFile : queryFiles) {
-            try(InputStream in = new FileInputStream(queryFile.getFile())) {
-                properties.loadFromXML(in);
-            } catch (IOException ex) {
-                log.debug("Unable to load " + queryFile.getFilename(), ex);
+            if (queryFile.exists()) {
+                try (InputStream in = new FileInputStream(queryFile.getFile())) {
+                    properties.loadFromXML(in);
+                } catch (IOException ex) {
+                    log.debug("Unable to load " + queryFile.getFilename(), ex);
+                }
+            } else {
+                log.info("Query File {} not found ", queryFile.getFilename());
             }
         }
     }
 
     /**
      * Gets the Query with the given name. Null if query is not found.
-     * @param name  Name of the query.
+     *
+     * @param name Name of the query.
      * @return Query with the given name. Null if nothing with that name if found.
      */
-    public  String get(String name){
-      return properties.getProperty(name);
+    public String get(String name) {
+        return properties.getProperty(name);
     }
 
     /**
@@ -83,7 +88,7 @@ public class JongoQueries {
 
     /**
      * Delete all the queries from the map.
-      */
+     */
     private void destroy() {
         properties.clear();
     }

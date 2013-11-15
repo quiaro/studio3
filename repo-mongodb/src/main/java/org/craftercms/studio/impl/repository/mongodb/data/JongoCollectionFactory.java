@@ -30,7 +30,7 @@ public class JongoCollectionFactory {
 
 
     private MongoClient mongo;
-    private String database;
+    private String dbName;
     private DB db;
     private String userName;
     private String password;
@@ -42,11 +42,11 @@ public class JongoCollectionFactory {
     }
 
     public void init() {
-        db = mongo.getDB(database);
+        db = mongo.getDB(dbName);
         if (!StringUtils.isBlank(password)) {
             boolean authenticated = db.authenticate(userName, password.toCharArray());
             if (!authenticated) {
-                throw new MongoException("Authentication fail for database " + database);
+                throw new MongoException("Authentication fail for database " + dbName);
             }
         }
         jongo = new Jongo(db);
@@ -60,8 +60,8 @@ public class JongoCollectionFactory {
         this.mongo = mongo;
     }
 
-    public void setDatabase(String database) {
-        this.database = database;
+    public void setDbName(final String dbName) {
+        this.dbName = dbName;
     }
 
     public void setUserName(final String userName) {

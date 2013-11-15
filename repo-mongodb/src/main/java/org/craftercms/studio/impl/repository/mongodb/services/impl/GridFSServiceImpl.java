@@ -22,7 +22,7 @@ import java.io.InputStream;
 import com.mongodb.MongoException;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
+import com.mongodb.gridfs.GridFSInputFile;
 import org.apache.commons.lang.StringUtils;
 import org.bson.types.ObjectId;
 import org.craftercms.studio.impl.repository.mongodb.data.JongoCollectionFactory;
@@ -51,7 +51,7 @@ public class GridFSServiceImpl implements GridFSService {
      */
 
     @Override
-    public GridFSFile saveFile(final String fileName, final InputStream fileInputStream) throws
+    public String saveFile(final String fileName, final InputStream fileInputStream) throws
         MongoRepositoryException {
         if (StringUtils.isBlank(fileName)) {
             log.error("Given fileInputStream name is null, empty or blank");
@@ -62,7 +62,9 @@ public class GridFSServiceImpl implements GridFSService {
             throw new IllegalArgumentException("Given File inputStream is null");
         }
         try {
-            return gridFs.createFile(fileInputStream, fileName, true);
+            GridFSInputFile file = gridFs.createFile(fileInputStream, fileName, true);
+            file.save();
+            return file.getId().toString();
         } catch (MongoException ex) {
             log.error("Unable to save \"" + fileName + "\"file in GridFs due a error", ex);
             throw new MongoRepositoryException("Unable to save File", ex);

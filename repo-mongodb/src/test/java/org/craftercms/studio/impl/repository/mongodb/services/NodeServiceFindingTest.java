@@ -34,6 +34,7 @@ import static org.mockito.Mockito.when;
 /**
  * Node Service Test for finding nodes
  */
+
 public class NodeServiceFindingTest {
 
     /**
@@ -53,6 +54,7 @@ public class NodeServiceFindingTest {
         // Return the same save object.
     }
 
+
     @Test(expected = IllegalArgumentException.class)
     public void testFindNodeIdIsEmpty() throws Exception {
         nodeService.getNode("");
@@ -70,14 +72,14 @@ public class NodeServiceFindingTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindNodeNotFound() throws Exception {
-        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(null);
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),Mockito.any(Class.class))).thenReturn(null);
         Node n = nodeService.getNode(null);
         Assert.assertNull(n);
     }
 
     @Test(expected = MongoRepositoryException.class)
     public void testFindNodeDataAccessException() throws Exception {
-        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenThrow
+        when(mongodbDataService.findById(Mockito.anyString(), Mockito.anyString(), Mockito.any(Class.class))).thenThrow
             (MongoRepositoryException.class);
         nodeService.getNode(UUID.randomUUID().toString());
     }
@@ -85,7 +87,8 @@ public class NodeServiceFindingTest {
 
     @Test
     public void testFindNode() throws Exception {
-        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(new Node());
+        when(mongodbDataService.findById(Mockito.anyString(), Mockito.anyString(), Mockito.any(Class.class))).thenReturn
+            (new Node());
         Node foundNode = nodeService.getNode(UUID.randomUUID().toString());
         Assert.assertNotNull(foundNode);
     }

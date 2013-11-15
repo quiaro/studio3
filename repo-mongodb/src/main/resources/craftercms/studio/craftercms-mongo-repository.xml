@@ -36,8 +36,6 @@
 
     <bean id="studio.repo.mongodb.GridFSService"
           class="org.craftercms.studio.impl.repository.mongodb.services.impl.GridFSServiceImpl">
-        <property name="gridFsTemplate" ref="studio.repo.mongo.gridFsTemplate"/>
-        <property name="mongoClient" ref="com.mongodb.MongoClient"/>
         <property name="jongoCollectionFactory" ref="studio3.repo.mongo.collectionFactory"/>
     </bean>
 
@@ -45,12 +43,11 @@
           class="org.craftercms.studio.impl.repository.mongodb.services.impl.NodeServiceImpl">
         <property name="gridFSService" ref="studio.repo.mongodb.GridFSService"/>
         <property name="pathServices" ref="studio.repo.pathServices"/>
-        <property name="dataService" ref="dataService"/>
+        <property name="dataService" ref="studio3.repo.mongo.dataService"/>
     </bean>
 
     <bean class="org.craftercms.studio.impl.repository.mongodb.services.impl.MongoStartupService"
           id="mongoStartupService">
-        <property name="mongoTemplate" ref="studio.repo.mongo.mongoTemplate"/>
         <property name="nodeServiceImpl" ref="studio.repo.mongodb.nodeService"/>
         <property name="mongodbDataService" ref="studio3.repo.mongo.dataService"/>
     </bean>

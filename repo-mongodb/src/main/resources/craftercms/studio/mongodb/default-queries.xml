@@ -21,31 +21,31 @@
         This File contains default CrafterCms MongoDBQueries.
         If you want to override any of this queries use custom-queries.properties file located
         classpath:craftercms/extension/studio/mongodb/custom-queries.properties
+        IF USE CDATA is use DO NOT add any new line, JSON parser WILL BREAK.
     </comment>
 
     <entry key="studio.repo.mongodb.query.id">
-         <![CDATA[
             {_id:#}
-            ]]>
     </entry>
     <entry key="studio.repo.mongodb.query.getRoot">
-         <![CDATA[
             {ancestors:{$size:0}}
-            ]]>
     </entry>
     <entry key="studio.repo.mongodb.query.getByAncestors">
-         <![CDATA[
-            {ancestors:[#]}
-            ]]>
+            {ancestors:#}
     </entry>
     <entry key="studio.repo.mongodb.query.getByAncestorsAndName">
-         <![CDATA[
-            {ancestors:[#],core:{nodeName:#}
-            ]]>
+            {ancestors:#,core:{nodeName:#}}
     </entry>
+
     <entry key="studio.repo.mongodb.query.getAncestors">
-         <![CDATA[
-            {_id:{$in:[#]}}
-            ]]>
+        {'$match':{'_id': {'$in': #}}  }
     </entry>
+
+    <entry key="studio.repo.mongodb.query.getAncestorsSort">
+        {$sort : { ancestors:1}         }
+    </entry>
+
+
+
+
 </properties>

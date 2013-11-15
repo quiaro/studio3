@@ -18,6 +18,7 @@
 package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.io.InputStream;
+import java.util.UUID;
 
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
@@ -84,13 +85,15 @@ public class NodeServiceCreateFolderTest {
         }).when(dataService).save(Mockito.anyString(), Mockito.any(Node.class));
 
         Node parent = new Node();
+        String nodeId = UUID.randomUUID().toString();
         parent.setType(NodeType.FOLDER);
+        parent.setId(nodeId);
         Node node = nodeService.createFolderNode(parent, "TestFolder","Test Folder" ,"Philip J. Fry");
         Assert.assertNotNull(node);
         Assert.assertNotNull(node);
         Assert.assertEquals(node.getCore().getCreator(), "Philip J. Fry");
         Assert.assertEquals(node.getCore().getNodeName(), "TestFolder");
-        Assert.assertEquals(node.getParentId(), parent);
+        Assert.assertEquals(node.getParentId(), nodeId);
         TestUtils.isUUIDValid(node.getId());
         Assert.assertTrue(nodeService.isNodeFolder(node));
     }

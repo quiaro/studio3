@@ -67,7 +67,7 @@ public class ITNodeServiceCreateFolder implements ApplicationContextAware {
         fail("Saved Folder was not found when searching for it ");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void testValidationOfFolderNameInPath() throws Exception {
         Node folder = nodeService.createFolderNode(nodeService.getRootNode(), FOLDER_NAME_2,FOLDER_LABEL_2,
             FOLDER_CREATOR);

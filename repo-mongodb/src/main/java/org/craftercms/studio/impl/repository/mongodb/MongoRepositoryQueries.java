@@ -26,7 +26,7 @@ public class MongoRepositoryQueries {
     /**
      * Gets a node where _id = a given string. Do is not the same as ObjectId.
      */
-    public static final String GET_BY_GEN_ID = "studio.repo.mongodb.query";
+    public static final String GET_BY_GEN_ID = "studio.repo.mongodb.query.id";
     /**
      * Gets Nodes with the same parent.
      */
@@ -36,7 +36,14 @@ public class MongoRepositoryQueries {
      * Gets Nodes with a given tree path and a name.
      */
     public static final String GET_BY_ANCESTORS_AND_NAME = "studio.repo.mongodb.query.getByAncestorsAndName";
+    /**
+     * Gets all the Ancestors information <b>Uses Aggregation Framework</b>
+     */
     public static final String GET_ANCESTORS = "studio.repo.mongodb.query.getAncestors";
+    /**
+     * Sort Query for Ancestors.
+     */
+    public static final String SORT_ANCESTORS = "studio.repo.mongodb.query.getAncestorsSort";
 
 
     private MongoRepositoryQueries(){}
