@@ -86,7 +86,7 @@ public class ContentServiceImpl implements ContentService {
             item.getCreatedBy(), content);
         if (newFileNode != null) {
             log.debug("File Was created {} ", newFileNode);
-            return nodeToItem(newFileNode, ticket, site);
+            return nodeToItem(newFileNode, ticket, site, null);
         } else {
             log.error("Folder node was not created ");
             throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
@@ -148,14 +148,14 @@ public class ContentServiceImpl implements ContentService {
             Node createdFolder = nodeService.createFolderNode(folderNode, item.getFileName(), item.getLabel(),
                 item.getCreatedBy());
             log.debug("Folder Was created {} ", folderNode);
-            return nodeToItem(createdFolder, ticket, site);
+            return nodeToItem(createdFolder, ticket, site, null);
         } else {
             log.error("Folder node was not created ");
             throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
         }
     }
 
-    private Item nodeToItem(final Node newNode, String ticket, String site) throws RepositoryException {
+    private Item nodeToItem(final Node newNode, String ticket, String site, final InputStream inputStream) throws RepositoryException {
         CoreMetadata core = newNode.getCore();
         Item item = new Item();
         item.setPath(pathService.getPathByItemId(ticket, site, newNode.getId()));
@@ -173,11 +173,12 @@ public class ContentServiceImpl implements ContentService {
             MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
             item.setMimeType(mimeTypesMap.getContentType(item.getFileName()));
         }
+        item.setInputStream(inputStream);
         return item;
     }
 
     @Override
-    public InputStream read(final String ticket, final String contentId) throws RepositoryException,
+    public Item read(final String ticket, final String site, final String contentId) throws RepositoryException,
         InvalidContextException {
 
         //Validates that all inputs are ok
@@ -213,7 +214,8 @@ public class ContentServiceImpl implements ContentService {
                 throw new MongoRepositoryException("File with id is not found, node is broken");
             }
             //Now  finally return it .
-            return fileInput;
+
+            return nodeToItem(item, ticket, site, fileInput);
         } else {
             // can't read folders
             log.debug("Content is a folder");
@@ -252,7 +254,7 @@ public class ContentServiceImpl implements ContentService {
         }
         Tree<Item> resultTree = new Tree<>();
         TreeNode<Item> root = new TreeNode<>();
-        root.setValue(nodeToItem(rootNode, ticket, site));
+        root.setValue(nodeToItem(rootNode, ticket, site, null));
         buildChildrenTree(root, depth, rootNode, ticket, site);
         resultTree.setRootNode(root);
         return resultTree;
@@ -266,7 +268,7 @@ public class ContentServiceImpl implements ContentService {
         if (children != null) {
             for (Node child : children) {
                 TreeNode<Item> leaf = new TreeNode<>();
-                leaf.setValue(nodeToItem(child, ticket, site));
+                leaf.setValue(nodeToItem(child, ticket, site, null));
                 if (depth == -1 || depth > 0) {
                     buildChildrenTree(leaf, (depth - 1), child, ticket, site);
                 }
