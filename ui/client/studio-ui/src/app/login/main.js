@@ -14,8 +14,7 @@ angular.module('crafter.studio.login',
         $stateProvider
             .state('login', {
                 url: '/login',
-                templateUrl: CONFIG.baseUrl + 'templates/login.tpl.html',
-                controller: 'LoginCtrl'
+                templateUrl: CONFIG.baseUrl + 'templates/login.tpl.html'
             })
             .state('login.recover', {
                 url: '/recover',
@@ -37,15 +36,23 @@ angular.module('crafter.studio.login',
             });
     }])
 
-    .controller('LoginCtrl', ['$scope', function ($scope) {
+    .controller('SignInCtrl', ['$scope', function ($scope) {
+        $scope.signin = function signin (existingUser) {
+            console.log(existingUser);
+        };
+    }])
 
+    .controller('SignUpCtrl', ['$scope', function ($scope) {
+        $scope.signup = function signup (newUser) {
+            console.log(newUser);
+        };
     }])
 
     .controller('ModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-        $scope.cancel = function () {
+        $scope.cancel = function cancel () {
             $modalInstance.close();
         };
-        $scope.reset = function() {
+        $scope.reset = function reset () {
             $modalInstance.close('Some data');
-        }
+        };
     }]);

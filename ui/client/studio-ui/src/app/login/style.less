@@ -43,25 +43,29 @@
             .panel-heading {
                 padding-left: 30px;
             }
-            .panel-body > form {
-                padding: 0 @form-space-base;
+            .panel-body {
+                padding-top: @form-space-small;
 
-                .form-group {
-                    margin-bottom: @form-space-base;
+                > form {
+                    padding: 0 @form-space-base;
 
-                    .form-control {
+                    .form-group {
                         margin-bottom: @form-space-base;
-                    }
-                    .btn {
-                        text-shadow: none;
-                        width: 50%;
-                        float: right;
-                    }
-                    .help-link {
-                        margin-left: 3px;
-                        font-size: 12px;
-                        line-height: 20px;
-                        display: inline-block;
+
+                        .form-control {
+                            margin-top: @form-space-base;
+                        }
+                        .btn {
+                            text-shadow: none;
+                            width: 50%;
+                            float: right;
+                        }
+                        .help-link {
+                            margin-left: 3px;
+                            font-size: 12px;
+                            line-height: 20px;
+                            display: inline-block;
+                        }
                     }
                 }
             }
