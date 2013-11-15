@@ -16,6 +16,7 @@
  */
 package org.craftercms.studio.commons.dto;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,15 @@ public class Item implements Comparable<Item> {
     private boolean placeInNav;
     private boolean disabled;
 
+    private InputStream inputStream;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
     ////TODO LOCK TYPE
     /**
      * User id of the lock owner, null if item is not locked

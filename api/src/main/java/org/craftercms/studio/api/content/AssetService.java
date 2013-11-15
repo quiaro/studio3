@@ -1,6 +1,7 @@
 package org.craftercms.studio.api.content;
 
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
 
@@ -32,9 +33,9 @@ public interface AssetService {
      *
      * @param context context
      * @param itemId  item id
-     * @return content
+     * @return content item
      */
-    InputStream read(Context context, String itemId) throws StudioException;
+    Item read(Context context, String itemId) throws StudioException;
 
 
     // TODO: Consider adding update and delete methods
