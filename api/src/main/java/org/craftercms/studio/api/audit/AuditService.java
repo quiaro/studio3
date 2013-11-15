@@ -28,7 +28,7 @@ import org.craftercms.studio.commons.dto.Context;
  * @author Carlos Ortiz
  * @author Sumer Jabri
  */
-public interface AuditManager {
+public interface AuditService {
 
     /**
      * Get activities.

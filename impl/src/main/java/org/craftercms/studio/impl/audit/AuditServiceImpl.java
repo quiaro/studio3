@@ -19,7 +19,7 @@ package org.craftercms.studio.impl.audit;
 
 import java.util.List;
 
-import org.craftercms.studio.api.audit.AuditManager;
+import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.exception.NotImplementedException;
@@ -32,7 +32,7 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class AuditManagerImpl implements AuditManager {
+public class AuditServiceImpl implements AuditService {
 
 
     @Override
