@@ -45,8 +45,7 @@ public interface ContentService {
      * @param content content
      * @return content id
      */
-    Item create(String ticket, String site, String path, Item item, InputStream content) throws
-        RepositoryException;
+    Item create(String ticket, String site, String path, Item item, InputStream content) throws RepositoryException;
 
     /**
      * Create new folder into repository.
@@ -63,6 +62,7 @@ public interface ContentService {
      *
      * @param ticket    security ticket
      * @param contentId content id
+     * @param site      Site
      * @return content item
      * @throws org.craftercms.studio.api.RepositoryException                   If unable to get the actual content.
      * @throws org.craftercms.studio.commons.exception.ObjectNotFoundException if there is no content for that file
@@ -71,7 +71,7 @@ public interface ContentService {
      * @throws org.craftercms.studio.commons.exception.InvalidContextException If the node is a File but don't have
      *                                                                         an inputstream (repo may be broken)
      */
-    Item read(String ticket, String contentId) throws RepositoryException, ObjectNotFoundException,
+    Item read(String ticket, String site, String contentId) throws RepositoryException, ObjectNotFoundException,
         InvalidContextException;
 
     /**
@@ -101,8 +101,8 @@ public interface ContentService {
      * @param filters   result filters
      * @return children tree
      */
-    Tree<Item> getChildren(String ticket, String site, String contentId, int depth, List<Filter> filters) throws
-        RepositoryException;
+    Tree<Item> getChildren(String ticket, String site, String contentId, int depth,
+                           List<Filter> filters) throws RepositoryException;
 
     /**
      * Move content from source to destination.

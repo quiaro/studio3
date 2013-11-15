@@ -19,7 +19,6 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 
 import java.io.InputStream;
 
-import com.mongodb.gridfs.GridFSDBFile;
 import org.bson.types.ObjectId;
 import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
@@ -75,21 +74,20 @@ public class NodeServiceCreateFileTest {
                 return null;
             }
         }).when(mongodbDataService).save(Mockito.anyString(), Mockito.any(Node.class));
+
         when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
-            Node.class)).thenReturn(new Node(new
-            Node(),
-            NodeType.FOLDER));
-        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new TestGridFsFile());
+            Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
+
+        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
+            .toString());
 
 
-        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-        Node fileNode = nodeService.createFileNode(nodeService.getRootNode(), "TestFile","test file" ,
-            "Doctor John A. Zoidberg",
-            testInput);
+        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
+        Node fileNode = nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "test file",
+            "Doctor John A. Zoidberg", testInput);
         Assert.assertNotNull(fileNode);
         Assert.assertEquals(fileNode.getCore().getCreator(), "Doctor John A. Zoidberg");
         Assert.assertEquals(fileNode.getCore().getNodeName(), "TestFile");
-        Assert.assertEquals(fileNode.getParentId(), nodeService.getRootNode());
         TestUtils.isUUIDValid(fileNode.getId());
         Assert.assertTrue(nodeService.isNodeFile(fileNode));
     }
@@ -98,12 +96,12 @@ public class NodeServiceCreateFileTest {
     @Test(expected = MongoRepositoryException.class)
     public void testCreateFileGridFSError() throws Exception {
         when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
-            Node.class)).thenReturn(new Node(new Node(),
-            NodeType.FOLDER));
-        doThrow(MongoRepositoryException.class).when(gridFSService.saveFile(Mockito.anyString(),
-            (InputStream)Mockito.any()));
-        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-        nodeService.createFileNode(nodeService.getRootNode(), "TestFile","Test File", "Doctor John A. Zoidberg",
+            Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
+
+        doThrow(MongoRepositoryException.class).when(gridFSService).saveFile(Mockito.anyString(),
+            (InputStream)Mockito.any());
+        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
+        nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "Test File", "Doctor John A. Zoidberg",
             testInput);
 
     }
@@ -111,19 +109,21 @@ public class NodeServiceCreateFileTest {
 
     @Test(expected = MongoRepositoryException.class)
     public void testCreateFileModeServiceError() throws Exception {
-        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(), Node.class)).thenReturn(new Node(new Node(), NodeType.FOLDER));
+        when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
+            Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
         doThrow(MongoRepositoryException.class).when(mongodbDataService).save(Mockito.anyString(),
             Mockito.any(Node.class));
-        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new TestGridFsFile());
-        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("classpath:/files/index.xml");
-       nodeService.createFileNode(nodeService.getRootNode(), "TestFile","test File", "Doctor John A. Zoidberg",
+        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
+            .toString());
+        InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
+        nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "test File", "Doctor John A. Zoidberg",
             testInput);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentIsNull() throws MongoRepositoryException {
-        nodeService.createFileNode(null, "TestFile","Test File", "Doctor John A. Zoidberg", null);
+        nodeService.createFileNode(null, "TestFile", "Test File", "Doctor John A. Zoidberg", null);
     }
 
 
@@ -131,7 +131,7 @@ public class NodeServiceCreateFileTest {
     public void testParentIsNotFolder() throws MongoRepositoryException {
         Node file = new Node();
         file.setType(NodeType.FILE);
-        nodeService.createFileNode(file, "TestFile","test file", "Doctor John A. Zoidberg", null);
+        nodeService.createFileNode(file, "TestFile", "test file", "Doctor John A. Zoidberg", null);
     }
 
     @Test
@@ -144,11 +144,5 @@ public class NodeServiceCreateFileTest {
         Assert.assertFalse(nodeService.isNodeFile(folder));
     }
 
-    class TestGridFsFile extends GridFSDBFile {
 
-        @Override
-        public Object getId() {
-            return new ObjectId();
-        }
-    }
 }

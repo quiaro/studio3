@@ -27,8 +27,8 @@ public class ContentManagerImpl implements ContentManager {
     }
 
     @Override
-    public InputStream read(final Context context, final String itemId) throws StudioException {
-        return contentService.read(context.getTicket(), itemId);
+    public Item read(final Context context, final String site, final String itemId) throws StudioException {
+        return contentService.read(context.getTicket(), site, itemId);
     }
 
     // Getters and setters

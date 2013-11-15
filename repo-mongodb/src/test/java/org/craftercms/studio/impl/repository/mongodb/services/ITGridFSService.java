@@ -18,6 +18,7 @@
 package org.craftercms.studio.impl.repository.mongodb.services;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.mongodb.gridfs.GridFSFile;
@@ -59,15 +60,23 @@ public class ITGridFSService implements ApplicationContextAware {
     @Test
     public void testSaveFile() throws Exception {
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
-        Assert.assertNotNull(testInput);
         testInput.mark(Integer.MAX_VALUE);
-        String originalMD5 = DigestUtils.md5Hex(testInput);
+        String currentMD5=getMD5(testInput);
         testInput.reset();
-        GridFSFile file = gridFSService.saveFile(FILE_NAME, testInput);
-        Assert.assertEquals(FILE_NAME, file.getFilename());
-        Assert.assertEquals(file.getMD5(), originalMD5);
+        String fileId = gridFSService.saveFile(FILE_NAME, testInput);
+        Assert.assertNotNull(fileId);
+        InputStream stream = gridFSService.getFile(fileId);
+        Assert.assertNotNull(stream);
+        Assert.assertEquals(currentMD5,getMD5(stream));
     }
 
+
+    private  String getMD5(InputStream io) throws IOException {
+        Assert.assertNotNull(io);
+     //   io.mark(Integer.MAX_VALUE);
+        String MD5 = DigestUtils.md5Hex(io);
+        return MD5;
+    }
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         this.applicationContext=applicationContext;

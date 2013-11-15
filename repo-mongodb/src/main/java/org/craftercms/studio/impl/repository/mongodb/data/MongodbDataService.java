@@ -154,7 +154,7 @@ public class MongodbDataService {
     public Node findOne(final String collectionName, final Class<Node> clazz, final String queryName,
                         Object... params) throws MongoRepositoryException {
         try {
-            return jongoCollectionFactory.getCollection(collectionName).findOne(queryName, params).as(clazz);
+            return jongoCollectionFactory.getCollection(collectionName).findOne(getQuery(queryName), params).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", queryName);
             throw new MongoRepositoryException("Unable to queryName mongodb", ex);
@@ -174,7 +174,7 @@ public class MongodbDataService {
     public Node findOne(final String collectionName, final String queryName, final Class<Node> clazz) throws
         MongoRepositoryException {
         try {
-            return jongoCollectionFactory.getCollection(collectionName).findOne(queryName).as(clazz);
+            return jongoCollectionFactory.getCollection(collectionName).findOne(getQuery(queryName)).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", queryName);
             throw new MongoRepositoryException("Unable to queryName mongodb", ex);
@@ -243,10 +243,10 @@ public class MongodbDataService {
     protected <T> Iterable<T> internalFind(final String collectionName, final Class<T> clazz, final String queryName,
                                            final Object... params) throws MongoRepositoryException {
         try {
-            MongoCollection collection = new JongoCollectionFactory().getCollection(collectionName);
+            MongoCollection collection = jongoCollectionFactory.getCollection(collectionName);
             if (StringUtils.isBlank(queryName)) {
                 return collection.find().as(clazz);
-            } else if (params == null || params.length > 0) {
+            } else if (params == null || params.length == 0) {
                 return collection.find(getQuery(queryName)).as(clazz);
             } else {
                 return collection.find(getQuery(queryName), params).as(clazz);
@@ -258,9 +258,21 @@ public class MongodbDataService {
     }
 
 
+    public <T> Iterable<T> aggregation(final String collectionName, final Class<T> clazz, final String queryName,
+                                       final String sortQuery, final Object... params) throws MongoRepositoryException {
+        try {
+            MongoCollection collection = jongoCollectionFactory.getCollection(collectionName);
+            return collection.aggregate(getQuery(queryName), params).and(getQuery(sortQuery)).as(clazz);
+        } catch (MongoException ex) {
+            throw new MongoRepositoryException("Unable to search using aggregation due a error ", ex);
+        }
+
+    }
+
+
     /**
      * Internal checks if the CommandResult is ok , if not will throw a MongoRepositoryException with the last error
-     * message given by CommandResult#getErrorMessage as the exception message.
+     * message given by CommandResult#getErrorMessage as the exception  message.
      *
      * @param lastError Command to be check.
      * @throws MongoRepositoryException if CommandResult#Ok is false.
@@ -272,15 +284,16 @@ public class MongodbDataService {
             log.error("Unable to save into mongodb due " + lastError.getErrorMessage(), lastError.getException());
             throw new MongoRepositoryException(lastError.getException());
         }
+
     }
 
-    private String getQuery(String queryName) throws MongoRepositoryException {
+    public String getQuery(String queryName) throws MongoRepositoryException {
         String query = jongoQueries.get(queryName);
         if (StringUtils.isBlank(query)) {
             log.debug("Query with name {} can't be found or is empty", queryName);
-            throw new MongoRepositoryException("Unable to find queryName or queryName is empty " + queryName);
+            throw new MongoRepositoryException("Unable to find queryName \"" + queryName + "\"");
         } else {
-            return query;
+            return query.trim();
         }
     }
 

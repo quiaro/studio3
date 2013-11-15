@@ -28,7 +28,7 @@ import org.craftercms.studio.commons.dto.Endpoint;
  *
  * @author Sumer Jabri
  */
-public interface EndpointManager {
+public interface EndPointManager {
     /**
      * Create an Endpoint.
      *
