@@ -12,7 +12,7 @@
     <bean id="AnalyticsService" class="org.craftercms.studio.impl.analytics.AnalyticsServiceImpl">
     </bean>
 
-    <bean id="AuditManager" class="org.craftercms.studio.impl.audit.AuditManagerImpl" />
+    <bean id="AuditManager" class="org.craftercms.studio.impl.audit.AuditServiceImpl" />
 
     <bean id="ConfigurationManager" class="org.craftercms.studio.impl.configuration.ConfigurationManagerImpl"/>
 

@@ -3,9 +3,8 @@ package org.craftercms.studio.controller.services.rest;
 import java.util.List;
 import javax.validation.Valid;
 
-import org.craftercms.studio.api.audit.AuditManager;
+import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
-import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.exceptions.ValidationException;
 import org.craftercms.studio.validation.AuditValidator;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ public class AuditController {
      * Audit manager instance.
      */
     @Autowired
-    private AuditManager auditManager;
+    private AuditService auditService;
 
     /**
      * Default CTOR.
@@ -49,7 +48,7 @@ public class AuditController {
     public List<Activity> getActivities(@PathVariable final String site,
                                         @RequestParam(required = false) final List<String> filters) {
         this.log.debug("Retrieving list of activities for {} using filters {}", site, filters);
-        return this.auditManager.getActivities(null, site, filters);
+        return this.auditService.getActivities(null, site, filters);
     }
 
     /**
@@ -73,8 +72,8 @@ public class AuditController {
             this.log.error("Unable to save a activity since is not valid", validationException);
             throw validationException;
         } else {
-            this.log.debug("Calling AuditManager#logActivity with {}", activity);
-            return this.auditManager.logActivity(null, site, activity);
+            this.log.debug("Calling AuditService#logActivity with {}", activity);
+            return this.auditService.logActivity(null, site, activity);
         }
     }
 

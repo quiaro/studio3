@@ -18,7 +18,6 @@
 package org.craftercms.studio.impl.audit;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.After;
@@ -37,7 +36,7 @@ public class AuditManagerImplTest extends AbstractManagerTest {
 
     @InjectMocks
     @Autowired
-    private AuditManagerImpl auditManagerSUT;
+    private AuditServiceImpl auditManagerSUT;
 
     @After
     public void tearDown() throws Exception {

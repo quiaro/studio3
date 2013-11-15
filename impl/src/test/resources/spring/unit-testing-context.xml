@@ -14,7 +14,7 @@
 
     <bean id="lifecycleManagerSUT" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
 
-    <bean id="auditManagerSUT" class="org.craftercms.studio.impl.audit.AuditManagerImpl" />
+    <bean id="auditManagerSUT" class="org.craftercms.studio.impl.audit.AuditServiceImpl" />
 
     <bean id="formsManagerSUT" class="org.craftercms.studio.impl.forms.FormsManagerImpl" />
 

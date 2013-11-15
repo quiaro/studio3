@@ -5,7 +5,7 @@
 
     <bean id="analyticsManager" class="org.craftercms.studio.mock.analytics.AnalyticsServiceMock" />
 
-    <bean id="auditManger" class="org.craftercms.studio.mock.audit.AuditManagerMock" />
+    <bean id="auditManger" class="org.craftercms.studio.mock.audit.AuditServiceMock" />
 
     <bean id="configurationManager" class="org.craftercms.studio.mock.configuration.ConfigurationManagerMock" />
 
