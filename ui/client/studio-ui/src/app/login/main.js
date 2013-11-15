@@ -36,9 +36,14 @@ angular.module('crafter.studio.login',
             });
     }])
 
-    .controller('SignInCtrl', ['$scope', function ($scope) {
+    .controller('SignInCtrl', ['$scope',
+        '$state',
+        'AuthenticationService', function ($scope, $state, AuthenticationService) {
+
         $scope.signin = function signin (existingUser) {
-            console.log(existingUser);
+            console.log("Logging in user: ", existingUser);
+            AuthenticationService.logIn();
+            $state.go('dashboard');
         };
     }])
 

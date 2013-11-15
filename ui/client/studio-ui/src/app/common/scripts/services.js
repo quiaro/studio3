@@ -141,7 +141,7 @@ angular.module('crafter.studio.common')
 
     .factory('AuthenticationService', [
         function() {
-            var loggedIn = true;
+            var loggedIn = false;
 
             function logIn() {
                 // TODO: replace this with a call to an authentication service in the back-end
@@ -166,7 +166,7 @@ angular.module('crafter.studio.common')
 
             function getUserRoles() {
                 // TODO: replace this with a call to an authentication service in the back-end
-                userRoles = ['author'];
+                userRoles = ['author', 'editor'];
                 return userRoles || [];
             }
 
