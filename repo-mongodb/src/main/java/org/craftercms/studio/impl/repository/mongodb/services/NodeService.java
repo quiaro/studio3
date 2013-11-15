@@ -137,6 +137,9 @@ public interface NodeService {
      */
     Node findNodeByAncestorsAndName(List<Node> ancestors, String nodeName) throws MongoRepositoryException;
 
+    Node findNodeByAncestorsIdsAndName(List<String> ancestors, String nodeName) throws
+        MongoRepositoryException;
+
     /**
      * Gets the site Root node, null if the site node does not exist (site haven't been created or deleted).
      *
@@ -184,5 +187,5 @@ public interface NodeService {
      * Counts how many Root nodes they are.
      * if there is more that 1, throw a Execution
      */
-    void countRootNodes();
+    void countRootNodes() throws MongoRepositoryException;
 }

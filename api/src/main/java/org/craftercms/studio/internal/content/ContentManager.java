@@ -46,7 +46,7 @@ public interface ContentManager {
      * @param itemId  item id
      * @return content item
      */
-    Item read(Context context, String itemId) throws StudioException;
+    Item read(Context context, String site, String itemId) throws StudioException;
 //
 //    /**
 //     * Read content for given item id and version.

@@ -28,6 +28,7 @@ import javax.validation.Valid;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tenant;
 import org.craftercms.studio.commons.exception.NotImplementedException;
@@ -112,10 +113,11 @@ public class AssetController {
          * Provide security context
          */
         Context context = RestControllerUtils.createMockContext();
-        final InputStream content = assetService.read(context, itemId);
+        final Item content = assetService.read(context, site,itemId);
         try {
             final OutputStream out = response.getOutputStream();
-            IOUtils.copy(content, out);
+            IOUtils.copy(content.getInputStream(), out);
+            response.setContentType(content.getMimeType());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

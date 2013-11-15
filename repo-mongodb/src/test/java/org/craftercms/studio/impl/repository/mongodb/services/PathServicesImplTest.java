@@ -53,16 +53,18 @@ public class PathServicesImplTest {
         pathServices = new PathServicesImpl();
         nodeService = mock(NodeService.class);
         pathServices.setNodeServiceImpl(nodeService);
+
     }
 
     @Test
     public void testGetPathByItem() throws Exception {
         when(nodeService.getNode(Mockito.anyString())).thenReturn(createTree());
+
         when(nodeService.getNodePath(Mockito.any(Node.class))).then(new Answer<Object>() {
             @Override
             public Object answer(final InvocationOnMock invocation) throws Throwable {
                 Node n = (Node)invocation.getArguments()[0];
-                return new NodeServiceImpl().getNodePath(n);
+                return "/A/B/C/D";
             }
         });
         String path = pathServices.getPathByItemId("Ticket", "Site", "ItemId");

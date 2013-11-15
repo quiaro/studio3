@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 import org.apache.commons.collections.ListUtils;
+import org.jongo.marshall.jackson.oid.Id;
 
 /**
  * Content Node.
@@ -24,6 +25,7 @@ public class Node implements Cloneable {
     /**
      * Node Id.
      */
+    @Id
     private String id;
     /**
      * Parent Node can't be null.
@@ -129,9 +131,9 @@ public class Node implements Cloneable {
      *
      * @return a Unmodifiable List of the Ancestry for this node <b>Including It self.</b>
      */
-    public List<Node> getAncestry() {
-        LinkedList<Node> tmp = (LinkedList<Node>)ancestors.clone();
-        tmp.addLast(this);
+    public List<String> getAncestry() {
+        LinkedList<String> tmp = (LinkedList<String>)ancestors.clone();
+        tmp.addLast(this.getId());
         return ListUtils.unmodifiableList(tmp);
     }
 

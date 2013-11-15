@@ -70,8 +70,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public InputStream read(final Context context, final String itemId) throws StudioException {
-        return contentManager.read(context, itemId);
+    public Item read(final Context context, final String site, final String itemId) throws StudioException {
+        return contentManager.read(context, site, itemId);
     }
 
     // Getters and setters

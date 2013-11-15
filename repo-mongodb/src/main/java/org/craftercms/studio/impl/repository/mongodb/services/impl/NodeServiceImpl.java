@@ -17,22 +17,20 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import com.mongodb.gridfs.GridFSFile;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.collections.Transformer;
+import javolution.util.FastList;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryQueries;
 import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
-import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataServiceUtils;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
@@ -47,7 +45,6 @@ import org.slf4j.LoggerFactory;
  * Default Implementation of {@link org.craftercms.studio.impl.repository.mongodb.services.NodeService}.
  */
 public class NodeServiceImpl implements NodeService {
-
 
 
     /**
@@ -157,8 +154,7 @@ public class NodeServiceImpl implements NodeService {
     public Iterable<Node> findNodesByParents(final List<Node> parents) throws MongoRepositoryException {
         log.debug("Finding all children of {}", parents);
         Iterable<Node> foundNodes = dataService.find(NODES_COLLECTION, Node.class,
-            MongoRepositoryQueries.GET_BY_ANCESTORS, MongodbDataServiceUtils.collectionToString(nodeListToIdList
-            (parents)));
+            MongoRepositoryQueries.GET_BY_ANCESTORS, nodeListToIdList(parents));
         log.debug("Found {} children nodes ", foundNodes);
         return foundNodes;
     }
@@ -167,8 +163,8 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public Iterable<Node> findNodeByParent(final Node node) throws MongoRepositoryException {
         log.debug("Finding all children of {}", node);
-        Iterable<Node> foundNodes = dataService.find(NODES_COLLECTION, Node.class, MongoRepositoryQueries
-            .GET_BY_ANCESTORS, node.getId());
+        Iterable<Node> foundNodes = dataService.find(NODES_COLLECTION, Node.class,
+            MongoRepositoryQueries.GET_BY_ANCESTORS, node.getId());
         log.debug("Found {} children nodes ", foundNodes);
         return foundNodes;
     }
@@ -214,8 +210,23 @@ public class NodeServiceImpl implements NodeService {
                 MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, getRootNode().getId(), nodeName);
         } else {
             return dataService.findOne(NODES_COLLECTION, Node.class,
-                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, MongodbDataServiceUtils.collectionToString
-                (nodeListToIdList(ancestors)), nodeName);
+                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, nodeListToIdList(ancestors), nodeName);
+        }
+    }
+
+    @Override
+    public Node findNodeByAncestorsIdsAndName(final List<String> ancestors,
+                                              final String nodeName) throws MongoRepositoryException {
+        if (StringUtils.isBlank(nodeName)) {
+            log.debug("Node name can't be empty or blank");
+            throw new IllegalArgumentException("Can't search node with name either null ,empty or blank");
+        }
+        if (ancestors == null || ancestors.isEmpty()) {                      //Quick List of 1
+            return dataService.findOne(NODES_COLLECTION, Node.class,
+                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, getRootNode().getId(), nodeName);
+        } else {
+            return dataService.findOne(NODES_COLLECTION, Node.class,
+                MongoRepositoryQueries.GET_BY_ANCESTORS_AND_NAME, ancestors, nodeName);
         }
     }
 
@@ -229,7 +240,7 @@ public class NodeServiceImpl implements NodeService {
         String[] pathParts = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
         Node parentNode = getRootNode();
         for (int i = 0; i < pathParts.length; i++) {
-            Node pivot = findNodeByAncestorsAndName(parentNode.getAncestry(), pathParts[i]);
+            Node pivot = findNodeByAncestorsIdsAndName(parentNode.getAncestry(), pathParts[i]);
             if (pivot == null) {
                 parentNode = createFolderNode(parentNode, pathParts[i], pathParts[i], creator);
 
@@ -264,14 +275,13 @@ public class NodeServiceImpl implements NodeService {
         StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
         //First Add the Node with the given ID
 
-        Iterator<Node> nodeListIterator = (Iterator<Node>)dataService.find(NODES_COLLECTION, Node.class,
-            MongoRepositoryQueries.GET_ANCESTORS, MongodbDataServiceUtils.collectionToString(node.getAncestors()));
-        while (nodeListIterator.hasNext()) {
-            Node tmpNode = nodeListIterator.next();
-            builder.append(tmpNode.getCore().getNodeName());
-        }
-        if (!node.getCore().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
-            builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        Iterable<Node> nodes = dataService.aggregation(NODES_COLLECTION, Node.class,
+            MongoRepositoryQueries.GET_ANCESTORS, MongoRepositoryQueries.SORT_ANCESTORS, node.getAncestors());
+        for (Node parentNode : nodes) {
+            builder.append(parentNode.getCore().getNodeName());
+            if (!parentNode.getCore().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR)) {
+                builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+            }
         }
         builder.append(node.getCore().getNodeName());
         String path = builder.toString();
@@ -280,8 +290,9 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public void countRootNodes() {
-        long count = dataService.getCollection(NODES_COLLECTION).count(MongoRepositoryQueries.GET_ROOT_NODE);
+    public void countRootNodes() throws MongoRepositoryException {
+        long count = dataService.getCollection(NODES_COLLECTION).count(dataService.getQuery(MongoRepositoryQueries
+            .GET_ROOT_NODE));
         if (count > 1) {
             log.error("Found {} root nodes, stopping repository to prevent it's corruption or data loses", count);
             throw new IllegalStateException("Multiple Root Nodes found");
@@ -290,7 +301,11 @@ public class NodeServiceImpl implements NodeService {
 
     //ToDo JDK8 Do this in a nice Lambda Exp.
     private List<String> nodeListToIdList(final List<Node> nodes) {
-        List ids = ListUtils.transformedList(nodes, new NodesToIdTransformer());
+
+        List<String> ids = new FastList<String>(nodes.size());
+        for (Node node : nodes) {
+            ids.add(node.getId());
+        }
         return ids;
     }
 
@@ -304,10 +319,13 @@ public class NodeServiceImpl implements NodeService {
                                             final InputStream content, final String folderLabel) throws
         MongoRepositoryException {
         CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName, folderLabel);
-        GridFSFile savedFile = gridFSService.saveFile(fileName, content);
-        coreMetadata.setSize(savedFile.getLength());
-        coreMetadata.setFileId(savedFile.getId().toString());
-
+        try {
+            coreMetadata.setSize(content.available());
+            String savedFileId = gridFSService.saveFile(fileName, content);
+            coreMetadata.setFileId(savedFileId);
+        } catch (IOException e) {
+            throw new MongoRepositoryException("Unable to calculate File size", e);
+        }
         return coreMetadata;
     }
 
@@ -336,12 +354,4 @@ public class NodeServiceImpl implements NodeService {
         this.dataService = dataService;
     }
 
-
-    class NodesToIdTransformer implements Transformer {
-
-        @Override
-        public Object transform(final Object input) {
-            return ((Node)input).getId();
-        }
-    }
 }
