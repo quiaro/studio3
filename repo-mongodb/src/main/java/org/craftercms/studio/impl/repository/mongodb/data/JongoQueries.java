@@ -57,7 +57,7 @@ public class JongoQueries {
     public void init() {
         for (Resource queryFile : queryFiles) {
             if (queryFile.exists()) {
-                try (InputStream in = new FileInputStream(queryFile.getFile())) {
+                try (InputStream in = queryFile.getInputStream()) {
                     properties.loadFromXML(in);
                 } catch (IOException ex) {
                     log.debug("Unable to load " + queryFile.getFilename(), ex);
