@@ -2,18 +2,18 @@
 
 angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'])
 
-    .constant('CONFIG', {
+    .constant('DASHBOARD', {
         baseUrl: '/studio-ui/src/app/dashboard/'
     })
 
     .config(['$stateProvider',
         '$urlRouterProvider',
-        'CONFIG', function ($stateProvider, $urlRouterProvider, CONFIG) {
+        'DASHBOARD', function ($stateProvider, $urlRouterProvider, DASHBOARD) {
 
         $stateProvider
             .state('dashboard', {
                 url: '/dashboard',
-                templateUrl: CONFIG.baseUrl + 'templates/dashboard.tpl.html',
+                templateUrl: DASHBOARD.baseUrl + 'templates/dashboard.tpl.html',
                 controller: 'DashboardCtrl',
                 requireAuth: true,
                 rolesAllowed: ['admin', 'editor']

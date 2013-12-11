@@ -3,6 +3,12 @@
 
 angular.module('crafter.studio.common')
 
+    .config(function($httpProvider){
+        // Avoid problem with CORS
+        // http://stackoverflow.com/questions/16661032/http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    })
+
     .factory('audit', ['$http', '$q', 'util', 'alertDialog',
         function($http, $q, util, alertDialog) {
 
@@ -54,6 +60,7 @@ angular.module('crafter.studio.common')
         }
     ])
 
+    // TODO: Merge this service into the appService
     .factory('util', ['$http', '$q', 'Env', 'REGISTRY',
         function($http, $q, Env, REGISTRY) {
 
@@ -135,6 +142,135 @@ angular.module('crafter.studio.common')
                 getEnvProperty: getEnvProperty,
                 setEnvProperty: setEnvProperty,
                 getRegistry: getRegistry
+            };
+        }
+    ])
+
+    .service('utilService',
+        function($http, $rootScope, CONFIG) {
+
+            // Takes a string of the form: "the {tree} is behind the {building}" and uses a
+            // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
+            // placeholders.
+            // Throws an error if there are placeholders that don't have a replace value
+            this.replacePlaceholders = function(string, replaceObj) {
+
+                function replacePlaceholder(match) {
+                    var key = match.substring(1, match.length - 1), // remove '{' and '}' from the match string
+                        replaceValue = replaceObj[key];
+                    if (replaceValue) {
+                        return replaceValue
+                    } else {
+                        throw new Error('Placeholder "' + key + '" does not have a replace value in ' + string);
+                    }
+                }
+
+                return string.replace(/{.*}/g, function(m) { return replacePlaceholder(m) } );
+            };
+        }
+    )
+
+    // Based on danialfarid's angular-file-upload
+    // https://github.com/danialfarid/angular-file-upload
+    .service('assetService',
+        ['$http',
+         '$rootScope',
+         'utilService',
+         'CONFIG',
+         'Env',
+        function($http, $rootScope, utilService, CONFIG, Env) {
+
+            this.upload = function(config) {
+
+                var serviceDomain = CONFIG.services.domain || '',
+                    servicePath = CONFIG.services.asset.upload,
+                    formData = new FormData(),
+                    promise;
+
+                config.url = serviceDomain + utilService.replacePlaceholders(servicePath, { 'site': Env.siteName });
+                config.method = config.method || 'POST';
+                config.headers = config.headers || {};
+                config.headers['Content-Type'] = undefined;
+                config.transformRequest = config.transformRequest || $http.defaults.transformRequest;
+
+                if (config.data) {
+                    for (var key in config.data) {
+                        var val = config.data[key];
+
+                        if (typeof config.transformRequest == 'function') {
+                            val = config.transformRequest(val);
+                        } else {
+                            for (var i = 0; i < config.transformRequest.length; i++) {
+                                var fn = config.transformRequest[i];
+                                if (typeof fn == 'function') {
+                                    val = fn(val);
+                                }
+                            }
+                        }
+                        formData.append(key, val);
+                    }
+                }
+                config.transformRequest = angular.identity;
+                formData.append(config.fileFormDataName || 'file', config.file, config.file.name);
+
+                formData['__setXHR_'] = function(xhr) {
+                    config.__XHR = xhr;
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (config.progress) {
+                            config.progress(e);
+                            if (!$rootScope.$$phase) {
+                                $rootScope.$apply();
+                            }
+                        }
+                    }, false);
+                    //fix for firefox not firing upload progress end
+                    xhr.upload.addEventListener('load', function(e) {
+                        if (e.lengthComputable) {
+                            config.progress(e);
+                            if (!$rootScope.$$phase) {
+                                $rootScope.$apply();
+                            }
+                        }
+                    }, false);
+                };
+
+                config.data = formData;
+
+                promise = $http(config);
+
+                promise.progress = function(fn) {
+                    config.progress = fn;
+                    return promise;
+                };
+
+                promise.abort = function() {
+                    if (config.__XHR) {
+                        config.__XHR.abort();
+                    }
+                    return promise;
+                };
+                promise.then = (function(promise, origThen) {
+                    return function(s, e, p) {
+                        config.progress = p || config.progress;
+                        origThen.apply(promise, [s, e, p]);
+                        return promise;
+                    };
+                })(promise, promise.then);
+
+                return promise;
+            };
+
+            this.read = function (config) {
+
+                var serviceDomain = CONFIG.services.domain || '',
+                    servicePath = CONFIG.services.asset.read;
+
+                config.url = serviceDomain + utilService.replacePlaceholders(servicePath, { 'site': Env.siteName });
+                config.method = 'GET';
+                config.headers = config.headers || {};
+                config.headers['Content-Type'] = undefined;
+
+                return $http(config);
             };
         }
     ])

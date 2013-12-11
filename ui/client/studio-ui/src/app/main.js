@@ -4,21 +4,18 @@ angular.module('studio-ui', [
         'crafter.studio.login',
         'crafter.studio.dashboard',
         'crafter.studio.authoring',
+        'crafter.studio.test-service',
         'crafter.studio.common',
         'pascalprecht.translate',
         'ngCookies',
         'ui.router'
     ])
 
-    .constant('CONFIG', {
-        baseUrl: '/studio-ui/src/app/common/'
-    })
-
     .config(['$locationProvider',
         '$stateProvider',
         '$urlRouterProvider',
         '$httpProvider',
-        'CONFIG', function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, CONFIG) {
+        'COMMON', function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, COMMON) {
 
         var logOutUserOn401 = ['$q', '$location',
             function($q, $location) {
@@ -47,7 +44,7 @@ angular.module('studio-ui', [
         $stateProvider
             .state('unauthorized', {
                 url: '/unauthorized',
-                templateUrl: CONFIG.baseUrl + 'templates/unauthorized.tpl.html'
+                templateUrl: COMMON.baseUrl + 'templates/unauthorized.tpl.html'
             });
 
         $urlRouterProvider.otherwise('/login');

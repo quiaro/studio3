@@ -3,24 +3,24 @@
 angular.module('crafter.studio.login',
     ['crafter.studio.common', 'ui.router', 'ui.bootstrap'])
 
-    .constant('CONFIG', {
+    .constant('LOGIN', {
         baseUrl: '/studio-ui/src/app/login/'
     })
 
     .config(['$stateProvider',
         '$urlRouterProvider',
-        'CONFIG', function ($stateProvider, $urlRouterProvider, CONFIG) {
+        'LOGIN', function ($stateProvider, $urlRouterProvider, LOGIN) {
 
         $stateProvider
             .state('login', {
                 url: '/login',
-                templateUrl: CONFIG.baseUrl + 'templates/login.tpl.html'
+                templateUrl: LOGIN.baseUrl + 'templates/login.tpl.html'
             })
             .state('login.recover', {
                 url: '/recover',
                 onEnter: function($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: CONFIG.baseUrl + 'templates/recover.tpl.html',
+                        templateUrl: LOGIN.baseUrl + 'templates/recover.tpl.html',
                         controller: 'ModalCtrl'
                     }).result
                         .then(function (result) {

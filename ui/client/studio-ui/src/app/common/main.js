@@ -2,6 +2,10 @@
 
 angular.module('crafter.studio.common', [])
 
+    .constant('COMMON', {
+        baseUrl: '/studio-ui/src/app/common/'
+    })
+
 	// App configuration values
 	.constant('I18N', {
 		prefix: 'studio-ui/i18n/locale_',
@@ -26,6 +30,13 @@ angular.module('crafter.studio.common', [])
             tplPlaceholder: 'widget.name',
             asyncMethodName: 'getAsyncData',
             namespace: 'widgets'
+        },
+        services: {
+            domain: "http://localhost:9666",
+            asset: {
+                upload: "/api/1/content/asset/create/{site}",
+                read: "/api/1/content/asset/read/{site}"
+            }
         }
     })
 
