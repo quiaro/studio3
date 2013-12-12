@@ -15,7 +15,9 @@ angular.module('studio-ui', [
         '$stateProvider',
         '$urlRouterProvider',
         '$httpProvider',
-        'COMMON', function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, COMMON) {
+        '$translateProvider',
+        'COMMON',
+        function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, $translateProvider, COMMON) {
 
         var logOutUserOn401 = ['$q', '$location',
             function($q, $location) {
@@ -49,14 +51,30 @@ angular.module('studio-ui', [
 
         $urlRouterProvider.otherwise('/login');
         $locationProvider.html5Mode(true);
+
+        // TODO: Enable translate provider
+        // $translateProvider
+        //     .useStaticFilesLoader({
+        //         prefix: I18N.prefix,
+        //         suffix: I18N.suffix
+        //     })
+        //     // load 'en' table on startup
+        //     .preferredLanguage('en')
+        //     .useLocalStorage();
+
     }])
 
     // Application Controller: the omnipresent and omniscient controller
     // Handles route event logic and minor functions exposed throughout the whole app
     .controller('AppCtrl', [
         '$scope',
-        '$translate', function ($scope, $translate) {
+        '$log', function ($scope, $log) {
 
+        // Error handling on state changes
+        $scope.$on('$stateChangeError',
+            function(event, toState, toParams, fromState, fromParams, error){
+                $log.error(error);
+        });
     }])
 
     // Initialize the application
