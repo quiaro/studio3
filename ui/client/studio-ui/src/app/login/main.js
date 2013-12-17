@@ -41,9 +41,13 @@ angular.module('crafter.studio.login',
         'AuthenticationService', function ($scope, $state, AuthenticationService) {
 
         $scope.signin = function signin (existingUser) {
+            var defaultSite;
             console.log("Logging in user: ", existingUser);
             AuthenticationService.logIn();
-            $state.go('dashboard');
+
+            // TODO: replace with method that gets the default site
+            defaultSite = "mango";
+            $state.go('studio.dashboard', { site: defaultSite });
         };
     }])
 

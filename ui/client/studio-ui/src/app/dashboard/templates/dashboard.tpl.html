@@ -1,22 +1,61 @@
-<!-- <widgets section='dashboard'></widgets> -->
-<div>
-  I'm the dashboard!
-</div>
+<div class="dashboard table-layout">
+    <div>
+        <div class="side">
+            <div id="tree-navigator" ng-controller="TreeNavigatorCtrl">
 
-<!-- Controls for testing the growler notifications
-<div style="padding: 20px 22px;">
-	<label>Message Title</label>
-    <input ng-model="msg.title" placeholder="Title"><br />
-    <label>Message Body</label>
-    <input ng-model="msg.body" placeholder="Body"><br />
-    <label>Message Type</label>
-    <select ng-model="msg.type">
-    <option value="success">Success</option>
-    <option value="info">Info</option>
-    <option value="warning">Warning</option>
-    <option value="error">Error</option>
-    </select><br />
-    <a ng-click="NotificationService.pop({title: msg.title, body: msg.body, type: msg.type})" class="btn">Show Message</a>
-</div>
--->
+                <div class="filters">
+                    <div class="type-filter input-group">
+                        <span class="input-group-addon">View</span>
+                        <button type="button" class="form-control btn btn-default dropdown-toggle">
+                            <span class="description">Pages</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><span class="description">All</span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="description">Pages</span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="description">Templates</span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="description">Assets</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
+                <div
+                  data-angular-treeview="true"
+                  data-tree-id="navigatorContent"
+                  data-tree-model="navigatorModel"
+                  data-node-id="roleId"
+                  data-node-label="roleName"
+                  data-node-children="children" >
+                </div>
+
+                <div class="tools">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus" title="Add New"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-minus" title="Delete"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-cog" title="View Options"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main">
+            <div id="activity-view">
+                <widgets section='dashboard'></widgets>
+            </div>
+        </div>
+    </div>
+</div>

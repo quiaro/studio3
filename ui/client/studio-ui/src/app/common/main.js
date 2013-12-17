@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('crafter.studio.common', [])
+angular.module('crafter.studio.common', ['ui.router', 'ui.bootstrap.modal'])
 
     .constant('COMMON', {
         baseUrl: '/studio-ui/src/app/common/'
@@ -44,4 +44,35 @@ angular.module('crafter.studio.common', [])
 		siteName: 'mango',
 		urlBase: 'api',
 		apiVersion: '1'
-	});
+	})
+
+    .config(['$stateProvider',
+        'COMMON', function ($stateProvider, COMMON) {
+
+        $stateProvider
+
+            // Abstract state to create the general layout of the app
+            .state('studio', {
+
+                // With abstract set to true the state can not be explicitly activated.
+                // It can only be implicitly activated by activating one of it's children.
+                abstract: true,
+
+                // prepend this path segment to of all its children
+                url: '/studio',
+                templateUrl: COMMON.baseUrl + 'templates/layout.tpl.html'
+            });
+    }])
+
+    .controller('ToolbarCtrl', [
+        '$scope', function ($scope) {
+
+        $scope.menu = {
+            selected: null
+        };
+
+        $scope.showOptionsFor = function (menu) {
+            $scope.menu.selected = ($scope.menu.selected == menu) ? null : menu;
+        }
+    }]);
+

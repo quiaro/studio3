@@ -2,15 +2,6 @@
 
 angular.module('crafter.studio.common')
 
-	.directive('navigation', function () {
-		return {
-			restrict: 'E',
-			replace: true,
-			templateUrl: 'studio-ui/templates/navigation.tpl.html',
-            controller: 'NavigationCtrl'
-		};
-	})
-
 	.directive('fileview', function () {
 		return {
 			restrict: 'E',

@@ -4,6 +4,139 @@
     color: @gray-dark;
 }
 
+#main-container {
+    position: absolute;
+    top: 0;
+    bottom: @toolbar-height;
+    left: 0;
+    right: 0;
+    border-bottom: @toolbar-border-width solid @toolbar-border;
+    #gradient.directional(@color-primary, @color-secondary, 90deg);
+}
+
+#toolbar {
+    display: block;
+    height: @toolbar-height;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+
+    #gradient.vertical(@toolbar-background-top, @toolbar-background-bottom);
+
+    .logo {
+        float: left;
+        height: inherit;
+
+        > a {
+            background: url("@{IMAGE-ROOT}crafter-logo-sm.png") no-repeat left center;
+            display: block;
+            height: inherit;
+            margin: 0 @toolbar-side-padding;
+            width: @toolbar-logo-width;
+            .hide-text();
+        }
+    }
+
+    .sdo-menu {
+        float: left;
+        height: inherit;
+
+        > button {
+            border: 0 none;
+            display: block;
+            height: inherit;
+            background: transparent;
+            padding: 0 @toolbar-button-padding;
+            color: lighten(#000, 70%);;
+
+            &:hover, &:active, &.on {
+                background-color: @toolbar-background-top;
+                color: @gray-lighter;
+            };
+        }
+
+        .options {
+            &.top { bottom: (100% + 2px); };
+
+            li a {
+                &:hover, &:active {
+                  color: @gray-lighter;
+                  text-decoration: none;
+                  background-color: @toolbar-background-top;
+                }
+            }
+        }
+    }
+
+    .user-menu {
+        float: right;
+        margin-right: @toolbar-side-padding;
+    }
+}
+
+// --- Menus
+.sdo-menu {
+    position: relative;
+
+    > button {
+        border: 0 none;
+        display: block;
+    }
+
+    .options {
+        background-color: @section-background;
+        position: absolute;
+        left: 0;
+        z-index: 100;
+        min-width: @menu-width;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        list-style: none;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        .box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
+        border-radius: @border-radius-base;
+        background-clip: padding-box;
+
+        &.bottom { top:100%; };
+        &.top { bottom:100%; };
+
+        li {
+            text-align: left;
+            margin: 0;
+
+            a {
+                display: block;
+                color: @gray-dark;
+                padding: 4px 10px;
+                white-space: nowrap;
+
+                &:hover {
+                  color: @gray-lighter;
+                  text-decoration: none;
+                  background-color: @menu-link-hover-background;
+                }
+            }
+        }
+    }
+}
+
+// --- Layout
+.table-layout {
+    display: table;
+    width: 100%;
+    height: 100%;
+
+    > div {
+        display: table-row;
+
+        > div {
+            display: table-cell;
+        }
+    }
+}
+
 // --- Modal Dialogs
 .modal.fade.in {
     display: block;
@@ -14,7 +147,7 @@
         padding-top: 12px;
         padding-bottom: 12px;
         .border-top-radius(@border-radius-base);
-        #gradient.vertical(lighten(@nav-background-top, 20%), lighten(@nav-background-bottom, 20%));
+        #gradient.vertical(lighten(@toolbar-background-top, 20%), lighten(@toolbar-background-bottom, 20%));
 
         .close {
             color: @modal-header;
@@ -34,73 +167,6 @@
     margin-left: 10px;
 }
 
-/* --- navigation --- */
-#nav {
-    display: table-cell;
-    padding: 10px 15px;
-    margin-right: 20px;
-
-    input, select, .file-view { border: 1px solid @section-border; }
-
-    .logo { display: block; }
-
-    .s2do-menu {
-      position: relative;
-
-      .options {
-        background-color: @section-background;
-        position: absolute;
-        left: 0;
-        z-index: 100;
-        min-width: @menu-width;
-        padding: 5px 0;
-        margin: 2px 0 0;
-        font-size: 14px;
-        list-style: none;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        .box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
-        border-radius: @section-border-radius;
-        background-clip: padding-box;
-
-        &.bottom { top:100%; };
-        &.top { bottom:100%; };
-
-        li {
-          text-align: left;
-          margin: 0;
-
-          a {
-            display: block;
-            color: @gray-dark;
-            padding: 4px 10px;
-            white-space: nowrap;
-
-            &:hover {
-              color: @menu-link-hover;
-              text-decoration: none;
-              background-color: @menu-link-hover-background;
-            }
-          }
-        }
-
-      }
-    }
-
-    .user-menu {
-      font-size: 14px;
-
-      li {
-        margin: 8px 0px;
-        padding: 0 2px;
-
-        a:hover {
-          color: @menu-link-hover;
-          text-decoration: none;
-        }
-      }
-    }
-}
-
 /* --- treeview --- */
 div[data-angular-treeview] {
   /* prevent user selection */
@@ -110,6 +176,7 @@ div[data-angular-treeview] {
   font-size:13px;
   color: @gray;
   text-decoration: none;
+  background-color: @treeview-bg-color;
 }
 
 div[data-tree-model] ul {
@@ -130,19 +197,19 @@ div[data-tree-model] ul {
 
     .expanded {
       padding: 1px 10px;
-      background-image: url("/studio-ui/images/icons/folder.png");
+      background-image: url("@{IMAGE-ROOT}icons/folder.png");
       background-repeat: no-repeat;
     }
 
     .collapsed {
       padding: 1px 10px;
-      background-image: url("/studio-ui/images/icons/folder-closed.png");
+      background-image: url("@{IMAGE-ROOT}icons/folder-closed.png");
       background-repeat: no-repeat;
     }
 
     .normal {
       padding: 1px 10px;
-      background-image: url("/studio-ui/images/icons/file.png");
+      background-image: url("@{IMAGE-ROOT}icons/file.png");
       background-repeat: no-repeat;
     }
 
@@ -150,88 +217,5 @@ div[data-tree-model] ul {
       font-weight: bold;
     }
   }
-}
-
-/* --- main container --- */
-#main-container {
-  display: table-cell;
-
-  > .content {
-    position: absolute;
-    top: 15px;
-    bottom: 15px;
-    right: 15px;
-    background-color: @section-background;
-    border: 1px solid @section-border;
-    min-width: 714px;
-    border-radius: @section-border-radius;
-    overflow: scroll;
-  }
-}
-
-
-/* --- Full Screen State --- */
-#studio.full #nav {
-    display: block;
-    height: @nav-height;
-    left: 0;
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-    padding: 5px 20px;
-
-    background-color: @color-primary;
-    background: -webkit-linear-gradient(top, @color-secondary, @color-primary);
-    background: -moz-linear-gradient(top, @color-secondary, @color-primary);
-    background: linear-gradient(top, @color-secondary, @color-primary);
-}
-#studio.full #nav .home {
-    float: left;
-    margin: 5px 5px 5px 10px;
-    color: #FFFFFF;
-}
-
-#studio.full #nav .logo {
-    background: transparent url(/studio-ui/images/crafter-logo-min-sm.png) 0 0 no-repeat;
-    height: 40px;
-    width: 23px;
-    float: left;
-    margin-right: 5px;
-}
-
-#studio.full #nav .search,
-#studio.full #nav .project-menu {
-    float: left;
-    width: 220px;
-    margin: 5px 8px;
-}
-
-#studio.full #nav input[type='search'],
-#studio.full #nav select { border-color: #666; }
-
-#studio.full #nav .file-view { display: none; }
-#studio.full #nav .user-menu {
-    float: right;
-    margin-top: 5px;
-}
-#studio.full #nav .user-menu > .btn {
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
-}
-#studio.full #nav .user-menu .options {
-    left: auto;
-    right: 0;
-}
-
-#studio.full #main-container > .content {
-    top: 0;
-    bottom: 50px;
-    right: 0;
-    left: 0;
-    border-top: 0 none;
-    border-right: 0 none;
-    border-left: 0 none;
 }
 /* --- EO: GLOBAL.LESS --- */

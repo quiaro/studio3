@@ -11,7 +11,7 @@
 .login {
 
     .main {
-        border-bottom: @nav-border-width solid @nav-border;
+        border-bottom: @toolbar-border-width solid @toolbar-border;
 
         article {
             .header {
@@ -44,10 +44,10 @@
                 padding-left: 30px;
             }
             .panel-body {
-                padding-top: @form-space-small;
+                padding-top: @layout-space-small;
 
                 > form {
-                    padding: 0 @form-space-base;
+                    padding: 0 @layout-space-base;
 
                     .form-group {
                         margin-bottom: @form-space-base;
@@ -73,9 +73,9 @@
     }
 
     .footer {
-        height: @nav-height;
+        height: @toolbar-height;
         .border-bottom-radius(@border-radius-large);
-        #gradient.vertical(@nav-background-top, @nav-background-bottom);
+        #gradient.vertical(@toolbar-background-top, @toolbar-background-bottom);
 
         .logo {
             height: inherit;
@@ -89,11 +89,11 @@
 
             li {
                 display: inline-block;
-                line-height: @nav-height;
+                line-height: @toolbar-height;
                 margin: 0 10px;
 
                 a {
-                    color: @nav-link;
+                    color: @toolbar-link;
                 }
             }
         }

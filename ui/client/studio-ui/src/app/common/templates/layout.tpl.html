@@ -1,0 +1,70 @@
+<div id="app-container" class="studio">
+
+    <div id="main-container" ui-view></div>
+
+    <footer id="toolbar" ng-controller="ToolbarCtrl">
+        <div class="logo">
+            <a ui-sref="studio.dashboard({ site: dashboard.site })">Crafter Studio</a>
+        </div>
+        <div class="tools-menu sdo-menu" ng-click="showOptionsFor('tools')">
+            <button type="button" ng-class="{ 'on': menu.selected=='tools' }">
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="description">Tools</span>
+            </button>
+            <ul class="options top" ng-hide="menu.selected!='tools'">
+                <li>
+                    <a href="#"><span class="description">Site Config</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Tranlations</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Content Types</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Analytics</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Logs</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="site-menu sdo-menu" ng-click="showOptionsFor('sites')">
+            <button type="button" ng-class="{ 'on': menu.selected=='sites' }">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                <span class="description">Mango</span>
+            </button>
+            <ul class="options top" ng-hide="menu.selected!='sites'">
+                <li>
+                    <a href="#"><span class="description">Marketing</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Sales</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Human Resources</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Products</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="user-menu sdo-menu" ng-click="showOptionsFor('user')">
+            <button type="button" ng-class="{ 'on': menu.selected=='user' }">
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="description">Scott Weiland</span>
+            </button>
+            <ul class="options top" ng-hide="menu.selected!='user'">
+                <li>
+                    <a href="#"><span class="description">Preferences</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Password</span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="description">Logout</span></a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</div>
