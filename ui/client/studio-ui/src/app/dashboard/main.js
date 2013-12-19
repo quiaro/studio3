@@ -35,6 +35,7 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
                     $scope.prototypes = loadPrototypes;
                     $scope.templates = loadTemplates;
                 }
+                // TODO: Re-enable and use robust authentication mechanism
                 // requireAuth: true,
                 // rolesAllowed: ['admin', 'editor']
             });
@@ -52,8 +53,6 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
 
                 var widgetNamespace = WidgetService.getNamespace(),
                     widgetAsyncMethod = WidgetService.getAsyncMethodName();
-
-                console.log(scope);
 
                 WidgetService.getWidgets(attrs.section).then( function (widgets) {
 

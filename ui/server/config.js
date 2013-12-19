@@ -3,7 +3,7 @@ path = require('path');
 module.exports = {
 
     // Files that need to be loaded from the .tmp directory
-    tmpFiles: ['studio.css'],
+    tmpFiles: ['studio.css', 'editor.css'],
 
     // Root directory where temporary app files are placed
     tmpRoot: path.resolve(__dirname, '../.tmp'),

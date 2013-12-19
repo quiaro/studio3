@@ -43,12 +43,12 @@
                     <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>
                     <td ng-repeat="column in widget.name.columns"
                         class="{{column.class}}" ng-switch="$index">
-                        <a ng-switch-when="0" href="/preview">{{item[column.name]}}</a>
+                        <a ng-switch-when="0" ui-sref="studio.authoring({ path: 'site/mango/crafter_community' })">{{item[column.name]}}</a>
                         <span ng-switch-default>{{item[column.name]}}</span>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    
+
 </div>

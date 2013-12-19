@@ -2,6 +2,24 @@
 
 angular.module('crafter.studio.authoring', ['crafter.studio.common'])
 
+    .constant('AUTHORING', {
+        baseUrl: '/studio-ui/src/app/authoring/'
+    })
+
+    .config(['$stateProvider',
+        'AUTHORING', function ($stateProvider, AUTHORING) {
+
+        $stateProvider
+            .state('studio.authoring', {
+                url: '/author/*path',
+                templateUrl: AUTHORING.baseUrl + 'templates/authoring.tpl.html',
+                controller: 'AuthoringCtrl'
+                // TODO: Re-enable and use robust authentication mechanism
+                // requireAuth: true,
+                // rolesAllowed: ['admin', 'editor']
+            });
+    }])
+
     .value('editorId', 'editor-iframe')
 
     // The name of the PubSub module comes from the require config in editor/main.js
@@ -68,29 +86,29 @@ angular.module('crafter.studio.authoring', ['crafter.studio.common'])
     }])
 
     .controller('AuthoringCtrl',
-		['$scope', 'NotificationService', function($scope, NotificationService) {
+		['$scope', '$stateParams', 'AUTHORING', function($scope, $stateParams, AUTHORING) {
 
         $scope.authoring = {
-            site: '/site/mango/crafter_community.html',
+            site: $stateParams.path + '.html',
             tools: {
                 state: 'off',
                 height: 0,
                 tabs: [{
                     name: 'content',
                     title: 'Content',
-                    contentUrl: '/studio-ui/templates/preview/tabs/content.html'
+                    contentUrl: AUTHORING.baseUrl + 'templates/tabs/content.html'
                 }, {
                     name: 'template',
                     title: 'Template',
-                    contentUrl: '/studio-ui/templates/preview/tabs/template.html'
+                    contentUrl: AUTHORING.baseUrl + 'templates/tabs/template.html'
                 }, {
                     name: 'revisions',
                     title: 'Revisions',
-                    contentUrl: '/studio-ui/templates/preview/tabs/revisions.html'
+                    contentUrl: AUTHORING.baseUrl + 'templates/tabs/revisions.html'
                 }, {
                     name: 'info',
                     title: 'Info',
-                    contentUrl: '/studio-ui/templates/preview/tabs/info.html'
+                    contentUrl: AUTHORING.baseUrl + 'templates/tabs/info.html'
                 }],
                 activeTab: 'content'
             },
