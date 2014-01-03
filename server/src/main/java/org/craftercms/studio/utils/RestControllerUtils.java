@@ -1,7 +1,10 @@
 package org.craftercms.studio.utils;
 
 import java.util.Map;
+import java.util.UUID;
 
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,5 +29,11 @@ public final class RestControllerUtils {
             map.remove(keyToRemove);
         }
         log.debug("Finish filtering of map");
+    }
+
+    public static Context createMockContext() {
+        Tenant tenant = new Tenant();
+        Context context = new Context(UUID.randomUUID().toString(), tenant);
+        return context;
     }
 }

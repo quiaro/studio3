@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<activity-list>
+    <activity>
+        <siteId>site1</siteId>
+        <siteName>Site 1</siteName>
+        <target>target1</target>
+        <targetProperties>
+            <entry>
+                <key>KEY</key>
+                <value>VALUE</value>
+            </entry>
+            <entry>
+                <key>KEY2</key>
+                <value>VALUE2</value>
+            </entry>
+        </targetProperties>
+        <type>create</type>
+        <date>1977-05-16T09:30:10Z</date>
+        <creator>user1</creator>
+        <id>1</id>
+    </activity>
+    <activity>
+        <siteId>site1</siteId>
+        <siteName>Site 1</siteName>
+        <target>target2</target>
+        <targetProperties>
+        </targetProperties>
+        <type>create</type>
+        <date>2013-10-21T09:30:10Z</date>
+        <creator>user2</creator>
+        <id>2</id>
+    </activity>
+    <activity>
+        <siteId>site1</siteId>
+        <siteName>Site 1</siteName>
+        <target>target1</target>
+        <targetProperties>
+        </targetProperties>
+        <type>update</type>
+        <date>2013-10-20T09:30:10Z</date>
+        <creator>user2</creator>
+        <id>3</id>
+    </activity>
+    <activity>
+        <siteId>site1</siteId>
+        <siteName>Site 1</siteName>
+        <target>target1</target>
+        <targetProperties>
+        </targetProperties>
+        <type>update</type>
+        <date>2013-10-19T09:30:10Z</date>
+        <creator>user1</creator>
+        <id>4</id>
+    </activity>
+</activity-list>

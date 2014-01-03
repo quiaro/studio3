@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'app',
+    app: 'client',
     dist: 'target/META-INF/resources'
   };
 
@@ -33,17 +33,16 @@ module.exports = function (grunt) {
     },
     watch: {
       recess: {
-        files: ['<%= yeoman.app %>/studio-ui/styles/**/*.less'],
+        files: ['<%= yeoman.app %>/studio-ui/src/app/**/*.less'],
         tasks: ['recess:server']
       },
       express: {
         files: [
           '{.tmp,<%= yeoman.app %>}/index.html',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/i18n/*.json',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/styles/**/*.css',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/scripts/**/*.js',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/templates/**/*.html',
-          '<%= yeoman.app %>/studio-ui/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
+          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.less',
+          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.js',
+          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.html',
+          '<%= yeoman.app %>/studio-ui/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
         ],
         tasks: ['express:dev'],
         options: {
@@ -76,7 +75,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/studio-ui/scripts/**/*.js'
+        '<%= yeoman.app %>/studio-ui/src/app/**/*.js'
       ]
     },
     karma: {
@@ -91,44 +90,27 @@ module.exports = function (grunt) {
         singleRun: false
       }
     },
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/studio-ui/styles',
-        cssDir: '.tmp/styles',
-        imagesDir: '<%= yeoman.app %>/studio-ui/images',
-        javascriptsDir: '<%= yeoman.app %>/studio-ui/scripts',
-        fontsDir: '<%= yeoman.app %>/studio-ui/fonts',
-        importPath: '<%= yeoman.app %>/studio-ui/components',
-        relativeAssets: true
-      },
-      dist: {},
-      server: {
-        options: {
-          debugInfo: true
-        }
-      }
-    },
     recess: {
         options: {
             compile: true
         },
         dist: {
             files: {
-                '<%= yeoman.dist %>/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                '<%= yeoman.dist %>/studio-ui/src/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/src/app/style.less'
                 ],
-                '<%= yeoman.dist %>/studio-ui/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                '<%= yeoman.dist %>/studio-ui/src/styles/editor.css': [
+                    '<%= yeoman.app %>/studio-ui/src/app/editor/style.less'
                 ]
             }
         },
         server: {
             files: {
-                '.tmp/studio-ui/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/studio.less'
+                '.tmp/studio-ui/src/styles/studio.css': [
+                    '<%= yeoman.app %>/studio-ui/src/app/style.less'
                 ],
-                '.tmp/studio-ui/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/styles/editor.less'
+                '.tmp/studio-ui/src/styles/editor.css': [
+                    '<%= yeoman.app %>/studio-ui/src/app/editor/style.less'
                 ]
             }
         }
@@ -143,16 +125,17 @@ module.exports = function (grunt) {
         options: {
             dirs: ['<%= yeoman.dist %>']
         },
-        html: ['<%= yeoman.dist %>/**/*.html'],
-        css: ['<%= yeoman.dist %>/studio-ui/styles/**/*.css']
+        html: ['<%= yeoman.dist %>/index.html',
+               '<%= yeoman.dist %>/studio-ui/src/app/**/*.tpl.html'],
+        css: ['<%= yeoman.dist %>/studio-ui/src/styles/studio.css']
     },
     imagemin: {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/studio-ui/images',
+          cwd: '<%= yeoman.app %>/studio-ui/src/images',
           src: '**/*.{png,jpg,jpeg}',
-          dest: '<%= yeoman.dist %>/studio-ui/images'
+          dest: '<%= yeoman.dist %>/studio-ui/src/images'
         }]
       }
     },
@@ -173,7 +156,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['studio-ui/templates/**/*.tpl.html'],
+          src: ['studio-ui/src/app/**/*.tpl.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -182,17 +165,17 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/studio-ui/scripts',
-          src: '*.js',
-          dest: '<%= yeoman.dist %>/studio-ui/scripts'
+          cwd: '<%= yeoman.dist %>/studio-ui/src/app/**/*.js',
+          src: '**/*.js',
+          dest: '<%= yeoman.dist %>/studio-ui/src/app/**/*.js'
         }]
       }
     },
     uglify: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/studio-ui/scripts/scripts.js': [
-            '<%= yeoman.dist %>/studio-ui/scripts/scripts.js'
+          '<%= yeoman.dist %>/studio-ui/src/scripts.js': [
+            '<%= yeoman.dist %>/studio-ui/src/scripts.js'
           ]
         }
       }
@@ -201,11 +184,10 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/studio-ui/templates/**/*.tpl.html',
-            '<%= yeoman.dist %>/studio-ui/scripts/**/*.js',
-            '<%= yeoman.dist %>/studio-ui/styles/**/*.css',
-            '<%= yeoman.dist %>/studio-ui/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-            '<%= yeoman.dist %>/studio-ui/fonts/*'
+            '<%= yeoman.dist %>/studio-ui/src/app/**/*.tpl.html',
+            '<%= yeoman.dist %>/studio-ui/src/app/**/*.js',
+            '<%= yeoman.dist %>/studio-ui/src/app/**/*.css',
+            '<%= yeoman.dist %>/studio-ui/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
           ]
         }
       }
@@ -218,14 +200,11 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,txt}',
-            'studio-ui/i18n/*.json',
-            'studio-ui/config/*.json',
             'studio-ui/lib/**/*.min.js',
             'studio-ui/lib/**/*.min.css',
-            'studio-ui/images/**/*.{gif,webp,ico}',
-            'studio-ui/styles/studio.css',
-            'studio-ui/templates/**/*.tpl.html',
+            'studio-ui/src/images/**/*.{gif,webp,ico}',
+            'studio-ui/src/styles/studio.css',
+            'studio-ui/src/app/**/*.tpl.html',
 
             // Special cases
             'studio-ui/lib/jquery/js/*.js',
@@ -233,10 +212,7 @@ module.exports = function (grunt) {
             'studio-ui/lib/toastr/js/*.js',
             'studio-ui/lib/toastr/js/*.map',
             'studio-ui/lib/require*/**/*.js',
-            'studio-ui/lib/bootstrap/fonts/*',
-
-            // TODO: remove line below after creating space for plugins
-            'studio-ui/scripts/dashboard/plugins/*.js'
+            'studio-ui/lib/bootstrap/fonts/*'
           ]
         }]
       }
@@ -273,7 +249,7 @@ module.exports = function (grunt) {
     bower: {
       install: {
         options : {
-          targetDir: './app/studio-ui/lib',
+          targetDir: './client/studio-ui/lib',
           layout: 'byComponent',
           verbose: true
         }
@@ -284,8 +260,6 @@ module.exports = function (grunt) {
   // Run unit tests on jasmine
   grunt.registerTask('test', [
     'clean:server',
-    // 'compass',
-    // 'connect:test',
     'karma:dev'
   ]);
 
@@ -298,8 +272,8 @@ module.exports = function (grunt) {
   // Test look and feel locally
   grunt.registerTask('server', [
     'clean:server',
-    'recess:server',
     'replace:dev',
+    'recess:server',
     'express:dev',
     'open',
     'watch'
@@ -310,7 +284,6 @@ module.exports = function (grunt) {
     'clean:dist',
     'jshint',
     'recess:dist',
-    // 'connect:test',
     'karma:continuous',
     'replace:build',
     'useminPrepare',

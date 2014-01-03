@@ -69,13 +69,13 @@ public class SecurityController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
     public void logout() {
-        this.securityManager.logout(new Context());
+        this.securityManager.logout(null);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.GET)
     @ResponseBody
     public void validate(final HttpServletRequest request, final HttpServletResponse response) {
-        if (!this.securityManager.validate(new Context())) {
+        if (!this.securityManager.validate(null)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
@@ -83,26 +83,26 @@ public class SecurityController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseBody
     public List<User> users(@RequestParam(required = true) final String site) {
-        return this.securityManager.getUsers(new Context(), site);
+        return this.securityManager.getUsers(null, site);
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.POST)
     @ResponseBody
     public String updateUser(@Valid @RequestBody UpdateUserRequest requestBody) {
-        return this.securityManager.updateUser(new Context(), requestBody.getUser(), requestBody.getPassword(),
+        return this.securityManager.updateUser(null, requestBody.getUser(), requestBody.getPassword(),
             requestBody.getRole());
     }
 
     @RequestMapping(value = "/remove_user", method = RequestMethod.POST)
     @ResponseBody
     public void removeUser(@RequestParam(required = true) final String user) {
-        this.securityManager.removeUser(new Context(), user);
+        this.securityManager.removeUser(null, user);
     }
 
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     @ResponseBody
     public List<SecurityPermission> permissions(@RequestParam(required = true) final String site,
                                                 @RequestParam(required = true) final String itemId) {
-        return this.securityManager.getPermissions(new Context(), site, itemId);
+        return this.securityManager.getPermissions(null, site, itemId);
     }
 }

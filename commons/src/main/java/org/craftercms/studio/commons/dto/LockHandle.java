@@ -17,23 +17,48 @@
 package org.craftercms.studio.commons.dto;
 
 /**
- * Lock handle transport object.
+ * Represents a lock around a content item.
  *
  * @author Sumer Jabri
- * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 public class LockHandle {
 
-    private String id;
+    /**
+     *
+     */
+    private String itemId;
 
-    // Getters and setters
+    /**
+     *
+     */
+    private String uname;
 
-    public String getId() {
-        return id;
+    /**
+     *
+     */
+    private long lockDate;
+
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public String getUname() {
+        return uname;
+    }
+
+    public long getLockDate() {
+        return lockDate;
+    }
+
+    public void setItemId(final String itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setUname(final String uname) {
+        this.uname = uname;
+    }
+
+    public void setLockDate(final long lockDate) {
+        this.lockDate = lockDate;
     }
 }

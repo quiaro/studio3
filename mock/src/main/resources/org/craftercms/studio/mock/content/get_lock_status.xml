@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lock-status-list>
+    <lock-status>
+        <value>1</value>
+    </lock-status>
+    <lock-status>
+        <value>2</value>
+    </lock-status>
+    <lock-status>
+        <value>3</value>
+    </lock-status>
+</lock-status-list>

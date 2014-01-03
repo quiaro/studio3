@@ -48,18 +48,17 @@ public class ITPathServicesImpl implements ApplicationContextAware {
 
     @Test
     public void testGetPathByItem() throws Exception {
-        String path = pathService.getPathByItemId("", "", createSampleNodeTree());
-        Assert.assertEquals(path, "/Philip J. Fry/Yancy Fry, Sr./Yancy Fry/Hubert J. Farnsworth");
+        String path = pathService.getPathByItemId("TicketID", "SITE", createSampleNodeTree());
+        System.out.println("PATh" + path);
+        Assert.assertEquals(path, "/philip_j_fry/yancy_fry_sr/yancy_fry_jr/hubert_j_farnsworth");
     }
-
-
 
     private String createSampleNodeTree() throws MongoRepositoryException {
         NodeService nodeService = applicationContext.getBean(NodeService.class);
-        Node a = nodeService.createFolderNode(nodeService.getRootNode(), "Philip J. Fry", "TestUser");
-        Node b = nodeService.createFolderNode(a, "Yancy Fry, Sr.", "TestUser");
-        Node c = nodeService.createFolderNode(b, "Yancy Fry", "TestUser");
-        Node d = nodeService.createFolderNode(c, "Hubert J. Farnsworth", "TestUser");
+        Node a = nodeService.createFolderNode(nodeService.getRootNode(), "philip_j_fry", "Philip J. Fry", "TestUser");
+        Node b = nodeService.createFolderNode(a, "yancy_fry_sr", "Yancy Fry, Sr.", "TestUser");
+        Node c = nodeService.createFolderNode(b, "yancy_fry_jr", "Yancy Fry", "TestUser");
+        Node d = nodeService.createFolderNode(c, "hubert_j_farnsworth", "Hubert J. Farnsworth", "TestUser");
         return d.getId();
 
     }

@@ -48,6 +48,6 @@ public class LifecycleController {
     @ResponseBody
     public List<Action> actions(@PathVariable final String site, @RequestParam(required = true) final List<String>
         itemIds) {
-        return this.lifecycleManager.getPossibleActions(new Context(), site, itemIds);
+        return this.lifecycleManager.getPossibleActions(null, site, itemIds);
     }
 }

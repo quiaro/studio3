@@ -19,8 +19,6 @@ package org.craftercms.studio.api.lifecycle;
 /**
  * Lifecycle action.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public interface Action {

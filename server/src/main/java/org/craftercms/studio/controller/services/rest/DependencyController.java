@@ -62,21 +62,21 @@ public class DependencyController {
     @ResponseBody
     public List<Item> dependentOn(@PathVariable final String site, @RequestParam(required = true) final String itemId,
                           @RequestParam(required = true) final String operation) throws StudioException {
-        return this.dependencyManager.dependentOn(new Context(), itemId, operation);
+        return this.dependencyManager.dependentOn(null, itemId, operation);
     }
 
     @RequestMapping(value = "/list/{site}", method = RequestMethod.GET)
     @ResponseBody
     public List<Item> list(@PathVariable final String site, @RequestParam(required = true) final String itemId,
                      @RequestParam(required = true) final String operation) throws StudioException {
-        return this.dependencyManager.dependsOn(new Context(), itemId, operation);
+        return this.dependencyManager.dependsOn(null, itemId, operation);
     }
 
     @RequestMapping(value = "/refresh/{site}", method = RequestMethod.GET)
     @ResponseBody
     public List<Item> refresh(@PathVariable final String site, @RequestParam(required = true) final String itemId)
         throws StudioException {
-        return this.dependencyManager.refresh(new Context(), itemId);
+        return this.dependencyManager.refresh(null, itemId);
     }
 
     @RequestMapping(value = "/add/{site}", method = RequestMethod.POST)
@@ -91,7 +91,7 @@ public class DependencyController {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        this.dependencyManager.add(new Context(), itemId, operation, items);
+        this.dependencyManager.add(null, itemId, operation, items);
     }
 
     @RequestMapping(value = "/remove/{site}", method = RequestMethod.POST)
@@ -106,7 +106,7 @@ public class DependencyController {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        this.dependencyManager.remove(new Context(), itemId, operation, items);
+        this.dependencyManager.remove(null, itemId, operation, items);
     }
 
     @RequestMapping(value = "/update/{site}", method = RequestMethod.POST)
@@ -122,7 +122,7 @@ public class DependencyController {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        this.dependencyManager.update(new Context(), itemId, operation, items);
+        this.dependencyManager.update(null, itemId, operation, items);
     }
 
     @InitBinder

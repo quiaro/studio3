@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import org.craftercms.studio.api.audit.AuditManager;
+import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
 import org.hamcrest.Matchers;
@@ -29,19 +29,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuditControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private AuditManager auditManager;
+    private AuditService auditService;
 
     @InjectMocks
     private AuditController auditController;
 
     @After
     public void tearDown() throws Exception {
-        reset(this.auditManager);
+        reset(this.auditService);
     }
 
     @Test
     public void testGetActivities() throws Exception {
-        when(auditManager.getActivities(Mockito.any(Context.class), Mockito.anyString(),
+        when(auditService.getActivities(Mockito.any(Context.class), Mockito.anyString(),
                 Mockito.anyListOf(String.class))).thenReturn(createActivities());
 
         this.mockMvc.perform(get("/api/1/audit/activity/TestSite"))
@@ -54,14 +54,14 @@ public class AuditControllerTest extends AbstractControllerTest {
                         //.andDo(print()
                 );
 
-        verify(this.auditManager, times(1)).getActivities(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.auditService, times(1)).getActivities(Mockito.any(Context.class), Mockito.anyString(),
                 Mockito.anyListOf(String.class));
     }
 
     @Test
     public void testSaveActivity() throws Exception {
         final String saveId=UUID.randomUUID().toString();
-        when(this.auditManager.logActivity(Mockito.any(Context.class), Mockito.anyString(),
+        when(this.auditService.logActivity(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.any(Activity.class)))
                 .thenAnswer(new Answer<Object>() {
                     @Override
@@ -80,14 +80,14 @@ public class AuditControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$.id", Matchers.equalTo(saveId))
                 );
 
-        verify(this.auditManager, times(1)).logActivity(Mockito.any(Context.class),
+        verify(this.auditService, times(1)).logActivity(Mockito.any(Context.class),
                 Mockito.anyString(), Mockito.any(Activity.class));
     }
 
     @Test
     public void testSaveActivityInvalid() throws Exception {
         final String saveId=UUID.randomUUID().toString();
-        when(this.auditManager.logActivity(Mockito.any(Context.class), Mockito.anyString(),
+        when(this.auditService.logActivity(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.any(Activity.class)))
                 .thenAnswer(new Answer<Object>() {
                     @Override
@@ -105,7 +105,7 @@ public class AuditControllerTest extends AbstractControllerTest {
                 .andExpect(status().isBadRequest()
                 );
 
-        verify(this.auditManager, times(0)).logActivity(Mockito.any(Context.class),
+        verify(this.auditService, times(0)).logActivity(Mockito.any(Context.class),
                 Mockito.anyString(), Mockito.any(Activity.class));
     }
 }

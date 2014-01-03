@@ -1,21 +1,22 @@
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
+import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.domain.NodeType;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
+import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 /**
  * Runs on Spring context startup.
@@ -25,18 +26,17 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class MongoStartupService implements ApplicationListener {
 
     /**
-     * Mongo Template.
-     * needed to 'force' some initial system collections/documents.
-     */
-    private MongoTemplate mongoTemplate;
-    /**
      * Node services.
      */
-    private NodeService nodeService;
+    private NodeServiceImpl nodeService;
     /**
      * Logger.
      */
     private Logger log = LoggerFactory.getLogger(MongoStartupService.class);
+    /**
+     * Data Service
+     */
+    private MongodbDataService mongodbDataService;
 
     @Override
     public void onApplicationEvent(final ApplicationEvent event) {
@@ -60,6 +60,7 @@ public class MongoStartupService implements ApplicationListener {
      * </ul>
      */
     private void checkRepoIntegrity() {
+        try{
         log.debug("Checking Repository Integrity");
         Node root = nodeService.getRootNode();
         if (root == null) {
@@ -72,11 +73,9 @@ public class MongoStartupService implements ApplicationListener {
         //Checks if root node was created. if multiple roots found
         // Throw exception and stop startup
         //TODO build Tools for Mongo repo (sort of fdisk)
-        List<Node> roots = nodeService.findNodesByParent(null);
-        if (roots.size() > 1) {
-            log.error("Found {} root nodes, stopping repository to prevent it's corruption or data loses",
-                roots.size());
-            throw new IllegalStateException("Multiple Root Nodes found");
+         nodeService.countRootNodes();
+        }catch (MongoRepositoryException ex){
+            log.error("Unable to check Repo Integrity due a MongoRepositoryException",ex);
         }
 
     }
@@ -89,18 +88,19 @@ public class MongoStartupService implements ApplicationListener {
         Node rootNode = new Node();
         rootNode.setType(NodeType.FOLDER);
         rootNode.setId(UUID.randomUUID().toString());
-        rootNode.setParent(null); //Force it to be ROOT, Only way to do it , hard way
+        rootNode.setAncestors(new LinkedList<String>()); //Force it to be ROOT, Only way to do it , hard way
         CoreMetadata metadata = new CoreMetadata();
         metadata.setCreateDate(new Date());
         metadata.setLastModifiedDate(new Date());
         metadata.setNodeName("/");
+        metadata.setLabel("Root");
         metadata.setCreator(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setModifier(MongoRepositoryDefaults.SYSTEM_USER_NAME);
         metadata.setSize(0);
-        rootNode.setMetadata(metadata);
+        rootNode.setCore(metadata);
         try {
             log.info("Creating Root node {}", rootNode);
-            mongoTemplate.save(rootNode);
+            mongodbDataService.save(NodeService.NODES_COLLECTION,rootNode);
             log.info("Root node created");
             createSiteStructure(rootNode);
             return rootNode;
@@ -108,26 +108,22 @@ public class MongoStartupService implements ApplicationListener {
             log.error("Unable to create Repository default folders");
             log.error("Error while creating Site default folders ", ex);
             throw new IllegalStateException("Unable to create basic Repository structure");
-        } catch (DataAccessException ex) {
-            log.error("Unable to save root node", ex);
-            // Force Bean container to stop.
-            // Don't continue if root node can't be created.
-            throw new IllegalStateException("Unable to create the root node", ex);
         }
     }
 
-    private void createSiteStructure(Node root) throws MongoRepositoryException {
+    private void createSiteStructure(final Node root) throws MongoRepositoryException {
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER,
-            MongoRepositoryDefaults.SYSTEM_USER_NAME);
+            MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
         nodeService.createFolderNode(root, MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER,
-            MongoRepositoryDefaults.SYSTEM_USER_NAME);
+            MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER, MongoRepositoryDefaults.SYSTEM_USER_NAME);
     }
 
-    public void setMongoTemplate(final MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
-
-    public void setNodeServiceImpl(final NodeService nodeService) {
+    public void setNodeServiceImpl(final NodeServiceImpl nodeService) {
         this.nodeService = nodeService;
+    }
+
+
+    public void setMongodbDataService(MongodbDataService mongodbDataService) {
+        this.mongodbDataService=mongodbDataService;
     }
 }

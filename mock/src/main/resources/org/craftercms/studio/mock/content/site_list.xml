@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<site-list>
+    <site>
+        <siteId>site1</siteId>
+        <siteName>Site 1</siteName>
+    </site>
+    <site>
+        <siteId>site2</siteId>
+        <siteName>Site 2</siteName>
+    </site>
+    <site>
+        <siteId>site3</siteId>
+        <siteName>Site 3</siteName>
+    </site>
+</site-list>

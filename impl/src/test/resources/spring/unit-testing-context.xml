@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="versionManagerSUT" class="org.craftercms.studio.impl.version.VersionManagerImpl" />
+
+    <bean id="dependencyMangerSUT" class="org.craftercms.studio.impl.dependency.DependencyManagerImpl" />
+
+    <bean id="workflowManagerSUT" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl" />
+
+    <bean id="deploymentManagerSUT" class="org.craftercms.studio.impl.deployment.DeploymentManagerImpl" />
+
+    <bean id="lifecycleManagerSUT" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
+
+    <bean id="auditManagerSUT" class="org.craftercms.studio.impl.audit.AuditServiceImpl" />
+
+    <bean id="formsManagerSUT" class="org.craftercms.studio.impl.forms.FormsManagerImpl" />
+
+    <bean id="blueprintsManagerSUT" class="org.craftercms.studio.impl.blueprints.BlueprintsManagerImpl" />
+
+</beans>

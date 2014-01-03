@@ -31,6 +31,7 @@ public interface GridFSService {
     /**
      * Saves a File in the GridFS.
      *
+     *
      * @param fileName File name
      * @param file     file input Stream
      * @return the GridFSFile representing the newly save file.
@@ -38,7 +39,7 @@ public interface GridFSService {
      * @throws IllegalArgumentException if filename is empty, null or blank <br/> or
      *                                  if InputStream is null.
      */
-    GridFSFile saveFile(String fileName, InputStream file) throws MongoRepositoryException;
+    String saveFile(String fileName, InputStream file) throws MongoRepositoryException;
 
     /**
      * Gets a saved file InputStream.

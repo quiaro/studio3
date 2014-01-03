@@ -27,8 +27,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.api.configuration.ConfigurationManager;
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.controller.services.rest.dto.ConfigurationWriteRequest;
 import org.junit.After;
 import org.junit.Test;
@@ -109,7 +110,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).configure(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.any(Configuration.class));
 
         this.mockMvc.perform(
             post("/api/1/config/configure/sample")
@@ -120,7 +121,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk());
 
         verify(this.configurationManagerMock, times(1)).configure(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.any(Configuration.class));
     }
 
     @Test
@@ -133,7 +134,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).configure(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.any(Configuration.class));
 
         this.mockMvc.perform(
             post("/api/1/config/configure/sample")
@@ -143,7 +144,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest());
 
         verify(this.configurationManagerMock, times(0)).configure(Mockito.any(Context.class),
-            Mockito.anyString(), Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.anyString(), Mockito.any(Configuration.class));
     }
 
     @Test
@@ -156,7 +157,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).configure(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.any(Configuration.class));
 
         this.mockMvc.perform(
             post("/api/1/config/configure/sample")
@@ -167,13 +168,13 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest());
 
         verify(this.configurationManagerMock, times(0)).configure(Mockito.any(Context.class),
-            Mockito.anyString(), Mockito.anyString(), Mockito.any(ModuleConfiguration.class));
+            Mockito.anyString(), Mockito.anyString(), Mockito.any(Configuration.class));
     }
 
     @Test
     public void testGetContent() throws Exception {
         when(this.configurationManagerMock.getContent(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(getSampleConfiguration());
+            Mockito.any(ItemId.class))).thenReturn(getSampleConfiguration());
 
         this.mockMvc.perform(
             get("/api/1/config/content/sample")
@@ -182,7 +183,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk());
 
         verify(this.configurationManagerMock, times(1)).getContent(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString());
+            Mockito.any(ItemId.class));
     }
 
     private InputStream getSampleConfiguration() {
@@ -194,7 +195,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
     @Test
     public void testGetContentMissingObject() throws Exception {
         when(this.configurationManagerMock.getContent(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString())).thenReturn(getSampleConfiguration());
+            Mockito.any(ItemId.class))).thenReturn(getSampleConfiguration());
 
         this.mockMvc.perform(
             get("/api/1/config/content/sample")
@@ -202,7 +203,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest());
 
         verify(this.configurationManagerMock, times(0)).getContent(Mockito.any(Context.class),
-            Mockito.anyString(), Mockito.anyString());
+            Mockito.anyString(), Mockito.any(ItemId.class));
     }
 
     @Test
@@ -215,7 +216,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).write(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(InputStream.class));
+            Mockito.any(ItemId.class), Mockito.any(InputStream.class));
 
         this.mockMvc.perform(post("/api/1/config/write/sample")
             .param("object", RandomStringUtils.randomAlphabetic(10))
@@ -223,7 +224,8 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.configurationManagerMock, times(1)).write(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(), Mockito.any(InputStream.class));
+        verify(this.configurationManagerMock, times(1)).write(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(ItemId.class), Mockito.any(InputStream.class));
     }
 
     private ConfigurationWriteRequest createWriteRequest() {
@@ -246,7 +248,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).write(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(InputStream.class));
+            Mockito.any(ItemId.class), Mockito.any(InputStream.class));
 
         this.mockMvc.perform(
             post("/api/1/config/write/sample")
@@ -256,7 +258,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest());
 
         verify(this.configurationManagerMock, times(0)).write(Mockito.any(Context.class),
-            Mockito.anyString(), Mockito.anyString(), Mockito.any(InputStream.class));
+            Mockito.anyString(), Mockito.any(ItemId.class), Mockito.any(InputStream.class));
     }
 
     @Test
@@ -269,7 +271,7 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
                 return null;
             }
         }).when(this.configurationManagerMock).write(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(InputStream.class));
+            Mockito.any(ItemId.class), Mockito.any(InputStream.class));
 
         this.mockMvc.perform(
             post("/api/1/config/write/sample")
@@ -280,6 +282,6 @@ public class ConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest());
 
         verify(this.configurationManagerMock, times(0)).write(Mockito.any(Context.class),
-            Mockito.anyString(), Mockito.anyString(), Mockito.any(InputStream.class));
+            Mockito.anyString(), Mockito.any(ItemId.class), Mockito.any(InputStream.class));
     }
 }

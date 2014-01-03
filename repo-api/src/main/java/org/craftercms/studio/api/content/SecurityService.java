@@ -115,7 +115,7 @@ public interface SecurityService {
         ADD_CHILDREN(0x00000010),
         UPDATE_PROPERTIES(0x00000020),
         MANAGE(0x80000000),   // TODO think about this some more
-        ALL(0Xffffffff);
+        ALL(0xffffffff);
         private final int permissionMask;
 
         Permission(int permissionMask) {

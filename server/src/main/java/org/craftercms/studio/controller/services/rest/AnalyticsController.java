@@ -2,7 +2,7 @@ package org.craftercms.studio.controller.services.rest;
 
 import java.util.Map;
 
-import org.craftercms.studio.api.analytics.AnalyticsManager;
+import org.craftercms.studio.api.analytics.AnalyticsService;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.exception.StudioException;
@@ -26,7 +26,7 @@ public class AnalyticsController {
      * Analytics Manager instance.
      */
     @Autowired
-    private AnalyticsManager analyticsManager;
+    private AnalyticsService analyticsService;
 
     /**
      * Default Ctr.
@@ -41,7 +41,7 @@ public class AnalyticsController {
      * @param report Name of the Report to be Run
      * @param params Report specific Parameters
      * @return the result of the report, define in
-     *         {@link AnalyticsManager#report(Context, String, String, java.util.Map)}
+     *         {@link AnalyticsService#generateReport(org.craftercms.studio.commons.dto.Context, String, String, java.util.Map)}
      */
     @RequestMapping(value = "/report/{site}",
             produces = "application/json",
@@ -57,8 +57,8 @@ public class AnalyticsController {
         log.debug("Filtering \"report\",\"security\" from params map");
         RestControllerUtils.removeParamters(params,"report","security");
         log.debug("Final map is {}",params);
-        log.debug("Calling AnalyticsManager#report");
-        return this.analyticsManager.report(new Context(), site, report, params);
+        log.debug("Calling AnalyticsService#report");
+        return this.analyticsService.generateReport(null, site, report, params);
     }
 
 

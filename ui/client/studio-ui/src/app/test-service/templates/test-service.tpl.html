@@ -1,0 +1,72 @@
+<div class="test-service">
+    <div>
+        <h1>Post a new content</h1>
+        <form   name="uploadForm"
+                novalidate
+                role="form"
+                ng-submit="uploadAsset(asset)"
+                ng-controller="AssetUploadCtrl">
+
+            <div class="form-group">
+                <input  type="text"
+                        class="form-control"
+                        name="assetPath"
+                        ng-model="asset.path"
+                        placeholder="Save to ..."
+                        required />
+
+                <input  type="text"
+                        class="form-control"
+                        name="assetName"
+                        ng-model="asset.name"
+                        placeholder="File name"
+                        required />
+
+                <input  type="file"
+                        class="form-control"
+                        name="assetContent"
+                        sdo-file-select="onFileSelect($files)"
+                        required />
+
+            </div>
+
+            <div class="form-group">
+                <button type="submit"
+                        class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div>
+        <h1>Read content from previous post</h1>
+        <form   name="readForm"
+                novalidate
+                role="form"
+                ng-submit="readAsset(asset)"
+                ng-controller="AssetReadCtrl">
+
+            <div class="form-group">
+                <input  type="text"
+                        class="form-control"
+                        name="assetId"
+                        ng-model="asset.id"
+                        placeholder="Asset ID"
+                        required />
+            </div>
+
+            <textarea   class="form-control"
+                        ng-model="asset.content"
+                        ng-show="asset.content">{{asset.content}}</textarea>
+
+            <div class="form-group">
+                <button type="submit"
+                        class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+</div>

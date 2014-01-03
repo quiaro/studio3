@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="analyticsManager" class="org.craftercms.studio.mock.analytics.AnalyticsServiceMock" />
+
+    <bean id="auditManger" class="org.craftercms.studio.mock.audit.AuditServiceMock" />
+
+    <bean id="configurationManager" class="org.craftercms.studio.mock.configuration.ConfigurationManagerMock" />
+
+    <bean id="contentManager" class="org.craftercms.studio.mock.content.ContentManagerMock" />
+
+    <bean id="dependencyManager" class="org.craftercms.studio.mock.dependency.DependencyManagerMock" />
+
+    <bean id="deploymentManager" class="org.craftercms.studio.mock.deployment.DeploymentManagerMock" />
+
+    <bean id="formsManager" class="org.craftercms.studio.mock.forms.FormsManagerMock" />
+
+    <bean id="lifecycleManagerMock" class="org.craftercms.studio.mock.lifecycle.LifecycleManagerMock" />
+
+    <bean id="searchManager" class="org.craftercms.studio.mock.search.SearchManagerMock" />
+
+    <bean id="securityManager" class="org.craftercms.studio.mock.security.SecurityManagerMock" />
+
+    <bean id="versionManager" class="org.craftercms.studio.mock.version.VersionManagerMock" />
+
+    <bean id="workflowManager" class="org.craftercms.studio.mock.workflow.WorkflowManagerMock" />
+
+</beans>

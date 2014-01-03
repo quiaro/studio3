@@ -65,7 +65,7 @@ public class DeploymentController {
     @ResponseBody
     public List<Item> history(@PathVariable final String site, @RequestParam(required = false) final List<String>
         filters) throws StudioException {
-        return this.deploymentManager.history(new Context(), site, filters);
+        return this.deploymentManager.history(null, site, filters);
     }
 
     /**
@@ -79,7 +79,7 @@ public class DeploymentController {
     @ResponseBody
     public List<DeploymentChannel> history(@PathVariable final String site, @RequestParam(required = true) final String
         environment) throws StudioException {
-        return this.deploymentManager.channels(new Context(), site, environment);
+        return this.deploymentManager.channels(null, site, environment);
     }
 
     /**
@@ -94,7 +94,7 @@ public class DeploymentController {
     public void updateChannel(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel,
                               final HttpServletRequest request, final HttpServletResponse response) throws
         StudioException {
-        this.deploymentManager.updateChannel(new Context(), site, channel);
+        this.deploymentManager.updateChannel(null, site, channel);
     }
 
     /**
@@ -109,7 +109,7 @@ public class DeploymentController {
     public void removeChannel(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel,
                               final HttpServletRequest request, final HttpServletResponse response) throws
         StudioException {
-        this.deploymentManager.removeChannel(new Context(), site, channel);
+        this.deploymentManager.removeChannel(null, site, channel);
     }
 
     /**
@@ -123,7 +123,7 @@ public class DeploymentController {
     @RequestMapping(value = "/deploy/{site}", method = RequestMethod.POST)
     public void deploy(@PathVariable final String site, @RequestParam(required = true) final List<String> itemIds,
                        final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
-        this.deploymentManager.deploy(new Context(), site, itemIds);
+        this.deploymentManager.deploy(null, site, itemIds);
     }
 
     /**
@@ -135,7 +135,7 @@ public class DeploymentController {
     @RequestMapping(value = "/status/{site}", method = RequestMethod.GET)
     @ResponseBody
     public String status(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) {
-        return this.deploymentManager.status(new Context(), site, channel);
+        return this.deploymentManager.status(null, site, channel);
     }
 
     /**
@@ -147,7 +147,7 @@ public class DeploymentController {
     @RequestMapping(value = "/version/{site}", method = RequestMethod.GET)
     @ResponseBody
     public long version(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) {
-        return this.deploymentManager.version(new Context(), site, channel);
+        return this.deploymentManager.version(null, site, channel);
     }
 
     /**
@@ -158,6 +158,6 @@ public class DeploymentController {
     @RequestMapping(value = "/abort/{site}", method = RequestMethod.POST)
     public void abort(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel,
                       final HttpServletRequest request, final HttpServletResponse response) {
-        this.deploymentManager.abort(new Context(), site, channel);
+        this.deploymentManager.abort(null, site, channel);
     }
 }

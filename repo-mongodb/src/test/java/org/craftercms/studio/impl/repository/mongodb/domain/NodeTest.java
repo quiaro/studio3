@@ -29,31 +29,30 @@ public class NodeTest {
     @Test
     public void testClone() throws Exception {
         Node testNode = new Node();
-        testNode.setParent(new Node());
         testNode.setId(UUID.randomUUID().toString());
         testNode.setType(NodeType.FOLDER);
-        testNode.getMetadata().setCreateDate(new Date());
-        testNode.getMetadata().setCreator("Amy Wong");
-        testNode.getMetadata().setLastModifiedDate(new Date());
-        testNode.getMetadata().setModifier("Amy Wong");
-        testNode.getMetadata().setNodeName("Mars U");
+        testNode.getCore().setCreateDate(new Date());
+        testNode.getCore().setCreator("Amy Wong");
+        testNode.getCore().setLastModifiedDate(new Date());
+        testNode.getCore().setModifier("Amy Wong");
+        testNode.getCore().setNodeName("mars-u");
+        testNode.getCore().setLabel("Mars U");
         Node clone = (Node)testNode.clone();
         Assert.assertEquals(testNode, clone);
         Assert.assertFalse(testNode == clone);//Should be Different mem ref
     }
 
-
     @Test
     public void testCopy() throws Exception {
         Node testNode = new Node();
-        testNode.setParent(new Node());
         testNode.setId(UUID.randomUUID().toString());
         testNode.setType(NodeType.FOLDER);
-        testNode.getMetadata().setCreateDate(new Date());
-        testNode.getMetadata().setCreator("Amy Wong");
-        testNode.getMetadata().setLastModifiedDate(new Date());
-        testNode.getMetadata().setModifier("Amy Wong");
-        testNode.getMetadata().setNodeName("Mars U");
+        testNode.getCore().setCreateDate(new Date());
+        testNode.getCore().setCreator("Amy Wong");
+        testNode.getCore().setLastModifiedDate(new Date());
+        testNode.getCore().setModifier("Amy Wong");
+        testNode.getCore().setNodeName("mars-u");
+        testNode.getCore().setLabel("Mars U");
         Node copy = testNode.copy();
         Assert.assertEquals(testNode, copy);
         Assert.assertFalse(testNode == copy);//Should be Different mem ref

@@ -30,12 +30,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.lifecycle.Action;
 import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
 import org.craftercms.studio.commons.dto.FormDefinition;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.dto.LockStatus;
-import org.craftercms.studio.commons.dto.ModuleConfiguration;
 import org.craftercms.studio.commons.dto.ResultSet;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.Site;
@@ -122,9 +123,9 @@ public abstract class AbstractControllerTest {
             activity1.setType("SAVED");
             activity1.setCreator("Carlos Ortiz");
         }
-        HashMap<String, Object> targetProperties = new HashMap<>();
+        HashMap<String, String> targetProperties = new HashMap<>();
         targetProperties.put("targetProp1", "Hello");
-        targetProperties.put("targetProp2", new Date());
+        targetProperties.put("targetProp2", (new Date()).toString());
         activity1.setTargetProperties(targetProperties);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(activity1);
@@ -138,9 +139,9 @@ public abstract class AbstractControllerTest {
         activity1.setSiteName("testSite");
         activity1.setTarget("testTarget");
         activity1.setSiteName("");
-        HashMap<String, Object> targetProperties = new HashMap<>();
+        HashMap<String, String> targetProperties = new HashMap<>();
         targetProperties.put("targetProp1", "Hello");
-        targetProperties.put("targetProp2", new Date());
+        targetProperties.put("targetProp2", (new Date()).toString());
         activity1.setTargetProperties(targetProperties);
         // 2
         Activity activit2 = new Activity();
@@ -150,9 +151,9 @@ public abstract class AbstractControllerTest {
         activit2.setSiteName("testSite");
         activit2.setTarget("testTarget");
         activit2.setSiteName("");
-        HashMap<String, Object> targetProperties2 = new HashMap<>();
+        HashMap<String, String> targetProperties2 = new HashMap<>();
         targetProperties2.put("targetProp1", "World");
-        targetProperties2.put("targetProp2", new Date());
+        targetProperties2.put("targetProp2", (new Date()).toString());
         activit2.setTargetProperties(targetProperties2);
         return Arrays.asList(activity1, activit2);
     }
@@ -168,27 +169,22 @@ public abstract class AbstractControllerTest {
     protected Item createItemMock() {
         Item item = new Item();
         item.setContentType(RandomStringUtils.randomAlphabetic(10));
-        item.setCreateDate(new Date());
-        item.setCreator(RandomStringUtils.randomAlphabetic(10));
         item.setDisabled(false);
         item.setFileName(RandomStringUtils.randomAlphanumeric(10));
-        item.setId(UUID.randomUUID().toString());
+        item.setId(new ItemId(UUID.randomUUID().toString()));
         item.setLastModifiedDate(new Date());
         item.setLockOwner(RandomStringUtils.randomAlphabetic(10));
         item.setMimeType(RandomStringUtils.randomAlphabetic(10));
-        item.setModifier(RandomStringUtils.randomAlphabetic(10));
-        item.setName(RandomStringUtils.randomAlphabetic(10));
         item.setPackages(new ArrayList<String>());
         item.setPath(RandomStringUtils.randomAlphabetic(100));
         item.setPlaceInNav(true);
-        item.setPreviewable(true);
         item.setPreviewUrl(RandomStringUtils.randomAlphabetic(100));
         item.setProperties(new HashMap<String, Object>());
         item.setRenderingTemplates(new ArrayList<String>());
         item.setRepoId(RandomStringUtils.randomAlphabetic(10));
         item.setScheduledDate(new Date());
         item.setState(RandomStringUtils.randomAlphabetic(10));
-        item.setStudioType(RandomStringUtils.randomAlphabetic(10));
+        item.setLabel(RandomStringUtils.randomAlphabetic(10));
         return item;
     }
 
@@ -241,7 +237,7 @@ public abstract class AbstractControllerTest {
 
     protected LockHandle createLockHandleMock() {
         LockHandle lockHandle = new LockHandle();
-        lockHandle.setId(UUID.randomUUID().toString());
+        lockHandle.setItemId(UUID.randomUUID().toString());
         return lockHandle;
     }
 
@@ -407,8 +403,8 @@ public abstract class AbstractControllerTest {
         return form;
     }
 
-    protected ModuleConfiguration createModuleConfigurationMock() {
-        ModuleConfiguration module = new ModuleConfiguration();
+    protected Configuration createModuleConfigurationMock() {
+        Configuration module = new Configuration();
         module.setModuleName(RandomStringUtils.randomAlphabetic(10));
         module.setModuleType(RandomStringUtils.randomAlphabetic(10));
         return module;

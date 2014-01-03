@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.craftercms</groupId>
     <artifactId>studio-parent</artifactId>
@@ -7,6 +8,11 @@
     <name>Crafter Studio Parent</name>
     <description>Crafter Studio</description>
     <packaging>pom</packaging>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <organization>
         <name>CrafterCMS</name>
@@ -63,6 +69,7 @@
         <connection>scm:git:git://github.com/craftercms/studio3.git</connection>
         <developerConnection>scm:git:git@github.com:craftercms/studio3.git</developerConnection>
     </scm>
+
     <properties>
         <!-- System Properties -->
         <java.version>1.7</java.version>
@@ -147,6 +154,11 @@
             <artifactId>logback-classic</artifactId>
             <version>${ch.qos.logback.version}</version>
         </dependency>
+        <dependency>
+                   <groupId>org.slf4j</groupId>
+                   <artifactId>jcl-over-slf4j</artifactId>
+                   <version>${org.slf4j.version}</version>
+               </dependency>
         <!-- Utils Libs -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -179,8 +191,6 @@
             <artifactId>validation-api</artifactId>
             <version>1.0.0.GA</version>
         </dependency>
-
-
         <!-- Testing -->
 
         <dependency>
@@ -377,14 +387,11 @@
     </build>
     <modules>
         <module>commons</module>
-
         <module>repo-api</module>
-        <module>repo-cmis</module>
         <module>repo-mongodb</module>
-
         <module>api</module>
         <module>impl</module>
-
+        <module>mock</module>
         <module>ui</module>
         <module>server</module>
     </modules>

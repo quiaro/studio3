@@ -3,9 +3,8 @@
     "version": "0.1.0",
     "dependencies": {
         "angular": "~1.0.8",
-        "angular-bootstrap": "~0.3.0",
+        "angular-bootstrap": "~0.6.0",
         "angular-cookies": "~1.0.0",
-        "angular-ui-router": "0.2.0",
         "angular-translate": "1.1.0",
         "angular-translate-storage-cookie": "0.1.5",
         "angular-translate-storage-local": "0.1.5",

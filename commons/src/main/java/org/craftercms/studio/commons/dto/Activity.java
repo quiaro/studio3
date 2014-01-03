@@ -22,17 +22,15 @@ import java.util.Map;
 /**
  * Activity.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public class Activity {
-
+    // todo activities need props
 
     private String siteId;
     private String siteName;
     private String target;
-    private Map<String, Object> targetProperties;
+    private Map<String, String> targetProperties;
     private String type;
     private Date date;
     private String creator;
@@ -67,11 +65,11 @@ public class Activity {
         this.target = target;
     }
 
-    public Map<String, Object> getTargetProperties() {
+    public Map<String, String> getTargetProperties() {
         return this.targetProperties;
     }
 
-    public void setTargetProperties(Map<String, Object> targetProperties) {
+    public void setTargetProperties(Map<String, String> targetProperties) {
         this.targetProperties = targetProperties;
     }
 

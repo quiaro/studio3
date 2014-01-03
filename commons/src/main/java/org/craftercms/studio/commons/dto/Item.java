@@ -16,9 +16,13 @@
  */
 package org.craftercms.studio.commons.dto;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Content item transport object.
@@ -27,6 +31,7 @@ import java.util.Map;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
+@JsonAutoDetect
 public class Item implements Comparable<Item> {
     // Fundamental
     /**
@@ -64,6 +69,15 @@ public class Item implements Comparable<Item> {
     private boolean placeInNav;
     private boolean disabled;
 
+    private InputStream inputStream;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
     ////TODO LOCK TYPE
     /**
      * User id of the lock owner, null if item is not locked
@@ -103,6 +117,7 @@ public class Item implements Comparable<Item> {
     }
 
     // Getters and setters
+    @JsonProperty
     public ItemId getId() {
         return this.id;
     }
@@ -111,6 +126,7 @@ public class Item implements Comparable<Item> {
         this.id = id;
     }
 
+    @JsonProperty
     public String getRepoId() {
         return this.repoId;
     }
@@ -119,6 +135,7 @@ public class Item implements Comparable<Item> {
         this.repoId = repoId;
     }
 
+    @JsonProperty
     public String getLabel() {
         return this.label;
     }
@@ -127,6 +144,7 @@ public class Item implements Comparable<Item> {
         this.label = label;
     }
 
+    @JsonProperty
     public String getFileName() {
         return this.fileName;
     }
@@ -135,6 +153,7 @@ public class Item implements Comparable<Item> {
         this.fileName = fileName;
     }
 
+    @JsonProperty
     public String getPath() {
         return this.path;
     }
@@ -143,6 +162,7 @@ public class Item implements Comparable<Item> {
         this.path = path;
     }
 
+    @JsonProperty
     public String getPreviewUrl() {
         return this.previewUrl;
     }
@@ -151,6 +171,7 @@ public class Item implements Comparable<Item> {
         this.previewUrl = previewUrl;
     }
 
+    @JsonProperty
     public String getMimeType() {
         return this.mimeType;
     }
@@ -159,6 +180,7 @@ public class Item implements Comparable<Item> {
         this.mimeType = mimeType;
     }
 
+    @JsonProperty
     public String getContentType() {
         return this.contentType;
     }
@@ -167,6 +189,7 @@ public class Item implements Comparable<Item> {
         this.contentType = contentType;
     }
 
+    @JsonProperty
     public String getState() {
         return this.state;
     }
@@ -175,6 +198,7 @@ public class Item implements Comparable<Item> {
         this.state = state;
     }
 
+    @JsonProperty
     public boolean isDisabled() {
         return this.disabled;
     }
@@ -183,6 +207,7 @@ public class Item implements Comparable<Item> {
         this.disabled = disabled;
     }
 
+    @JsonProperty
     public Date getLastModifiedDate() {
         return this.lastModifiedDate;
     }
@@ -191,6 +216,7 @@ public class Item implements Comparable<Item> {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    @JsonProperty
     public boolean isPlaceInNav() {
         return this.placeInNav;
     }
@@ -199,6 +225,7 @@ public class Item implements Comparable<Item> {
         this.placeInNav = placeInNav;
     }
 
+    @JsonProperty
     public String getLockOwner() {
         return this.lockOwner;
     }
@@ -207,6 +234,7 @@ public class Item implements Comparable<Item> {
         this.lockOwner = lockOwner;
     }
 
+    @JsonProperty
     public List<String> getRenderingTemplates() {
         return this.renderingTemplates;
     }
@@ -215,6 +243,7 @@ public class Item implements Comparable<Item> {
         this.renderingTemplates = renderingTemplates;
     }
 
+    @JsonProperty
     public Date getScheduledDate() {
         return this.scheduledDate;
     }
@@ -223,6 +252,7 @@ public class Item implements Comparable<Item> {
         this.scheduledDate = scheduledDate;
     }
 
+    @JsonProperty
     public List<String> getPackages() {
         return this.packages;
     }
@@ -231,11 +261,84 @@ public class Item implements Comparable<Item> {
         this.packages = packages;
     }
 
+    @JsonProperty
     public Map<String, Object> getProperties() {
         return this.properties;
     }
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+    }
+
+    public int getObjectVersionNumber() {
+        return objectVersionNumber;
+    }
+
+    public void setObjectVersionNumber(final int objectVersionNumber) {
+        this.objectVersionNumber = objectVersionNumber;
+    }
+
+    public List<ItemId> getAncestors() {
+        return ancestors;
+    }
+
+    public void setAncestors(final List<ItemId> ancestors) {
+        this.ancestors = ancestors;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(final String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(final Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(final String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    public boolean isFolder() {
+        return isFolder;
+    }
+
+    public void setFolder(final boolean folder) {
+        isFolder = folder;
+    }
+
+    public String getWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(final String workflow) {
+        this.workflow = workflow;
+    }
+
+    public boolean isSecurityInherited() {
+        return securityInherited;
+    }
+
+    public void setSecurityInherited(final boolean securityInherited) {
+        this.securityInherited = securityInherited;
     }
 }

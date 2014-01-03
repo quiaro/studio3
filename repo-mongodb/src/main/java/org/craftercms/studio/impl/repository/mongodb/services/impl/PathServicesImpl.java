@@ -17,14 +17,14 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.LinkedList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.craftercms.studio.api.RepositoryException;
 import org.craftercms.studio.api.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
+import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +34,7 @@ import org.slf4j.LoggerFactory;
  * Default Path implementation for Mongodb repository.
  */
 public class PathServicesImpl implements PathService {
-    /**
-     * Initial size of StringBuilder.
-     */
-    private static final int DEFAULT_BUILDER_SIZE = 512;
+
     /**
      * Node Service.
      */
@@ -45,30 +42,56 @@ public class PathServicesImpl implements PathService {
     private Logger log = LoggerFactory.getLogger(PathServicesImpl.class);
 
     @Override
-    public String getItemIdByPath(final String ticket, final String site, final String path) {
-        if (StringUtils.isEmpty(ticket) || StringUtils.isBlank(ticket)) {
+    public String getItemIdByPath(final String ticket, final String site, final String path) throws RepositoryException {
+
+        if (StringUtils.isBlank(ticket)) {
             log.debug("Given Ticket is blank or empty");
             throw new IllegalArgumentException("Given Ticket is Blank or empty");
         }
-        if (StringUtils.isEmpty(site) || StringUtils.isBlank(site)) {
+
+        if (StringUtils.isBlank(site)) {
             log.debug("Given Site is blank or empty");
             throw new IllegalArgumentException("Given Site is Blank or empty");
         }
-        if (StringUtils.isEmpty(path) || StringUtils.isBlank(path)) {
-            log.debug("Given Path is blank or empty");
-            throw new IllegalArgumentException("Given Path is Blank or empty");
-        }
-        log.debug("Converting {} to a path object", path);
-        Path internalPath = Paths.get(path);
-        log.debug("Internal Path is {}", internalPath);
-        //Lets get the node by name
 
-        return null;
+        if (!isPathValid(path)) {
+            log.debug("Given Path is blank or empty");
+            throw new IllegalArgumentException("Given Path is not a valid path");
+        }
+
+
+        log.debug("Converting {} to a path object", path);
+        log.debug("Walking down the tree ");
+        String[] pathToDescent = path.substring(1).split(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        Node foundNode = walkDownTheTree(pathToDescent);
+        if (foundNode != null) {
+            log.debug("Found a Node with path {} ,node is {}", path, foundNode);
+            return foundNode.getId();
+        } else {
+            log.debug("Node with path {} was not found", path);
+            return null;
+        }
     }
 
     @Override
     public String getPathByItemId(final String ticket, final String site,
                                   final String itemId) throws RepositoryException {
+
+
+        if (StringUtils.isBlank(ticket)) {
+            log.debug("Given Ticket is blank or empty");
+            throw new IllegalArgumentException("Given Ticket is Blank or empty");
+        }
+        if (StringUtils.isBlank(site)) {
+            log.debug("Given Site is blank or empty");
+            throw new IllegalArgumentException("Given Site is Blank or empty");
+        }
+        if (StringUtils.isBlank(itemId)) {
+            log.debug("Given Item ID is blank or empty");
+            throw new IllegalArgumentException("Given Path is Blank or empty");
+        }
+
+
         log.debug("Calculating Path for item with id {}", itemId);
         Node node = nodeService.getNode(itemId);
         if (node == null) {
@@ -76,28 +99,44 @@ public class PathServicesImpl implements PathService {
             return null;
         } else {
             log.debug("Node Found {}", node);
-            //make it bigger so it will not have to resize it for a bit.
-            StringBuilder builder = new StringBuilder(DEFAULT_BUILDER_SIZE);
-            walkTheTree(builder, node);
-            String path = builder.toString();
-            log.debug("Calculated Path is {}", path);
-            return path;
+            return nodeService.getNodePath(node);
         }
     }
 
-    /**
-     * Walks the Tree and append at start the parent , moving children forward in  the string.
-     *
-     * @param builder String Builder where the current string is.
-     * @param node    Node to walk and append.
-     */
-    private void walkTheTree(final StringBuilder builder, final Node node) {
-        if (node.getParent() != null) {
-            //Always insert at 0 (start of the String)
-            builder.insert(0, node.getMetadata().getNodeName()); // Add the Name
-            builder.insert(0, MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR); // Add the separator.
-            walkTheTree(builder, node.getParent());
-        } //We found '/' aka root
+    @Override
+    public boolean isPathValid(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return false;
+        }
+        return path.matches(MongoRepositoryDefaults.PATH_VALIDATION_REGEX);
+    }
+
+    @Override
+    public String fullPathFor(final String site, final String path) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(MongoRepositoryDefaults.REPO_DEFAULT_PATH_SEPARATOR_CHAR);
+        builder.append(site);
+        builder.append(path);
+        return builder.toString();
+    }
+
+    private Node walkDownTheTree(String[] pathToDescent) throws MongoRepositoryException {
+
+        Node tempNode = nodeService.getRootNode();
+        //If pathToDescent length is 0 then you are getting root path right?
+        for (int i = 0; i < pathToDescent.length; i++) {
+            if (StringUtils.isBlank(pathToDescent[i])) {
+                return nodeService.getRootNode();
+            }
+            LinkedList<Node> ancestors = (LinkedList<Node>)tempNode.getAncestors().clone();
+            ancestors.addLast(tempNode);
+            tempNode = nodeService.findNodeByAncestorsAndName(ancestors, pathToDescent[i]);
+            if (tempNode == null) {
+                break;
+            }
+        }
+        return tempNode;
+
     }
 
     public void setNodeServiceImpl(final NodeService nodeService) {

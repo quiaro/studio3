@@ -16,33 +16,34 @@
  */
 package org.craftercms.studio.api.workflow;
 
-import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.WorkflowPackage;
-import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
-import org.craftercms.studio.commons.dto.WorkflowTransition;
-
 import java.util.List;
 import java.util.Map;
 
+import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.dto.WorkflowPackage;
+import org.craftercms.studio.commons.dto.WorkflowTransition;
+import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
+
 /**
  * Workflow Manager.
- * @author Sumer Jabri
- * @author Dejan Brkic
+ *
  * @author Carlos Ortiz
  */
 public interface WorkflowManager {
 
     /**
      * Start workflow.
+     *
      * @param packageName package name
-     * @param comments comments
-     * @param items items
+     * @param comments    comments
+     * @param items       items
      * @return package id
      */
     String start(String packageName, List<String> comments, List<Item> items);
 
     /**
      * Get package.
+     *
      * @param packageId package id
      * @return list of items in package
      */
@@ -50,15 +51,16 @@ public interface WorkflowManager {
 
     /**
      * Get workflow packages.
-     * @param site site
+     *
+     * @param site    site
      * @param filters filters
      * @return list of packages
      */
-    List<WorkflowPackage> getPackages(String site,
-                                      List<WorkflowPackageFilter> filters);
+    List<WorkflowPackage> getPackages(String site, List<WorkflowPackageFilter> filters);
 
     /**
      * Get transitions.
+     *
      * @param packageId package id
      * @return workflow transitions
      */
@@ -66,15 +68,16 @@ public interface WorkflowManager {
 
     /**
      * Transition.
-     * @param packageId package id
+     *
+     * @param packageId  package id
      * @param transition transition
-     * @param params parameters
+     * @param params     parameters
      */
-    void transition(String packageId, WorkflowTransition transition,
-                    Map<String, Object> params);
+    void transition(String packageId, WorkflowTransition transition, Map<String, Object> params);
 
     /**
      * Cancel workflow.
+     *
      * @param packageId package id
      */
     void cancel(String packageId);

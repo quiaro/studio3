@@ -1,5 +1,6 @@
 package org.craftercms.studio.impl.repository.mongodb.services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
@@ -26,6 +27,9 @@ public class ITMongoStartupService implements ApplicationContextAware {
     private NodeService nodeService;
     private ApplicationContext applicationContext;
 
+    public ITMongoStartupService() {
+    }
+
     @Before
     public void setUp() throws Exception {
         nodeService = applicationContext.getBean(NodeService.class);
@@ -39,9 +43,9 @@ public class ITMongoStartupService implements ApplicationContextAware {
 
     @Test
     public void testContentNameCreated() throws Exception {
-        List<Node> nodes = nodeService.findNodesByParent(nodeService.getRootNode());
+        Iterable<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
         for (Node node : nodes) {
-            if(node.getMetadata().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER)){
+            if(node.getCore().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONTENT_FOLDER)){
                 return;
             }
         }
@@ -52,9 +56,9 @@ public class ITMongoStartupService implements ApplicationContextAware {
 
     @Test
     public void testConfigNameCreated() throws Exception {
-        List<Node> nodes = nodeService.findNodesByParent(nodeService.getRootNode());
+        Iterable<Node> nodes = nodeService.findNodesByParents(Arrays.asList(nodeService.getRootNode()));
         for (Node node : nodes) {
-            if(node.getMetadata().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER)){
+            if(node.getCore().getNodeName().equals(MongoRepositoryDefaults.REPO_DEFAULT_CONFIG_FOLDER)){
                 return;
             }
         }

@@ -23,8 +23,6 @@ import java.util.List;
 /**
  * Lifecycle Manager.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
  * @author Carlos Ortiz
  */
 public interface LifecycleManager {
