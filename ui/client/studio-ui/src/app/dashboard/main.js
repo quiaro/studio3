@@ -34,10 +34,10 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
                 controller: function ($scope, loadPrototypes, loadTemplates) {
                     $scope.prototypes = loadPrototypes;
                     $scope.templates = loadTemplates;
-                }
-                // TODO: Re-enable and use robust authentication mechanism
-                // requireAuth: true,
-                // rolesAllowed: ['admin', 'editor']
+                },
+                // TODO: Use robust authentication mechanism
+                requireAuth: true,
+                rolesAllowed: ['admin', 'editor']
             });
     }])
 

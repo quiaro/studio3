@@ -13,10 +13,10 @@ angular.module('crafter.studio.authoring', ['crafter.studio.common'])
             .state('studio.authoring', {
                 url: '/author/*path',
                 templateUrl: AUTHORING.baseUrl + 'templates/authoring.tpl.html',
-                controller: 'AuthoringCtrl'
-                // TODO: Re-enable and use robust authentication mechanism
-                // requireAuth: true,
-                // rolesAllowed: ['admin', 'editor']
+                controller: 'AuthoringCtrl',
+                // TODO: Use robust authentication mechanism
+                requireAuth: true,
+                rolesAllowed: ['admin', 'editor']
             });
     }])
 
