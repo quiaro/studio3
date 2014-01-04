@@ -32,10 +32,10 @@ angular.module('crafter.studio.common', ['ui.router', 'ui.bootstrap.modal'])
             namespace: 'widgets'
         },
         services: {
-            domain: "http://localhost:9666",
+            domain: 'http://localhost:9666',
             asset: {
-                upload: "/api/1/content/asset/create/{site}",
-                read: "/api/1/content/asset/read/{site}"
+                upload: '/api/1/content/asset/create/{site}',
+                read: '/api/1/content/asset/read/{site}'
             }
         }
     })
@@ -72,7 +72,7 @@ angular.module('crafter.studio.common', ['ui.router', 'ui.bootstrap.modal'])
         };
 
         $scope.showOptionsFor = function (menu) {
-            $scope.menu.selected = ($scope.menu.selected == menu) ? null : menu;
-        }
+            $scope.menu.selected = ($scope.menu.selected === menu) ? null : menu;
+        };
     }]);
 

@@ -160,13 +160,13 @@ angular.module('crafter.studio.common')
                     var key = match.substring(1, match.length - 1), // remove '{' and '}' from the match string
                         replaceValue = replaceObj[key];
                     if (replaceValue) {
-                        return replaceValue
+                        return replaceValue;
                     } else {
                         throw new Error('Placeholder "' + key + '" does not have a replace value in ' + string);
                     }
                 }
 
-                return string.replace(/{.*}/g, function(m) { return replacePlaceholder(m) } );
+                return string.replace(/{.*}/g, function(m) { return replacePlaceholder(m); } );
             };
         }
     )
@@ -198,12 +198,12 @@ angular.module('crafter.studio.common')
                     for (var key in config.data) {
                         var val = config.data[key];
 
-                        if (typeof config.transformRequest == 'function') {
+                        if (typeof config.transformRequest === 'function') {
                             val = config.transformRequest(val);
                         } else {
                             for (var i = 0; i < config.transformRequest.length; i++) {
                                 var fn = config.transformRequest[i];
-                                if (typeof fn == 'function') {
+                                if (typeof fn === 'function') {
                                     val = fn(val);
                                 }
                             }
@@ -214,7 +214,7 @@ angular.module('crafter.studio.common')
                 config.transformRequest = angular.identity;
                 formData.append(config.fileFormDataName || 'file', config.file, config.file.name);
 
-                formData['__setXHR_'] = function(xhr) {
+                formData.__setXHR_ = function(xhr) {
                     config.__XHR = xhr;
                     xhr.upload.addEventListener('progress', function(e) {
                         if (config.progress) {

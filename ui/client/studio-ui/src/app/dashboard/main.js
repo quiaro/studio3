@@ -16,7 +16,8 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
                 resolve: {
                     loadPrototypes : function loadPrototypes ($q, WidgetService) {
                         var deferred = $q.defer();
-                        WidgetService.getPropertyAssets('dashboard', 'prototypeUrl', false, WidgetService.processPrototype)
+                        WidgetService.getPropertyAssets('dashboard', 'prototypeUrl',
+                            false, WidgetService.processPrototype)
                             .then( function (prototypes) {
                                 deferred.resolve(prototypes);
                             });
@@ -24,7 +25,8 @@ angular.module('crafter.studio.dashboard', ['crafter.studio.common', 'ui.router'
                     },
                     loadTemplates : function loadTemplates ($q, WidgetService) {
                         var deferred = $q.defer();
-                        WidgetService.getPropertyAssets('dashboard', 'templateUrl', true, WidgetService.processTemplate)
+                        WidgetService.getPropertyAssets('dashboard', 'templateUrl',
+                            true, WidgetService.processTemplate)
                             .then( function (templates) {
                                 deferred.resolve(templates);
                             });

@@ -29,7 +29,9 @@ angular.module('crafter.studio.common')
                     };
 
                     this.checkValidation = function(fieldModelController) {
-                        if (!formController) return false;
+                        if (!formController) {
+                            return false;
+                        }
 
                         if (fieldModelController) {
                             return fieldModelController.$invalid &&
@@ -85,12 +87,12 @@ angular.module('crafter.studio.common')
     .directive('sdoFileSelect', ['$parse', '$http',
         function($parse, $http) {
             return function(scope, elem, attr) {
-                var fn = $parse(attr['sdoFileSelect']);
+                var fn = $parse(attr.sdoFileSelect);
                 elem.bind('change', function(evt) {
                     var files = [],
                         fileList, i;
                     fileList = evt.target.files;
-                    if (fileList != null) {
+                    if (fileList !== null) {
                         for (i = 0; i < fileList.length; i++) {
                             files.push(fileList.item(i));
                         }

@@ -28,8 +28,6 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
                 if ($scope.selectedFiles.length) {
                     $file = $scope.selectedFiles[0];
 
-                    console.log("Uploading file: ", $file);
-
                     assetService.upload({
                         data: {
                             destination_path: asset.path,
@@ -39,13 +37,13 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
                         file: $file
                     }).success(function(data, status, headers, config) {
                         // file is uploaded successfully
-                        console.log("File uploaded successfully!");
+                        console.log('File uploaded successfully!');
                         console.log(data);
                     }).error( function () {
                         console.log('Unable to upload file');
                     });
                 }
-            }
+            };
 
             $scope.onFileSelect = function($files) {
                 // $files: an array of files selected, each file has name, size, and type.
@@ -66,11 +64,11 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
                     $timeout( function() {
                         $scope.$apply(function () {
                             $scope.asset.content = data;
-                        })
+                        });
                     });
                 }).error(function () {
                     console.log('Unable to read data from post with id: ' + asset.id);
-                })
-            }
+                });
+            };
     }]);
 

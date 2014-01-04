@@ -96,7 +96,7 @@ angular.module('studio-ui', [
                     // to login state.
 
                     event.preventDefault();
-                    console.log("Sorry! Not logged in.");
+                    console.log('Sorry! Not logged in.');
                     $state.go('login');
                 } else {
                     // The module requires authentication and the user is logged in.
@@ -109,7 +109,7 @@ angular.module('studio-ui', [
 
                         if (!roleIntersection.length) {
                             event.preventDefault();
-                            console.log("Sorry! You do not have access to this module.");
+                            console.log('Sorry! You do not have access to this module.');
                             $state.go('unauthorized');
                         }
                     }
