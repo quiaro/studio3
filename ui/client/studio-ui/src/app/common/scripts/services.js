@@ -5,7 +5,8 @@ angular.module('crafter.studio.common')
 
     .config(function($httpProvider){
         // Avoid problem with CORS
-        // http://stackoverflow.com/questions/16661032/http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is
+        // http://stackoverflow.com/questions/16661032/
+        // http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
     })
 
@@ -195,6 +196,7 @@ angular.module('crafter.studio.common')
                 config.transformRequest = config.transformRequest || $http.defaults.transformRequest;
 
                 if (config.data) {
+                    /*jslint forin:false */
                     for (var key in config.data) {
                         var val = config.data[key];
 
@@ -203,18 +205,19 @@ angular.module('crafter.studio.common')
                         } else {
                             for (var i = 0; i < config.transformRequest.length; i++) {
                                 var fn = config.transformRequest[i];
-                                if (typeof fn === 'function') {
-                                    val = fn(val);
-                                }
+                                val = (typeof fn === 'function') ? fn(val) : val;
                             }
                         }
                         formData.append(key, val);
                     }
+                    /*jslint forin:true */
                 }
                 config.transformRequest = angular.identity;
                 formData.append(config.fileFormDataName || 'file', config.file, config.file.name);
 
+                /*jslint camelcase:false */
                 formData.__setXHR_ = function(xhr) {
+                /*jslint camelcase:true */
                     config.__XHR = xhr;
                     xhr.upload.addEventListener('progress', function(e) {
                         if (config.progress) {

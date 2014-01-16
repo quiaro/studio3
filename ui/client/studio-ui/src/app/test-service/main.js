@@ -29,11 +29,13 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
                     $file = $scope.selectedFiles[0];
 
                     assetService.upload({
+                        /*jslint camelcase:false */
                         data: {
                             destination_path: asset.path,
                             file_name: asset.name,
                             mime_type: $file.type
                         },
+                        /*jslint camelcase:true */
                         file: $file
                     }).success(function(data, status, headers, config) {
                         // file is uploaded successfully
@@ -58,7 +60,9 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
 
                 assetService.read({
                     params: {
+                        /*jslint camelcase:false */
                         item_id: asset.id
+                        /*jslint camelcase:true */
                     }
                 }).success(function(data, status, headers, config) {
                     $timeout( function() {
