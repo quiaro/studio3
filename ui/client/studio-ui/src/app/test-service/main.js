@@ -18,7 +18,7 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
     }])
 
     .controller('AssetUploadCtrl',
-        ['$scope', 'assetService', function($scope, assetService) {
+        ['$scope', 'AssetService', function($scope, AssetService) {
 
             $scope.selectedFiles = null;
 
@@ -28,7 +28,7 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
                 if ($scope.selectedFiles.length) {
                     $file = $scope.selectedFiles[0];
 
-                    assetService.upload({
+                    AssetService.upload({
                         /*jslint camelcase:false */
                         data: {
                             destination_path: asset.path,
@@ -54,11 +54,11 @@ angular.module('crafter.studio.test-service', ['crafter.studio.common', 'ui.rout
     }])
 
     .controller('AssetReadCtrl',
-        ['$scope', '$timeout', 'assetService', function($scope, $timeout, assetService) {
+        ['$scope', '$timeout', 'AssetService', function($scope, $timeout, AssetService) {
 
             $scope.readAsset = function (asset) {
 
-                assetService.read({
+                AssetService.read({
                     params: {
                         /*jslint camelcase:false */
                         item_id: asset.id

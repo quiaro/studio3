@@ -30,7 +30,7 @@
             // Preserve the context (this)
             var that = this;
 
-            angular.injector(['ng', 'crafter.studio.common']).invoke(function(audit) {
+            angular.injector(['ng', 'crafter.studio.common']).invoke(function(AuditService) {
                 // Filter options to be defined here; they could also be defined as
                 // a widget property -which would make them configurable
                 var filterOpts = {
@@ -38,7 +38,7 @@
                 },
                     numResults = that.filterLength.value;
 
-                audit.activity(filterOpts)
+                AuditService.activity(filterOpts)
                     .then(function(data) {
 
                         $timeout(function() {

@@ -35,10 +35,10 @@ angular.module('crafter.studio.authoring', ['crafter.studio.common'])
     }])
 
     .factory('eventBridge',
-        ['$rootScope', 'util', 'editorId', 'PubSubModule', 'REGISTRY',
-            function($rootScope, util, editorId, PubSubModule, REGISTRY) {
+        ['$rootScope', 'AppService', 'editorId', 'PubSubModule', 'REGISTRY',
+            function($rootScope, AppService, editorId, PubSubModule, REGISTRY) {
 
-        var registryPromise = util.getRegistry();
+        var registryPromise = AppService.getRegistry();
 
         registryPromise.then(function (registryObj) {
 

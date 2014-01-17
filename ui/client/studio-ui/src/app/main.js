@@ -81,17 +81,17 @@ angular.module('studio-ui', [
     .run(['$rootScope',
         '$location',
         '$state',
-        'AuthenticationService',
+        'AuthService',
         'UserService',
         'UtilsService',
-        function ($rootScope, $location, $state, AuthenticationService, UserService, UtilsService) {
+        function ($rootScope, $location, $state, AuthService, UserService, UtilsService) {
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             var roles, roleIntersection;
 
             if (toState.requireAuth) {
 
-                if (!AuthenticationService.isLoggedIn()) {
+                if (!AuthService.isLoggedIn()) {
                     // The module requires authentication, but the user is not logged in => send user
                     // to login state.
 

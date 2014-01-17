@@ -47,10 +47,10 @@ angular.module('crafter.studio.common', ['ui.router', 'ui.bootstrap.modal'])
 	})
 
     .config(['$stateProvider',
-        'COMMON', function ($stateProvider, COMMON) {
+        '$httpProvider',
+        'COMMON', function ($stateProvider, $httpProvider, COMMON) {
 
         $stateProvider
-
             // Abstract state to create the general layout of the app
             .state('studio', {
 
@@ -62,6 +62,12 @@ angular.module('crafter.studio.common', ['ui.router', 'ui.bootstrap.modal'])
                 url: '/studio',
                 templateUrl: COMMON.baseUrl + 'templates/layout.tpl.html'
             });
+
+        // Avoid problem with CORS
+        // http://stackoverflow.com/questions/16661032/
+        // http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     }])
 
     .controller('ToolbarCtrl', [
