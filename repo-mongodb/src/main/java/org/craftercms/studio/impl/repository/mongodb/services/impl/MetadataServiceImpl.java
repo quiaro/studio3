@@ -19,8 +19,8 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 
 import java.util.Map;
 
-import org.craftercms.studio.api.NotImplementedException;
-import org.craftercms.studio.api.content.MetaDataService;
+import org.craftercms.studio.repo.NotImplementedException;
+import org.craftercms.studio.repo.content.MetaDataService;
 
 /**
  * Mongo Implementation of MetaDataService.

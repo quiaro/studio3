@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.craftercms.studio.api.content.PageManager;
+import org.craftercms.studio.api.content.PageService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
@@ -41,7 +41,7 @@ import org.craftercms.studio.commons.filter.ItemFilter;
  *
  * @author Dejan Brkic
  */
-public class PageManagerMock implements PageManager {
+public class PageServiceMock implements PageService {
 
     public InputStream read(final Context context, final String itemId) throws StudioException {
         throw new NotImplementedException("Not implemented yet!");

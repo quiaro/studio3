@@ -15,28 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.api.content;
+package org.craftercms.studio.mock.search;
 
-import java.util.List;
-
-import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.filter.Filter;
+import org.craftercms.studio.api.search.SearchService;
+import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.dto.ResultSet;
+import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
- * Search Service.
+ * Search Manager Mock implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public interface SearchService {
+public class SearchServiceMock implements SearchService {
 
-    /**
-     * Find items.
-     * @param ticket security ticket
-     * @param query query string
-     * @param filters filters
-     * @return list of items
-     */
-    List<Item> find(String ticket, String query, List<Filter> filters);
+    @Override
+    public ResultSet find(final Context context, final String query) {
+        throw new NotImplementedException("Not implemented yet!");
+    }
 }

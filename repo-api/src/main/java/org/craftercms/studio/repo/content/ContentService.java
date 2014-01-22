@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.api.content;
+package org.craftercms.studio.repo.content;
 
 import java.io.InputStream;
 import java.util.List;
 
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.exception.InvalidContextException;
@@ -64,7 +64,7 @@ public interface ContentService {
      * @param contentId content id
      * @param site      Site
      * @return content item
-     * @throws org.craftercms.studio.api.RepositoryException                   If unable to get the actual content.
+     * @throws org.craftercms.studio.repo.RepositoryException                   If unable to get the actual content.
      * @throws org.craftercms.studio.commons.exception.ObjectNotFoundException if there is no content for that file
      *                                                                         id (must likely given id is a folder
      *                                                                         not a file)

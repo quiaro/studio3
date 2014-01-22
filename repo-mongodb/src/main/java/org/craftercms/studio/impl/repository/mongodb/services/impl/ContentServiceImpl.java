@@ -22,9 +22,9 @@ import java.util.List;
 import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.craftercms.studio.api.RepositoryException;
-import org.craftercms.studio.api.content.ContentService;
-import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.repo.RepositoryException;
+import org.craftercms.studio.repo.content.ContentService;
+import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tree;

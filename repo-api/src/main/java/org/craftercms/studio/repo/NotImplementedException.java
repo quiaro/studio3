@@ -1,4 +1,4 @@
-package org.craftercms.studio.api;
+package org.craftercms.studio.repo;
 
 /**
  * Throws an exception when repo does not support a given operation.

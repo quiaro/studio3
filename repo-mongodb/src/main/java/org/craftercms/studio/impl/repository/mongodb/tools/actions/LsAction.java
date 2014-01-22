@@ -17,9 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.tools.actions;
 
-import java.util.List;
-
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;

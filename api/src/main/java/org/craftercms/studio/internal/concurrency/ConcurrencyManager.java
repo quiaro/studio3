@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.internal.concurrency;
+package org.craftercms.studio.internal.concurrency;
 
 import java.util.List;
 

@@ -21,8 +21,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.api.content.VersionService;
-import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.repo.content.VersionService;
 import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.impl.AbstractManagerTest;
@@ -41,7 +40,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Dejan Brkic
  */
-public class VersionManagerImplTest extends AbstractManagerTest {
+public class VersionServiceImplTest extends AbstractManagerTest {
 
     @Autowired
     @Mock
@@ -49,7 +48,7 @@ public class VersionManagerImplTest extends AbstractManagerTest {
 
     @Autowired
     @InjectMocks
-    private VersionManagerImpl versionManagerSUT;
+    private VersionServiceImpl versionManagerSUT;
 
     @Test(expected = NotImplementedException.class)
     public void testHistory() throws Exception {

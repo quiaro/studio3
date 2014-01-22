@@ -16,8 +16,7 @@
  */
 package org.craftercms.studio.controller.services.rest;
 
-import org.craftercms.studio.api.content.VersionManager;
-import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class VersionController {
 
     @Autowired
-    private VersionManager versionManager;
+    private VersionService versionService;
 
     /**
      * TODO: javadoc.
@@ -52,7 +51,7 @@ public class VersionController {
     @ResponseBody
     public Tree<Version> getVersionHistory(@PathVariable final String site, @RequestParam(required = true) final
             String itemId, final HttpServletRequest request, final HttpServletResponse response) {
-        return this.versionManager.history(null, itemId);
+        return this.versionService.history(null, itemId);
     }
 
     /**
@@ -67,6 +66,6 @@ public class VersionController {
     public void revert(@PathVariable final String site, @RequestParam(required = true) final String itemId,
         @RequestParam(required = true) final String versionToRevertTo,
                        final HttpServletRequest request, final HttpServletResponse response) {
-        this.versionManager.revert(null, itemId, versionToRevertTo);
+        this.versionService.revert(null, itemId, versionToRevertTo);
     }
 }

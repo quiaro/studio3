@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import org.craftercms.studio.api.search.SearchManager;
+import org.craftercms.studio.api.search.SearchService;
 import org.craftercms.studio.commons.dto.Context;
 import org.junit.After;
 import org.junit.Test;
@@ -45,19 +45,19 @@ public class SearchControllerTest extends AbstractControllerTest {
 
     // Mocks
     @Autowired
-    private SearchManager searchManagerMock;
+    private SearchService searchServiceMock;
 
     @InjectMocks
     private SearchController searchController;
 
     @After
     public void tearDown() {
-        reset(this.searchManagerMock);
+        reset(this.searchServiceMock);
     }
 
     @Test
     public void testFind() throws Exception {
-        when(this.searchManagerMock.find(Mockito.any(Context.class), Mockito.anyString()))
+        when(this.searchServiceMock.find(Mockito.any(Context.class), Mockito.anyString()))
             .thenReturn(generateResultSetMock());
 
         this.mockMvc.perform(
@@ -67,19 +67,19 @@ public class SearchControllerTest extends AbstractControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         ;
 
-        verify(this.searchManagerMock, times(1)).find(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.searchServiceMock, times(1)).find(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testFindMissingQuery() throws Exception {
-        when(this.searchManagerMock.find(Mockito.any(Context.class), Mockito.anyString()))
+        when(this.searchServiceMock.find(Mockito.any(Context.class), Mockito.anyString()))
             .thenReturn(generateResultSetMock());
 
         this.mockMvc.perform(get("/api/1/search/find/site").accept(MediaType.ALL))
             .andExpect(status().isBadRequest())
         ;
 
-        verify(this.searchManagerMock, times(0)).find(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.searchServiceMock, times(0)).find(Mockito.any(Context.class), Mockito.anyString());
     }
 
 }

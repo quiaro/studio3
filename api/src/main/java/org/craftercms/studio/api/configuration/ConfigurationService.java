@@ -14,44 +14,33 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.craftercms.studio.api.content;
+package org.craftercms.studio.api.configuration;
 
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.DiffResult;
-import org.craftercms.studio.commons.dto.Tree;
-import org.craftercms.studio.commons.dto.Version;
 
 /**
- * Version Manager.
+ * Configuration Service.
+ *
+ * @author Sumer Jabri
  */
-public interface VersionManager {
-
+public interface ConfigurationService {
     /**
-     * Get version history for item
+     * Retrieve a configuration associated with a URN.
      *
      * @param context context
-     * @param itemId  itemId
-     * @return tree of version history
+     * @param site    site
+     * @param urn     URN of the resource
+     * @return configuration associated with the provided URN
      */
-    Tree<Version> history(Context context, String itemId);
+    String read(Context context, String site, String urn);
 
     /**
-     * Revert version for item
+     * Create or update a configuration for the provided URN.
      *
      * @param context       context
-     * @param itemId        itemId
-     * @param revertVersion revertVersion
+     * @param site          site
+     * @param urn           URN of the resource
+     * @param configuration configuration to store
      */
-    void revert(Context context, String itemId, String revertVersion);
-
-    /**
-     * Difference between two versions
-     *
-     * @param context  context
-     * @param itemId   item id
-     * @param version1 version1
-     * @param version2 version2
-     * @return differences
-     */
-    DiffResult diff(Context context, String itemId, String version1, String version2);
+    void write(Context context, String site, String urn, String configuration);
 }

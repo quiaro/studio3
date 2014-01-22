@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.tools.actions;
 
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.impl.repository.mongodb.tools.AbstractAction;
 import org.craftercms.studio.impl.repository.mongodb.tools.RepoShellContext;
 

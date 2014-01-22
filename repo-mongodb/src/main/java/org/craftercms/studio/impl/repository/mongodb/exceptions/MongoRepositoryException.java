@@ -1,6 +1,6 @@
 package org.craftercms.studio.impl.repository.mongodb.exceptions;
 
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 
 /**
  * Base for all Repository Exceptions.

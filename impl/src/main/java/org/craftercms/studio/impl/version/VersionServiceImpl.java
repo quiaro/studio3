@@ -15,25 +15,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.mock.version;
+package org.craftercms.studio.impl.version;
 
-import org.craftercms.studio.api.content.VersionManager;
+import java.util.List;
+
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
- * Version Manager mock implementation.
+ * Version manager implementation.
  *
  * @author Dejan Brkic
  */
-public class VersionManagerMock implements VersionManager {
+public class VersionServiceImpl implements VersionService {
+
+    org.craftercms.studio.repo.content.VersionService versionService;
 
     @Override
     public Tree<Version> history(final Context context, final String itemId) {
         throw new NotImplementedException("Not implemented yet!");
+        /*if (StringUtils.isEmpty(itemId)) {
+            throw new IllegalArgumentException("Item id cannot be empty");
+        }
+        List<Item> versions = this.versionService.getAllVersions(context.getTicket(), itemId);
+        return createVersionTree(versions);*/
+    }
+
+    private Tree<Version> createVersionTree(final List<Item> versions) {
+        //TODO: implement create version tree from list of items.
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 
     @Override

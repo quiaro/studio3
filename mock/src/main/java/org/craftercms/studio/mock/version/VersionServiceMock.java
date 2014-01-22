@@ -15,22 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.mock.search;
+package org.craftercms.studio.mock.version;
 
-import org.craftercms.studio.api.search.SearchManager;
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.ResultSet;
+import org.craftercms.studio.commons.dto.DiffResult;
+import org.craftercms.studio.commons.dto.Tree;
+import org.craftercms.studio.commons.dto.Version;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
- * Search Manager Mock implementation.
+ * Version Manager mock implementation.
  *
  * @author Dejan Brkic
  */
-public class SearchManagerMock implements SearchManager {
+public class VersionServiceMock implements VersionService {
 
     @Override
-    public ResultSet find(final Context context, final String query) {
+    public Tree<Version> history(final Context context, final String itemId) {
+        throw new NotImplementedException("Not implemented yet!");
+    }
+
+    @Override
+    public void revert(final Context context, final String itemId, final String revertVersion) {
+        throw new NotImplementedException("Not implemented yet!");
+    }
+
+    @Override
+    public DiffResult diff(final Context context, final String itemId, final String version1, final String version2) {
         throw new NotImplementedException("Not implemented yet!");
     }
 }
