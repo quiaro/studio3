@@ -2,11 +2,10 @@ package org.craftercms.studio.internal.content.impl;
 
 import java.io.InputStream;
 
-import org.craftercms.studio.api.content.ContentService;
+import org.craftercms.studio.repo.content.ContentService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.internal.content.ContentManager;
 

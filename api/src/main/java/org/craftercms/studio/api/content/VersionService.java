@@ -33,7 +33,10 @@ public interface VersionService {
      * @param itemId  itemId
      * @return tree of version history
      */
-    Tree<Version> history(Context context, String itemId);
+    Tree<Version> history(Context context, String itemId); // tree or list?
+
+
+// TODO   NEED to tag, tag can be against a whole bunch of things at once (even trees?)
 
     /**
      * Revert version for item

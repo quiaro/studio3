@@ -16,57 +16,31 @@
  */
 package org.craftercms.studio.api.configuration;
 
-import java.io.InputStream;
-
-import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.ItemId;
 
 /**
- * Configuration Manager.
+ * Configuration Service.
  *
- * @author Carlos Ortiz
+ * @author Sumer Jabri
  */
 public interface ConfigurationService {
-
     /**
-     * Get configuration.
+     * Retrieve a configuration associated with a URN.
      *
      * @param context context
      * @param site    site
-     * @param module  module
-     * @return module configuration
+     * @param urn     URN of the resource
+     * @return configuration associated with the provided URN
      */
-    Configuration getConfiguration(Context context, String site, String module);
-    // todo Consider passing a wildcard
+    String read(Context context, String site, String urn);
 
     /**
-     * Create or update module configuration.
+     * Create or update a configuration for the provided URN.
      *
-     * @param context             context
-     * @param site                site
-     * @param module              module
-     * @param configuration module configuration
+     * @param context       context
+     * @param site          site
+     * @param urn           URN of the resource
+     * @param configuration configuration to store
      */
-    void configure(Context context, String site, String module, Configuration configuration);
-
-    /**
-     * Get configuration object.
-     *
-     * @param context  context
-     * @param site     site
-     * @param itemId configuration item Id
-     * @return content
-     */
-    InputStream getContent(Context context, String site, ItemId itemId);
-
-    /**
-     * Create or update configuration.
-     *
-     * @param context  context
-     * @param site     site
-     * @param itemId configuration item id
-     * @param content  content
-     */
-    void write(Context context, String site, ItemId itemId, InputStream content);
+    void write(Context context, String site, String urn, String configuration);
 }

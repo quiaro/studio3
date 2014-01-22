@@ -20,8 +20,8 @@ package org.craftercms.studio.impl.repository.mongodb.services.impl;
 import java.util.LinkedList;
 
 import org.apache.commons.lang3.StringUtils;
-import org.craftercms.studio.api.RepositoryException;
-import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.repo.RepositoryException;
+import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;

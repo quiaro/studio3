@@ -23,11 +23,11 @@
     </beans:bean>
 
     <beans:bean id="searchManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.search.SearchManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.search.SearchService" />
     </beans:bean>
 
     <beans:bean id="versionManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.content.VersionManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.content.VersionService" />
     </beans:bean>
 
     <beans:bean id="dependencyManager" class="org.mockito.Mockito" factory-method="mock">
@@ -55,7 +55,7 @@
     </beans:bean>
 
     <beans:bean id="configurationManager" class="org.mockito.Mockito" factory-method="mock">
-        <beans:constructor-arg value="org.craftercms.studio.api.configuration.ConfigurationManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.configuration.ConfigurationService" />
     </beans:bean>
 
 </beans:beans>

@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl;
 
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 
 /**
  * Repository Mock Exception.

@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import org.craftercms.studio.api.content.VersionManager;
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Context;
 import org.junit.After;
 import org.junit.Test;
@@ -48,19 +48,19 @@ public class VersionControllerTest extends AbstractControllerTest {
 
     // Mocks
     @Autowired
-    private VersionManager versionManagerMock;
+    private VersionService versionServiceMock;
 
     @InjectMocks
     private VersionController versionController;
 
     @After
     public void tearDown() {
-        reset(this.versionManagerMock);
+        reset(this.versionServiceMock);
     }
 
     @Test
     public void testGetContent() throws Exception {
-        when(this.versionManagerMock.history(Mockito.any(Context.class), Mockito.anyString()))
+        when(this.versionServiceMock.history(Mockito.any(Context.class), Mockito.anyString()))
             .thenReturn(generateVersionTree());
 
         this.mockMvc.perform(
@@ -69,12 +69,12 @@ public class VersionControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
         ;
 
-        verify(this.versionManagerMock, times(1)).history(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.versionServiceMock, times(1)).history(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testGetContentMissingItemId() throws Exception {
-        when(this.versionManagerMock.history(Mockito.any(Context.class), Mockito.anyString()))
+        when(this.versionServiceMock.history(Mockito.any(Context.class), Mockito.anyString()))
             .thenReturn(generateVersionTree());
 
         this.mockMvc.perform(
@@ -83,7 +83,7 @@ public class VersionControllerTest extends AbstractControllerTest {
             .andExpect(status().isBadRequest())
         ;
 
-        verify(this.versionManagerMock, times(0)).history(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.versionServiceMock, times(0)).history(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class VersionControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.versionManagerMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        }).when(this.versionServiceMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
 
         this.mockMvc.perform(
             post("/api/1/version/revert/site").accept(MediaType.ALL)
@@ -103,7 +103,7 @@ public class VersionControllerTest extends AbstractControllerTest {
                 .param("versionToRevertTo", "1.0"))
             .andExpect(status().isOk());
 
-        verify(this.versionManagerMock, times(1)).revert(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.versionServiceMock, times(1)).revert(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
@@ -116,14 +116,14 @@ public class VersionControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.versionManagerMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        }).when(this.versionServiceMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
 
         this.mockMvc.perform(
             post("/api/1/version/revert/site").accept(MediaType.ALL)
                 .param("versionToRevertTo", "1.0"))
             .andExpect(status().isBadRequest());
 
-        verify(this.versionManagerMock, times(0)).revert(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.versionServiceMock, times(0)).revert(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
@@ -136,14 +136,14 @@ public class VersionControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.versionManagerMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        }).when(this.versionServiceMock).revert(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
 
         this.mockMvc.perform(
             post("/api/1/version/revert/site").accept(MediaType.ALL)
                 .param("itemId", "1"))
             .andExpect(status().isBadRequest());
 
-        verify(this.versionManagerMock, times(0)).revert(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.versionServiceMock, times(0)).revert(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 }

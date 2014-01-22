@@ -14,7 +14,7 @@
 
     <bean id="AuditManager" class="org.craftercms.studio.impl.audit.AuditServiceImpl" />
 
-    <bean id="ConfigurationManager" class="org.craftercms.studio.impl.configuration.ConfigurationManagerImpl"/>
+    <bean id="ConfigurationManager" class="org.craftercms.studio.impl.configuration.ConfigurationServiceImpl"/>
 
     <bean id="DependencyManager" class="org.craftercms.studio.impl.dependency.DependencyManagerImpl" />
 
@@ -24,11 +24,11 @@
 
     <bean id="LifecycleManager" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
 
-    <bean id="SearchManager" class="org.craftercms.studio.impl.search.SearchManagerImpl"/>
+    <bean id="SearchManager" class="org.craftercms.studio.impl.search.SearchServiceImpl"/>
 
     <bean id="SecurityManager" class="org.craftercms.studio.impl.security.SecurityManagerImpl" />
 
-    <bean id="VersionManager" class="org.craftercms.studio.impl.content.VersionManagerImpl"/>
+    <bean id="VersionManager" class="org.craftercms.studio.impl.content.VersionServiceImpl"/>
 
     <bean id="WorkflowManager" class="org.craftercms.studio.impl.workflow.WorkflowManagerImpl"/>
 

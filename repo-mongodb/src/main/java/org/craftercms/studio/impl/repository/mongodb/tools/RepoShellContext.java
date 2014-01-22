@@ -20,8 +20,8 @@ package org.craftercms.studio.impl.repository.mongodb.tools;
 import java.io.BufferedReader;
 import java.io.PrintStream;
 
-import org.craftercms.studio.api.content.ContentService;
-import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.repo.content.ContentService;
+import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.services.GridFSService;
 import org.craftercms.studio.impl.repository.mongodb.services.NodeService;

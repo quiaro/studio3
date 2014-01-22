@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.craftercms.studio.api.RepositoryException;
+import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.TreeNode;

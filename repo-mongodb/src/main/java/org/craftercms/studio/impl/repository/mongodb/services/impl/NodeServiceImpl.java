@@ -24,10 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.mongodb.gridfs.GridFSFile;
 import javolution.util.FastList;
 import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryQueries;
 import org.craftercms.studio.impl.repository.mongodb.data.MongodbDataService;

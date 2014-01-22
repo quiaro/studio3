@@ -20,7 +20,7 @@ import org.craftercms.studio.commons.dto.ResultSet;
 import org.craftercms.studio.commons.dto.Context;
 
 /**
- * Search Manager.
+ * Search Service.
  */
 public interface SearchService {
 
@@ -28,7 +28,10 @@ public interface SearchService {
      * Execute search within given context for given query.
      * @param context context
      * @param query query
-     * @return result set
+     * @return JSON result?
      */
-    ResultSet find(Context context, String query);
+    String studio_search(Context context, String query);
+
+
+    String delivery_search();
 }

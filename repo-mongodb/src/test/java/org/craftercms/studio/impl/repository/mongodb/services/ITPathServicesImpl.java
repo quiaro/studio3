@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.repository.mongodb.services;
 
-import org.craftercms.studio.api.content.PathService;
+import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 import org.junit.Assert;

@@ -7,7 +7,7 @@
 
     <bean id="auditManger" class="org.craftercms.studio.mock.audit.AuditServiceMock" />
 
-    <bean id="configurationManager" class="org.craftercms.studio.mock.configuration.ConfigurationManagerMock" />
+    <bean id="configurationManager" class="org.craftercms.studio.mock.configuration.ConfigurationServiceMock" />
 
     <bean id="contentManager" class="org.craftercms.studio.mock.content.ContentManagerMock" />
 
@@ -19,11 +19,11 @@
 
     <bean id="lifecycleManagerMock" class="org.craftercms.studio.mock.lifecycle.LifecycleManagerMock" />
 
-    <bean id="searchManager" class="org.craftercms.studio.mock.search.SearchManagerMock" />
+    <bean id="searchManager" class="org.craftercms.studio.mock.search.SearchServiceMock" />
 
     <bean id="securityManager" class="org.craftercms.studio.mock.security.SecurityManagerMock" />
 
-    <bean id="versionManager" class="org.craftercms.studio.mock.version.VersionManagerMock" />
+    <bean id="versionManager" class="org.craftercms.studio.mock.version.VersionServiceMock" />
 
     <bean id="workflowManager" class="org.craftercms.studio.mock.workflow.WorkflowManagerMock" />
 
