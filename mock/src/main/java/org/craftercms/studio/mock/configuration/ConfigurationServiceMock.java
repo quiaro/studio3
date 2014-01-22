@@ -19,7 +19,7 @@ package org.craftercms.studio.mock.configuration;
 
 import java.io.InputStream;
 
-import org.craftercms.studio.api.configuration.ConfigurationManager;
+import org.craftercms.studio.api.configuration.ConfigurationService;
 import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
@@ -30,7 +30,7 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
  *
  * @author Dejan Brkic
  */
-public class ConfigurationManagerMock implements ConfigurationManager {
+public class ConfigurationServiceMock implements ConfigurationService {
 
     @Override
     public Configuration getConfiguration(final Context context, final String site, final String module) {

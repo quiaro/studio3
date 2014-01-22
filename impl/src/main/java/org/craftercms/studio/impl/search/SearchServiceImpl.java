@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.search;
 
-import org.craftercms.studio.api.search.SearchManager;
+import org.craftercms.studio.api.search.SearchService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ResultSet;
 
@@ -26,7 +26,7 @@ import org.craftercms.studio.commons.dto.ResultSet;
  *
  * @author Dejan Brkic
  */
-public class SearchManagerImpl implements SearchManager {
+public class SearchServiceImpl implements SearchService {
 
 
     @Override

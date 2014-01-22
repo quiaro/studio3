@@ -15,28 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.api.content;
-
-import java.util.List;
-
 /**
- * List of Values Service.
+ * Provides the necessary definitions and transport
+ * objects for concurrency module.
  *
- * @author Sumer Jabri
- * @author Dejan Brkic
- * @author Carlos Ortiz
+ * @since 3.0
  */
-public interface LoVService {
+package org.craftercms.studio.internal.search;
 
-    /**
-     * Get list of values.
-     * @param ticket security ticket
-     * @param lovName list of values name
-     * @param type list of values type
-     * @return list of values
-     */
-    <T> List<T> getLoV(String ticket, String lovName, Class<T> type);
 
-    // fixme todo
-    <T> void updateLoV(String ticket, String lovName, Class<T> type, List<T> LoV);
-}

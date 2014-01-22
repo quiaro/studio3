@@ -24,7 +24,7 @@ import org.craftercms.studio.commons.dto.Version;
 /**
  * Version Manager.
  */
-public interface VersionManager {
+public interface VersionService {
 
     /**
      * Get version history for item

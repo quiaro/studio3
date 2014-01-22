@@ -27,7 +27,7 @@ import org.craftercms.studio.commons.dto.ItemId;
  *
  * @author Carlos Ortiz
  */
-public interface ConfigurationManager {
+public interface ConfigurationService {
 
     /**
      * Get configuration.
@@ -38,6 +38,7 @@ public interface ConfigurationManager {
      * @return module configuration
      */
     Configuration getConfiguration(Context context, String site, String module);
+    // todo Consider passing a wildcard
 
     /**
      * Create or update module configuration.

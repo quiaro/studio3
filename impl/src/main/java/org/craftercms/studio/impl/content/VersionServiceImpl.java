@@ -17,7 +17,7 @@
 
 package org.craftercms.studio.impl.content;
 
-import org.craftercms.studio.api.content.VersionManager;
+import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Tree;
@@ -28,7 +28,7 @@ import org.craftercms.studio.commons.dto.Version;
  *
  * @author Dejan Brkic
  */
-public class VersionManagerImpl implements VersionManager{
+public class VersionServiceImpl implements VersionService {
     @Override
     public Tree<Version> history(final Context context, final String itemId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

@@ -19,7 +19,7 @@ package org.craftercms.studio.impl.configuration;
 
 import java.io.InputStream;
 
-import org.craftercms.studio.api.configuration.ConfigurationManager;
+import org.craftercms.studio.api.configuration.ConfigurationService;
 import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
@@ -29,7 +29,7 @@ import org.craftercms.studio.commons.dto.ItemId;
  *
  * @author Dejan Brkic
  */
-public class ConfigurationManagerImpl implements ConfigurationManager {
+public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public Configuration getConfiguration(final Context context, final String site, final String module) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

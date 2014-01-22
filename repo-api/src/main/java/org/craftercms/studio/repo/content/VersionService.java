@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.api.content;
+package org.craftercms.studio.repo.content;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public interface VersionService {
      * @param ticket        security ticket
      * @param itemId        item id
      * @param workingCopyId id of working copy obtained during
-     *                      {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
+     *                      {@link VersionService#checkOut(String, String)}
      */
     void cancelCheckOut(String ticket, String itemId, String workingCopyId);
 
@@ -59,7 +59,7 @@ public interface VersionService {
      * @param workingCopyId  id of working copy obtained during
      * @param isMajorVersion is this a major or minor version
      * @param comment        comment to attach to the check in
-     *                       {@link org.craftercms.studio.api.content.VersionService#checkOut(String, String)}
+     *                       {@link VersionService#checkOut(String, String)}
      */
     void checkIn(String ticket, String itemId, String workingCopyId, boolean isMajorVersion, String comment);
 

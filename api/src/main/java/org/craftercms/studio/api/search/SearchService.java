@@ -22,7 +22,7 @@ import org.craftercms.studio.commons.dto.Context;
 /**
  * Search Manager.
  */
-public interface SearchManager {
+public interface SearchService {
 
     /**
      * Execute search within given context for given query.
