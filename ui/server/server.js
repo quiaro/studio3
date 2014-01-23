@@ -52,17 +52,27 @@ mock.services.forEach( function(serviceObj) {
     app[serviceObj.method]( serviceObj.url, function( req, res ) {
 
         // Get the site name from the url (:site). If there's no :site parameter in the url
-        // then default to one of projects
-        var siteName = req.params.site || 'mango';
-        var mockPath = getMockPath(serviceObj.mock, req.query);
+        // then default to the app scope
+        var siteName = req.params.site || 'app';
+
+        // If there's a module variable in the path, we'll use it to get its descriptor
+        var queryObj = (req.params.module) ? { "module": req.params.module } : req.query;
+        var mockPath = getMockPath(serviceObj.mock, queryObj);
 
         res.json( require(config[siteName].mockFolder + mockPath) );
     });
 });
 
+// Load assets related to the app
+app.get( '/studio-ui/modules/*', function( req, res ) {
+    // The string value of the wildcard (*) will be stored in req.params[0]
+    res.sendfile( config['app'].assetsFolder + '/' + req.params[0]);
+});
+
+// Load assets related to a specific site
 app.get( '/site/:site/*', function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
-    res.sendfile( config[req.params.site].sitesFolder + '/' + req.params[0]);
+    res.sendfile( config[req.params.site].assetsFolder + '/' + req.params[0]);
 });
 
 app.get( '*', function( req, res ) {

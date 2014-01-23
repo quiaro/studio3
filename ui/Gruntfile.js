@@ -18,7 +18,8 @@ module.exports = function (grunt) {
     yeoman: yeomanConfig,
     express: {
         options: {
-            port: process.env.PORT || 9000
+            port: process.env.PORT || 9000,
+            debug: false
         },
         dev: {
             options: {
@@ -273,7 +274,7 @@ module.exports = function (grunt) {
   grunt.registerTask('server', [
     'clean:server',
     'replace:dev',
-    'recess:server',
+    // 'recess:server',
     'express:dev',
     'open',
     'watch'
@@ -283,7 +284,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
-    'recess:dist',
+    // 'recess:dist',
     'karma:continuous',
     'replace:build',
     'useminPrepare',

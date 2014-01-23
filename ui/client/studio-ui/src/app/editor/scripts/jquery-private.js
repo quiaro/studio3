@@ -1,6 +1,0 @@
-/* global define */
-'use strict';
-
-define(['jquery'], function (jq) {
-    return jq.noConflict( true );
-});
