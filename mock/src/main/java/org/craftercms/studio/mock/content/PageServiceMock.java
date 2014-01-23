@@ -24,7 +24,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.craftercms.studio.api.content.PageService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.LockHandle;
