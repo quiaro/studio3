@@ -2,7 +2,9 @@
 
     'use strict';
 
-    var init_module = 'crafter.studio-ui';
+    var init_module = 'crafter.studio-ui',
+        default_state = 'login',
+        default_url = '/login';
 
     angular.module(init_module, [
             'crafter.studio-ui.services.AuthService',
@@ -16,9 +18,8 @@
 
         .config(['$locationProvider',
             '$stateProvider',
-            '$urlRouterProvider',
             '$httpProvider',
-            function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+            function ($locationProvider, $stateProvider, $httpProvider) {
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
@@ -28,8 +29,8 @@
 
                     var error = function(response) {
                         if (response.status === 401) {
-                            //redirect them back to login page
-                            $location.path('/login');
+                            //redirect them back to the default url
+                            $location.path(default_url);
 
                             return $q.reject(response);
                         } else {
@@ -50,7 +51,6 @@
                     templateUrl: 'templates/unauthorized.tpl.html'
                 });
 
-            $urlRouterProvider.otherwise('/login');
             $locationProvider.html5Mode(true);
 
         }])
@@ -72,14 +72,15 @@
         .run(['$rootScope',
             '$location',
             '$state',
+            '$controller',
+            '$urlRouter',
             'AuthService',
             'UserService',
             'ConfigService',
             'Utils',
-            '$controller',
             'NgRegistry',
-            function ($rootScope, $location, $state, AuthService, 
-                      UserService, ConfigService, Utils, $controller, NgRegistry) {
+            function ($rootScope, $location, $state, $controller, $urlRouter,
+                      AuthService, UserService, ConfigService, Utils, NgRegistry) {
 
             // Get the sections for the app
             ConfigService.getDependencies(init_module)
@@ -102,7 +103,19 @@
                     });
 
                     $.when.apply(window, promiseList).then( function() {
-                        console.log('The application ' + init_module + ' is now loaded!');
+
+                        setTimeout(function() {
+                            console.log('The application ' + init_module + ' is now loaded ... redirecting to default url');
+
+                            console.log("Window Location: ", window.location.href);
+
+                            NgRegistry.setDefaultURL(default_url);
+
+                            console.log("Window Location: ", window.location.href);
+
+                            $state.go('login.recover');
+
+                        }, 2000);
                     });
 
                 }, function() {
@@ -111,19 +124,18 @@
 
 
             // On route change, check if the user is allowed to access the state. If not,
-            // redirect him to the login page
+            // redirect him to the default url
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 var roles, roleIntersection;
 
                 if (toState.requireAuth) {
 
                     if (!AuthService.isLoggedIn()) {
-                        // The module requires authentication, but the user is not logged in => send user
-                        // to login state.
-
+                        // The module requires authentication, but the user is not 
+                        // logged in => send user to the default state.
                         event.preventDefault();
                         console.log('Sorry! Not logged in.');
-                        $state.go('login');
+                        $state.go(default_state);
                     } else {
                         // The module requires authentication and the user is logged in.
 

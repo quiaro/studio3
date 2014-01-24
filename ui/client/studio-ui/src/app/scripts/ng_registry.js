@@ -2,13 +2,16 @@
 
     'use strict';
 
-    var ngRegistry = angular.module('crafter.studio-ui.NgRegistry', []);
+    var ngRegistry = angular.module('crafter.studio-ui.NgRegistry', ['ui.router']);
 
     ngRegistry.config(['$controllerProvider',
         '$provide',
         '$compileProvider',
         '$filterProvider',
-        function ($controllerProvider, $provide, $compileProvider, $filterProvider) {
+        '$stateProvider',
+        '$urlRouterProvider',
+        function ($controllerProvider, $provide, $compileProvider,
+                  $filterProvider, $stateProvider, $urlRouterProvider) {
 
             ngRegistry.addController = function( name, constructor ) {
                 $controllerProvider.register( name, constructor );
@@ -38,6 +41,15 @@
             ngRegistry.addFilter = function( name, filter ) {
                 $filterProvider.filter( name, filter );
                 return( this );
+            };
+
+            ngRegistry.addState = function ( name, config ) {
+                $stateProvider.state( name, config);
+                return( this );
+            };
+
+            ngRegistry.setDefaultURL = function (url) {
+                $urlRouterProvider.otherwise(url);
             };
 
         }]);
