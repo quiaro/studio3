@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('crafter.studio-ui.common')
+angular.module('crafter.studio-ui.Utils', [])
 
     /*
-     * Service that compiles miscellaneous functions used all over
+     * Miscellaneous functions used all over
      */
-    .service('UtilsService',
+    .service('Utils',
         function() {
 
                 // Takes a string of the form: "the {tree} is behind the {building}" and uses a

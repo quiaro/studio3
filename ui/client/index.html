@@ -18,7 +18,7 @@
         <!-- <link rel="stylesheet" href="studio-ui/src/styles/studio.css"> -->
     </head>
 
-    <body id="studio-ui">
+    <body id="studio-ui" ng-app="crafter.studio-ui">
 
         <div ui-view></div>
 
@@ -26,8 +26,16 @@
         <script src="studio-ui/lib/angular/js/angular@@min.js"></script>
         <script src="studio-ui/lib/angular-bootstrap/js/ui-bootstrap-tpls@@min.js"></script>
         <script src="studio-ui/lib/angular-ui-router/js/angular-ui-router@@min.js"></script>
+        <script src="studio-ui/lib/requirejs/js/require.js"></script>
 
-        <script data-main="/studio-ui/src/app/app.js" src="/studio-ui/lib/requirejs/js/require.js"></script>
+        <!-- build:js studio-ui/src/scripts/scripts.js -->
+        <script src="studio-ui/src/app/scripts/services/auth.js"></script>
+        <script src="studio-ui/src/app/scripts/services/user.js"></script>
+        <script src="studio-ui/src/app/scripts/services/config.js"></script>
+        <script src="studio-ui/src/app/scripts/ng_registry.js"></script>
+        <script src="studio-ui/src/app/scripts/utils.js"></script>
+        <script src="studio-ui/src/app/app.js"></script>
+        <!-- endbuild -->
 
         @@livereload
 

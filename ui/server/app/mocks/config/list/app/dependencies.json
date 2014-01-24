@@ -1,4 +1,4 @@
 {
-  "submodules": ["crafter.studio-ui.login"]
+  "dependencies": ["crafter.studio-ui.section.Login"]
 }
 

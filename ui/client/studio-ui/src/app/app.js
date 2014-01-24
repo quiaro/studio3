@@ -1,9 +1,15 @@
-/* global require */
-(function() {
+(function () {
 
     'use strict';
 
-    angular.module('crafter.studio-ui', [
+    var init_module = 'crafter.studio-ui';
+
+    angular.module(init_module, [
+            'crafter.studio-ui.services.AuthService',
+            'crafter.studio-ui.services.UserService',
+            'crafter.studio-ui.services.ConfigService',
+            'crafter.studio-ui.NgRegistry',
+            'crafter.studio-ui.Utils',
             'ui.router',
             'ui.bootstrap'
         ])
@@ -12,8 +18,7 @@
             '$stateProvider',
             '$urlRouterProvider',
             '$httpProvider',
-            'COMMON',
-            function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, COMMON) {
+            function ($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
@@ -42,7 +47,7 @@
             $stateProvider
                 .state('unauthorized', {
                     url: '/unauthorized',
-                    templateUrl: COMMON.baseUrl + 'templates/unauthorized.tpl.html'
+                    templateUrl: 'templates/unauthorized.tpl.html'
                 });
 
             $urlRouterProvider.otherwise('/login');
@@ -69,9 +74,44 @@
             '$state',
             'AuthService',
             'UserService',
-            'UtilsService',
-            function ($rootScope, $location, $state, AuthService, UserService, UtilsService) {
+            'ConfigService',
+            'Utils',
+            '$controller',
+            'NgRegistry',
+            function ($rootScope, $location, $state, AuthService, 
+                      UserService, ConfigService, Utils, $controller, NgRegistry) {
 
+            // Get the sections for the app
+            ConfigService.getDependencies(init_module)
+                .then( function(json) {
+
+                    console.log('Dependencies for ' + init_module + ' are: ', json.dependencies);
+
+                    var promiseList = [];
+
+                    json.dependencies.forEach( function(moduleName) {
+                        promiseList.push(ConfigService.loadConfiguration(moduleName)
+                            .then( function(configObj) {
+                                Utils.loadModule(configObj.name, 
+                                                 configObj.baseURL, 
+                                                 configObj.dependencies.js,
+                                                 configObj.dependencies.css);
+                            }, function () {
+                                throw new Error('Unable to load configuration for ' + moduleName);
+                            }));
+                    });
+
+                    $.when.apply(window, promiseList).then( function() {
+                        console.log('The application ' + init_module + ' is now loaded!');
+                    });
+
+                }, function() {
+                    throw new Error('Unable to load dependencies for ' + init_module);
+                });
+
+
+            // On route change, check if the user is allowed to access the state. If not,
+            // redirect him to the login page
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 var roles, roleIntersection;
 
@@ -91,7 +131,7 @@
                             // The modules restricts access to only certain roles. Check if the user has
                             // any of these roles.
                             roles = UserService.getUserRoles();
-                            roleIntersection = UtilsService.arrayIntersection(toState.rolesAllowed, roles);
+                            roleIntersection = Utils.arrayIntersection(toState.rolesAllowed, roles);
 
                             if (!roleIntersection.length) {
                                 event.preventDefault();
@@ -104,7 +144,5 @@
             });
 
         }]);
-
-    angular.bootstrap($('#studio-ui'), ['crafter.studio-ui']);
 
 })();

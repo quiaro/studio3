@@ -7,10 +7,10 @@ angular.module('crafter.studio-ui.common')
     .service('AssetService',
         ['$http',
          '$rootScope',
-         'UtilsService',
+         'Utils',
          'CONFIG',
          'Env',
-        function($http, $rootScope, UtilsService, CONFIG, Env) {
+        function($http, $rootScope, Utils, CONFIG, Env) {
 
             this.upload = function(config) {
 
@@ -19,7 +19,7 @@ angular.module('crafter.studio-ui.common')
                     formData = new FormData(),
                     promise;
 
-                config.url = serviceDomain + UtilsService.replacePlaceholders(servicePath, { 'site': Env.siteName });
+                config.url = serviceDomain + Utils.replacePlaceholders(servicePath, { 'site': Env.siteName });
                 config.method = config.method || 'POST';
                 config.headers = config.headers || {};
                 config.headers['Content-Type'] = undefined;
@@ -99,7 +99,7 @@ angular.module('crafter.studio-ui.common')
                 var serviceDomain = CONFIG.services.domain || '',
                     servicePath = CONFIG.services.asset.read;
 
-                config.url = serviceDomain + UtilsService.replacePlaceholders(servicePath, { 'site': Env.siteName });
+                config.url = serviceDomain + Utils.replacePlaceholders(servicePath, { 'site': Env.siteName });
                 config.method = 'GET';
                 config.headers = config.headers || {};
                 config.headers['Content-Type'] = undefined;

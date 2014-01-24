@@ -17,10 +17,7 @@ module.exports = {
         method: 'get',
         url: '/api/1/config/list/:module',
         mock: [{
-            arguments: { module: "crafter.studio-ui"},
-            path: '/config/list/app/descriptor'
-        }, {
-            arguments: { module: "crafter.studio-ui.login"},
+            arguments: { module: "crafter.studio-ui.section.Login"},
             path: '/config/list/login/descriptor'
         }]
     }, {
@@ -30,7 +27,7 @@ module.exports = {
             arguments: { module: "crafter.studio-ui"},
             path: '/config/list/app/dependencies'
         }, {
-            arguments: { module: "crafter.studio-ui.login"},
+            arguments: { module: "crafter.studio-ui.section.Login"},
             path: '/config/list/login/dependencies'
         }]
     }]
