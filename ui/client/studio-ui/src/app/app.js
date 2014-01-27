@@ -2,6 +2,7 @@
 
     'use strict';
 
+    // TODO: Move all app variables to a separate (config) module
     var init_module = 'crafter.studio-ui',
         default_state = 'login',
         default_url = '/login';
@@ -107,14 +108,11 @@
                         setTimeout(function() {
                             console.log('The application ' + init_module + ' is now loaded ... redirecting to default url');
 
-                            console.log("Window Location: ", window.location.href);
-
                             NgRegistry.setDefaultURL(default_url);
-
-                            console.log("Window Location: ", window.location.href);
-
-                            $state.go('login.recover');
-
+                            // After all the sections of the app have been loaded it is now
+                            // safe to do an update of the routes and load whatever section (page)
+                            // the user was requesting
+                            $urlRouter.sync();
                         }, 2000);
                     });
 

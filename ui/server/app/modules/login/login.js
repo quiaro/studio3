@@ -67,9 +67,6 @@
             });
 
             console.log('States loaded for login page');
-
-        // Re-route user to the login page (which wasn't loaded when the app bootstrapped)
-        // $state.go('login');
     }]);
 
 })();
