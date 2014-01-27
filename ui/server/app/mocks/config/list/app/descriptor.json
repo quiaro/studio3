@@ -1,9 +1,0 @@
-{
-    "name": "crafter.studio-ui",
-    "version": "0.1.0",
-    "baseURL": "http://localhost:9000/studio-ui/modules/login/",
-    "dependencies": {
-        "js": ["login.js"],
-        "css": ["login.css"]
-    }
-}

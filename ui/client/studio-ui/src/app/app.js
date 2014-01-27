@@ -76,12 +76,13 @@
             '$controller',
             '$urlRouter',
             '$log',
+            '$timeout',
             'AuthService',
             'UserService',
             'ConfigService',
             'Utils',
             'NgRegistry',
-            function ($rootScope, $location, $state, $controller, $urlRouter, $log,
+            function ($rootScope, $location, $state, $controller, $urlRouter, $log, $timeout,
                       AuthService, UserService, ConfigService, Utils, NgRegistry) {
 
             // Get the sections for the app
@@ -93,28 +94,39 @@
                     $log.log('Dependencies for ' + init_module + ' are: ', json.dependencies);
 
                     json.dependencies.forEach( function(moduleName) {
-                        promiseList.push(ConfigService.loadConfiguration(moduleName)
+                        var dfd = $.Deferred();
+                        promiseList.push(dfd);
+
+                        ConfigService.loadConfiguration(moduleName)
                             .then( function(configObj) {
                                 Utils.loadModule(configObj.name, 
                                                  configObj.baseURL, 
                                                  configObj.dependencies.js,
-                                                 configObj.dependencies.css);
+                                                 configObj.dependencies.css)
+                                    .then ( function() {
+                                        $log.log('Module ' + moduleName + ' was loaded successfully');
+                                        dfd.resolve();
+                                    }, function () {
+                                        throw new Error('Unable to load module: ' + moduleName);
+                                    });
                             }, function () {
                                 throw new Error('Unable to load configuration for ' + moduleName);
-                            }));
+                            });
                     });
 
                     $.when.apply(window, promiseList).then( function() {
 
-                        setTimeout(function() {
-                            $log.log('The application ' + init_module + ' is now loaded');
+                        $log.log('The application ' + init_module + ' is now loaded');
 
-                            NgRegistry.setDefaultURL(default_url);
-                            // After all the sections of the app have been loaded it is now
-                            // safe to do an update of the routes and load whatever section (page)
-                            // the user was requesting
-                            $urlRouter.sync();
-                        }, 2000);
+                        NgRegistry.setDefaultURL(default_url);
+                        // After all the sections of the app have been loaded it is now
+                        // safe to do an update of the routes and load whatever section (page)
+                        // the user was requesting
+                        $timeout( function() {
+                            $rootScope.$apply( function() {
+                                $urlRouter.sync();
+                            });
+                        });
                     });
 
                 }, function() {

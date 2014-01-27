@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 angular.module('crafter.studio.dashboard', ['crafter.studio-ui.common', 'ui.router'])
 
@@ -318,3 +318,4 @@ angular.module('crafter.studio.dashboard', ['crafter.studio-ui.common', 'ui.rout
 
 	}]);
 
+*/
