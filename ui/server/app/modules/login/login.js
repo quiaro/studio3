@@ -5,8 +5,8 @@
     // TODO: Move 'studio-ui' and all other 'globals' in the app to a separate module
     var injector = angular.element('#studio-ui').injector();
 
-    injector.invoke(['NgRegistry', '$state',
-        function(NgRegistry, $state) {
+    injector.invoke(['NgRegistry', '$state', '$log',
+        function(NgRegistry, $state, $log) {
 
         var login_base_url = '/studio-ui/modules/login/';
 
@@ -17,7 +17,7 @@
 
                 $scope.signin = function signin (existingUser) {
                     var defaultSite;
-                    console.log('Logging in user: ', existingUser);
+                    $log.log('Logging in user: ', existingUser);
                     AuthService.logIn();
 
                     // TODO: replace with method that gets the default site
@@ -66,7 +66,6 @@
                 requireAuth: false
             });
 
-            console.log('States loaded for login page');
     }]);
 
 })();

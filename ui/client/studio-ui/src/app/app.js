@@ -75,21 +75,22 @@
             '$state',
             '$controller',
             '$urlRouter',
+            '$log',
             'AuthService',
             'UserService',
             'ConfigService',
             'Utils',
             'NgRegistry',
-            function ($rootScope, $location, $state, $controller, $urlRouter,
+            function ($rootScope, $location, $state, $controller, $urlRouter, $log,
                       AuthService, UserService, ConfigService, Utils, NgRegistry) {
 
             // Get the sections for the app
             ConfigService.getDependencies(init_module)
                 .then( function(json) {
 
-                    console.log('Dependencies for ' + init_module + ' are: ', json.dependencies);
-
                     var promiseList = [];
+
+                    $log.log('Dependencies for ' + init_module + ' are: ', json.dependencies);
 
                     json.dependencies.forEach( function(moduleName) {
                         promiseList.push(ConfigService.loadConfiguration(moduleName)
@@ -106,7 +107,7 @@
                     $.when.apply(window, promiseList).then( function() {
 
                         setTimeout(function() {
-                            console.log('The application ' + init_module + ' is now loaded ... redirecting to default url');
+                            $log.log('The application ' + init_module + ' is now loaded');
 
                             NgRegistry.setDefaultURL(default_url);
                             // After all the sections of the app have been loaded it is now
@@ -132,7 +133,7 @@
                         // The module requires authentication, but the user is not 
                         // logged in => send user to the default state.
                         event.preventDefault();
-                        console.log('Sorry! Not logged in.');
+                        $log.log('Sorry! Not logged in.');
                         $state.go(default_state);
                     } else {
                         // The module requires authentication and the user is logged in.
@@ -145,7 +146,7 @@
 
                             if (!roleIntersection.length) {
                                 event.preventDefault();
-                                console.log('Sorry! You do not have access to this module.');
+                                $log.log('Sorry! You do not have access to this module.');
                                 $state.go('unauthorized');
                             }
                         }

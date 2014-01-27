@@ -6,8 +6,8 @@ angular.module('crafter.studio-ui.Utils', [])
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['require_css_path',
-        function(require_css_path) {
+    .service('Utils', ['require_css_path', '$log',
+        function(require_css_path, $log) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
@@ -48,8 +48,7 @@ angular.module('crafter.studio-ui.Utils', [])
                     return (type == 'css') ? (require_css_path + '!' + baseURL + assetName) : (baseURL + assetName);
                 }
 
-                console.log('Loading fileList: ', fileList);
-
+                $log.log('Loading file list: ', fileList);
                 require(fileList, function() {
                     deferred.resolve();
                 });
@@ -74,9 +73,7 @@ angular.module('crafter.studio-ui.Utils', [])
                 cssFilesPrm = this.loadFiles('css', baseURL, cssDpcyList);
 
                 $.when(jsFilesPrm, cssFilesPrm).then( function(){
-
-                    console.log("All dependencies loaded for module: " + name);
-
+                    $log.log("All dependencies loaded for module: " + name);
                     deferred.resolve();
                 }, function() {
                     deferred.reject();
