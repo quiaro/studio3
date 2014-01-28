@@ -4,57 +4,47 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.craftercms.studio.commons.dto.ContentType;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
 
 /**
- * Descriptor Service provides an API for managing general descriptors (XML files) in a CrafterCMS-based site.
+ * Content Type Service provides an API for managing Crafter content types in a CrafterCMS-based site. A Crafter
+ * content type models things like pages, content snippets, and so on. The content type comprises a Form definition
+ * (which ultimately produces an XML descriptor), an optional view template (Freemarker) and a thumbnail so the user
+ * of Crafter Studio can pick the type they'd like to use.
  *
  * @author Sumer Jabri
  */
-public interface DescriptorService {
+public interface ContentTypeService {
     /**
-     * Create a new descriptor.
+     * Create a new content type.
      *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param contentTypeId   content type id as defined in the {@link org.craftercms.studio.api.content
-     *                        .ContentTypeService}
-     * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
-     * @param fileName        file name of the descriptor
-     * @param content         the InputStream containing the XML that is compliant with the model defined in Studio
-     *                        (typically done using Studio's Form Engine).
-     * @param properties      key-value-pair properties, can be null
-     * @return the Item descriptor
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param typeName          name of content type
+     * @param formId            id of the form associated with this content type REFERENCE FORM SERVICE
+     * @param defaultTemplateId default view template to use with this content type REFERENCE TEMPLATE SERVICE
+     * @param thumbnail         thumbnail view of this type
+     * @param templateIds       list o??????????????????? should be keyword <-> template mapping REFERENCE TEMPLATE
+     *                          SERVICE
+     * @param permissionIds     list of permission ids defined in REFERENCE PERMISSION SERVICE
+     * @param properties        key-value-pair properties, can be null
+     * @return the content type descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException
      */
-    Item create(Context context, String site, String contentTypeId, String destinationPath, String fileName,
-                InputStream content, Map<String, String> properties) throws StudioException;
+    ContentType create(Context context, String site, String typeName, String formId, String defaultTemplateId,
+                       byte[] thumbnail, List<String> templateIds, List<String> permissionIds, Map<String,
+        String> properties) throws StudioException;
 
-    /**
-     * Create a new descriptor.
-     *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param contentTypeId   content type id as defined in the {@link org.craftercms.studio.api.content
-     *                        .ContentTypeService}
-     * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
-     * @param fileName        file name of the descriptor
-     * @param content         the XML that is compliant with the model defined in Studio (typically done using
-     *                        Studio's Form Engine).
-     * @param properties      key-value-pair properties, can be null
-     * @return the Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
-     */
-    Item create(Context context, String site, String contentTypeId, String destinationPath, String fileName,
-                String content, Map<String, String> properties) throws StudioException;
+    // todo rewrite below for content type
 
     // TODO consider                // additional, detailed, exceptions
 
     /**
-     * Create a duplicate of an existing descriptor.
+     * Create a duplicate of an existing content type.
      *
      * @param context         the caller's context
      * @param site            the site to use
