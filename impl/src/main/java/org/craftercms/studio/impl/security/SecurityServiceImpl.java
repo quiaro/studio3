@@ -20,7 +20,7 @@ package org.craftercms.studio.impl.security;
 import java.net.URL;
 import java.util.List;
 
-import org.craftercms.studio.api.security.SecurityManager;
+import org.craftercms.studio.api.security.SecurityService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.SecurityGroup;
 import org.craftercms.studio.commons.dto.SecurityPermission;
@@ -32,7 +32,7 @@ import org.craftercms.studio.commons.dto.User;
  *
  * @author Dejan Brkic
  */
-public class SecurityManagerImpl implements SecurityManager {
+public class SecurityServiceImpl implements SecurityService {
     @Override
     public Context login(final URL repositoryUrl, final String username, final String password) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

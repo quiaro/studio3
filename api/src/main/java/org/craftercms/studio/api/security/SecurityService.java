@@ -23,13 +23,12 @@ import org.craftercms.studio.commons.dto.*;
 
 
 /**
- * Security Manager.
+ * Security Service allows for the creation and management of security constructs such as Permissions. TODO redo this
+ * description
  *
  * @author Sumer Jabri
- * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public interface SecurityManager {
+public interface SecurityService {
 
     /**
      * Login.

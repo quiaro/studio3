@@ -26,7 +26,7 @@
 
     <bean id="SearchManager" class="org.craftercms.studio.impl.search.SearchServiceImpl"/>
 
-    <bean id="SecurityManager" class="org.craftercms.studio.impl.security.SecurityManagerImpl" />
+    <bean id="SecurityManager" class="org.craftercms.studio.impl.security.SecurityServiceImpl" />
 
     <bean id="VersionManager" class="org.craftercms.studio.impl.content.VersionServiceImpl"/>
 

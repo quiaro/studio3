@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.commons.dto.Context;
@@ -31,24 +29,15 @@ import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.User;
 import org.craftercms.studio.controller.services.rest.dto.UpdateUserRequest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import org.craftercms.studio.api.security.SecurityManager;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.craftercms.studio.api.security.SecurityService;
 
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.reset;
@@ -65,19 +54,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SecurityControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private SecurityManager securityManagerMock;
+    private SecurityService securityServiceMock;
 
     @InjectMocks
     private SecurityController securityController;
 
     @After
     public void tearDown() throws Exception {
-        reset(this.securityManagerMock);
+        reset(this.securityServiceMock);
     }
 
     @Test
     public void testLogin() throws Exception {
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
@@ -87,13 +76,13 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
     @Test
     public void testLoginMissingUsername() throws Exception {
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
@@ -102,13 +91,13 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
     @Test
     public void testLoginMissingPassword() throws Exception {
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
@@ -117,13 +106,13 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
     @Test
     public void testLoginEmptyUsername() throws Exception {
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
@@ -133,13 +122,13 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
     @Test
     public void testLoginEmptyPassword() throws Exception {
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(null);
 
         mockMvc.perform(
@@ -149,7 +138,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
@@ -157,7 +146,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     public void testLoginInvalidUsername() throws Exception {
         // TODO: implement this test
         /*
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(new Context());
 
         mockMvc.perform(
@@ -167,7 +156,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isUnauthorized());
 
-        verify(this.securityManagerMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
             */
     }
@@ -176,7 +165,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
     public void testLoginInvalidPassword() throws Exception {
         // TODO: implement this test
         /*
-        when(this.securityManagerMock.login(Mockito.any(URL.class), Mockito.anyString(),
+        when(this.securityServiceMock.login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(new Context());
 
         mockMvc.perform(
@@ -186,7 +175,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isUnauthorized());
 
-        verify(this.securityManagerMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(1)).login(Mockito.any(URL.class), Mockito.anyString(),
             Mockito.anyString());
             */
     }
@@ -200,43 +189,43 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.securityManagerMock).logout(Mockito.any(Context.class));
+        }).when(this.securityServiceMock).logout(Mockito.any(Context.class));
 
         mockMvc.perform(
             get("/api/1/security/logout")
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).logout(Mockito.any(Context.class));
+        verify(this.securityServiceMock, times(1)).logout(Mockito.any(Context.class));
     }
 
     @Test
     public void testValidate() throws Exception {
-        when(this.securityManagerMock.validate(Mockito.any(Context.class))).thenReturn(true);
+        when(this.securityServiceMock.validate(Mockito.any(Context.class))).thenReturn(true);
 
         mockMvc.perform(
             get("/api/1/security/validate")
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).validate(Mockito.any(Context.class));
+        verify(this.securityServiceMock, times(1)).validate(Mockito.any(Context.class));
     }
 
     @Test
     public void testValidateValidationFailed() throws Exception {
-        when(this.securityManagerMock.validate(Mockito.any(Context.class))).thenReturn(false);
+        when(this.securityServiceMock.validate(Mockito.any(Context.class))).thenReturn(false);
 
         mockMvc.perform(
             get("/api/1/security/validate")
                 .accept(MediaType.ALL))
             .andExpect(status().isUnauthorized());
 
-        verify(this.securityManagerMock, times(1)).validate(Mockito.any(Context.class));
+        verify(this.securityServiceMock, times(1)).validate(Mockito.any(Context.class));
     }
 
     @Test
     public void testUsers() throws Exception {
-        when(this.securityManagerMock.getUsers(Mockito.any(Context.class), Mockito.anyString())).thenReturn
+        when(this.securityServiceMock.getUsers(Mockito.any(Context.class), Mockito.anyString())).thenReturn
             (generateListOfUsersMock());
 
         mockMvc.perform(
@@ -245,7 +234,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).getUsers(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.securityServiceMock, times(1)).getUsers(Mockito.any(Context.class), Mockito.anyString());
     }
 
     private List<User> generateListOfUsersMock() {
@@ -258,7 +247,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdateUser() throws Exception {
-        when(this.securityManagerMock.updateUser(Mockito.any(Context.class), Mockito.any(User.class),
+        when(this.securityServiceMock.updateUser(Mockito.any(Context.class), Mockito.any(User.class),
             Mockito.anyString(), Mockito.anyString())).thenReturn(UUID.randomUUID().toString());
 
         mockMvc.perform(
@@ -268,7 +257,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).updateUser(Mockito.any(Context.class), Mockito.any(User.class), 
+        verify(this.securityServiceMock, times(1)).updateUser(Mockito.any(Context.class), Mockito.any(User.class),
             Mockito.anyString(), Mockito.anyString());
     }
 
@@ -279,7 +268,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
         req.setRole(RandomStringUtils.randomAlphanumeric(20));
         return req;
     }
-    
+
     // TODO: unit test for update user invalid requests
 
 
@@ -292,7 +281,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.securityManagerMock).removeUser(Mockito.any(Context.class), Mockito.anyString());
+        }).when(this.securityServiceMock).removeUser(Mockito.any(Context.class), Mockito.anyString());
 
         mockMvc.perform(
             post("/api/1/security/remove_user")
@@ -300,7 +289,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).removeUser(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.securityServiceMock, times(1)).removeUser(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
@@ -312,19 +301,19 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.securityManagerMock).removeUser(Mockito.any(Context.class), Mockito.anyString());
+        }).when(this.securityServiceMock).removeUser(Mockito.any(Context.class), Mockito.anyString());
 
         mockMvc.perform(
             post("/api/1/security/remove_user")
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).removeUser(Mockito.any(Context.class), Mockito.anyString());
+        verify(this.securityServiceMock, times(0)).removeUser(Mockito.any(Context.class), Mockito.anyString());
     }
 
     @Test
     public void testPermissions() throws Exception {
-        when(this.securityManagerMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        when(this.securityServiceMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(generateListOfPermissionsMock());
 
         mockMvc.perform(
@@ -334,7 +323,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.securityManagerMock, times(1)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(1)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
@@ -348,7 +337,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
 
     @Test
     public void testPermissionsMissingSite() throws Exception {
-        when(this.securityManagerMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        when(this.securityServiceMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(generateListOfPermissionsMock());
 
         mockMvc.perform(
@@ -357,13 +346,13 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
     @Test
     public void testPermissionsMissingItemId() throws Exception {
-        when(this.securityManagerMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        when(this.securityServiceMock.getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString())).thenReturn(generateListOfPermissionsMock());
 
         mockMvc.perform(
@@ -372,7 +361,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
                 .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.securityManagerMock, times(0)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.securityServiceMock, times(0)).getPermissions(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 

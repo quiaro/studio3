@@ -21,7 +21,7 @@
 
     <bean id="searchManager" class="org.craftercms.studio.mock.search.SearchServiceMock" />
 
-    <bean id="securityManager" class="org.craftercms.studio.mock.security.SecurityManagerMock" />
+    <bean id="securityManager" class="org.craftercms.studio.mock.security.SecurityServiceMock" />
 
     <bean id="versionManager" class="org.craftercms.studio.mock.version.VersionServiceMock" />
 

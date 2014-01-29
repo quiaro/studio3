@@ -47,7 +47,7 @@
     </beans:bean>
 
     <beans:bean id="securityManager" class="org.mockito.Mockito" factory-method="mock" >
-        <beans:constructor-arg value="org.craftercms.studio.api.security.SecurityManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.security.SecurityService" />
     </beans:bean>
 
     <beans:bean id="formsManager" class="org.mockito.Mockito" factory-method="mock" >

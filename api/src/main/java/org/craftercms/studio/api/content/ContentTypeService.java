@@ -1,13 +1,11 @@
 package org.craftercms.studio.api.content;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.craftercms.studio.commons.dto.ContentType;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
 
 /**
@@ -25,105 +23,150 @@ public interface ContentTypeService {
      * @param context           the caller's context
      * @param site              the site to use
      * @param typeName          name of content type
-     * @param formId            id of the form associated with this content type REFERENCE FORM SERVICE
-     * @param defaultTemplateId default view template to use with this content type REFERENCE TEMPLATE SERVICE
-     * @param thumbnail         thumbnail view of this type
-     * @param templateIds       list o??????????????????? should be keyword <-> template mapping REFERENCE TEMPLATE
-     *                          SERVICE
-     * @param permissionIds     list of permission ids defined in REFERENCE PERMISSION SERVICE
+     * @param formId            the form associated with this content type, see {@link org.craftercms.studio.api
+     * .content.FormService}
+     * @param defaultTemplateId default view template to use with this content type, can be null,
+     *                          see {@link org.craftercms.studio.api.content.TemplateService}
+     * @param templateIds       map of templates to use based on various criteria (like user-agent/browser,
+     *                          or anything else), key to template mapping. Can be null.
+     * @param thumbnail         thumbnail view of this type, can be null
+     * @param permissionIds     list of permission ids, see {@link org.craftercms.studio.api.security.SecurityService}
      * @param properties        key-value-pair properties, can be null
      * @return the content type descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException
      */
     ContentType create(Context context, String site, String typeName, String formId, String defaultTemplateId,
-                       byte[] thumbnail, List<String> templateIds, List<String> permissionIds, Map<String,
-        String> properties) throws StudioException;
-
-    // todo rewrite below for content type
-
-    // TODO consider                // additional, detailed, exceptions
-
-    /**
-     * Create a duplicate of an existing content type.
-     *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param itemId          the source item to duplicate
-     * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
-     * @param fileName        file name of the descriptor
-     * @return the new Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
-     */
-    Item duplicate(Context context, String site, ItemId itemId, String destinationPath,
-                   String fileName) throws StudioException;
-
-    /**
-     * Move a descriptor to a new path.
-     *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param itemId          the source item to move
-     * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
-     * @param fileName        file name of the descriptor
-     * @return the new Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
-     */
-    Item move(Context context, String site, ItemId itemId, String destinationPath,
-              String fileName) throws StudioException;
-
-    /**
-     * Read a descriptor and return it.
-     *
-     * @param context the caller's context
-     * @param site    the site to use
-     * @param itemId  the item to read
-     * @return the Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
-     */
-    Item read(Context context, String site, ItemId itemId) throws StudioException;
-
-    /**
-     * Update a descriptor given an InputStream.
-     *
-     * @param context    the caller's context
-     * @param site       the site to use
-     * @param itemId     the item to read
-     * @param content    the InputStream containing the XML that is compliant with the model defined in Studio
-     *                   (typically done using Studio's Form Engine).
-     * @param properties key-value-pair properties, can be null
-     * @return the Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
-     */
-    Item update(Context context, String site, ItemId itemId, InputStream content, Map<String,
+                       Map<String, String> templateIds, byte[] thumbnail, List<String> permissionIds, Map<String,
         String> properties) throws StudioException;
 
     /**
-     * Update a descriptor given an InputStream.
+     * Update the form associated with a content type.
      *
-     * @param context    the caller's context
-     * @param site       the site to use
-     * @param itemId     the item to read
-     * @param content    the XML that is compliant with the model defined in Studio (typically done using
-     *                   Studio's Form Engine).
-     * @param properties key-value-pair properties, can be null
-     * @return the Item descriptor
-     * @throws org.craftercms.studio.commons.exception.StudioException
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param formId            the form associated with this content type, see {@link org.craftercms.studio.api
+     * .content.FormService}
+     * @return the content type descriptor
+     * @throws StudioException
      */
-    Item update(Context context, String site, ItemId itemId, String content, Map<String,
+    ContentType updateForm(Context context, String site, String contentTypeId, String formId) throws StudioException;
+
+    /**
+     * Update the default template associated with a content type.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param defaultTemplateId default view template to use with this content type, can be null,
+     *                          see {@link org.craftercms.studio.api.content.TemplateService}
+     * @param contentTypeId     content type id
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType updateDefaultTemplate(Context context, String site, String contentTypeId,
+                                      String defaultTemplateId) throws StudioException;
+
+    /**
+     * Update the template map associated with a content type.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param templateIds       map of templates to use based on various criteria (like user-agent/browser,
+     *                          or anything else), key to template mapping. Can be null.
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType updateTemplates(Context context, String site, String contentTypeId, List<String> templateIds) throws
+        StudioException;
+
+    /**
+     * Update the thumbnail associated with a content type.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param thumbnail         thumbnail view of this type, can be null
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType updateThumbnail(Context context, String site, String contentTypeId, byte[] thumbnail) throws StudioException;
+
+    /**
+     * Update the permissions associated with a content type.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param permissionIds     list of permission ids, see {@link org.craftercms.studio.api.security.SecurityService}
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType updatePermissions(Context context, String site, String contentTypeId, List<String> permissionIds) throws
+        StudioException;
+
+    /**
+     * Update the properties of a content type.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param properties        key-value-pair properties, can be null
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType updateProperties(Context context, String site, String contentTypeId, Map<String,
         String> properties) throws StudioException;
 
     /**
-     * Delete a descriptor.
+     * Create a duplicate of a content type in the current site with a new name.
      *
-     * @param context the caller's context
-     * @param site    the site to use
-     * @param itemId  the item to delete
-     * @throws org.craftercms.studio.commons.exception.StudioException
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @param typeName          name of content type
+     * @return the content type descriptor
+     * @throws StudioException
      */
-    void delete(Context context, String site, ItemId itemId) throws StudioException;
+    ContentType duplicate(Context context, String site, String contentTypeId, String typeName) throws StudioException;
 
     /**
-     * Find descriptors matching a query.
+     * Create a duplicate of a content type in a different site.
+     *
+     * @param context           the caller's context
+     * @param sourceSite        the source site to copy from
+     * @param destinationSite   the destination site to copy to
+     * @param contentTypeId     the content type to copy
+     * @param typeName          name of the target content type
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType duplicate(Context context, String sourceSite, String destinationSite, String contentTypeId,
+                          String typeName) throws StudioException;
+
+    /**
+     * Read a content type and return its descriptor.
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param contentTypeId     content type id
+     * @return the content type descriptor
+     * @throws StudioException
+     */
+    ContentType read(Context context, String site, String contentTypeId) throws StudioException;
+
+    /**
+     * Delete a content type.
+     *
+     * @param context       the caller's context
+     * @param site          the site to use
+     * @param contentTypeId the content type to delete
+     * @throws org.craftercms.studio.commons.exception.StudioException
+     */
+    void delete(Context context, String site, String contentTypeId) throws StudioException;
+
+    /**
+     * Find content types matching a query.
      *
      * @param context the caller's context
      * @param site    the site to use

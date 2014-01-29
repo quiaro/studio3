@@ -34,7 +34,7 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
  * @author Dejan Brkic
  *
  */
-public class SecurityManagerMock implements org.craftercms.studio.api.security.SecurityManager {
+public class SecurityServiceMock implements SecurityService {
 
     @Override
     public Context login(final URL repositoryUrl, final String username, final String password) {

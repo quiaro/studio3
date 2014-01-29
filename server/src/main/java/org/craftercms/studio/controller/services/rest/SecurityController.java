@@ -17,7 +17,6 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import java.net.URL;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.api.security.SecurityManager;
+import org.craftercms.studio.api.security.SecurityService;
 
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.User;
-import org.craftercms.studio.commons.validation.StringNotEmpty;
 import org.craftercms.studio.controller.services.rest.dto.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +50,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SecurityController {
 
     @Autowired
-    private SecurityManager securityManager;
+    private SecurityService securityService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -63,19 +61,19 @@ public class SecurityController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        return this.securityManager.login(null, username, password);
+        return this.securityService.login(null, username, password);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
     public void logout() {
-        this.securityManager.logout(null);
+        this.securityService.logout(null);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.GET)
     @ResponseBody
     public void validate(final HttpServletRequest request, final HttpServletResponse response) {
-        if (!this.securityManager.validate(null)) {
+        if (!this.securityService.validate(null)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
@@ -83,26 +81,26 @@ public class SecurityController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseBody
     public List<User> users(@RequestParam(required = true) final String site) {
-        return this.securityManager.getUsers(null, site);
+        return this.securityService.getUsers(null, site);
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.POST)
     @ResponseBody
     public String updateUser(@Valid @RequestBody UpdateUserRequest requestBody) {
-        return this.securityManager.updateUser(null, requestBody.getUser(), requestBody.getPassword(),
+        return this.securityService.updateUser(null, requestBody.getUser(), requestBody.getPassword(),
             requestBody.getRole());
     }
 
     @RequestMapping(value = "/remove_user", method = RequestMethod.POST)
     @ResponseBody
     public void removeUser(@RequestParam(required = true) final String user) {
-        this.securityManager.removeUser(null, user);
+        this.securityService.removeUser(null, user);
     }
 
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     @ResponseBody
     public List<SecurityPermission> permissions(@RequestParam(required = true) final String site,
                                                 @RequestParam(required = true) final String itemId) {
-        return this.securityManager.getPermissions(null, site, itemId);
+        return this.securityService.getPermissions(null, site, itemId);
     }
 }
