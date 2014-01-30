@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.api.forms.FormsManager;
+import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.FormDefinition;
+import org.craftercms.studio.commons.dto.Form;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -49,20 +49,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FormsControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private FormsManager formsManagerMock;
+    private FormService formServiceMock;
 
     @InjectMocks
     private FormsController formsController;
 
     @After
     public void tearDown() throws Exception {
-        reset(this.formsManagerMock);
+        reset(this.formServiceMock);
     }
 
     @Test
     public void testList() throws Exception {
-        List<FormDefinition> formsList = generateFormDefinitionList();
-        when(this.formsManagerMock.list(Mockito.any(Context.class), Mockito.anyString(),
+        List<Form> formsList = generateFormDefinitionList();
+        when(this.formServiceMock.list(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyListOf(String.class))).thenReturn(formsList);
 
         this.mockMvc.perform(
@@ -72,14 +72,14 @@ public class FormsControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().bytes(generateRequestBody(formsList).getBytes()));
 
-        verify(this.formsManagerMock, times(1)).list(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(1)).list(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyListOf(String.class));
     }
 
     @Test
     public void testListMissingFilters() throws Exception {
-        List<FormDefinition> formsList = generateFormDefinitionList();
-        when(this.formsManagerMock.list(Mockito.any(Context.class), Mockito.anyString(),
+        List<Form> formsList = generateFormDefinitionList();
+        when(this.formServiceMock.list(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyListOf(String.class))).thenReturn(formsList);
 
         this.mockMvc.perform(
@@ -88,7 +88,7 @@ public class FormsControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().bytes(generateRequestBody(formsList).getBytes()));
 
-        verify(this.formsManagerMock, times(1)).list(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(1)).list(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyListOf(String.class));
     }
 
@@ -101,15 +101,15 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).update(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.any(FormDefinition.class));
+        }).when(this.formServiceMock).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(Form.class));
 
         this.mockMvc.perform(post("/api/1/forms/update/sample").contentType(MediaType.APPLICATION_JSON).content
             (generateRequestBody(createFormDefinitionMock())).accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.formsManagerMock, times(1)).update(Mockito.any(Context.class), Mockito.anyString(), Mockito.any
-            (FormDefinition.class));
+        verify(this.formServiceMock, times(1)).update(Mockito.any(Context.class), Mockito.anyString(), Mockito.any
+            (Form.class));
     }
 
     @Test
@@ -121,15 +121,15 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).update(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.any(FormDefinition.class));
+        }).when(this.formServiceMock).update(Mockito.any(Context.class), Mockito.anyString(),
+            Mockito.any(Form.class));
 
         this.mockMvc.perform(post("/api/1/forms/update/sample").contentType(MediaType.APPLICATION_JSON).content
             (StringUtils.EMPTY).accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.formsManagerMock, times(0)).update(Mockito.any(Context.class), Mockito.anyString(), Mockito.any
-            (FormDefinition.class));
+        verify(this.formServiceMock, times(0)).update(Mockito.any(Context.class), Mockito.anyString(), Mockito.any
+            (Form.class));
     }
 
     @Test
@@ -141,14 +141,14 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        }).when(this.formServiceMock).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
 
         this.mockMvc.perform(post("/api/1/forms/remove/sample")
             .param("type", RandomStringUtils.randomAlphabetic(10))
             .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.formsManagerMock, times(1)).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        verify(this.formServiceMock, times(1)).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
@@ -160,13 +160,13 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
+        }).when(this.formServiceMock).remove(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString());
 
         this.mockMvc.perform(post("/api/1/forms/remove/sample")
             .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.formsManagerMock, times(0)).remove(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(0)).remove(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString());
     }
 
@@ -179,7 +179,7 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
+        }).when(this.formServiceMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
             Mockito.anyString());
 
         this.mockMvc.perform(post("/api/1/forms/copy/sample")
@@ -188,7 +188,7 @@ public class FormsControllerTest extends AbstractControllerTest {
             .accept(MediaType.ALL))
             .andExpect(status().isOk());
 
-        verify(this.formsManagerMock, times(1)).copy(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(1)).copy(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString(), Mockito.anyString());
     }
 
@@ -201,7 +201,7 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
+        }).when(this.formServiceMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
             Mockito.anyString());
 
         this.mockMvc.perform(post("/api/1/forms/copy/sample")
@@ -209,7 +209,7 @@ public class FormsControllerTest extends AbstractControllerTest {
             .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.formsManagerMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString(), Mockito.anyString());
     }
 
@@ -222,7 +222,7 @@ public class FormsControllerTest extends AbstractControllerTest {
                 Object[] args = invocationOnMock.getArguments();
                 return null;
             }
-        }).when(this.formsManagerMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
+        }).when(this.formServiceMock).copy(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
             Mockito.anyString());
 
         this.mockMvc.perform(post("/api/1/forms/copy/sample")
@@ -230,7 +230,7 @@ public class FormsControllerTest extends AbstractControllerTest {
             .accept(MediaType.ALL))
             .andExpect(status().isBadRequest());
 
-        verify(this.formsManagerMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyString(),
+        verify(this.formServiceMock, times(0)).copy(Mockito.any(Context.class), Mockito.anyString(),
             Mockito.anyString(), Mockito.anyString());
     }
 }

@@ -21,9 +21,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.craftercms.studio.api.forms.FormsManager;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.FormDefinition;
+import org.craftercms.studio.api.content.FormService;
+import org.craftercms.studio.commons.dto.Form;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,31 +44,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class FormsController {
 
     @Autowired
-    private FormsManager formsManager;
+    private FormService formService;
 
     @RequestMapping(value = "/list/{site}", method = RequestMethod.GET)
     @ResponseBody
-    public List<FormDefinition> list(@PathVariable final String site,
+    public List<Form> list(@PathVariable final String site,
                                      @RequestParam(required = false) final List<String> filters) {
-        return formsManager.list(null, site, filters);
+        return formService.list(null, site, filters);
     }
 
     @RequestMapping(value = "/update/{site}", method = RequestMethod.POST)
     @ResponseBody
-    public void update(@PathVariable final String site, @Valid @RequestBody final FormDefinition form) {
-        this.formsManager.update(null, site, form);
+    public void update(@PathVariable final String site, @Valid @RequestBody final Form form) {
+        this.formService.update(null, site, form);
     }
 
     @RequestMapping(value = "/remove/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void remove(@PathVariable final String site, @RequestParam(required = true) final String type) {
-        this.formsManager.remove(null, site, type);
+        this.formService.remove(null, site, type);
     }
 
     @RequestMapping(value = "/copy/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void copy(@PathVariable final String site, @RequestParam(required = true) final String src,
                      @RequestParam(required = true) final String dst) {
-        this.formsManager.copy(null, site, src, dst);
+        this.formService.copy(null, site, src, dst);
     }
 }

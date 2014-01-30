@@ -25,7 +25,7 @@ public interface DescriptorService {
      * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
      * @param fileName        file name of the descriptor
      * @param content         the InputStream containing the XML that is compliant with the model defined in Studio
-     *                        (typically done using Studio's Form Engine).
+     *                        (typically done using Studio's Form Engine)
      * @param properties      key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException
@@ -43,7 +43,7 @@ public interface DescriptorService {
      * @param destinationPath path to create the descriptor (this is relative off of the base path for this type)
      * @param fileName        file name of the descriptor
      * @param content         the XML that is compliant with the model defined in Studio (typically done using
-     *                        Studio's Form Engine).
+     *                        Studio's Form Engine)
      * @param properties      key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException
@@ -99,7 +99,7 @@ public interface DescriptorService {
      * @param site       the site to use
      * @param itemId     the item to read
      * @param content    the InputStream containing the XML that is compliant with the model defined in Studio
-     *                   (typically done using Studio's Form Engine).
+     *                   (typically done using Studio's Form Engine)
      * @param properties key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException
@@ -114,7 +114,7 @@ public interface DescriptorService {
      * @param site       the site to use
      * @param itemId     the item to read
      * @param content    the XML that is compliant with the model defined in Studio (typically done using
-     *                   Studio's Form Engine).
+     *                   Studio's Form Engine)
      * @param properties key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws org.craftercms.studio.commons.exception.StudioException

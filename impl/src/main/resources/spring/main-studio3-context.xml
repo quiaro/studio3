@@ -20,7 +20,7 @@
 
     <bean id="DeploymentManager" class="org.craftercms.studio.impl.deployment.DeploymentManagerImpl" />
 
-    <bean id="FormsManager" class="org.craftercms.studio.impl.forms.FormsManagerImpl" />
+    <bean id="FormsManager" class="org.craftercms.studio.impl.forms.FormServiceImpl" />
 
     <bean id="LifecycleManager" class="org.craftercms.studio.impl.lifecycle.LifecycleManagerImpl" />
 

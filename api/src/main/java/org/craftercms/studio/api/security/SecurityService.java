@@ -29,6 +29,7 @@ import org.craftercms.studio.commons.dto.*;
  * @author Sumer Jabri
  */
 public interface SecurityService {
+    // todo list sites?
 
     /**
      * Login.

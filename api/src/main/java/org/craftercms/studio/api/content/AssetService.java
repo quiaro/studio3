@@ -90,17 +90,6 @@ public interface AssetService {
     String getTextContent(Context context, String site, String itemId) throws StudioException;
 
     /**
-     * Read item binary content and return it.
-     *
-     * @param context the caller's context
-     * @param site    the site to use
-     * @param itemId  the item to read
-     * @return the Item binary content as a byte array
-     * @throws StudioException
-     */
-    byte[] getBinaryContent(Context context, String site, String itemId) throws StudioException;
-
-    /**
      * Get an asset's InputStream.
      *
      * @param context the caller's context

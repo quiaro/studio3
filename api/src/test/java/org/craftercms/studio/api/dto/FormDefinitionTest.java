@@ -17,7 +17,7 @@
 package org.craftercms.studio.api.dto;
 
 /**
- * Unit test for FormDefinition
+ * Unit test for Form
  *
  * @author Sumer Jabri
  * @author Dejan Brkic

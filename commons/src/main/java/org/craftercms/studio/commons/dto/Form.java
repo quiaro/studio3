@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class FormDefinition {
+public class Form {
 
     private String id;
     private String siteId;
@@ -33,7 +33,7 @@ public class FormDefinition {
     private String name;
     private Map<String, Object> schema;
 
-    public FormDefinition() {
+    public Form() {
     }
 
     // Getters and setters

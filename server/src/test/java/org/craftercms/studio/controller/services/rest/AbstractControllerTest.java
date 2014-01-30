@@ -32,7 +32,7 @@ import org.craftercms.studio.api.lifecycle.Action;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
-import org.craftercms.studio.commons.dto.FormDefinition;
+import org.craftercms.studio.commons.dto.Form;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.LockHandle;
@@ -382,16 +382,16 @@ public abstract class AbstractControllerTest {
         return requestObject;
     }
 
-    protected List<FormDefinition> generateFormDefinitionList() {
-        List<FormDefinition> forms = new ArrayList<FormDefinition>();
+    protected List<Form> generateFormDefinitionList() {
+        List<Form> forms = new ArrayList<Form>();
         for (int i = 0; i < 1 + (int)(Math.random() * (50)); i++) {
             forms.add(createFormDefinitionMock());
         }
         return forms;
     }
 
-    protected FormDefinition createFormDefinitionMock() {
-        FormDefinition form = new FormDefinition();
+    protected Form createFormDefinitionMock() {
+        Form form = new Form();
         form.setName(RandomStringUtils.randomAlphabetic(10));
         form.setId(UUID.randomUUID().toString());
         Map<String, Object> schema = new HashMap<String, Object>();

@@ -15,7 +15,7 @@
 
     <bean id="deploymentManager" class="org.craftercms.studio.mock.deployment.DeploymentManagerMock" />
 
-    <bean id="formsManager" class="org.craftercms.studio.mock.forms.FormsManagerMock" />
+    <bean id="formsManager" class="org.craftercms.studio.mock.forms.FormServiceMock" />
 
     <bean id="lifecycleManagerMock" class="org.craftercms.studio.mock.lifecycle.LifecycleManagerMock" />
 

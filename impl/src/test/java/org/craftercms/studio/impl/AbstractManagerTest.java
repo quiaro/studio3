@@ -27,7 +27,7 @@ import java.util.UUID;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
-import org.craftercms.studio.commons.dto.FormDefinition;
+import org.craftercms.studio.commons.dto.Form;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.WorkflowTransition;
@@ -175,8 +175,8 @@ public abstract class AbstractManagerTest {
         return activity;
     }
 
-    protected FormDefinition createFormDefinitionMock() {
-        FormDefinition form = new FormDefinition();
+    protected Form createFormDefinitionMock() {
+        Form form = new Form();
         form.setId(UUID.randomUUID().toString());
         form.setName(RandomStringUtils.randomAlphabetic(20));
         form.setSiteName(RandomStringUtils.randomAlphabetic(10));

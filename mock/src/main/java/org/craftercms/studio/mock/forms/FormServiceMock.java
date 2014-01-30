@@ -15,31 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.craftercms.studio.impl.forms;
+package org.craftercms.studio.mock.forms;
 
 import java.util.List;
 
-import org.craftercms.studio.api.forms.FormsManager;
+import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.FormDefinition;
+import org.craftercms.studio.commons.dto.Form;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
- * Forms Manager implementation.
+ * Forms Manager mock implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class FormsManagerImpl implements FormsManager {
+public class FormServiceMock implements FormService {
 
     @Override
-    public List<FormDefinition> list(final Context context, final String site, final List<String> filters) {
+    public List<Form> list(final Context context, final String site, final List<String> filters) {
         throw new NotImplementedException("Not implemented yet!");
     }
 
     @Override
-    public void update(final Context context, final String site, final FormDefinition formDefinition) {
+    public void update(final Context context, final String site, final Form form) {
         throw new NotImplementedException("Not implemented yet!");
     }
 

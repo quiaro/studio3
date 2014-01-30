@@ -32,7 +32,7 @@ public class ContentType {
     private String path;
     private boolean previewable;
     private String thumbnail;
-    private FormDefinition formDefinition;
+    private Form form;
 
     public ContentType() {
     }
@@ -96,11 +96,11 @@ public class ContentType {
         this.thumbnail = thumbnail;
     }
 
-    public FormDefinition getFormDefinition() {
-        return this.formDefinition;
+    public Form getForm() {
+        return this.form;
     }
 
-    public void setFormDefinition(FormDefinition formDefinition) {
-        this.formDefinition = formDefinition;
+    public void setForm(Form form) {
+        this.form = form;
     }
 }

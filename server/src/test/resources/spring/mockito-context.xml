@@ -51,7 +51,7 @@
     </beans:bean>
 
     <beans:bean id="formsManager" class="org.mockito.Mockito" factory-method="mock" >
-        <beans:constructor-arg value="org.craftercms.studio.api.forms.FormsManager" />
+        <beans:constructor-arg value="org.craftercms.studio.api.content.FormService" />
     </beans:bean>
 
     <beans:bean id="configurationManager" class="org.mockito.Mockito" factory-method="mock">

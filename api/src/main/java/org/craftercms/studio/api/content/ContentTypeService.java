@@ -39,6 +39,10 @@ public interface ContentTypeService {
                        Map<String, String> templateIds, byte[] thumbnail, List<String> permissionIds, Map<String,
         String> properties) throws StudioException;
 
+    // TODO consider simpler creation method as most of the params cannot be determined when a type is first created
+    // TODO missing label and previewable
+    // TODO add lifecycle script placeholders
+
     /**
      * Update the form associated with a content type.
      *
