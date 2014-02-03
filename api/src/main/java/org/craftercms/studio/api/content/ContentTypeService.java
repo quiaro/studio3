@@ -44,7 +44,6 @@ public interface ContentTypeService {
         String> properties) throws StudioException;
 
     // TODO consider simpler creation method as most of the params cannot be determined when a type is first created
-    // TODO add lifecycle script placeholders
 
     /**
      * Update the form associated with a content type.
@@ -113,10 +112,29 @@ public interface ContentTypeService {
     ContentType updatePermissions(Context context, String site, String contentTypeId,
                                   List<String> permissionIds) throws StudioException;
 
-    // TODO document
+    /**
+     * Update the previewable flag associated with this content type.
+     *
+     * @param context       the caller's context
+     * @param site          the site to use
+     * @param contentTypeId content type id
+     * @param previewable       content type is previewable (like a page)
+     * @return the content type descriptor
+     * @throws StudioException
+     */
     ContentType updatePreviewable(Context context, String site, String contentTypeId,
                                   boolean previewable) throws StudioException;
-    // TODO document
+    /**
+     * Update the previewable flag associated with this content type.
+     *
+     * @param context       the caller's context
+     * @param site          the site to use
+     * @param contentTypeId content type id
+     * @param lifecycleScripts  lifecycle method definitions to be invoked during the various
+     *                          lifecycle events, see {@link ??????????????????}
+     * @return the content type descriptor
+     * @throws StudioException
+     */
     ContentType updateLifecycleScripts(Context context, String site, String contentTypeId,
                                   String lifecycleScripts) throws StudioException;
     /**
