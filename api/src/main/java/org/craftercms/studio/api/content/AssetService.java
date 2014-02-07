@@ -22,50 +22,50 @@ public interface AssetService {
     /**
      * Create an asset file.
      *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param destinationPath path to write to (this is relative off of the base path for this type)
-     * @param fileName        file name of asset
-     * @param content         content InputStream, can be null if creating a 0 byte file
-     * @param mimeType        mimeType of asset, can be null if unknown
-     * @param properties      key-value-pair properties, can be null
+     * @param context    the caller's context
+     * @param site       the site to use
+     * @param parentId   the id of the parent item (can be a folder or a descriptor)
+     * @param fileName   file name of asset
+     * @param content    content InputStream, can be null if creating a 0 byte file
+     * @param mimeType   mimeType of asset, can be null if unknown
+     * @param properties key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item create(Context context, String site, String destinationPath, String fileName, InputStream content,
-                String mimeType, Map<String, String> properties) throws StudioException;
+    Item create(Context context, String site, String parentId, String fileName, InputStream content, String mimeType,
+                Map<String, String> properties) throws StudioException;
 
     /**
      * Create an asset file.
      *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param destinationPath path to write to (this is relative off of the base path for this type)
-     * @param fileName        file name of asset
-     * @param content         content as a string (textual content)
-     * @param mimeType        mimeType of asset, can be null if unknown
-     * @param properties      key-value-pair properties, can be null
+     * @param context    the caller's context
+     * @param site       the site to use
+     * @param parentId   the id of the parent item (can be a folder or a descriptor)
+     * @param fileName   file name of asset
+     * @param content    content as a string (textual content)
+     * @param mimeType   mimeType of asset, can be null if unknown
+     * @param properties key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item create(Context context, String site, String destinationPath, String fileName, String content,
-                String mimeType, Map<String, String> properties) throws StudioException;
+    Item create(Context context, String site, String parentId, String fileName, String content, String mimeType,
+                Map<String, String> properties) throws StudioException;
 
     /**
      * Create an asset file.
      *
-     * @param context         the caller's context
-     * @param site            the site to use
-     * @param destinationPath path to write to (this is relative off of the base path for this type)
-     * @param fileName        file name of asset
-     * @param content         content as a byte array
-     * @param mimeType        mimeType of asset, can be null if unknown
-     * @param properties      key-value-pair properties, can be null
+     * @param context    the caller's context
+     * @param site       the site to use
+     * @param parentId   the id of the parent item (can be a folder or a descriptor)
+     * @param fileName   file name of asset
+     * @param content    content as a byte array
+     * @param mimeType   mimeType of asset, can be null if unknown
+     * @param properties key-value-pair properties, can be null
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item create(Context context, String site, String destinationPath, String fileName, byte[] content,
-                String mimeType, Map<String, String> properties) throws StudioException;
+    Item create(Context context, String site, String parentId, String fileName, byte[] content, String mimeType,
+                Map<String, String> properties) throws StudioException;
 
     /**
      * Read item meta-data descriptor and return it.
