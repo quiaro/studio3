@@ -19,6 +19,8 @@ import org.craftercms.studio.commons.exception.StudioException;
 public interface AssetService {
     // TODO Consider exceptions: DuplicateFileException, InvalidDestinationPath, InvalidContext,
 
+    // TODO ADD MOVE AND DUPLICATE
+
     /**
      * Create an asset file.
      *

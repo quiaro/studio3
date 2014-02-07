@@ -13,12 +13,13 @@ import org.craftercms.studio.commons.exception.StudioException;
  * @author Sumer Jabri
  */
 public interface TemplateService {
+    // TODO Consider adding duplicate and move
     /**
      * Create a new template.
      *
      * @param context         the caller's context
      * @param site            the site to use
-     * @param destinationPath path to create the template (this is relative off of the base path for this type)
+     * @param parentId   the id of the parent item (can be a folder or a descriptor)
      * @param fileName        file name of the template
      * @param content         the InputStream containing the XML that is compliant with the model defined in Studio
      *                        (typically done using Studio's Form Engine).
@@ -26,7 +27,7 @@ public interface TemplateService {
      * @return the Item template
      * @throws StudioException
      */
-    Item create(Context context, String site, String destinationPath, String fileName, InputStream content,
+    Item create(Context context, String site, String parentId, String fileName, InputStream content,
                 Map<String, String> properties) throws StudioException;
 
     /**
@@ -34,7 +35,7 @@ public interface TemplateService {
      *
      * @param context         the caller's context
      * @param site            the site to use
-     * @param destinationPath path to create the template (this is relative off of the base path for this type)
+     * @param parentId   the id of the parent item (can be a folder or a descriptor)
      * @param fileName        file name of the template
      * @param content         the XML that is compliant with the model defined in Studio (typically done using
      *                        Studio's Form Engine).
@@ -42,7 +43,7 @@ public interface TemplateService {
      * @return the Item template
      * @throws StudioException
      */
-    Item create(Context context, String site, String destinationPath, String fileName, String content, Map<String,
+    Item create(Context context, String site, String parentId, String fileName, String content, Map<String,
         String> properties) throws StudioException;
 
     /**
