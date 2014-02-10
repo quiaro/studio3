@@ -18,11 +18,13 @@
 package org.craftercms.studio.impl.forms;
 
 import java.util.List;
+import java.util.Map;
 
 import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Form;
 import org.craftercms.studio.commons.exception.NotImplementedException;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Forms Manager implementation.
@@ -32,6 +34,41 @@ import org.craftercms.studio.commons.exception.NotImplementedException;
  * @author Carlos Ortiz
  */
 public class FormServiceImpl implements FormService {
+
+    @Override
+    public Form create(final Context context, final String site, final String formName, final String formXml, final Map<String, String> properties) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Form duplicate(final Context context, final String site, final String formId, final String formName) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Form duplicate(final Context context, final String site, final String formId, final String destinationSite, final String formName) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Form read(final Context context, final String site, final String formId) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Form update() throws StudioException {
+        return null;
+    }
+
+    @Override
+    public void delete(final Context context, final String site, final String formId) throws StudioException {
+
+    }
+
+    @Override
+    public List<Form> findBy(final Context context, final String site, final String query) throws StudioException {
+        return null;
+    }
 
     @Override
     public List<Form> list(final Context context, final String site, final List<String> filters) {

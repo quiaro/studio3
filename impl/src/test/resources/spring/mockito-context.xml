@@ -16,4 +16,9 @@
     <beans:bean id="versionServiceMock" class="org.mockito.Mockito" factory-method="mock">
         <beans:constructor-arg value="org.craftercms.studio.repo.content.VersionService" />
     </beans:bean>
+
+    <beans:bean id="contentManagerMock" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.internal.content.ContentManager" />
+    </beans:bean>
+
 </beans:beans>

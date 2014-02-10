@@ -19,6 +19,8 @@ package org.craftercms.studio.impl.content;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.AssetService;
@@ -30,34 +32,13 @@ import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.internal.content.ContentManager;
 
 /**
- * Asset service implementation.
+ * Implementation of {@link org.craftercms.studio.api.content.AssetService}.
  *
  * @author Dejan Brkic
  */
 public class AssetServiceImpl implements AssetService {
 
     private ContentManager contentManager;
-
-    /**
-     * Create asset item in repository.
-     *
-     * @param context         context
-     * @param site            site
-     * @param destinationPath path to write to
-     * @param fileName        file name of asset
-     * @param content         content input stream, can be null if creating a 0 byte file
-     * @param mimeType        mimeType of asset, can be null if unknown
-     * @return item id
-     * @throws StudioException
-     */
-    @Override
-    public ItemId create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType) throws StudioException {
-        StringBuilder sb = new StringBuilder(destinationPath);
-        sb.append(File.separator);
-        sb.append(fileName);
-        Item item = createAssetItem(fileName);
-        return contentManager.create(context, site, sb.toString(), item, content);
-    }
 
     // TODO: review this function ..
     // Content manager requires Item object to add new item to repository
@@ -69,9 +50,82 @@ public class AssetServiceImpl implements AssetService {
         return item;
     }
 
+    /**
+     * {@link org.craftercms.studio.api.content.AssetService}
+     *
+     * @param context         the caller's context
+     * @param site            the site to use
+     * @param destinationPath path to write to (this is relative off of the base path for this type)
+     * @param fileName        file name of asset
+     * @param content         content InputStream, can be null if creating a 0 byte file
+     * @param mimeType        mimeType of asset, can be null if unknown
+     * @param properties      key-value-pair properties, can be null
+     * @return
+     * @throws StudioException
+     */
+    @Override
+    public Item create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType, final Map<String, String> properties) throws StudioException {
+        StringBuilder sb = new StringBuilder(destinationPath);
+        sb.append(File.separator);
+        sb.append(fileName);
+        Item item = createAssetItem(fileName);
+        ItemId itemId = contentManager.create(context, site, sb.toString(), item, content);
+        item = contentManager.read(context, site, itemId.getItemId());
+        return item;
+    }
+
+    @Override
+    public Item create(final Context context, final String site, final String destinationPath, final String fileName,
+                       final String content, final String mimeType, final Map<String, String> properties) throws
+        StudioException {
+        return null;
+    }
+
+    @Override
+    public Item create(final Context context, final String site, final String destinationPath, final String fileName, final byte[] content, final String mimeType, final Map<String, String> properties) throws StudioException {
+        return null;
+    }
+
     @Override
     public Item read(final Context context, final String site, final String itemId) throws StudioException {
         return contentManager.read(context, site, itemId);
+    }
+
+    @Override
+    public String getTextContent(final Context context, final String site, final String itemId) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public InputStream getInputStream(final Context context, final String site, final ItemId itemId) {
+        return null;
+    }
+
+    @Override
+    public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
+                       final Map<String, String> properties) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Item update(final Context context, final String site, final ItemId itemId, final String content, final Map<String, String> properties) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public Item update(final Context context, final String site, final ItemId itemId, final byte[] content,
+                       final Map<String, String> properties) throws StudioException {
+        return null;
+    }
+
+    @Override
+    public void delete(final Context context, final String site, final ItemId itemId) throws StudioException {
+
+    }
+
+    @Override
+    public List<Item> findBy(final Context context, final String site, final String query) throws StudioException {
+        return null;
     }
 
     // Getters and setters

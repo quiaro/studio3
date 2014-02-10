@@ -20,4 +20,6 @@
 
     <bean id="blueprintsManagerSUT" class="org.craftercms.studio.impl.blueprints.BlueprintsManagerImpl" />
 
+    <bean id="assetServiceSUT" class="org.craftercms.studio.impl.content.AssetServiceImpl" />
+
 </beans>

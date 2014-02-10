@@ -19,7 +19,7 @@ package org.craftercms.studio.impl.audit;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.commons.exception.NotImplementedException;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class AuditManagerImplTest extends AbstractManagerTest {
+public class AuditManagerImplTest extends AbstractServiceTest {
 
     @InjectMocks
     @Autowired

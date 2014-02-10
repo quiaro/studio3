@@ -20,17 +20,20 @@ package org.craftercms.studio.controller.services.rest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
+import com.mangofactory.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.Tenant;
 import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.utils.RestControllerUtils;
@@ -57,104 +60,425 @@ public class AssetController {
     private AssetService assetService;
 
     /**
-     * Create an asset file in the repository.
+     * Add asset file to repository.
      *
-     * @param site              site
-     * @param destinationPath   path to write asset to
-     * @param fileName          asset file name
-     * @param file              asset content
-     * @param mimeType          asset mime type
-     * @return item id of newly created asset item in repository
+     * @param site          site identifier
+     * @param parentId      parent identifier
+     * @param fileName      asset file name
+     * @param file          asset content file
+     * @param mimeType      mime type
+     * @param properties    additional properties
+     * @return              item representing given asset in repository
      * @throws StudioException
      */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
     @RequestMapping(value = "/create/{site}",
-        params = {"destination_path", "file_name", "mime_type"},
+        params = {"parent_id", "file_name", "file", "mime_type", "properties"},
         method = RequestMethod.POST
     )
     @ResponseBody
-    public ItemId create(@PathVariable String site,
-                       @RequestParam(value = "destination_path") String destinationPath,
-                       @RequestParam(value = "file_name") String fileName,
-                       @RequestParam(value = "file") MultipartFile file,
-                       @RequestParam(value = "mime_type") String mimeType)
-        throws StudioException {
+    public Item create(
+            @ApiParam (name = "site", required = true, value = "String")
+            @PathVariable String site,
 
-        /** TODO:
-         * Provide security context
-         */
+            @ApiParam (name = "parent_id", required =  true, value = "String")
+            @RequestParam(value = "parent_id") String parentId,
+
+            @ApiParam(name = "file_name", required = true, value = "String")
+            @RequestParam(value = "file_name") String fileName,
+
+            @ApiParam(name = "file", required = true, value = "org.springframework.web.multipart.MultipartFile")
+            @RequestParam(value = "file") MultipartFile file,
+
+            @ApiParam(name = "mime_type", required = true, value = "String")
+            @RequestParam(value = "mime_type") String mimeType,
+
+            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
+            @RequestParam(value = "properties") Map<String, String> properties)
+
+        throws StudioException {
 
         InputStream contentStream = null;
         try {
             contentStream = file.getInputStream();
         } catch (IOException e) {
-            throw new StudioException("Error getting content from multipart request") {};
+            throw new StudioException("Error getting content from multipart request") {
+
+                private static final long serialVersionUID = -8020421946929773555L;
+            };
         }
         Context context = RestControllerUtils.createMockContext();
-        return assetService.create(context, site, destinationPath, fileName, contentStream, mimeType);
+        return assetService.create(context, site, parentId, fileName, contentStream, mimeType, properties);
     }
 
     /**
-     * Read asset content for given item id.
-     * @param site      site
-     * @param itemId    asset item id
-     * @return asset content
+     * Add asset content to repository.
+     *
+     * @param site          site identifier
+     * @param parentId      parent identifier
+     * @param fileName      asset file name
+     * @param content       asset content
+     * @param mimeType      mime type
+     * @param properties    additional properties
+     * @return              item representing given asset in repository
      * @throws StudioException
      */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
+    @RequestMapping(value = "/create/{site}",
+        params = {"parent_id", "file_name", "content", "mime_type", "properties"},
+        method = RequestMethod.POST
+    )
+    @ResponseBody
+    public Item create(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "parent_id", required = true, value = "String")
+            @RequestParam(value = "parent_id") String parentId,
+
+            @ApiParam(name = "file_name", required = true, value = "String")
+            @RequestParam(value = "file_name") String fileName,
+
+            @ApiParam(name = "content", required = true, value = "String")
+            @RequestParam(value = "content") String content,
+
+            @ApiParam(name = "mime_type", required = true, value = "String")
+            @RequestParam(value = "mime_type") String mimeType,
+
+            @ApiParam(name = "properties", required = true, value = "String")
+            @RequestParam(value = "properties") Map<String, String> properties
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        return assetService.create(context, site, parentId, fileName, content, mimeType, properties);
+    }
+
+    /**
+     * Add asset content to repository.
+     *
+     * @param site          site identifier
+     * @param parentId      parent identifier
+     * @param fileName      asset file name
+     * @param content       asset content
+     * @param mimeType      mime type
+     * @param properties    additional properties
+     * @return              item representing given asset in repository
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
+    @RequestMapping(value = "/create/{site}",
+        params = {"parent_id", "file_name", "content", "mime_type", "properties"},
+        method = RequestMethod.POST
+    )
+    @ResponseBody
+    public Item create(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "parent_id", required = true, value = "String")
+            @RequestParam(value = "parent_id") String parentId,
+
+            @ApiParam(name = "file_name", required = true, value = "String")
+            @RequestParam(value = "file_name") String fileName,
+
+            @ApiParam(name = "content", required = true, value = "byte[]")
+            @RequestParam(value = "content") byte[] content,
+
+            @ApiParam(name = "mime_type", required = true, value = "String")
+            @RequestParam(value = "mime_type") String mimeType,
+
+            @ApiParam(name = "properties", required = true, value = "String")
+            @RequestParam(value = "properties") Map<String, String> properties
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        return assetService.create(context, site, parentId, fileName, content, mimeType, properties);
+    }
+
+    /**
+     * Read asset meta-data for given item id.
+     *
+     * @param site      site identifier
+     * @param itemId    asset identifier
+     * @return          asset meta data
+     * @throws          StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
     @RequestMapping(value = "/read/{site}",
                     params = { "item_id" },
                     method = RequestMethod.GET
     )
-    public void read(@PathVariable String site,
-                            @Valid @RequestParam(value = "item_id", required = true) String itemId,
-                            HttpServletResponse response)
-        throws StudioException {
+    @ResponseBody
+    public Item read(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
 
-        /** TODO:
-         * Provide security context
-         */
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId
+    ) throws StudioException {
+
         Context context = RestControllerUtils.createMockContext();
-        final Item content = assetService.read(context, site,itemId);
-        try {
-            final OutputStream out = response.getOutputStream();
-            IOUtils.copy(content.getInputStream(), out);
-            response.setContentType(content.getMimeType());
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        return assetService.read(context, site, itemId);
     }
 
     /**
-     * Update asset content for given item id.
-     *
-     * @param site      site
+     * Read textual content for given asset id.
+      
+     * @param site      site identifier
      * @param itemId    asset item id
-     * @param file      asset content
+     * @return          textual content of asset
      * @throws StudioException
      */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = String.class)
+    @RequestMapping(value = "/read_text",
+                    params = { "item_id" },
+                    method = RequestMethod.GET)
+    @ResponseBody
+    public String getTextContent(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        return assetService.getTextContent(context, site, itemId);
+    }
+
+    /**
+     * Read asset content for given id.
+     *
+     * @param site      site identifier
+     * @param itemId    asset identifier
+     * @param response  content
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = InputStream.class)
+    @RequestMapping(value = "/get_content",
+                    params = { "item_id" },
+                    method = RequestMethod.GET)
+    public void getInputStream(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId,
+
+            HttpServletResponse response
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        ItemId id = new ItemId(itemId);
+        InputStream content = assetService.getInputStream(context, site, id);
+        OutputStream out = null;
+        Item item = assetService.read(context, site, itemId);
+        response.setContentType(item.getMimeType());
+        try {
+            out = response.getOutputStream();
+            IOUtils.copy(content, out);
+        } catch (IOException e) {
+            // TODO: Log error
+        } finally {
+            IOUtils.closeQuietly(content);
+            IOUtils.closeQuietly(out);
+        }
+
+    }
+
+    /**
+     * Update asset with given id and file.
+     *
+     * @param site          site identifier
+     * @param itemId        asset item id
+     * @param file          asset content file
+     * @param properties    additional properties
+     * @return              item representing asset
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad Request")
+    )
+    @ApiModel(type = Item.class)
     @RequestMapping(value = "/update/{site}",
-                    params = { "item_id", "file" },
+                    params = { "item_id", "file", "properties" },
                     method = RequestMethod.POST
     )
-    public void update(@PathVariable String site,
-                       @Valid @RequestParam(value = "item_id", required = true) String itemId,
-                       @RequestParam(value = "file") MultipartFile file) throws StudioException {
-        throw new NotImplementedException("Not implemented yet!");
+    @ResponseBody
+    public Item update(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId,
+
+            @ApiParam(name = "file", required = true, value = "org.springframework.web.multipart.MultipartFile")
+            @RequestParam(value = "file") MultipartFile file,
+
+            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
+            @RequestParam(value = "properties") Map<String, String> properties
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        ItemId id = new ItemId(itemId);
+        InputStream content = null;
+        try {
+            content = file.getInputStream();
+        } catch (IOException e) {
+            throw new StudioException("Error getting content from multipart request") {
+
+                private static final long serialVersionUID = 1675174593548908091L;
+            };
+        }
+        return assetService.update(context, site, id, content, properties);
+    }
+
+    /**
+     * Update asset with given text.
+     *
+     * @param site          site identifier
+     * @param itemId        asset item id
+     * @param content       asset content
+     * @param properties    additional properties
+     * @return              item representing asset
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
+    @RequestMapping(value = "/update/{site}",
+        params = { "item_id", "content", "properties" },
+        method = RequestMethod.POST
+    )
+    @ResponseBody
+    public Item update(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId,
+
+            @ApiParam(name = "content", required = true, value = "String")
+            @RequestParam(value = "content") String content,
+
+            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
+            @RequestParam(value = "properties") Map<String, String> properties
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        ItemId id = new ItemId(itemId);
+        return assetService.update(context, site, id, content, properties);
+    }
+
+    /**
+     * Update asset from given content byte array.
+     *
+     * @param site          site identifier
+     * @param itemId        asset identifier
+     * @param content       asset content
+     * @param properties    additional properties
+     * @return              item representing asset
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class)
+    @RequestMapping(value = "/update/{site}",
+        params = { "item_id", "content", "properties" },
+        method = RequestMethod.POST
+    )
+    @ResponseBody
+    public Item update(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId,
+
+            @ApiParam(name = "content", required = true, value = "byte[]")
+            @RequestParam(value = "content") byte[] content,
+
+            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
+            @RequestParam(value = "properties") Map<String, String> properties
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        ItemId id = new ItemId(itemId);
+        return assetService.update(context, site, id, content, properties);
     }
 
     /**
      * Delete asset for given item id.
      *
-     * @param site      site
+     * @param site      site identifier
      * @param itemId    asset item id
      * @throws StudioException
      */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
     @RequestMapping(value = "/delete/{site}",
                     params = { "item_id" },
                     method = RequestMethod.POST
     )
-    public void delete(@PathVariable String site,
-                       @Valid @RequestParam(value = "item_id", required = true) String itemId)
-        throws StudioException {
+    public void delete(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "item_id", required = true, value = "String")
+            @RequestParam(value = "item_id") String itemId
+    ) throws StudioException {
+        Context context = RestControllerUtils.createMockContext();
+        ItemId id = new ItemId(itemId);
+        assetService.delete(context, site, id);
         throw new NotImplementedException("Not implemented yet!");
+    }
+
+    /**
+     * Find asset by query.
+     *
+     * @param site      site identifier
+     * @param query     query
+     * @return          list of asset items
+     * @throws StudioException
+     */
+    @ApiErrors(
+        @ApiError(code = 400, reason = "Bad request")
+    )
+    @ApiModel(type = Item.class, collection = true)
+    @RequestMapping(value = "/find/{site}",
+                    params = { "query" },
+                    method = RequestMethod.GET)
+    @ResponseBody
+    public List<Item> findBy(
+            @ApiParam(name = "site", required = true, value = "String")
+            @PathVariable String site,
+
+            @ApiParam(name = "query", required = true, value = "String")
+            @RequestParam(value = "query") String query
+    ) throws StudioException {
+
+        Context context = RestControllerUtils.createMockContext();
+        return assetService.findBy(context, site, query);
     }
 }

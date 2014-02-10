@@ -30,7 +30,12 @@ public class SearchServiceImpl implements SearchService {
 
 
     @Override
-    public ResultSet find(final Context context, final String query) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public String studio_search(final Context context, final String query) {
+        return null;
+    }
+
+    @Override
+    public String delivery_search() {
+        return null;
     }
 }
