@@ -54,7 +54,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 @RequestMapping(value = "/api/1/content/asset")
-public class AssetController {
+public class AssetServiceController {
 
     @Autowired
     private AssetService assetService;
@@ -235,7 +235,7 @@ public class AssetController {
 
     /**
      * Read textual content for given asset id.
-      
+
      * @param site      site identifier
      * @param itemId    asset item id
      * @return          textual content of asset
