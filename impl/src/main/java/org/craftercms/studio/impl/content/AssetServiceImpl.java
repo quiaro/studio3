@@ -126,11 +126,7 @@ public class AssetServiceImpl implements AssetService {
         try {
             return IOUtils.toString(content);
         } catch (IOException e) {
-            throw new StudioException("Error while getting text content for item id " + itemId + " (site: " + site +
-                ")", e) {
-
-                private static final long serialVersionUID = -257641507057960720L;
-            };
+            throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
         }
     }
 
@@ -145,28 +141,28 @@ public class AssetServiceImpl implements AssetService {
     public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
                        final Map<String, String> properties) throws StudioException {
 
-        throw new NotImplementedException("Not implemented yet");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final String content, final Map<String, String> properties) throws StudioException {
-        throw new NotImplementedException("Not implemented yet");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final byte[] content,
                        final Map<String, String> properties) throws StudioException {
-        throw new NotImplementedException("Not implemented yet");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
     public void delete(final Context context, final String site, final ItemId itemId) throws StudioException {
-        throw new NotImplementedException("Not implemented yet");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
     public List<Item> findBy(final Context context, final String site, final String query) throws StudioException {
-        throw new NotImplementedException("Not implemented yet");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     // Getters and setters

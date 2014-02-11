@@ -22,8 +22,9 @@ package org.craftercms.studio.commons.exception;
  * translated to an actual message that is localized and can be more easily supported.
  *
  * @author Sumer Jabri
+ * @author Dejan Brkic
  */
-public abstract class StudioException extends Exception {
+public class StudioException extends Exception {
     private static final long serialVersionUID = 8822403836288820982L;
 
     /**
@@ -57,5 +58,6 @@ public abstract class StudioException extends Exception {
         ACCESS_DENIED,
         INVALID_ACTIVITY,
         STALE_ITEM,
+        SYSTEM_ERROR
     }
 }
