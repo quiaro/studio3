@@ -17,63 +17,65 @@
 
 package org.craftercms.studio.impl.content;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.Tenant;
 import org.craftercms.studio.impl.AbstractServiceTest;
-import org.craftercms.studio.internal.content.ContentManager;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link org.craftercms.studio.impl.content.AssetServiceImpl}.
- *
  * @author Dejan Brkic
  */
 public class AssetServiceImplTest extends AbstractServiceTest {
-
-    @Autowired
-    @InjectMocks
-    private AssetServiceImpl assetServiceSUT;
-
-    @Autowired
-    private ContentManager contentManagerMock;
-
     @Test
-    public void testCreateMethod() throws Exception {
-        when(contentManagerMock.create(Mockito.any(Context.class), Mockito.anyString(), Mockito.anyString(),
-            Mockito.any(Item.class), Mockito.any(InputStream.class))).thenReturn(createItemMock().getId());
+    public void testCreate() throws Exception {
 
-        Tenant tenant = new Tenant();
-        Context context = new Context(RandomStringUtils.randomAlphanumeric(32), tenant);
-        InputStream content = this.getClass().getResourceAsStream("/content/sample.xml");
-        Map<String, String> properties = new HashMap<String, String>();
-
-        assetServiceSUT.create(context, "site", "destinationPath", "fileName", content, "mimeType", properties);
-
-        verify(contentManagerMock, times(1)).create(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString(), Mockito.any(Item.class), Mockito.any(InputStream.class));
-        verify(contentManagerMock, times(1)).read(Mockito.any(Context.class), Mockito.anyString(),
-            Mockito.anyString());
     }
 
-    // TODO: Use case for invalid executions (exceptions, invalid arguments)
+    @Test
+    public void testCreate1() throws Exception {
 
+    }
 
     @Test
-    public void testCreateMethod2() throws Exception {
-        //when(contentManagerMock.create())
+    public void testCreate2() throws Exception {
+
+    }
+
+    @Test
+    public void testRead() throws Exception {
+
+    }
+
+    @Test
+    public void testGetTextContent() throws Exception {
+
+    }
+
+    @Test
+    public void testGetInputStream() throws Exception {
+
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+
+    }
+
+    @Test
+    public void testUpdate1() throws Exception {
+
+    }
+
+    @Test
+    public void testUpdate2() throws Exception {
+
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+
+    }
+
+    @Test
+    public void testFindBy() throws Exception {
 
     }
 }

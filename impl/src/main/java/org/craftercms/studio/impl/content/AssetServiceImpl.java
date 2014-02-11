@@ -17,11 +17,14 @@
 
 package org.craftercms.studio.impl.content;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
@@ -74,16 +77,42 @@ public class AssetServiceImpl implements AssetService {
         return item;
     }
 
+    /**
+     *
+     * @param context           the caller's context
+     * @param site              the site to use
+     * @param destinationPath   path to write to (this is relative off of the base path for this type)
+     * @param fileName          file name of asset
+     * @param content           content as a string (textual content)
+     * @param mimeType          mimeType of asset, can be null if unknown
+     * @param properties        key-value-pair properties, can be null
+     * @return                  item representing asset
+     * @throws StudioException
+     */
     @Override
     public Item create(final Context context, final String site, final String destinationPath, final String fileName,
-                       final String content, final String mimeType, final Map<String, String> properties) throws
-        StudioException {
-        return null;
+                       final String content, final String mimeType, final Map<String, String> properties
+    ) throws StudioException {
+        StringBuilder sb = new StringBuilder(destinationPath);
+        sb.append(File.separator);
+        sb.append(fileName);
+        Item item = createAssetItem(fileName);
+        InputStream contentStream = IOUtils.toInputStream(content);
+        ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
+        item = contentManager.read(context, site, itemId.getItemId());
+        return item;
     }
 
     @Override
     public Item create(final Context context, final String site, final String destinationPath, final String fileName, final byte[] content, final String mimeType, final Map<String, String> properties) throws StudioException {
-        return null;
+        StringBuilder sb = new StringBuilder(destinationPath);
+        sb.append(File.separator);
+        sb.append(fileName);
+        Item item = createAssetItem(fileName);
+        InputStream contentStream = new ByteArrayInputStream(content);
+        ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
+        item = contentManager.read(context, site, itemId.getItemId());
+        return item;
     }
 
     @Override
@@ -93,39 +122,52 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public String getTextContent(final Context context, final String site, final String itemId) throws StudioException {
-        return null;
+        Item item = read(context, site, itemId);
+        InputStream content = item.getInputStream();
+        try {
+            return IOUtils.toString(content);
+        } catch (IOException e) {
+            throw new StudioException("Error while getting text content for item id " + itemId + " (site: " + site +
+                ")", e) {
+
+                private static final long serialVersionUID = -257641507057960720L;
+            };
+        }
     }
 
     @Override
-    public InputStream getInputStream(final Context context, final String site, final ItemId itemId) {
-        return null;
+    public InputStream getInputStream(final Context context, final String site,
+                                      final ItemId itemId) throws StudioException {
+        Item item = read(context, site, itemId.getItemId());
+        return item.getInputStream();
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
                        final Map<String, String> properties) throws StudioException {
-        return null;
+
+        throw new NotImplementedException("Not implemented yet");
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final String content, final Map<String, String> properties) throws StudioException {
-        return null;
+        throw new NotImplementedException("Not implemented yet");
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final byte[] content,
                        final Map<String, String> properties) throws StudioException {
-        return null;
+        throw new NotImplementedException("Not implemented yet");
     }
 
     @Override
     public void delete(final Context context, final String site, final ItemId itemId) throws StudioException {
-
+        throw new NotImplementedException("Not implemented yet");
     }
 
     @Override
     public List<Item> findBy(final Context context, final String site, final String query) throws StudioException {
-        return null;
+        throw new NotImplementedException("Not implemented yet");
     }
 
     // Getters and setters
