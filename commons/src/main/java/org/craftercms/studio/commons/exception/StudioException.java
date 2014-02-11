@@ -18,7 +18,8 @@
 package org.craftercms.studio.commons.exception;
 
 /**
- * Root exception for all exceptions defined in Studio.
+ * Root exception for all exceptions defined in Studio. All exceptions in Studio throw an Error Id which is
+ * translated to an actual message that is localized and can be more easily supported.
  *
  * @author Sumer Jabri
  */
@@ -26,40 +27,33 @@ public abstract class StudioException extends Exception {
     private static final long serialVersionUID = 8822403836288820982L;
 
     /**
-     * Construct with a message and cause exception.
+     * Construct with an error code and cause exception.
      *
-     * @param message description
-     * @param cause   original cause exception
+     * @param errorCode {@link org.craftercms.studio.commons.exception.StudioException.ErrorCode}
+     * @param cause     original cause exception
      */
-    public StudioException(final String message, final Throwable cause) {
-        super(message, cause);
+    public StudioException(final ErrorCode errorCode, final Throwable cause) {
+        super(LookUpErrorMessage(errorCode), cause);
     }
 
     /**
-     * Construct with a message.
+     * Construct with an error code.
      *
-     * @param message description
+     * @param errorCode {@link org.craftercms.studio.commons.exception.StudioException.ErrorCode}
      */
-    public StudioException(final String message) {
-        super(message);
+    public StudioException(final ErrorCode errorCode) {
+        super(LookUpErrorMessage(errorCode));
     }
 
-    /**
-     * Construct with a message using {@link String#format(String, Object...)}.
-     *
-     * @param message message format (as {@link String#format(String, Object...)} )
-     * @param args   arguments to format the message
-     */
-    public StudioException(final String message, final Object... args) {
-        super(String.format(message, args));
+    protected static String LookUpErrorMessage(final ErrorCode errorCode) {
+        return errorCode.toString(); // TODO Implement this to look up in a resource bundle
     }
 
-    /**
-     * Construct with a cause exception.
-     *
-     * @param cause original cause exception
-     */
-    public StudioException(final Throwable cause) {
-        super(cause);
+    public enum ErrorCode {
+        INVALID_CONTEXT,
+        INVALID_SITE,
+        NOT_IMPLEMENTED,
+        ITEM_NOT_FOUND,
+        ACCESS_DENIED,
     }
 }
