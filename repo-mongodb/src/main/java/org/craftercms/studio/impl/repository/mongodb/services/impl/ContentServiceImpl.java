@@ -29,7 +29,6 @@ import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.TreeNode;
-import org.craftercms.studio.commons.exception.InvalidContextException;
 import org.craftercms.studio.commons.filter.Filter;
 import org.craftercms.studio.impl.repository.mongodb.domain.CoreMetadata;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;

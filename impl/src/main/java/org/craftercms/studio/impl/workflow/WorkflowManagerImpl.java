@@ -24,7 +24,6 @@ import org.craftercms.studio.api.workflow.WorkflowManager;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.WorkflowPackage;
 import org.craftercms.studio.commons.dto.WorkflowTransition;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
 
 /**

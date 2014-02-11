@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.craftercms.studio.api.blueprints.BlueprintsManager;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Blueprints Manager implementation.

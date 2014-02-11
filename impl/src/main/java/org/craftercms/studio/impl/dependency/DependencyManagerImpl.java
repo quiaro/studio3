@@ -22,7 +22,6 @@ import java.util.List;
 import org.craftercms.studio.api.dependency.DependencyManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Dependency manager implementation.

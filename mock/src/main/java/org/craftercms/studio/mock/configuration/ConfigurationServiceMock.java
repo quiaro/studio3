@@ -23,7 +23,6 @@ import org.craftercms.studio.api.configuration.ConfigurationService;
 import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Configuration Manager Mock implementation.

@@ -55,5 +55,7 @@ public abstract class StudioException extends Exception {
         NOT_IMPLEMENTED,
         ITEM_NOT_FOUND,
         ACCESS_DENIED,
+        INVALID_ACTIVITY,
+        STALE_ITEM,
     }
 }

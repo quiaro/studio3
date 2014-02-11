@@ -20,7 +20,6 @@ package org.craftercms.studio.mock.search;
 import org.craftercms.studio.api.search.SearchService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ResultSet;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Search Manager Mock implementation.

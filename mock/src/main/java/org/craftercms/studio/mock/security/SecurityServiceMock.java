@@ -26,7 +26,6 @@ import org.craftercms.studio.commons.dto.SecurityGroup;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.SecurityRole;
 import org.craftercms.studio.commons.dto.User;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Security Manager mock implementation.

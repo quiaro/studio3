@@ -22,8 +22,6 @@ import java.util.UUID;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.craftercms.studio.repo.content.VersionService;
-import org.craftercms.studio.commons.exception.ItemNotFoundException;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;

@@ -2,8 +2,6 @@ package org.craftercms.studio.api.lov;
 
 import java.util.List;
 
-import org.craftercms.studio.commons.exception.LoVNotFoundException;
-
 /**
  * @author Sumer Jabri
  */

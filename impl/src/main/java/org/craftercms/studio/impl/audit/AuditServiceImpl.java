@@ -22,7 +22,6 @@ import java.util.List;
 import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 
 /**

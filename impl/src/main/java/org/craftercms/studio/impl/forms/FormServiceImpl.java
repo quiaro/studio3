@@ -22,7 +22,6 @@ import java.util.List;
 import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Form;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Forms Manager implementation.

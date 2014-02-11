@@ -18,8 +18,6 @@
 package org.craftercms.studio.impl.deployment;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;

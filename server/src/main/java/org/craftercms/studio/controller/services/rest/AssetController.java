@@ -20,7 +20,6 @@ package org.craftercms.studio.controller.services.rest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -30,8 +29,6 @@ import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.dto.Tenant;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.utils.RestControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -23,8 +23,6 @@ import org.craftercms.studio.api.analytics.AnalyticsService;
 import org.craftercms.studio.api.analytics.ReportException;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.ItemNotFoundException;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Analytics Manager Mock Implementation.

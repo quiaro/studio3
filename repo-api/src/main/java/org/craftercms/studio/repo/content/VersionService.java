@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.exception.ItemAlreadyCheckedOutException;
 
 /**
  * Version Service.
