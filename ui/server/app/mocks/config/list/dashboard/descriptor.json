@@ -1,5 +1,5 @@
 {
-    "name": "crafter.studio-ui.sections.Dashboard",
+    "name": "crafter.studio-ui.sections.dashboard",
     "version": "0.1.0",
     "baseURL": "http://localhost:9000/studio-ui/modules/dashboard/",
     "dependencies": {

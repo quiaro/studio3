@@ -17,11 +17,14 @@ module.exports = {
         method: 'get',
         url: '/api/1/config/list/:module',
         mock: [{
-            arguments: { module: "crafter.studio-ui.section.Login"},
+            arguments: { module: "crafter.studio-ui.section.login"},
             path: '/config/list/login/descriptor'
         }, {
-            arguments: { module: "crafter.studio-ui.section.Dashboard"},
-            path: '/config/list/dashboard/descriptor'
+            arguments: { module: "crafter.studio-ui.section.dashboard"},
+            path: '/config/list/dashboard/descriptor',
+        }, {
+            arguments: { module: "crafter.studio-ui.section.common"},
+            path: '/config/list/common/descriptor',
         }]
     }, {
         method: 'get',
@@ -30,11 +33,14 @@ module.exports = {
             arguments: { module: "crafter.studio-ui"},
             path: '/config/list/app/dependencies'
         }, {
-            arguments: { module: "crafter.studio-ui.section.Login"},
+            arguments: { module: "crafter.studio-ui.section.login"},
             path: '/config/list/login/dependencies'
         }, {
-            arguments: { module: "crafter.studio-ui.section.Dashboard"},
+            arguments: { module: "crafter.studio-ui.section.dashboard"},
             path: '/config/list/dashboard/dependencies'
+        }, {
+            arguments: { module: "crafter.studio-ui.section.common"},
+            path: '/config/list/common/dependencies'
         }]
     }]
 };

@@ -42,7 +42,9 @@ angular.module('crafter.studio-ui.Utils', [])
 
             this.loadFiles = function loadFiles(type, baseURL, filenameList) {
                 var deferred = $.Deferred(),
-                    fileList = filenameList.map(appendAssetPrefix);
+                    fileList = (filenameList && Array.isArray(filenameList)) ?
+                                    filenameList.map(appendAssetPrefix) :
+                                    [];
 
                 function appendAssetPrefix(assetName) {
                     return (type == 'css') ? (require_css_path + '!' + baseURL + assetName) : (baseURL + assetName);

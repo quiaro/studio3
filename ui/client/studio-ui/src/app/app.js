@@ -5,7 +5,9 @@
     // TODO: Move all app variables to a separate (config) module
     var init_module = 'crafter.studio-ui',
         default_state = 'login',
-        default_url = '/login';
+        default_url = '/login',
+        unauthorized_state = 'unauthorized',
+        unauthorized_url = '/unauthorized';
 
     angular.module(init_module, [
             'crafter.studio-ui.services.AuthService',
@@ -46,13 +48,12 @@
 
             $httpProvider.responseInterceptors.push(logOutUserOn401);
 
-            $stateProvider
-                .state('unauthorized', {
-                    url: '/unauthorized',
-                    templateUrl: 'templates/unauthorized.tpl.html'
-                });
-
             $locationProvider.html5Mode(true);
+
+            // Avoid problem with CORS
+            // http://stackoverflow.com/questions/16661032/
+            // http-get-is-not-allowed-by-access-control-allow-origin-but-ajax-is
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
         }])
 
@@ -99,8 +100,8 @@
 
                         ConfigService.loadConfiguration(moduleName)
                             .then( function(configObj) {
-                                Utils.loadModule(configObj.name, 
-                                                 configObj.baseURL, 
+                                Utils.loadModule(configObj.name,
+                                                 configObj.baseURL,
                                                  configObj.dependencies.js,
                                                  configObj.dependencies.css)
                                     .then ( function() {
@@ -142,7 +143,7 @@
                 if (toState.requireAuth) {
 
                     if (!AuthService.isLoggedIn()) {
-                        // The module requires authentication, but the user is not 
+                        // The module requires authentication, but the user is not
                         // logged in => send user to the default state.
                         event.preventDefault();
                         $log.log('Sorry! Not logged in.');
@@ -159,7 +160,7 @@
                             if (!roleIntersection.length) {
                                 event.preventDefault();
                                 $log.log('Sorry! You do not have access to this module.');
-                                $state.go('unauthorized');
+                                $state.go(unauthorized_state);
                             }
                         }
                     }

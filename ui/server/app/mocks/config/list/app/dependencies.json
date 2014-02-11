@@ -1,4 +1,6 @@
 {
-  "dependencies": ["crafter.studio-ui.section.Login", "crafter.studio-ui.section.Dashboard"]
+  "dependencies": [ "crafter.studio-ui.section.common",
+                    "crafter.studio-ui.section.login",
+                    "crafter.studio-ui.section.dashboard" ]
 }
 
