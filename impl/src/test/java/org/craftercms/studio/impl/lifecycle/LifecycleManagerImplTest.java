@@ -18,9 +18,7 @@
 package org.craftercms.studio.impl.lifecycle;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
-import org.craftercms.studio.impl.AbstractServiceTest;
+import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class LifecycleManagerImplTest extends AbstractServiceTest {
+public class LifecycleManagerImplTest extends AbstractManagerTest {
 
     @InjectMocks
     @Autowired

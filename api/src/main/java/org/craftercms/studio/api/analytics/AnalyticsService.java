@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.ItemNotFoundException;
 
 /**
  * Analytics Manager.

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.craftercms.studio.api.analytics.AnalyticsService;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.ItemNotFoundException;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;

@@ -27,7 +27,6 @@ import javax.xml.bind.Unmarshaller;
 import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Audit Manager Mock implementation.

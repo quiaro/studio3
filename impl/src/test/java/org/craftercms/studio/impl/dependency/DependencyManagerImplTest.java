@@ -20,9 +20,7 @@ package org.craftercms.studio.impl.dependency;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.exception.NotImplementedException;
-import org.craftercms.studio.impl.AbstractServiceTest;
+import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Dejan Brkic
  * @author Carlos Ortiz
  */
-public class DependencyManagerImplTest extends AbstractServiceTest {
+public class DependencyManagerImplTest extends AbstractManagerTest {
 
     @Autowired
     @InjectMocks

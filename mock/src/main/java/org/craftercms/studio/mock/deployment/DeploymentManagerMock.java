@@ -23,7 +23,6 @@ import org.craftercms.studio.api.deployment.DeploymentManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Deployment Manager Mock implementation.

@@ -22,7 +22,6 @@ import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 
 /**
  * Version Manager mock implementation.

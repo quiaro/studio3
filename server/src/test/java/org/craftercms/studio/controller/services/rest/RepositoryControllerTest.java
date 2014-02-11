@@ -16,51 +16,11 @@
  */
 package org.craftercms.studio.controller.services.rest;
 
-import java.io.FileReader;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.LockHandle;
-import org.craftercms.studio.commons.dto.Site;
-import org.craftercms.studio.commons.dto.Tree;
-import org.craftercms.studio.commons.exception.ItemNotFoundException;
-import org.craftercms.studio.commons.exception.StudioException;
-import org.craftercms.studio.commons.extractor.ItemExtractor;
-import org.craftercms.studio.commons.filter.ItemFilter;
-import org.craftercms.studio.mock.content.TreeMock;
-import org.junit.After;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Unit test for RepositoryController.
