@@ -23,7 +23,7 @@ package org.craftercms.studio.commons.exception;
  *
  * @author Sumer Jabri
  */
-public abstract class StudioException extends Exception {
+public class StudioException extends Exception {
     private static final long serialVersionUID = 8822403836288820982L;
 
     /**
