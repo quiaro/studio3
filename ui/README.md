@@ -74,4 +74,6 @@ With extensibility in mind, CS3UI loads itself dynamically in run time. When CS3
 
 1) Get the application configuration (descriptor), including all its sections (e.g. login, dashboard, authoring, etc).
 
-2) For each section, load their descriptor to set any configuration variables prior to the loading of the module. Then, proceed with the loading of the module's main js file. All js and css dependencies stemming from the main js file will be fetched using require.js. In the case of css, import statements may also be used alongside requirejs.
+2) For each section, load their descriptor to set any configuration variables prior to the loading of the module. Then, proceed with the loading of the module's main js file. All js and css dependencies stemming from the main js file will be fetched using RequireJS. In the case of css, import statements may also be used alongside RequireJS.
+
+**Note**: RequireJS is not used to load templates because these are loaded on demand by angular and use angular's own caching system. 

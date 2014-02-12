@@ -4,15 +4,13 @@ define(['module'], function( module ) {
 
         'use strict';
 
-        // TODO: Move 'studio-ui' and all other 'globals' in the app to a separate module
-        var injector = angular.element(module.config().domRoot).injector();
+        var config = module.config(),
+            injector = angular.element(config.domRoot).injector();
 
         injector.invoke(['NgRegistry', '$state', '$log',
             function(NgRegistry, $state, $log) {
 
-            $log.info("Config info for module: ", module.config());
-
-            var login_base_url = '/studio-ui/modules/login/';
+            $log.info("Config info for module: ", config);
 
             NgRegistry
                 .addController('SignInCtrl', ['$scope',
@@ -47,14 +45,14 @@ define(['module'], function( module ) {
 
                 .addState('login', {
                     url: '/login',
-                    templateUrl: login_base_url + 'templates/login.tpl.html'
+                    templateUrl: config.base_url + 'templates/login.tpl.html'
                 })
 
                 .addState('login.recover', {
                     url: '/recover',
                     onEnter: function($stateParams, $state, $modal) {
                         $modal.open({
-                            templateUrl: login_base_url + 'templates/recover.tpl.html',
+                            templateUrl: config.base_url + 'templates/recover.tpl.html',
                             controller: 'ModalCtrl'
                         }).result
                             .then(function (result) {

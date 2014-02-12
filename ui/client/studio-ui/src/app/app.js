@@ -111,10 +111,18 @@
                                                 configObj.base_url + configObj.main :
                                                 appConfig.base_url + configObj.base_url + configObj.main;
 
+                                // Search for position of last forward slash in the file url
+                                var pathEnd = file.lastIndexOf('/');
+
+                                // Exclude the filename from the file url. This will used as
+                                // the base url for all other resources in the module
+                                var mod_base_url = (pathEnd !== -1) ? file.substring(0, pathEnd + 1) : '/';
+
                                 // Set configuration specific to the module
                                 modConfig.config[file] = {
                                     name: configObj.name,
                                     main: file,
+                                    base_url: mod_base_url,
                                     domRoot: appConfig.dom_root
                                 }
 

@@ -4,19 +4,18 @@ define(['module'], function(module) {
 
         'use strict';
 
-        var injector = angular.element(module.config().domRoot).injector();
+        var config = module.config(),
+            injector = angular.element(config.domRoot).injector();
 
         injector.invoke(['NgRegistry', '$state', '$log',
             function(NgRegistry, $state, $log) {
 
-                $log.info("Config info for module: ", module.config());
-
-                var dashboard_base_url = '/studio-ui/modules/dashboard/';
+                $log.info("Config info for module: ", config);
 
                 NgRegistry
                     .addState('studio.dashboard', {
                         url: '/dashboard/:site',
-                        templateUrl: dashboard_base_url + 'templates/dashboard.tpl.html',
+                        templateUrl: config.base_url + 'templates/dashboard.tpl.html',
 
                         // TODO: Use robust authentication mechanism
                         requireAuth: true,
