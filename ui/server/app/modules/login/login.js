@@ -1,4 +1,4 @@
-define(['module'], function( module ) {
+define(['require', 'module'], function( require, module ) {
 
     (function() {
 
@@ -45,14 +45,14 @@ define(['module'], function( module ) {
 
                 .addState('login', {
                     url: '/login',
-                    templateUrl: config.base_url + 'templates/login.tpl.html'
+                    templateUrl: require.toUrl('./templates/login.tpl.html')
                 })
 
                 .addState('login.recover', {
                     url: '/recover',
                     onEnter: function($stateParams, $state, $modal) {
                         $modal.open({
-                            templateUrl: config.base_url + 'templates/recover.tpl.html',
+                            templateUrl: require.toUrl('./templates/recover.tpl.html'),
                             controller: 'ModalCtrl'
                         }).result
                             .then(function (result) {

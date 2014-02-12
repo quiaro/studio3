@@ -1,4 +1,4 @@
-define(['module'], function(module) {
+define(['require', 'module'], function( require, module) {
 
     (function() {
 
@@ -15,7 +15,7 @@ define(['module'], function(module) {
                 NgRegistry
                     .addState('studio.dashboard', {
                         url: '/dashboard/:site',
-                        templateUrl: config.base_url + 'templates/dashboard.tpl.html',
+                        templateUrl: require.toUrl('./templates/dashboard.tpl.html'),
 
                         // TODO: Use robust authentication mechanism
                         requireAuth: true,
