@@ -7,9 +7,6 @@ angular.module('crafter.studio-ui.services.ConfigService', [])
     .factory('ConfigService', ['config_service_URL', function(config_service_URL) {
 
             return {
-                getDependencies: function(moduleName) {
-                    return $.getJSON(config_service_URL + '/' + moduleName + '/dependencies');
-                },
                 loadConfiguration: function(moduleName) {
                     return $.getJSON(config_service_URL + '/' + moduleName);
                 }

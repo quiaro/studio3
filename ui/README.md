@@ -62,3 +62,16 @@ A established workflow using grunt tasks can be outlined as follows:
 4.    Build the app: `$ grunt`
        
        Build the application for deployment and run it on any HTTP server.
+
+About Crafter Studio 3 UI
+---------------------
+
+Crafter Studio 3 UI (CS3UI) is a client app for Crafter Studio 3. It consists in a user interface that consumes the REST services that Crafter Studio 3 provides.
+
+### Loading of the App
+
+With extensibility in mind, CS3UI loads itself dynamically in run time. When CS3UI starts, it kicks off a bootstrap process responsible for the following:
+
+1) Get the application configuration (descriptor), including all its sections (e.g. login, dashboard, authoring, etc).
+
+2) For each section, load their descriptor to set any configuration variables prior to the loading of the module. Then, proceed with the loading of the module's main js file. All js and css dependencies stemming from the main js file will be fetched using require.js. In the case of css, import statements may also be used alongside requirejs.

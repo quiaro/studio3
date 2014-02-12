@@ -1,8 +1,0 @@
-{
-    "name": "crafter.studio-ui.sections.common",
-    "version": "0.1.0",
-    "baseURL": "http://localhost:9000/studio-ui/modules/common/",
-    "dependencies": {
-        "js": ["common.js"]
-    }
-}

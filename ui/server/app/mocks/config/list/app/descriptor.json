@@ -1,0 +1,20 @@
+{
+    "name": "crafter.studio-ui",
+
+    "version": "0.1.0",
+
+    "base_url": "http://localhost:9000/studio-ui/modules",
+
+    "default_state": "login",
+
+    "default_url": "/login",
+
+    "unauthorized_state": "unauthorized",
+
+    "unauthorized_url": "/unauthorized",
+
+    "dom_root": "#studio-ui",
+
+    "modules": [ "crafter.studio-ui.section.login",
+                 "crafter.studio-ui.section.dashboard" ]
+}

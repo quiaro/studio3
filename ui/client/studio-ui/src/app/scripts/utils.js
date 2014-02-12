@@ -35,50 +35,23 @@ angular.module('crafter.studio-ui.Utils', [])
             };
 
             /*
-             * @param type : type of dependency (js, css or less)
-             * @param filenameList: list of css files or list of javascript files
-             * @return Deferred object, fulfilled when all files have been fetched
+             * Loads an app's module (and all its file dependencies)
+             * @param mainFile: url/name of the module's main js file to load
+             * @return Deferred object, fulfilled when the file and all its dependencies
+             *         have been fetched (via require.js)
              */
 
-            this.loadFiles = function loadFiles(type, baseURL, filenameList) {
-                var deferred = $.Deferred(),
-                    fileList = (filenameList && Array.isArray(filenameList)) ?
-                                    filenameList.map(appendAssetPrefix) :
-                                    [];
+            this.loadModule = function loadModule(mainFile) {
+                var deferred = $.Deferred();
 
-                function appendAssetPrefix(assetName) {
-                    return (type == 'css') ? (require_css_path + '!' + baseURL + assetName) : (baseURL + assetName);
+                if (!mainFile || typeof mainFile !== 'string') {
+                    throw new Error('Incorrect mainFile value');
                 }
 
-                $log.log('Loading file list: ', fileList);
-                require(fileList, function() {
+                $log.log('Loading file: ' + mainFile);
+
+                require([ mainFile ], function() {
                     deferred.resolve();
-                });
-
-                return deferred;
-            };
-
-            /*
-             * Loads an app's module (and all its file dependencies) based on its
-             * descriptor information
-             */
-
-            this.loadModule = function loadModule(name, baseURL, jsDpcyList, cssDpcyList) {
-                var cssFilesPrm, jsFilesPrm,
-                    deferred = $.Deferred();
-
-                // Default path will be relative to this source file
-                var baseURL = baseURL || '/';
-
-                // Load module dependencies
-                jsFilesPrm = this.loadFiles('js', baseURL, jsDpcyList);
-                cssFilesPrm = this.loadFiles('css', baseURL, cssDpcyList);
-
-                $.when(jsFilesPrm, cssFilesPrm).then( function(){
-                    $log.log("All dependencies loaded for module: " + name);
-                    deferred.resolve();
-                }, function() {
-                    deferred.reject();
                 });
 
                 return deferred;

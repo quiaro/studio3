@@ -2,12 +2,11 @@
 
     'use strict';
 
-    // TODO: Move all app variables to a separate (config) module
     var init_module = 'crafter.studio-ui',
-        default_state = 'login',
-        default_url = '/login',
-        unauthorized_state = 'unauthorized',
-        unauthorized_url = '/unauthorized';
+
+        // App config object with default url value
+        // It's real values will be loaded via ConfigService
+        appConfig = { default_url: ''};
 
     angular.module(init_module, [
             'crafter.studio-ui.services.AuthService',
@@ -33,7 +32,7 @@
                     var error = function(response) {
                         if (response.status === 401) {
                             //redirect them back to the default url
-                            $location.path(default_url);
+                            $location.path(appConfig.default_url);
 
                             return $q.reject(response);
                         } else {
@@ -87,23 +86,42 @@
                       AuthService, UserService, ConfigService, Utils, NgRegistry) {
 
             // Get the sections for the app
-            ConfigService.getDependencies(init_module)
-                .then( function(json) {
+            ConfigService.loadConfiguration(init_module)
+                .then( function(configObj) {
 
-                    var promiseList = [];
+                    var promiseList = [],
 
-                    $log.log('Dependencies for ' + init_module + ' are: ', json.dependencies);
+                        // Serves configuration specific to each module
+                        modConfig = { config: {} };
 
-                    json.dependencies.forEach( function(moduleName) {
+                    appConfig = configObj;
+                    $log.info('Config info for ' + init_module + ': ', appConfig);
+
+                    $log.log('Modules to load for ' + init_module + ': ', configObj.modules);
+                    configObj.modules.forEach( function(moduleName) {
                         var dfd = $.Deferred();
                         promiseList.push(dfd);
 
                         ConfigService.loadConfiguration(moduleName)
                             .then( function(configObj) {
-                                Utils.loadModule(configObj.name,
-                                                 configObj.baseURL,
-                                                 configObj.dependencies.js,
-                                                 configObj.dependencies.css)
+
+                                // Use only the base_url of the module if it includes a protocol;
+                                // if not, prepend the base_url of the app
+                                var file = (configObj.base_url.indexOf('://') !== -1) ?
+                                                configObj.base_url + configObj.main :
+                                                appConfig.base_url + configObj.base_url + configObj.main;
+
+                                // Set configuration specific to the module
+                                modConfig.config[file] = {
+                                    name: configObj.name,
+                                    main: file,
+                                    domRoot: appConfig.dom_root
+                                }
+
+                                // Make module-specific configuration available
+                                require.config(modConfig);
+
+                                Utils.loadModule(file)
                                     .then ( function() {
                                         $log.log('Module ' + moduleName + ' was loaded successfully');
                                         dfd.resolve();
@@ -119,7 +137,7 @@
 
                         $log.log('The application ' + init_module + ' is now loaded');
 
-                        NgRegistry.setDefaultURL(default_url);
+                        NgRegistry.setDefaultURL(appConfig.default_url);
                         // After all the sections of the app have been loaded it is now
                         // safe to do an update of the routes and load whatever section (page)
                         // the user was requesting
@@ -131,7 +149,7 @@
                     });
 
                 }, function() {
-                    throw new Error('Unable to load dependencies for ' + init_module);
+                    throw new Error('Unable to load modules for ' + init_module);
                 });
 
 
@@ -147,7 +165,7 @@
                         // logged in => send user to the default state.
                         event.preventDefault();
                         $log.log('Sorry! Not logged in.');
-                        $state.go(default_state);
+                        $state.go(appConfig.default_state);
                     } else {
                         // The module requires authentication and the user is logged in.
 
@@ -160,7 +178,7 @@
                             if (!roleIntersection.length) {
                                 event.preventDefault();
                                 $log.log('Sorry! You do not have access to this module.');
-                                $state.go(unauthorized_state);
+                                $state.go(appConfig.unauthorized_state);
                             }
                         }
                     }

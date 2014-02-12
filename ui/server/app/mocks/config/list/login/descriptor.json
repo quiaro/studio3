@@ -1,9 +1,6 @@
 {
     "name": "crafter.studio-ui.sections.login",
     "version": "0.1.0",
-    "baseURL": "http://localhost:9000/studio-ui/modules/login/",
-    "dependencies": {
-        "js": ["login.js"],
-        "css": ["login.css"]
-    }
+    "base_url": "/login/",
+    "main": "login.js"
 }

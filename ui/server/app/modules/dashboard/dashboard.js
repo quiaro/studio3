@@ -1,24 +1,31 @@
-(function () {
+define(['module'], function(module) {
 
-  'use strict';
+    (function() {
 
-  var injector = angular.element('#studio-ui').injector();
+        'use strict';
 
-  injector.invoke(['NgRegistry', '$state',
-        function(NgRegistry, $state) {
+        var injector = angular.element(module.config().domRoot).injector();
 
-        var dashboard_base_url = '/studio-ui/modules/dashboard/';
+        injector.invoke(['NgRegistry', '$state', '$log',
+            function(NgRegistry, $state, $log) {
 
-        NgRegistry
-            .addState('studio.dashboard', {
-                url: '/dashboard/:site',
-                templateUrl: dashboard_base_url + 'templates/dashboard.tpl.html',
+                $log.info("Config info for module: ", module.config());
 
-                // TODO: Use robust authentication mechanism
-                requireAuth: true,
-                rolesAllowed: ['admin', 'editor']
-            });
+                var dashboard_base_url = '/studio-ui/modules/dashboard/';
 
-    }]);
+                NgRegistry
+                    .addState('studio.dashboard', {
+                        url: '/dashboard/:site',
+                        templateUrl: dashboard_base_url + 'templates/dashboard.tpl.html',
 
-})();
+                        // TODO: Use robust authentication mechanism
+                        requireAuth: true,
+                        rolesAllowed: ['admin', 'editor']
+                    });
+
+            }
+        ]);
+
+    })();
+
+});
