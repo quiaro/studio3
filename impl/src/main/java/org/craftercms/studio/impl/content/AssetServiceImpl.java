@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.internal.content.ContentManager;
 
@@ -141,23 +143,39 @@ public class AssetServiceImpl implements AssetService {
     public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
                        final Map<String, String> properties) throws StudioException {
 
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+
+        LockHandle lockHandle = new LockHandle();
+        contentManager.write(context, site, itemId, lockHandle, content);
+        return contentManager.read(context, site, itemId.getItemId());
     }
 
     @Override
-    public Item update(final Context context, final String site, final ItemId itemId, final String content, final Map<String, String> properties) throws StudioException {
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    public Item update(final Context context, final String site, final ItemId itemId, final String content,
+                       final Map<String, String> properties) throws StudioException {
+
+        LockHandle lockHandle = new LockHandle();
+        InputStream contentStream = IOUtils.toInputStream(content);
+        contentManager.write(context, site, itemId, lockHandle, contentStream);
+        return contentManager.read(context, site, itemId.getItemId());
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final byte[] content,
                        final Map<String, String> properties) throws StudioException {
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+
+        LockHandle lockHandle = new LockHandle();
+        InputStream contentStream = new ByteArrayInputStream(content);
+        contentManager.write(context, site, itemId, lockHandle, contentStream);
+        return contentManager.read(context, site, itemId.getItemId());
     }
 
     @Override
     public void delete(final Context context, final String site, final ItemId itemId) throws StudioException {
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+
+        List<Item> itemList = new ArrayList<>();
+        Item item = contentManager.read(context, site, itemId.getItemId());
+        itemList.add(item);
+        contentManager.delete(context, itemList);
     }
 
     @Override

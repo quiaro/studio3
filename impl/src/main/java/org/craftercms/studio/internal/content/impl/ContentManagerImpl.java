@@ -1,7 +1,9 @@
 package org.craftercms.studio.internal.content.impl;
 
 import java.io.InputStream;
+import java.util.List;
 
+import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.repo.content.ContentService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
@@ -28,6 +30,22 @@ public class ContentManagerImpl implements ContentManager {
     @Override
     public Item read(final Context context, final String site, final String itemId) throws StudioException {
         return contentService.read(context.getTicket(), site, itemId);
+    }
+
+    @Override
+    public void write(final Context context, final String site, final ItemId itemId, final LockHandle lockHandle,
+                      final InputStream
+        content) throws StudioException {
+
+        Item item = contentService.read(context.getTicket(), site, itemId.getItemId());
+        contentService.update(context.getTicket(), item, content);
+    }
+
+    @Override
+    public void delete(final Context context, final List<Item> itemsToDelete) {
+        for (Item item : itemsToDelete) {
+            contentService.delete(context.getTicket(), item.getId().getItemId());
+        }
     }
 
     // Getters and setters
