@@ -2,8 +2,11 @@
 
     'use strict';
 
+    // Create a module that will be declared as a dependency of the application
     var ngRegistry = angular.module('crafter.studio-ui.NgRegistry', ['ui.router']);
 
+    // In the config phase of this module, we save references to the different providers
+    // which will let us register new elements with Angular after it has bootstrapped
     ngRegistry.config(['$controllerProvider',
         '$provide',
         '$compileProvider',
@@ -54,7 +57,8 @@
 
         }]);
 
-    // Make methods available to other modules
+    // We create a service to access the different providers saved previously
+    // through the service's API (instead of creating a global variable).
     ngRegistry.factory('NgRegistry', [
         function() {
             return ngRegistry;

@@ -66,14 +66,52 @@ A established workflow using grunt tasks can be outlined as follows:
 About Crafter Studio 3 UI
 ---------------------
 
-Crafter Studio 3 UI (CS3UI) is a client app for Crafter Studio 3. It consists in a user interface that consumes the REST services that Crafter Studio 3 provides.
+Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI) and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the app's configuration.
 
 ### Loading of the App
 
-With extensibility in mind, CS3UI loads itself dynamically in run time. When CS3UI starts, it kicks off a bootstrap process responsible for the following:
+To achieve its goals of flexibility and extensibility, CS3UI is an Angular app that combines RequireJS to load scripts on demand, giving it the ability load itself dynamically in run time based on its configuration. 
 
-1) Get the application configuration (descriptor), including all its sections (e.g. login, dashboard, authoring, etc).
+When CS3UI starts, it kicks off a bootstrap process responsible for the following:
 
-2) For each section, load their descriptor to set any configuration variables prior to the loading of the module. Then, proceed with the loading of the module's main js file. All js and css dependencies stemming from the main js file will be fetched using RequireJS. In the case of css, import statements may also be used alongside RequireJS.
+1) Get the [application configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json), which includes the modules that should be loaded into the application.
 
-**Note**: RequireJS is not used to load templates because these are loaded on demand by angular and use angular's own caching system. 
+2) For each module, load their descriptor (e.g. [login descriptor](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/login/descriptor.json) & [dashboard descriptor](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/dashboard/descriptor.json) and then, proceed with the loading of the module. RequireJS handles all dependency calculation and fetches each module's js and css dependencies. In the case of css, import statements may also be used alongside RequireJS.
+
+**Note**: RequireJS is not used to load templates because these are loaded on demand by angular and use angular's own caching system.
+
+#### Loading code on demand with Angular
+
+Since Angular does not natively provide the ability to include new elements (i.e. controllers, directives, services, etc) into the app after Angular's bootstrap process has completed, a service called [NgRegistry](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/client/studio-ui/src/app/scripts/ng_registry.js) exists to work around this limitation. 
+
+NgRegistry follows an approach similar to that described in the following articles to register new elements after Angular bootstraps:
+
+* [Lazy Loading in AngularJS](http://ify.io/lazy-loading-in-angularjs/)
+* [Dynamically Loading Controllers and Views with AngularJS and RequireJS](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx)
+
+It's important to remember that all CS3UI modules are loaded on demand by RequireJS (and are therefore structured as [AMD modules](http://requirejs.org/docs/whyamd.html)) after Angular bootstraps; consequently, NgRegistry is key in incorporating their code into the app. Since NgRegistry is a service visible only within the app (that exists within the Angular framework), it is necessary to retrieve the app's injector which grants access to all of the app's object instances (including NgRegistry) to javascript code outside the Angular framework. As a result of this, most modules will likely follow this pattern:
+
+    define(['globals',
+        'css!./mycss'], function( globals ) {
+
+        'use strict';
+
+        // Get the app's injector
+        var injector = angular.element(globals.dom_root).injector();
+
+        // Run a function and make available some Angular object instances (NgRegistry & $log)
+        injector.invoke(['NgRegistry', '$log',
+            function(NgRegistry, $log) {
+
+                // Use NgRegistry to register a new controller within the app
+                NgRegistry
+                    .addController('NewCtrl', ['$scope', function ($scope) {
+                        $scope.newMethod = function (myVar) {
+                            $log.log("newMethod called with param: ", myVar);
+                        };
+                    }]);
+
+            }
+        ]);
+    });
+
