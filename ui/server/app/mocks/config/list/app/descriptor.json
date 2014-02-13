@@ -5,16 +5,22 @@
 
     "base_url": "http://localhost:9000/studio-ui/modules",
 
-    "default_state": "login",
+    "module_globals": {
+        "dom_root": "#studio-ui",
+        "default_state": "login",
+        "default_url": "/login",
+        "unauthorized_state": "unauthorized",
+        "unauthorized_url": "/unauthorized",
+        "templates_url": "studio-ui/modules/common/templates"
+    },
 
-    "default_url": "/login",
+    "module_paths": {
+        "globals": "studio-ui/modules/common/globals",
+        "common": "studio-ui/modules/common/common"
+    },
 
-    "unauthorized_state": "unauthorized",
-
-    "unauthorized_url": "/unauthorized",
-
-    "dom_root": "#studio-ui",
-
-    "modules": [ "crafter.studio-ui.section.login",
-                 "crafter.studio-ui.section.dashboard" ]
+    "modules": [
+        "crafter.studio-ui.section.login",
+        "crafter.studio-ui.section.dashboard"
+    ]
 }

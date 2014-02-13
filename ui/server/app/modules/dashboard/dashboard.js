@@ -1,30 +1,26 @@
-define(['require', 'module'], function( require, module) {
+define(['require',
+        'globals',
+        'common',
+        'css!./dashboard'], function( require, globals ) {
 
-    (function() {
+    'use strict';
 
-        'use strict';
+    var injector = angular.element(globals.dom_root).injector();
 
-        var config = module.config(),
-            injector = angular.element(config.domRoot).injector();
+    injector.invoke(['NgRegistry', '$state', '$log',
+        function(NgRegistry, $state, $log) {
 
-        injector.invoke(['NgRegistry', '$state', '$log',
-            function(NgRegistry, $state, $log) {
+            NgRegistry
+                .addState('studio.dashboard', {
+                    url: '/dashboard/:site',
+                    templateUrl: require.toUrl('./templates/dashboard.tpl.html'),
 
-                $log.info("Config info for module: ", config);
+                    // TODO: Use robust authentication mechanism
+                    requireAuth: true,
+                    rolesAllowed: ['admin', 'editor']
+                });
 
-                NgRegistry
-                    .addState('studio.dashboard', {
-                        url: '/dashboard/:site',
-                        templateUrl: require.toUrl('./templates/dashboard.tpl.html'),
-
-                        // TODO: Use robust authentication mechanism
-                        requireAuth: true,
-                        rolesAllowed: ['admin', 'editor']
-                    });
-
-            }
-        ]);
-
-    })();
+        }
+    ]);
 
 });

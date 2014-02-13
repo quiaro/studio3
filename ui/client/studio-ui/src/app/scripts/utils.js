@@ -2,12 +2,11 @@
 
 angular.module('crafter.studio-ui.Utils', [])
 
-    .constant('require_css_path', 'studio-ui/lib/require-css/js/css')
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['require_css_path', '$log',
-        function(require_css_path, $log) {
+    .service('Utils', ['$log',
+        function($log) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the

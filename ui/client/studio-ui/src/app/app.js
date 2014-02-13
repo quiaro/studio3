@@ -4,9 +4,12 @@
 
     var init_module = 'crafter.studio-ui',
 
-        // App config object with default url value
-        // It's real values will be loaded via ConfigService
-        appConfig = { default_url: ''};
+        // App object for global variables. It has a default url value; however, its
+        // real values will be loaded via ConfigService (and override the default url value)
+        GLOBALS = { default_url: ''},
+
+        // App config object
+        CONFIG;
 
     angular.module(init_module, [
             'crafter.studio-ui.services.AuthService',
@@ -32,7 +35,7 @@
                     var error = function(response) {
                         if (response.status === 401) {
                             //redirect them back to the default url
-                            $location.path(appConfig.default_url);
+                            $location.path(GLOBALS.default_url);
 
                             return $q.reject(response);
                         } else {
@@ -90,15 +93,31 @@
                 .then( function(configObj) {
 
                     var promiseList = [],
+                        modConfig;
 
-                        // Serves configuration specific to each module
-                        modConfig = { config: {} };
+                    CONFIG = configObj;
+                    GLOBALS = CONFIG.module_globals;
 
-                    appConfig = configObj;
-                    $log.info('Config info for ' + init_module + ': ', appConfig);
+                    // Serves configuration to all modules and specific to each module (config property)
+                    modConfig = {
+                                    map: {
+                                        '*': {
+                                            'css': 'studio-ui/lib/require-css/js/css'
+                                        }
+                                    },
+                                    paths: CONFIG.module_paths,
+                                    config: {
+                                        "globals": GLOBALS
+                                    },
+                                };
 
-                    $log.log('Modules to load for ' + init_module + ': ', configObj.modules);
-                    configObj.modules.forEach( function(moduleName) {
+                    $log.info('Config info for ' + init_module + ': ', CONFIG);
+
+                    if (!("globals" in CONFIG.module_paths)) {
+                        $log.error("No path specified for globals module");
+                    }
+
+                    CONFIG.modules.forEach( function(moduleName) {
                         var dfd = $.Deferred();
                         promiseList.push(dfd);
 
@@ -109,14 +128,15 @@
                                 // if not, prepend the base_url of the app
                                 var file = (configObj.base_url.indexOf('://') !== -1) ?
                                                 configObj.base_url + configObj.main :
-                                                appConfig.base_url + configObj.base_url + configObj.main;
+                                                CONFIG.base_url + configObj.base_url + configObj.main;
 
                                 // Set configuration specific to the module
                                 modConfig.config[file] = {
                                     name: configObj.name,
                                     main: file,
-                                    domRoot: appConfig.dom_root
+                                    config: configObj.config
                                 }
+                                $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
 
                                 // Make module-specific configuration available
                                 require.config(modConfig);
@@ -137,7 +157,7 @@
 
                         $log.log('The application ' + init_module + ' is now loaded');
 
-                        NgRegistry.setDefaultURL(appConfig.default_url);
+                        NgRegistry.setDefaultURL(GLOBALS.default_url);
                         // After all the sections of the app have been loaded it is now
                         // safe to do an update of the routes and load whatever section (page)
                         // the user was requesting
@@ -164,8 +184,8 @@
                         // The module requires authentication, but the user is not
                         // logged in => send user to the default state.
                         event.preventDefault();
-                        $log.log('Sorry! Not logged in.');
-                        $state.go(appConfig.default_state);
+                        $log.log('Not logged in ... sending user to state: ' + GLOBALS.default_state);
+                        $state.go(GLOBALS.default_state);
                     } else {
                         // The module requires authentication and the user is logged in.
 
@@ -178,7 +198,7 @@
                             if (!roleIntersection.length) {
                                 event.preventDefault();
                                 $log.log('Sorry! You do not have access to this module.');
-                                $state.go(appConfig.unauthorized_state);
+                                $state.go(GLOBALS.unauthorized_state);
                             }
                         }
                     }

@@ -1,14 +1,11 @@
-(function() {
+define(['globals'], function( globals ) {
 
     'use strict';
 
-    // TODO: Move 'studio-ui' and all other 'globals' in the app to a separate module
-    var injector = angular.element('#studio-ui').injector();
+    var injector = angular.element(globals.dom_root).injector();
 
     injector.invoke(['NgRegistry', '$state',
         function(NgRegistry, $state, $log) {
-
-        var common_base_url = '/studio-ui/modules/common/';
 
         NgRegistry
             .addState('studio', {
@@ -18,12 +15,12 @@
 
                 // prepend this path segment to of all its children
                 url: '/studio',
-                templateUrl: common_base_url + 'templates/layout.tpl.html'
+                templateUrl: globals.templates_url + '/layout.tpl.html'
             })
 
             .addState('unauthorized', {
                 url: '/unauthorized',
-                templateUrl: common_base_url + 'templates/unauthorized.tpl.html'
+                templateUrl: globals.templates_url + '/unauthorized.tpl.html'
             })
 
             .addDirective('sdoSubmit', ['$parse', '$timeout', function($parse, $timeout) {
@@ -114,4 +111,4 @@
 
     }]);
 
-})();
+});
