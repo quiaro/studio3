@@ -115,3 +115,96 @@ It's important to remember that all CS3UI modules are loaded on demand by Requir
         ]);
     });
 
+### App Configuration
+
+CS3UI and its modules are configured by means of configuration files, also known as descriptors. There is a [descriptor for the app](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json) and one for each module of the application.
+
+The app descriptor sets app-wide settings, including settings shared by all modules of the application. Below is a sample app descriptor with comments:
+
+    {
+        // Namespace of the app (currently not used)
+        "name": "crafter.studio-ui",
+
+        // Version of the app
+        "version": "0.1.0",
+
+        // Default base URL for all modules of the app
+        "base_url": "http://localhost:9000/studio-ui/modules",
+
+        // Settings/values shared by all modules
+        "module_globals": {
+            "dom_root": "#studio-ui",
+            "default_state": "login",
+            "default_url": "/login",
+            "unauthorized_state": "unauthorized",
+            "unauthorized_url": "/unauthorized",
+            "templates_url": "studio-ui/modules/common/templates"
+        },
+
+        // Path mappings for internal modules (i.e. modules that may be used as dependencies
+        // by the modules of application). The path settings are assumed to be relative to 
+        // "base_url", unless the paths setting starts with a "/" or has a URL protocol 
+        // in it ("like http:")
+        "module_paths": {
+            "globals": "studio-ui/modules/common/globals",
+            "common": "studio-ui/modules/common/common"
+        },
+
+        // Modules to load for the app
+        "modules": [
+            "crafter.studio-ui.section.login",
+            "crafter.studio-ui.section.dashboard"
+        ]
+    }
+
+#### Globals Module
+
+When the app bootstraps, all settings found under "module_globals" are put in a module called "globals". All app modules that declare a dependency on this "globals" module can then have access to these settings. For example:
+
+    // This module declares 2 dependencies: one to the globals module and another to a
+    // stylesheet, 'mycss.css'
+    define(['globals',
+        'css!./mycss'], function( globals ) {
+
+        'use strict';
+
+        console.log("The application's DOM root element is: " + globals.dom_root);
+
+        console.log("The application's default state is: " + globals.default_state);
+    });
+
+#### Module-Specific Settings
+
+Modules can also declare their own specific configuration values. This can be done by a adding a "config" property in the module descriptor and also adding a special dependency on 'module'. Calling module.config() inside the module will retrieve the module's configuration object, where the config property stores all specific configuration values. For example:
+
+    /* Module descriptor */
+    {
+        "name": "crafter.studio-ui.module.fictitious",
+        "version": "0.1.0",
+        "base_url": "http://domain.net/module-repo/",
+        "main": "fictitious.js",
+
+        // module-specific configuration 
+        "config": {
+            "foo": true,
+            "bar": "tin can"
+        }
+    }
+
+    /* Module definition */
+    define(['globals',
+            'module'], function( globals, module ) {
+
+        'use strict';
+
+        var settings = module.config(),
+            injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['$log', function($log) {
+
+              $log.log("Foo value: ", settings.config.foo);  // true
+
+              $log.log("Bar value: ", settings.config.bar);  // "tin can"
+          }
+        ]);
+    });
