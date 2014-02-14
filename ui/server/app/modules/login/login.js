@@ -1,6 +1,6 @@
 define(['require',
         'globals',
-        'common',
+        'directives',
         'css!./login'], function( require, globals ) {
 
     'use strict';

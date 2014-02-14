@@ -18,7 +18,8 @@
 
     "module_paths": {
         "globals": "modules/common/globals",
-        "common": "modules/common/common"
+        "common": "modules/common/common",
+        "directives": "modules/common/directives"
     },
 
     "modules": [

@@ -4,8 +4,8 @@ define(['globals'], function( globals ) {
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', '$state',
-        function(NgRegistry, $state, $log) {
+    injector.invoke(['NgRegistry',
+        function(NgRegistry) {
 
         NgRegistry
             .addState('studio', {
@@ -18,84 +18,10 @@ define(['globals'], function( globals ) {
                 templateUrl: globals.templates_url + '/layout.tpl.html'
             })
 
-            .addState('unauthorized', {
-                url: '/unauthorized',
+            .addState(globals.unauthorized_state, {
+                url: globals.unauthorized_url,
                 templateUrl: globals.templates_url + '/unauthorized.tpl.html'
             })
-
-            .addDirective('sdoSubmit', ['$parse', '$timeout', function($parse, $timeout) {
-                return {
-                    restrict: 'A',
-                    require: ['sdoSubmit', '?form'],
-                    controller: ['$scope',
-                        function($scope) {
-                            this.attempted = false;
-
-                            var formController = null;
-
-                            this.setAttempted = function() {
-                                this.attempted = true;
-                            };
-
-                            this.setFormController = function(controller) {
-                                formController = controller;
-                            };
-
-                            this.checkValidation = function(fieldModelController) {
-                                if (!formController) {
-                                    return false;
-                                }
-
-                                if (fieldModelController) {
-                                    return fieldModelController.$invalid &&
-                                        (fieldModelController.$dirty || this.attempted);
-                                } else {
-                                    return formController && formController.$invalid &&
-                                        (formController.$dirty || this.attempted);
-                                }
-                            };
-                        }
-                    ],
-                    compile: function(cElement, cAttributes, transclude) {
-                        return {
-                            pre: function(scope, formElement, attributes, controllers) {
-
-                                var submitController = controllers[0];
-                                var formController = (controllers.length > 1) ? controllers[1] : null;
-
-                                submitController.setFormController(formController);
-
-                                scope.sdo = scope.sdo || {};
-                                scope.sdo[attributes.name] = submitController;
-                            },
-                            post: function(scope, formElement, attributes, controllers) {
-
-                                var submitController = controllers[0];
-                                var formController = (controllers.length > 1) ? controllers[1] : null;
-                                var fn = $parse(attributes.sdoSubmit);
-
-                                formElement.bind('submit', function() {
-                                    $timeout(function() {
-                                        scope.$apply(function() {
-                                            submitController.setAttempted();
-                                        });
-                                    });
-
-                                    if (!formController.$valid) {
-                                        return false;
-                                    } else {
-                                        scope.$apply(function() {
-                                            fn(scope, {
-                                                $event: event
-                                            });
-                                        });
-                                    }
-                                });
-                            }
-                        };
-                    }
-                };
-            }])
 
             .addController('ToolbarCtrl', [
                 '$scope', function ($scope) {
