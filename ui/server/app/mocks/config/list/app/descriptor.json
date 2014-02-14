@@ -3,7 +3,9 @@
 
     "version": "0.1.0",
 
-    "base_url": "http://localhost:9000/studio-ui/modules",
+    "base_url": "http://localhost:9000/studio-ui",
+
+    "requirejs_css": "lib/require-css/js/css",
 
     "module_globals": {
         "dom_root": "#studio-ui",
@@ -11,12 +13,12 @@
         "default_url": "/login",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
-        "templates_url": "studio-ui/modules/common/templates"
+        "templates_url": "modules/common/templates"
     },
 
     "module_paths": {
-        "globals": "studio-ui/modules/common/globals",
-        "common": "studio-ui/modules/common/common"
+        "globals": "modules/common/globals",
+        "common": "modules/common/common"
     },
 
     "modules": [

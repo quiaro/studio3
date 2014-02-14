@@ -1,6 +1,6 @@
 {
     "name": "crafter.studio-ui.sections.dashboard",
     "version": "0.1.0",
-    "base_url": "/dashboard/",
+    "base_url": "modules/dashboard/",
     "main": "dashboard.js"
 }

@@ -93,16 +93,22 @@
                 .then( function(configObj) {
 
                     var promiseList = [],
-                        modConfig;
+                        modConfig,
+                        templatesUrl;
 
                     CONFIG = configObj;
                     GLOBALS = CONFIG.module_globals;
 
+                    if ('templates_url' in GLOBALS) {
+                        GLOBALS.templates_url = Utils.getUrl(CONFIG.base_url, GLOBALS.templates_url);
+                    }
+
                     // Serves configuration to all modules and specific to each module (config property)
                     modConfig = {
+                                    baseUrl: CONFIG.base_url,
                                     map: {
                                         '*': {
-                                            'css': 'studio-ui/lib/require-css/js/css'
+                                            'css': CONFIG.requirejs_css
                                         }
                                     },
                                     paths: CONFIG.module_paths,
@@ -113,7 +119,7 @@
 
                     $log.info('Config info for ' + init_module + ': ', CONFIG);
 
-                    if (!("globals" in CONFIG.module_paths)) {
+                    if (!('globals' in CONFIG.module_paths)) {
                         $log.error("No path specified for globals module");
                     }
 
@@ -124,11 +130,7 @@
                         ConfigService.loadConfiguration(moduleName)
                             .then( function(configObj) {
 
-                                // Use only the base_url of the module if it includes a protocol;
-                                // if not, prepend the base_url of the app
-                                var file = (configObj.base_url.indexOf('://') !== -1) ?
-                                                configObj.base_url + configObj.main :
-                                                CONFIG.base_url + configObj.base_url + configObj.main;
+                                var file = Utils.getUrl(CONFIG.base_url, configObj.base_url) + configObj.main;
 
                                 // Set configuration specific to the module
                                 modConfig.config[file] = {

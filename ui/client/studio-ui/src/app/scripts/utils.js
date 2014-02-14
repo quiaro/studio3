@@ -34,6 +34,18 @@ angular.module('crafter.studio-ui.Utils', [])
             };
 
             /*
+             *  @return specificUrl only if it includes a protocol; otherwise, prepend url to the
+             *          specificUrl (add a forward slash between them, if necessary)
+             */
+            this.getUrl = function getUrl(url, specificUrl) {
+                return (specificUrl.indexOf('://') !== -1) ?
+                            specificUrl :
+                            (specificUrl.indexOf('/') === 0) ?
+                                url + specificUrl :
+                                url + '/' + specificUrl;
+            }
+
+            /*
              * Loads an app's module (and all its file dependencies)
              * @param mainFile: url/name of the module's main js file to load
              * @return Deferred object, fulfilled when the file and all its dependencies
