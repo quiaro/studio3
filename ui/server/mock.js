@@ -26,5 +26,12 @@ module.exports = {
             arguments: { module: "crafter.studio-ui.section.dashboard"},
             path: '/config/list/dashboard/descriptor',
         }]
+    }, {
+        method: 'get',
+        url: '/api/1/config/plugins/:container',
+        mock: [{
+            arguments: { container: "activity"},
+            path: '/config/plugins/activity/plugins'
+        }]
     }]
 };

@@ -4,8 +4,8 @@ define(['globals'], function( globals ) {
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', '$log',
-        function(NgRegistry, $log) {
+    injector.invoke(['NgRegistry', '$log', 'ConfigService',
+        function(NgRegistry, $log, ConfigService) {
 
         NgRegistry
             .addDirective('sdoSubmit', ['$parse', '$timeout', function($parse, $timeout) {
@@ -82,75 +82,42 @@ define(['globals'], function( globals ) {
                 };
             }])
 
-            .addDirective('plugins',
+            .addDirective('sdoPlugins',
                 ['$compile',
                  '$timeout', function ($compile, $timeout) {
 
                 return {
-                        restrict: "E",
-                        template: "<div>I will load lots of plugins here!</div>"
-                    };
-            }])
+                        restrict: "C",
+                        link : function postLink (scope, element, attrs) {
 
-            .addDirective('widgets',
-                ['$compile',
-                 '$timeout',
-                 'WidgetService', function ($compile, $timeout, WidgetService) {
+                                var containerId;
 
-                return {
-                    restrict: 'E',
-                    terminal: true,
-                    link : function postLink (scope, element, attrs) {
+                                if (!attrs.pluginContainer) {
+                                    $log.warn('Plugins directive with id "' + attrs.id + '" is missing data-plugin-container attribute');
+                                    return;
+                                } else {
+                                    containerId = attrs.pluginContainer;
+                                }
 
-                        var widgetNamespace = WidgetService.getNamespace(),
-                            widgetAsyncMethod = WidgetService.getAsyncMethodName();
+                                $log.log('Plugin container with id: "' + containerId + '"');
 
-                        WidgetService.getWidgets(attrs.section).then( function (widgets) {
+                                ConfigService.getPlugins(containerId)
+                                    .then( function (configObj) {
 
-                            // Create a namespace for the widgets in the scope
-                            scope[widgetNamespace] = {};
-
-                            // Get model for each widget
-                            widgets.forEach( function (widget) {
-
-                                // Identify and load the prototype object for a widget by its URL
-                                var widgetPrototype = scope.prototypes[widget.prototypeUrl],
-                                    widgetModel = widget.model;
-
-                                if (angular.isObject(widgetPrototype)) {
-                                    // Create a widget's model based on its prototype object
-                                    scope[widgetNamespace][widget.name] = WidgetService.create(widgetPrototype);
-
-                                    // Extend the widget's model per the configuration file
-                                    Object.keys(widgetModel).forEach( function(modelKey) {
-                                        scope[widgetNamespace][widget.name][modelKey] = widgetModel[modelKey];
+                                        var pluginList = configObj.plugins;
+                                        $log.log('Plugins found for "' + containerId + '":', pluginList);
                                     });
 
-                                    if (widgetAsyncMethod in scope[widgetNamespace][widget.name]) {
-                                        // If the widget relies on an async method to finish getting data for its
-                                        // model, then call this method. It will be the method's responsibility to
-                                        // use the $timeout service to make any model updates (so they will be
-                                        // consumed safely within a digest cycle)
-                                        scope[widgetNamespace][widget.name][widgetAsyncMethod]($timeout);
-                                    }
+                                // Append widget specific templates to directive element
+                                // scope.templates.forEach( function (tpl) {
+                                //     element.append(tpl);
+                                // });
 
-                                } else {
-                                    throw new Error ('Prototype object for ' + widget.name + ' is not an object');
-                                }
-                            });
-
-                            // Append widget specific templates to directive element
-                            scope.templates.forEach( function (tpl) {
-                                element.append(tpl);
-                            });
-
-                            // compile the widgets' templates and create the bindings
-                            // between their models and their templates
-                            $compile(element.contents())(scope);
-
-                        });
-                    }
-                };
+                                // compile the widgets' templates and create the bindings
+                                // between their models and their templates
+                                // $compile(element.contents())(scope);
+                        }
+                    };
             }]);
 
     }]);

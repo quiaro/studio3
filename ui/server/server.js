@@ -56,7 +56,12 @@ mock.services.forEach( function(serviceObj) {
         var siteName = req.params.site || 'app';
 
         // If there's a module variable in the path, we'll use it to get its descriptor
-        var queryObj = (req.params.module) ? { "module": req.params.module } : req.query;
+        // If there's a container variable in the path, we'll use it to get its plugins
+        var queryObj = (req.params.module) ?
+                            { "module": req.params.module } :
+                        (req.params.container) ?
+                            { "container": req.params.container } : req.query;
+
         var mockPath = getMockPath(serviceObj.mock, queryObj);
 
         res.json( require(config[siteName].mockFolder + mockPath) );
