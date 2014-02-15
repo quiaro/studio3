@@ -13,7 +13,8 @@
         "default_url": "/login",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
-        "templates_url": "modules/common/templates"
+        "templates_url": "modules/common/templates",
+        "plugins_url": "plugins"
     },
 
     "module_paths": {

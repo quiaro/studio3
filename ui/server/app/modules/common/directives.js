@@ -4,8 +4,8 @@ define(['globals'], function( globals ) {
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', '$log', 'ConfigService',
-        function(NgRegistry, $log, ConfigService) {
+    injector.invoke(['NgRegistry', '$log', 'ConfigService', 'Utils',
+        function(NgRegistry, $log, ConfigService, Utils) {
 
         NgRegistry
             .addDirective('sdoSubmit', ['$parse', '$timeout', function($parse, $timeout) {
@@ -106,6 +106,10 @@ define(['globals'], function( globals ) {
 
                                         var pluginList = configObj.plugins;
                                         $log.log('Plugins found for "' + containerId + '":', pluginList);
+
+                                        pluginList.forEach( function(pluginPath) {
+                                            Utils.loadModule(globals.plugins_url + pluginPath);
+                                        });
                                     });
 
                                 // Append widget specific templates to directive element

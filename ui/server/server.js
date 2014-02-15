@@ -71,7 +71,13 @@ mock.services.forEach( function(serviceObj) {
 // Load assets related to the app
 app.get( '/studio-ui/modules/*', function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
-    res.sendfile( config['app'].assetsFolder + '/' + req.params[0]);
+    res.sendfile( config['app'].modulesFolder + '/' + req.params[0]);
+});
+
+// Load plugins for the app
+app.get( '/studio-ui/plugins/*', function( req, res ) {
+    // The string value of the wildcard (*) will be stored in req.params[0]
+    res.sendfile( config['app'].pluginsFolder + '/' + req.params[0]);
 });
 
 // Load assets related to a specific site

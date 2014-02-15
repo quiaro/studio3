@@ -102,6 +102,9 @@
                     if ('templates_url' in GLOBALS) {
                         GLOBALS.templates_url = Utils.getUrl(CONFIG.base_url, GLOBALS.templates_url);
                     }
+                    if ('plugins_url' in GLOBALS) {
+                        GLOBALS.plugins_url = Utils.getUrl(CONFIG.base_url, GLOBALS.plugins_url);
+                    }
 
                     // Serves configuration to all modules and specific to each module (config property)
                     modConfig = {

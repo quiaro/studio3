@@ -16,7 +16,8 @@ module.exports = {
         // for the services not specific to a particular site, but to
         // the whole app -relative to this file
         mockFolder: path.resolve(__dirname, './app/mocks'),
-        assetsFolder: path.resolve(__dirname, './app/modules')
+        modulesFolder: path.resolve(__dirname, './app/modules'),
+        pluginsFolder: path.resolve(__dirname, './app/plugins'),
     },
 
     // Sample sites
