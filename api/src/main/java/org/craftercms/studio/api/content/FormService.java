@@ -43,7 +43,6 @@ public interface FormService {
      * @return the form descriptor
      * @throws StudioException
      */
-    // TODO Consider adding scripts here for lifecycle events and JS for frontend rendering
     Form create(Context context, String site, String formName, String formXml, Map<String,
         String> properties) throws StudioException;
 
@@ -84,7 +83,6 @@ public interface FormService {
      */
     Form read(Context context, String site, String formId) throws StudioException;
 
-    
     Form update() throws StudioException;
 
     void delete(Context context, String site, String formId) throws StudioException;

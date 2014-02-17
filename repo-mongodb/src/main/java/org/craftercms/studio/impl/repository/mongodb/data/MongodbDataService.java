@@ -177,7 +177,7 @@ public class MongodbDataService {
             return jongoCollectionFactory.getCollection(collectionName).findOne(getQuery(queryName)).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", queryName);
-            throw new MongoRepositoryException(ex);
+            throw new MongoRepositoryException(ex, queryName);
         }
     }
 
@@ -218,7 +218,7 @@ public class MongodbDataService {
                 .GET_BY_GEN_ID), id).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", id);
-            throw new MongoRepositoryException(ex);
+            throw new MongoRepositoryException(ex, id);
         }
     }
 

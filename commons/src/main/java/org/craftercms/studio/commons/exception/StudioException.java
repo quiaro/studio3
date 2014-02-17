@@ -17,6 +17,9 @@
 
 package org.craftercms.studio.commons.exception;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
  * Root exception for all exceptions defined in Studio. All exceptions in Studio throw an Error Id which is
  * translated to an actual message that is localized and can be more easily supported.
@@ -25,7 +28,12 @@ package org.craftercms.studio.commons.exception;
  * @author Dejan Brkic
  */
 public class StudioException extends Exception {
+
+    private static final String EXCEPTION_BUNDLE="exception/exception";
+    protected static final ResourceBundle errorCodeFormatStrings = ResourceBundle.getBundle(EXCEPTION_BUNDLE,
+        Locale.getDefault());
     private static final long serialVersionUID = 8822403836288820982L;
+
 
     /**
      * Construct with an error code and cause exception.
@@ -33,8 +41,8 @@ public class StudioException extends Exception {
      * @param errorCode {@link org.craftercms.studio.commons.exception.StudioException.ErrorCode}
      * @param cause     original cause exception
      */
-    public StudioException(final ErrorCode errorCode, final Throwable cause) {
-        super(LookUpErrorMessage(errorCode), cause);
+    public StudioException(final ErrorCode errorCode, final Throwable cause, final String... args) {
+        super(FormatErrorMessage(errorCode, args), cause);
     }
 
     /**
@@ -42,12 +50,13 @@ public class StudioException extends Exception {
      *
      * @param errorCode {@link org.craftercms.studio.commons.exception.StudioException.ErrorCode}
      */
-    public StudioException(final ErrorCode errorCode) {
-        super(LookUpErrorMessage(errorCode));
+    public StudioException(final ErrorCode errorCode, final String... args) {
+        super(FormatErrorMessage(errorCode, args));
     }
 
-    protected static String LookUpErrorMessage(final ErrorCode errorCode) {
-        return errorCode.toString(); // TODO Implement this to look up in a resource bundle
+    protected static String FormatErrorMessage(final ErrorCode errorCode, final String... args) {
+        return String.format(errorCodeFormatStrings.getString(errorCode.toString()),
+            args);
     }
 
     public enum ErrorCode {

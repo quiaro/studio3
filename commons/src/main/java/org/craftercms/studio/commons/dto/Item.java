@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -69,8 +70,10 @@ public class Item implements Comparable<Item> {
     private boolean placeInNav;
     private boolean disabled;
 
+    @JsonIgnore
     private InputStream inputStream;
 
+    @JsonIgnore
     public InputStream getInputStream() {
         return inputStream;
     }

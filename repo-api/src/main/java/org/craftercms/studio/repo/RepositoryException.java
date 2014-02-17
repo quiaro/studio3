@@ -27,6 +27,10 @@ public abstract class RepositoryException  extends StudioException{
 
     private static final long serialVersionUID = 3582031699646144755L;
 
+    public RepositoryException(final Throwable cause, String ... args) {
+        super(ErrorCode.REPOSITORY_ERROR, cause, args);
+    }
+
     public RepositoryException(final Throwable cause) {
         super(ErrorCode.REPOSITORY_ERROR, cause);
     }

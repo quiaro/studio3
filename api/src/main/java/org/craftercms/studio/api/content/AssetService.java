@@ -94,14 +94,13 @@ public interface AssetService {
     /**
      * Get an asset's InputStream.
      *
-     *
      * @param context the caller's context
      * @param site    the site to use
      * @param itemId  the item to read
      * @return InputStream to the content
      * @throws StudioException
      */
-    InputStream getInputStream(final Context context, final String site, final ItemId itemId) throws StudioException;
+    InputStream getInputStream(Context context, String site, ItemId itemId) throws StudioException;
 
     /**
      * Update an asset given an InputStream.

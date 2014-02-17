@@ -75,7 +75,7 @@ public class AssetServiceController {
     )
     @ApiModel(type = Item.class)
     @RequestMapping(value = "/create/{site}",
-        params = {"parent_id", "file_name", "file", "mime_type", "properties"},
+        params = {"parent_id", "file_name", "mime_type"},
         method = RequestMethod.POST
     )
     @ResponseBody
@@ -110,95 +110,7 @@ public class AssetServiceController {
         return assetService.create(context, site, parentId, fileName, contentStream, mimeType, properties);
     }
 
-    /**
-     * Add asset content to repository.
-     *
-     * @param site          site identifier
-     * @param parentId      parent identifier
-     * @param fileName      asset file name
-     * @param content       asset content
-     * @param mimeType      mime type
-     * @param properties    additional properties
-     * @return              item representing given asset in repository
-     * @throws StudioException
-     */
-    @ApiErrors(
-        @ApiError(code = 400, reason = "Bad request")
-    )
-    @ApiModel(type = Item.class)
-    @RequestMapping(value = "/create/{site}",
-        params = {"parent_id", "file_name", "content", "mime_type", "properties"},
-        method = RequestMethod.POST
-    )
-    @ResponseBody
-    public Item create(
-            @ApiParam(name = "site", required = true, value = "String")
-            @PathVariable String site,
 
-            @ApiParam(name = "parent_id", required = true, value = "String")
-            @RequestParam(value = "parent_id") String parentId,
-
-            @ApiParam(name = "file_name", required = true, value = "String")
-            @RequestParam(value = "file_name") String fileName,
-
-            @ApiParam(name = "content", required = true, value = "String")
-            @RequestParam(value = "content") String content,
-
-            @ApiParam(name = "mime_type", required = true, value = "String")
-            @RequestParam(value = "mime_type") String mimeType,
-
-            @ApiParam(name = "properties", required = false, value = "String")
-            @RequestParam(value = "properties", required = false) Map<String, String> properties
-    ) throws StudioException {
-
-        Context context = RestControllerUtils.createMockContext();
-        return assetService.create(context, site, parentId, fileName, content, mimeType, properties);
-    }
-
-    /**
-     * Add asset content to repository.
-     *
-     * @param site          site identifier
-     * @param parentId      parent identifier
-     * @param fileName      asset file name
-     * @param content       asset content
-     * @param mimeType      mime type
-     * @param properties    additional properties
-     * @return              item representing given asset in repository
-     * @throws StudioException
-     */
-    @ApiErrors(
-        @ApiError(code = 400, reason = "Bad request")
-    )
-    @ApiModel(type = Item.class)
-    @RequestMapping(value = "/create/{site}",
-        params = {"parent_id", "file_name", "content", "mime_type", "properties"},
-        method = RequestMethod.POST
-    )
-    @ResponseBody
-    public Item create(
-            @ApiParam(name = "site", required = true, value = "String")
-            @PathVariable String site,
-
-            @ApiParam(name = "parent_id", required = true, value = "String")
-            @RequestParam(value = "parent_id") String parentId,
-
-            @ApiParam(name = "file_name", required = true, value = "String")
-            @RequestParam(value = "file_name") String fileName,
-
-            @ApiParam(name = "content", required = true, value = "byte[]")
-            @RequestParam(value = "content") byte[] content,
-
-            @ApiParam(name = "mime_type", required = true, value = "String")
-            @RequestParam(value = "mime_type") String mimeType,
-
-            @ApiParam(name = "properties", required = false, value = "String")
-            @RequestParam(value = "properties", required = false) Map<String, String> properties
-    ) throws StudioException {
-
-        Context context = RestControllerUtils.createMockContext();
-        return assetService.create(context, site, parentId, fileName, content, mimeType, properties);
-    }
 
     /**
      * Read asset meta-data for given item id.
@@ -269,7 +181,7 @@ public class AssetServiceController {
         @ApiError(code = 400, reason = "Bad request")
     )
     @ApiModel(type = InputStream.class)
-    @RequestMapping(value = "/get_content",
+    @RequestMapping(value = "/get_content/{site}",
                     params = { "item_id" },
                     method = RequestMethod.GET)
     public void getInputStream(
@@ -315,7 +227,7 @@ public class AssetServiceController {
     )
     @ApiModel(type = Item.class)
     @RequestMapping(value = "/update/{site}",
-                    params = { "item_id", "file", "properties" },
+                    params = { "item_id"},
                     method = RequestMethod.POST
     )
     @ResponseBody
@@ -329,8 +241,8 @@ public class AssetServiceController {
             @ApiParam(name = "file", required = true, value = "org.springframework.web.multipart.MultipartFile")
             @RequestParam(value = "file") MultipartFile file,
 
-            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
-            @RequestParam(value = "properties") Map<String, String> properties
+            @ApiParam(name = "properties", required = false, value = "Map<String, String>")
+            @RequestParam(value = "properties", required = false) Map<String, String> properties
     ) throws StudioException {
 
         Context context = RestControllerUtils.createMockContext();
@@ -341,82 +253,6 @@ public class AssetServiceController {
         } catch (IOException e) {
             throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
         }
-        return assetService.update(context, site, id, content, properties);
-    }
-
-    /**
-     * Update asset with given text.
-     *
-     * @param site          site identifier
-     * @param itemId        asset item id
-     * @param content       asset content
-     * @param properties    additional properties
-     * @return              item representing asset
-     * @throws StudioException
-     */
-    @ApiErrors(
-        @ApiError(code = 400, reason = "Bad request")
-    )
-    @ApiModel(type = Item.class)
-    @RequestMapping(value = "/update/{site}",
-        params = { "item_id", "content", "properties" },
-        method = RequestMethod.POST
-    )
-    @ResponseBody
-    public Item update(
-            @ApiParam(name = "site", required = true, value = "String")
-            @PathVariable String site,
-
-            @ApiParam(name = "item_id", required = true, value = "String")
-            @RequestParam(value = "item_id") String itemId,
-
-            @ApiParam(name = "content", required = true, value = "String")
-            @RequestParam(value = "content") String content,
-
-            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
-            @RequestParam(value = "properties") Map<String, String> properties
-    ) throws StudioException {
-
-        Context context = RestControllerUtils.createMockContext();
-        ItemId id = new ItemId(itemId);
-        return assetService.update(context, site, id, content, properties);
-    }
-
-    /**
-     * Update asset from given content byte array.
-     *
-     * @param site          site identifier
-     * @param itemId        asset identifier
-     * @param content       asset content
-     * @param properties    additional properties
-     * @return              item representing asset
-     * @throws StudioException
-     */
-    @ApiErrors(
-        @ApiError(code = 400, reason = "Bad request")
-    )
-    @ApiModel(type = Item.class)
-    @RequestMapping(value = "/update/{site}",
-        params = { "item_id", "content", "properties" },
-        method = RequestMethod.POST
-    )
-    @ResponseBody
-    public Item update(
-            @ApiParam(name = "site", required = true, value = "String")
-            @PathVariable String site,
-
-            @ApiParam(name = "item_id", required = true, value = "String")
-            @RequestParam(value = "item_id") String itemId,
-
-            @ApiParam(name = "content", required = true, value = "byte[]")
-            @RequestParam(value = "content") byte[] content,
-
-            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
-            @RequestParam(value = "properties") Map<String, String> properties
-    ) throws StudioException {
-
-        Context context = RestControllerUtils.createMockContext();
-        ItemId id = new ItemId(itemId);
         return assetService.update(context, site, id, content, properties);
     }
 

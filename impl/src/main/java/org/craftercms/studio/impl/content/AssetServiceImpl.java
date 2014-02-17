@@ -142,8 +142,6 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
                        final Map<String, String> properties) throws StudioException {
-
-
         LockHandle lockHandle = new LockHandle();
         contentManager.write(context, site, itemId, lockHandle, content);
         return contentManager.read(context, site, itemId.getItemId());
