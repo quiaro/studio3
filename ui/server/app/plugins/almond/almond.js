@@ -9,16 +9,24 @@ define(['globals', 'text!./templates/almond.tpl.html'],
     injector.invoke(['NgRegistry', '$log',
         function(NgRegistry, $log) {
 
-            $log.log('Plugin almond html content: ', html);
+            NgRegistry
+                .addController('NewCtrl', 
+                    ['$scope', '$timeout', function ($scope, $timeout) {
 
-            // Use NgRegistry to register a new controller within the app
-            // NgRegistry
-            //     .addController('NewCtrl', ['$scope', function ($scope) {
-            //         $scope.newMethod = function (myVar) {
-            //             $log.log("newMethod called with param: ", myVar);
-            //         };
-            //     }]);
+                    $timeout( function() {
+                        $scope.$apply( function() {
+                            // Make sure the templates are updated with the values in the scope
+                            $scope.idValue = "myModuleId";
+                            $scope.newMethod = function (myVar) {
+                                $log.log("newMethod called with param: ", myVar);
+                            };
+                        });
+                    });
+
+                }]);
 
         }
     ]);
+
+    return html;
 });

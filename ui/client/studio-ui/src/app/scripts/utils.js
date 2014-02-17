@@ -88,9 +88,9 @@ angular.module('crafter.studio-ui.Utils', [])
                             require.config(modConfig);
 
                             me.loadModule(file)
-                                .then ( function() {
-                                    $log.log('Module ' + moduleName + ' was loaded successfully');
-                                    dfd.resolve();
+                                .then ( function(moduleValue) {
+                                    $log.log('Module ' + moduleName + ' was loaded successfully!');
+                                    dfd.resolve(moduleValue);
                                 }, function () {
                                     throw new Error('Unable to load module: ' + moduleName);
                                 });
@@ -118,8 +118,8 @@ angular.module('crafter.studio-ui.Utils', [])
 
                 $log.log('Loading file: ' + mainFile);
 
-                require([ mainFile ], function() {
-                    deferred.resolve();
+                require([ mainFile ], function(moduleValue) {
+                    deferred.resolve(moduleValue);
                 });
 
                 return deferred;

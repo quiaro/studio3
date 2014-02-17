@@ -90,6 +90,7 @@ define(['globals'], function( globals ) {
 
                 return {
                         restrict: "C",
+                        scope: {},
                         link : function postLink (scope, element, attrs) {
 
                                 var containerId;
@@ -106,20 +107,27 @@ define(['globals'], function( globals ) {
                                 ConfigService.getPlugins(containerId)
                                     .then( function (configObj) {
 
-                                        var pluginList = configObj.plugins;
+                                        var pluginList = configObj.plugins,
+                                            promiseList;
+
                                         $log.log('Plugins found for "' + containerId + '":', pluginList);
 
-                                        Utils.loadModules(pluginList, globals.plugins_url);
+                                        promiseList = Utils.loadModules(pluginList, globals.plugins_url);
+
+                                        $.when.apply(window, promiseList).then( function(values) {
+
+                                            console.log('Promise values: ', values);
+
+                                            // Append templates to directive element
+                                            // scope.templates.forEach( function (tpl) {
+                                                element.append(values);
+                                            // });
+
+                                            // compile the plugins' templates and create the bindings
+                                            // between their models and their templates
+                                            $compile(element.contents())(scope);
+                                        });
                                     });
-
-                                // Append widget specific templates to directive element
-                                // scope.templates.forEach( function (tpl) {
-                                //     element.append(tpl);
-                                // });
-
-                                // compile the widgets' templates and create the bindings
-                                // between their models and their templates
-                                // $compile(element.contents())(scope);
                         }
                     };
             }]);
