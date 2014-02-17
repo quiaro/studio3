@@ -95,8 +95,8 @@ public class AssetServiceController {
             @ApiParam(name = "mime_type", required = true, value = "String")
             @RequestParam(value = "mime_type") String mimeType,
 
-            @ApiParam(name = "properties", required = true, value = "Map<String, String>")
-            @RequestParam(value = "properties") Map<String, String> properties)
+            @ApiParam(name = "properties", required = false, value = "Map<String, String>")
+            @RequestParam(value = "properties", required = false) Map<String, String> properties)
 
         throws StudioException {
 
@@ -147,8 +147,8 @@ public class AssetServiceController {
             @ApiParam(name = "mime_type", required = true, value = "String")
             @RequestParam(value = "mime_type") String mimeType,
 
-            @ApiParam(name = "properties", required = true, value = "String")
-            @RequestParam(value = "properties") Map<String, String> properties
+            @ApiParam(name = "properties", required = false, value = "String")
+            @RequestParam(value = "properties", required = false) Map<String, String> properties
     ) throws StudioException {
 
         Context context = RestControllerUtils.createMockContext();
@@ -192,8 +192,8 @@ public class AssetServiceController {
             @ApiParam(name = "mime_type", required = true, value = "String")
             @RequestParam(value = "mime_type") String mimeType,
 
-            @ApiParam(name = "properties", required = true, value = "String")
-            @RequestParam(value = "properties") Map<String, String> properties
+            @ApiParam(name = "properties", required = false, value = "String")
+            @RequestParam(value = "properties", required = false) Map<String, String> properties
     ) throws StudioException {
 
         Context context = RestControllerUtils.createMockContext();
