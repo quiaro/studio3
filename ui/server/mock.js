@@ -25,6 +25,9 @@ module.exports = {
         }, {
             arguments: { module: "crafter.studio-ui.section.dashboard"},
             path: '/config/list/dashboard/descriptor',
+        }, {
+            arguments: { module: "crafter.studio-ui.plugins.almond"},
+            path: '/config/list/almond/descriptor',
         }]
     }, {
         method: 'get',

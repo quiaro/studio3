@@ -5,8 +5,8 @@ angular.module('crafter.studio-ui.Utils', [])
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['$log',
-        function($log) {
+    .service('Utils', ['$log', 'ConfigService',
+        function($log, ConfigService) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
@@ -34,16 +34,73 @@ angular.module('crafter.studio-ui.Utils', [])
             };
 
             /*
-             *  @return specificUrl only if it includes a protocol; otherwise, prepend url to the
-             *          specificUrl (add a forward slash between them, if necessary)
+             * @param url: base url value
+             * @param path: path or url value
+             * @return url value: the value returned will be that of path if it includes a protocol;
+             *                    otherwise, the value of path will be appended to that of url
+             *                    (a forward slash will be added between them, if necessary)
              */
-            this.getUrl = function getUrl(url, specificUrl) {
-                return (specificUrl.indexOf('://') !== -1) ?
-                            specificUrl :
-                            (specificUrl.indexOf('/') === 0) ?
-                                url + specificUrl :
-                                url + '/' + specificUrl;
-            }
+            this.getUrl = function getUrl(url, path) {
+                return (path.indexOf('://') !== -1) ?
+                            path :
+                            (path.indexOf('/') === 0) ?
+                                url + path :
+                                url + '/' + path;
+            };
+
+            /*
+             * Loads an array of modules (and all their file dependencies) based on their names.
+             * Modules must be of the same type (i.e. system modules or plugins) since the same
+             * base_url value will be used to resolve their file locations.
+             *
+             * @param moduleNamesArray: an array of module names. A configuration file will be
+             *                          returned for each one of these module names.
+             * @param base_url: the base url that will be used to resolve the paths for the module's
+             *                  main js files.
+             * @return promiseList: a list of deferred objects for each one of the modules. These
+             *                      deferred objects will be resolved as modules finish downloading.
+             */
+
+            this.loadModules = function loadModules(moduleNamesArray, base_url) {
+                var promiseList = [],
+                    me = this;
+
+                moduleNamesArray.forEach( function(moduleName) {
+                    var dfd = $.Deferred();
+                    promiseList.push(dfd);
+
+                    ConfigService.loadConfiguration(moduleName)
+                        .then( function(configObj) {
+
+                            var file = me.getUrl(base_url, configObj.base_url) + configObj.main,
+                                modConfig = { config: {} };
+
+                            // Set configuration specific to the module
+                            modConfig.config[file] = {
+                                name: configObj.name,
+                                main: file,
+                                config: configObj.config
+                            };
+
+                            $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
+
+                            // Make module-specific configuration available
+                            require.config(modConfig);
+
+                            me.loadModule(file)
+                                .then ( function() {
+                                    $log.log('Module ' + moduleName + ' was loaded successfully');
+                                    dfd.resolve();
+                                }, function () {
+                                    throw new Error('Unable to load module: ' + moduleName);
+                                });
+                        }, function () {
+                            throw new Error('Unable to load configuration for ' + moduleName);
+                        });
+                    });
+
+                return promiseList;
+            };
 
             /*
              * Loads an app's module (and all its file dependencies)

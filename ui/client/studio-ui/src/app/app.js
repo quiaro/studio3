@@ -92,8 +92,7 @@
             ConfigService.loadConfiguration(init_module)
                 .then( function(configObj) {
 
-                    var promiseList = [],
-                        modConfig,
+                    var promiseList,
                         templatesUrl;
 
                     CONFIG = configObj;
@@ -106,57 +105,27 @@
                         GLOBALS.plugins_url = Utils.getUrl(CONFIG.base_url, GLOBALS.plugins_url);
                     }
 
-                    // Serves configuration to all modules and specific to each module (config property)
-                    modConfig = {
-                                    baseUrl: CONFIG.base_url,
-                                    map: {
-                                        '*': {
-                                            'css': CONFIG.requirejs_css
-                                        }
-                                    },
-                                    paths: CONFIG.module_paths,
-                                    config: {
-                                        "globals": GLOBALS
-                                    },
-                                };
-
                     $log.info('Config info for ' + init_module + ': ', CONFIG);
+
+                    // Set app configuration
+                    require.config({
+                        baseUrl: CONFIG.base_url,
+                        map: {
+                            '*': {
+                                'css': CONFIG.requirejs_css
+                            }
+                        },
+                        paths: CONFIG.module_paths,
+                        config: {
+                            "globals": GLOBALS
+                        },
+                    });
 
                     if (!('globals' in CONFIG.module_paths)) {
                         $log.error("No path specified for globals module");
                     }
 
-                    CONFIG.modules.forEach( function(moduleName) {
-                        var dfd = $.Deferred();
-                        promiseList.push(dfd);
-
-                        ConfigService.loadConfiguration(moduleName)
-                            .then( function(configObj) {
-
-                                var file = Utils.getUrl(CONFIG.base_url, configObj.base_url) + configObj.main;
-
-                                // Set configuration specific to the module
-                                modConfig.config[file] = {
-                                    name: configObj.name,
-                                    main: file,
-                                    config: configObj.config
-                                }
-                                $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
-
-                                // Make module-specific configuration available
-                                require.config(modConfig);
-
-                                Utils.loadModule(file)
-                                    .then ( function() {
-                                        $log.log('Module ' + moduleName + ' was loaded successfully');
-                                        dfd.resolve();
-                                    }, function () {
-                                        throw new Error('Unable to load module: ' + moduleName);
-                                    });
-                            }, function () {
-                                throw new Error('Unable to load configuration for ' + moduleName);
-                            });
-                    });
+                    promiseList = Utils.loadModules(CONFIG.modules, CONFIG.base_url);
 
                     $.when.apply(window, promiseList).then( function() {
 
