@@ -112,16 +112,17 @@
                         baseUrl: CONFIG.base_url,
                         map: {
                             '*': {
-                                'css': CONFIG.requirejs_css
+                                'css': CONFIG.requirejs.css,
+                                'text': CONFIG.requirejs.text
                             }
                         },
-                        paths: CONFIG.module_paths,
+                        paths: CONFIG.requirejs.module_paths,
                         config: {
                             "globals": GLOBALS
                         },
                     });
 
-                    if (!('globals' in CONFIG.module_paths)) {
+                    if (!('globals' in CONFIG.requirejs.module_paths)) {
                         $log.error("No path specified for globals module");
                     }
 

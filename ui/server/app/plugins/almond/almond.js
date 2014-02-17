@@ -1,5 +1,5 @@
-define(['globals'], 
-    function( globals ) {
+define(['globals', 'text!./templates/almond.tpl.html'], 
+    function( globals, html ) {
 
     'use strict';
 
@@ -9,7 +9,7 @@ define(['globals'],
     injector.invoke(['NgRegistry', '$log',
         function(NgRegistry, $log) {
 
-            $log.log('Plugin almond is now loaded');
+            $log.log('Plugin almond html content: ', html);
 
             // Use NgRegistry to register a new controller within the app
             // NgRegistry

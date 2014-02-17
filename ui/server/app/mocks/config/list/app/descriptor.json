@@ -5,7 +5,15 @@
 
     "base_url": "http://localhost:9000/studio-ui",
 
-    "requirejs_css": "lib/require-css/js/css",
+    "requirejs": {
+        "css": "lib/require-css/js/css",
+        "text": "lib/requirejs-text/js/text",
+        "module_paths": {
+            "globals": "modules/common/globals",
+            "common": "modules/common/common",
+            "directives": "modules/common/directives"
+        }
+    },
 
     "module_globals": {
         "dom_root": "#studio-ui",
@@ -15,12 +23,6 @@
         "unauthorized_url": "/unauthorized",
         "templates_url": "modules/common/templates",
         "plugins_url": "plugins"
-    },
-
-    "module_paths": {
-        "globals": "modules/common/globals",
-        "common": "modules/common/common",
-        "directives": "modules/common/directives"
     },
 
     "modules": [
