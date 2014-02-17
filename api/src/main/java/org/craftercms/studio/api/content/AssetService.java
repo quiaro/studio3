@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
-import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
 
 /**
@@ -100,7 +99,7 @@ public interface AssetService {
      * @return InputStream to the content
      * @throws StudioException
      */
-    InputStream getInputStream(Context context, String site, ItemId itemId);
+    InputStream getInputStream(Context context, String site, String itemId);
 
     /**
      * Update an asset given an InputStream.
@@ -113,7 +112,7 @@ public interface AssetService {
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item update(Context context, String site, ItemId itemId, InputStream content, Map<String,
+    Item update(Context context, String site, String itemId, InputStream content, Map<String,
         String> properties) throws StudioException;
 
     /**
@@ -127,7 +126,7 @@ public interface AssetService {
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item update(Context context, String site, ItemId itemId, String content, Map<String,
+    Item update(Context context, String site, String itemId, String content, Map<String,
         String> properties) throws StudioException;
 
     /**
@@ -141,7 +140,7 @@ public interface AssetService {
      * @return the Item descriptor
      * @throws StudioException
      */
-    Item update(Context context, String site, ItemId itemId, byte[] content, Map<String,
+    Item update(Context context, String site, String itemId, byte[] content, Map<String,
         String> properties) throws StudioException;
 
     /**
@@ -152,7 +151,7 @@ public interface AssetService {
      * @param itemId  the asset to delete
      * @throws StudioException
      */
-    void delete(Context context, String site, ItemId itemId) throws StudioException;
+    void delete(Context context, String site, String itemId) throws StudioException;
 
     /**
      * Find assets matching a query.
