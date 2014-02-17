@@ -21,8 +21,9 @@ import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.craftercms.studio.repo.content.VersionService;
-import org.craftercms.studio.impl.AbstractManagerTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Dejan Brkic
  */
-public class VersionServiceImplTest extends AbstractManagerTest {
+public class VersionServiceImplTest extends AbstractServiceTest {
 
     @Autowired
     @Mock
@@ -48,7 +49,7 @@ public class VersionServiceImplTest extends AbstractManagerTest {
     @InjectMocks
     private VersionServiceImpl versionManagerSUT;
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testHistory() throws Exception {
         when(this.versionServiceMock.getAllVersions(Mockito.anyString(), Mockito.anyString())).thenReturn
             (createItemListMock());
@@ -62,7 +63,7 @@ public class VersionServiceImplTest extends AbstractManagerTest {
     //@Test(expected = ItemNotFoundException.class)
     public void testHistoryItemDoesNotExist() throws Exception {
         when(this.versionServiceMock.getAllVersions(Mockito.anyString(), Mockito.anyString())).thenThrow
-            (ItemNotFoundException.class);
+            (StudioException.class);
 
         String testItemId = UUID.randomUUID().toString();
         this.versionManagerSUT.history(null, testItemId);

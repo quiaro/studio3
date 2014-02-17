@@ -18,6 +18,7 @@ package org.craftercms.studio.api.search;
 
 import org.craftercms.studio.commons.dto.ResultSet;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Search Service.
@@ -30,8 +31,8 @@ public interface SearchService {
      * @param query query
      * @return JSON result?
      */
-    String studio_search(Context context, String query);
+    String studio_search(Context context, String query) throws StudioException;
 
 
-    String delivery_search();
+    String delivery_search() throws StudioException;
 }

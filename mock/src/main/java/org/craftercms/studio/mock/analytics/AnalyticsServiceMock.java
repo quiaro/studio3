@@ -23,6 +23,7 @@ import org.craftercms.studio.api.analytics.AnalyticsService;
 import org.craftercms.studio.api.analytics.ReportException;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Analytics Manager Mock Implementation.
@@ -34,7 +35,7 @@ public class AnalyticsServiceMock implements AnalyticsService {
 
     @Override
     public AnalyticsReport generateReport(final Context context, final String site, final String reportId, final Map
-        <String, Object> params) throws ItemNotFoundException, ReportException {
-        throw new NotImplementedException("Not implemented yet!");
+        <String, Object> params) throws StudioException, ReportException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

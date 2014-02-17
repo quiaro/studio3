@@ -67,7 +67,7 @@ public class GridFSServiceImpl implements GridFSService {
             return file.getId().toString();
         } catch (MongoException ex) {
             log.error("Unable to save \"" + fileName + "\"file in GridFs due a error", ex);
-            throw new MongoRepositoryException("Unable to save File", ex);
+            throw new MongoRepositoryException(ex);
         }
     }
 
@@ -92,7 +92,7 @@ public class GridFSServiceImpl implements GridFSService {
         } catch (MongoException ex) {
             log.error("Unable to get File with id {} due a MongoException {} ", fileId, ex.getMessage());
             log.error("DataAccessException is ", ex);
-            throw new MongoRepositoryException("Unable to get File", ex);
+            throw new MongoRepositoryException(ex);
         }
     }
 

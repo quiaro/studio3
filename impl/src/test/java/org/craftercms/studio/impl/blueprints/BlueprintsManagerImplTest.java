@@ -20,7 +20,8 @@ package org.craftercms.studio.impl.blueprints;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -29,11 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Unit tests for Blueprints Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class BlueprintsManagerImplTest extends AbstractManagerTest {
+public class BlueprintsManagerImplTest extends AbstractServiceTest {
 
     @InjectMocks
     @Autowired
@@ -44,62 +43,62 @@ public class BlueprintsManagerImplTest extends AbstractManagerTest {
 
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testList() throws Exception {
         this.blueprintsManagerSUT.list(null, createMapMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemove() throws Exception {
         this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidBlueprintId() throws Exception {
         this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveBlueprintDoesNotExist() throws Exception {
         this.blueprintsManagerSUT.remove(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testInstall() throws Exception {
         this.blueprintsManagerSUT.install(null, RandomStringUtils.randomAlphabetic(20));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSite() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSiteInvalidSite() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSiteInvalidBlueprintName() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSiteInvalidDestination() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSiteDestinationDoesNotExist() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCreateBlueprintFromSiteBlueprintExistsOnDestination() throws Exception {
         this.blueprintsManagerSUT.createBlueprintFromSite(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(150));

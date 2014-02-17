@@ -20,6 +20,7 @@ package org.craftercms.studio.repo.content;
 import java.io.InputStream;
 import java.util.List;
 
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
@@ -53,7 +54,7 @@ public interface ContentService {
      * @param path   path
      * @return content id
      */
-    Item create(String ticket, String site, String path, Item item) throws InvalidContextException, RepositoryException;
+    Item create(String ticket, String site, String path, Item item) throws StudioException, RepositoryException;
 
     /**
      * Read content from repository.
@@ -63,20 +64,19 @@ public interface ContentService {
      * @param site      Site
      * @return content item
      * @throws org.craftercms.studio.repo.RepositoryException                   If unable to get the actual content.
-     * @throws org.craftercms.studio.commons.exception.ObjectNotFoundException if there is no content for that file
+     * @throws org.craftercms.studio.commons.exception.StudioException         if there is no content for that file
      *                                                                         id (must likely given id is a folder
      *                                                                         not a file)
-     * @throws org.craftercms.studio.commons.exception.InvalidContextException If the node is a File but don't have
+     * @throws org.craftercms.studio.commons.exception.StudioException If the node is a File but don't have
      *                                                                         an inputstream (repo may be broken)
      */
-    Item read(String ticket, String site, String contentId) throws RepositoryException, ObjectNotFoundException,
-        InvalidContextException;
+    Item read(String ticket, String site, String contentId) throws RepositoryException, StudioException;
 
     /**
      * Update content in repository.
      *
      * @param ticket    security ticket
-     * @param contentId content id
+     * @param item      item
      * @param content   content
      */
     void update(String ticket, Item item, InputStream content);

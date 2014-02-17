@@ -17,6 +17,7 @@
 package org.craftercms.studio.api.configuration;
 
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Configuration Service.
@@ -32,7 +33,7 @@ public interface ConfigurationService {
      * @param urn     URN of the resource
      * @return configuration associated with the provided URN
      */
-    String read(Context context, String site, String urn);
+    String read(Context context, String site, String urn) throws StudioException;
 
     /**
      * Create or update a configuration for the provided URN.
@@ -42,5 +43,5 @@ public interface ConfigurationService {
      * @param urn           URN of the resource
      * @param configuration configuration to store
      */
-    void write(Context context, String site, String urn, String configuration);
+    void write(Context context, String site, String urn, String configuration) throws StudioException;
 }

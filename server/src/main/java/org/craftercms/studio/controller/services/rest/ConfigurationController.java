@@ -28,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.craftercms.studio.api.configuration.ConfigurationService;
 import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.controller.services.rest.dto.ConfigurationWriteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,34 +56,29 @@ public class ConfigurationController {
     @RequestMapping(value = "/configuration/{site}", method = RequestMethod.GET)
     @ResponseBody
     public Configuration configuration(@PathVariable final String site,
-                                             @RequestParam(required = true) final String module) {
-        return this.configurationService.getConfiguration(null, site, module);
+                                             @RequestParam(required = true) final String module) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @RequestMapping(value = "/configure/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void configure(@PathVariable final String site, @RequestParam(required = true) final String module,
-                          @Valid @RequestBody final Configuration moduleConfiguration) {
-        this.configurationService.configure(null, site, module, moduleConfiguration);
+                          @Valid @RequestBody final Configuration moduleConfiguration) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @RequestMapping(value = "/content/{site}", method = RequestMethod.GET)
     public void content(@PathVariable final String site, @RequestParam(required = true) final String object,
-                        final HttpServletRequest request, HttpServletResponse response) {
-        final InputStream content = this.configurationService.getContent(null, site, new ItemId(object));
-        try {
-            final OutputStream out = response.getOutputStream();
-            IOUtils.copy(content, out);
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+                        final HttpServletRequest request, HttpServletResponse response) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+
     }
 
     @RequestMapping(value = "/write/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void write(@PathVariable final String site, @RequestParam(required = true) final String object,
-                      @Valid @RequestBody(required = true) final ConfigurationWriteRequest writeRequest) {
+                      @Valid @RequestBody(required = true) final ConfigurationWriteRequest writeRequest) throws StudioException {
         InputStream contentStream = IOUtils.toInputStream(writeRequest.getContent());
-        this.configurationService.write(null, site, new ItemId(object), contentStream);
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

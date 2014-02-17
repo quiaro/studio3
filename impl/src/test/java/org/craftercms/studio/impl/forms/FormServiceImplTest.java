@@ -20,7 +20,8 @@ package org.craftercms.studio.impl.forms;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -29,11 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Unit test for Forms Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class FormServiceImplTest extends AbstractManagerTest {
+public class FormServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
     @Autowired
@@ -44,98 +43,98 @@ public class FormServiceImplTest extends AbstractManagerTest {
 
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testList() throws Exception {
         this.formsManagerSUT.list(null, RandomStringUtils.randomAlphabetic(10), createStringListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testListInvalidSite() throws Exception {
         this.formsManagerSUT.list(null, RandomStringUtils.randomAlphabetic(10), createStringListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdate() throws Exception {
         this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateInvalidSite() throws Exception {
         this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateInvalidFormDefinition() throws Exception {
         this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateNewFormDefinition() throws Exception {
         this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateExistingFormDefinition() throws Exception {
         this.formsManagerSUT.update(null, RandomStringUtils.randomAlphabetic(10), createFormDefinitionMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemove() throws Exception {
         this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidSite() throws Exception {
         this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidFormId() throws Exception {
         this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveFormDoesNotExist() throws Exception {
         this.formsManagerSUT.remove(null, RandomStringUtils.randomAlphabetic(10), UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopy() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopyInvalidSite() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopyInvalidSource() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopyEmptySource() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopyInvalidDestination() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopyDestinationDoesNotExist() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testCopySourceExistsAtDestination() throws Exception {
         this.formsManagerSUT.copy(null, RandomStringUtils.randomAlphabetic(10),
             RandomStringUtils.randomAlphabetic(150), RandomStringUtils.randomAlphabetic(150));

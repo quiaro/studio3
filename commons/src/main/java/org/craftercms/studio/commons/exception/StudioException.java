@@ -58,6 +58,9 @@ public class StudioException extends Exception {
         ACCESS_DENIED,
         INVALID_ACTIVITY,
         STALE_ITEM,
-        SYSTEM_ERROR
+        SYSTEM_ERROR,
+        REPOSITORY_ERROR,
+        INVALID_CONTENT,
+        REPORT_ERROR
     }
 }

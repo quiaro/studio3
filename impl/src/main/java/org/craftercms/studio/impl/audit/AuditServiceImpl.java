@@ -22,25 +22,24 @@ import java.util.List;
 import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 
 /**
  * Audit Manager Implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 public class AuditServiceImpl implements AuditService {
 
 
     @Override
-    public List<Activity> getActivities(final Context context, final String site, final List<String> filters) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<Activity> getActivities(final Context context, final String site, final List<String> filters) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public Activity logActivity(final Context context, final String site, final Activity activity) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Activity logActivity(final Context context, final String site, final Activity activity) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

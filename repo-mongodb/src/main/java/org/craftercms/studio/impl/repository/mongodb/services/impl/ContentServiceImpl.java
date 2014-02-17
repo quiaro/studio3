@@ -22,6 +22,7 @@ import java.util.List;
 import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.repo.RepositoryException;
 import org.craftercms.studio.repo.content.ContentService;
 import org.craftercms.studio.repo.content.PathService;
@@ -88,7 +89,7 @@ public class ContentServiceImpl implements ContentService {
             return nodeToItem(newFileNode, ticket, site, null);
         } else {
             log.error("Folder node was not created ");
-            throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
+            throw new MongoRepositoryException();
         }
 
     }
@@ -125,7 +126,7 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public Item create(final String ticket, final String site, final String path,
-                       final Item item) throws InvalidContextException, RepositoryException {
+                       final Item item) throws StudioException, RepositoryException {
         //Validates that all inputs are ok
         if (StringUtils.isBlank(ticket)) {
             throw new IllegalArgumentException("Ticket can't be null empty or whitespace");
@@ -150,7 +151,7 @@ public class ContentServiceImpl implements ContentService {
             return nodeToItem(createdFolder, ticket, site, null);
         } else {
             log.error("Folder node was not created ");
-            throw new MongoRepositoryException("Unable to create a folder node, due a unknown reason");
+            throw new MongoRepositoryException();
         }
     }
 
@@ -178,7 +179,7 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public Item read(final String ticket, final String site, final String contentId) throws RepositoryException,
-        InvalidContextException {
+        StudioException {
 
         //Validates that all inputs are ok
         if (StringUtils.isBlank(ticket)) {
@@ -203,14 +204,13 @@ public class ContentServiceImpl implements ContentService {
             // File id can't be null,empty or whitespace
             if (StringUtils.isBlank(fileId)) {
                 log.error("Node {} is broken, since file id is not a valid ID", item, fileId);
-                throw new MongoRepositoryException("Content with Id " + item.toString() + "Is broken since file Id "
-                    + fileId + " is not a valid file id");
+                throw new MongoRepositoryException();
             }
             InputStream fileInput = nodeService.getFile(fileId);
             // Content should exist with this id, or something is broken.
             if (fileInput == null) {
                 log.error("File with Id {} is not found, node is broken", fileId);
-                throw new MongoRepositoryException("File with id is not found, node is broken");
+                throw new MongoRepositoryException();
             }
             //Now  finally return it .
 
@@ -218,7 +218,7 @@ public class ContentServiceImpl implements ContentService {
         } else {
             // can't read folders
             log.debug("Content is a folder");
-            throw new InvalidContextException("Content with id " + contentId + " is a folder");
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTENT);
         }
 
     }

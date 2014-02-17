@@ -25,6 +25,7 @@ import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Version manager implementation.
@@ -36,8 +37,8 @@ public class VersionServiceImpl implements VersionService {
     org.craftercms.studio.repo.content.VersionService versionService;
 
     @Override
-    public Tree<Version> history(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Tree<Version> history(final Context context, final String itemId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
         /*if (StringUtils.isEmpty(itemId)) {
             throw new IllegalArgumentException("Item id cannot be empty");
         }
@@ -51,12 +52,12 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public void revert(final Context context, final String itemId, final String revertVersion) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void revert(final Context context, final String itemId, final String revertVersion) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public DiffResult diff(final Context context, final String itemId, final String version1, final String version2) {
-        throw new NotImplementedException("Not implemented yet!");
+    public DiffResult diff(final Context context, final String itemId, final String version1, final String version2) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

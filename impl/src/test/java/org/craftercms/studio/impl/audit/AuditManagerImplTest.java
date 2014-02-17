@@ -18,7 +18,8 @@
 package org.craftercms.studio.impl.audit;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -27,11 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Unit tests for Audit Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class AuditManagerImplTest extends AbstractManagerTest {
+public class AuditManagerImplTest extends AbstractServiceTest {
 
     @InjectMocks
     @Autowired
@@ -42,29 +41,29 @@ public class AuditManagerImplTest extends AbstractManagerTest {
 
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetActivities() throws Exception {
         this.auditManagerSUT.getActivities(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetActivitiesInvalidSite() throws Exception {
         this.auditManagerSUT.getActivities(null, RandomStringUtils.randomAlphabetic(10),
             createStringListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testLogActivity() throws Exception {
         this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testLogActivityInvalidSite() throws Exception {
         this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testLogActivityInvalidActivity() throws Exception {
         this.auditManagerSUT.logActivity(null, RandomStringUtils.randomAlphabetic(10), createActivityMock());
     }

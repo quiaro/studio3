@@ -22,6 +22,7 @@ import java.util.Map;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.WorkflowPackage;
 import org.craftercms.studio.commons.dto.WorkflowTransition;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
 
 /**
@@ -39,7 +40,7 @@ public interface WorkflowManager {
      * @param items       items
      * @return package id
      */
-    String start(String packageName, List<String> comments, List<Item> items);
+    String start(String packageName, List<String> comments, List<Item> items) throws StudioException;
 
     /**
      * Get package.
@@ -47,7 +48,7 @@ public interface WorkflowManager {
      * @param packageId package id
      * @return list of items in package
      */
-    List<Item> getPackage(String packageId);
+    List<Item> getPackage(String packageId) throws StudioException;
 
     /**
      * Get workflow packages.
@@ -56,7 +57,7 @@ public interface WorkflowManager {
      * @param filters filters
      * @return list of packages
      */
-    List<WorkflowPackage> getPackages(String site, List<WorkflowPackageFilter> filters);
+    List<WorkflowPackage> getPackages(String site, List<WorkflowPackageFilter> filters) throws StudioException;
 
     /**
      * Get transitions.
@@ -64,7 +65,7 @@ public interface WorkflowManager {
      * @param packageId package id
      * @return workflow transitions
      */
-    List<WorkflowTransition> getTransitions(String packageId);
+    List<WorkflowTransition> getTransitions(String packageId) throws StudioException;
 
     /**
      * Transition.
@@ -73,12 +74,12 @@ public interface WorkflowManager {
      * @param transition transition
      * @param params     parameters
      */
-    void transition(String packageId, WorkflowTransition transition, Map<String, Object> params);
+    void transition(String packageId, WorkflowTransition transition, Map<String, Object> params) throws StudioException;
 
     /**
      * Cancel workflow.
      *
      * @param packageId package id
      */
-    void cancel(String packageId);
+    void cancel(String packageId) throws StudioException;
 }

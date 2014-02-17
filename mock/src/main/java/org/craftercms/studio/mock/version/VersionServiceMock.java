@@ -22,6 +22,7 @@ import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Version Manager mock implementation.
@@ -31,17 +32,17 @@ import org.craftercms.studio.commons.dto.Version;
 public class VersionServiceMock implements VersionService {
 
     @Override
-    public Tree<Version> history(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Tree<Version> history(final Context context, final String itemId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void revert(final Context context, final String itemId, final String revertVersion) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void revert(final Context context, final String itemId, final String revertVersion) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public DiffResult diff(final Context context, final String itemId, final String version1, final String version2) {
-        throw new NotImplementedException("Not implemented yet!");
+    public DiffResult diff(final Context context, final String itemId, final String version1, final String version2) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

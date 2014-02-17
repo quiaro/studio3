@@ -34,7 +34,6 @@ import org.craftercms.studio.api.content.AssetService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
-import org.craftercms.studio.commons.exception.NotImplementedException;
 import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.utils.RestControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,10 +104,7 @@ public class AssetServiceController {
         try {
             contentStream = file.getInputStream();
         } catch (IOException e) {
-            throw new StudioException("Error getting content from multipart request") {
-
-                private static final long serialVersionUID = -8020421946929773555L;
-            };
+            throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
         }
         Context context = RestControllerUtils.createMockContext();
         return assetService.create(context, site, parentId, fileName, contentStream, mimeType, properties);
@@ -343,10 +339,7 @@ public class AssetServiceController {
         try {
             content = file.getInputStream();
         } catch (IOException e) {
-            throw new StudioException("Error getting content from multipart request") {
-
-                private static final long serialVersionUID = 1675174593548908091L;
-            };
+            throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
         }
         return assetService.update(context, site, id, content, properties);
     }
@@ -451,7 +444,7 @@ public class AssetServiceController {
         Context context = RestControllerUtils.createMockContext();
         ItemId id = new ItemId(itemId);
         assetService.delete(context, site, id);
-        throw new NotImplementedException("Not implemented yet!");
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     /**

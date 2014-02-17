@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.craftercms.studio.commons.dto.Activity;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Audit Manager.
@@ -37,7 +38,7 @@ public interface AuditService {
      * @param filters filters
      * @return list of activities
      */
-    List<Activity> getActivities(Context context, String site, List<String> filters);
+    List<Activity> getActivities(Context context, String site, List<String> filters) throws StudioException;
 
     /**
      * Log activity.
@@ -45,5 +46,5 @@ public interface AuditService {
      * @param site site
      * @param activity activity
      */
-    Activity logActivity(Context context, String site, Activity activity);
+    Activity logActivity(Context context, String site, Activity activity) throws StudioException;
 }

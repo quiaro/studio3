@@ -18,6 +18,7 @@
 package org.craftercms.studio.exceptions.formatter.impl;
 
 import javolution.util.FastList;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.exceptions.ValidationException;
 import org.craftercms.studio.exceptions.formatter.ExceptionFormatter;
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ public class ValidationExceptionFormatterTest {
         try {
             ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
 
-            ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
+            ValidationException ex = new ValidationException(StudioException.ErrorCode.SYSTEM_ERROR, OBJECT_ERROR_LIST);
             new JSONObject(messageFormatter.getFormattedMessage(ex));
         } catch (JSONException ex) {
             fail("Unable to parse response for ValidationExceptionFormatter#getFormatMessage due a exception \n"
@@ -66,7 +67,7 @@ public class ValidationExceptionFormatterTest {
     @Test
     public void testGenerateDetailMessageIsAnArray() throws Exception {
         ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
-        ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
+        ValidationException ex = new ValidationException(StudioException.ErrorCode.SYSTEM_ERROR, OBJECT_ERROR_LIST);
         new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
 
@@ -75,7 +76,7 @@ public class ValidationExceptionFormatterTest {
     @Test
     public void testGenerateDetailMessageArrayLength() throws Exception {
         ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
-        ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
+        ValidationException ex = new ValidationException(StudioException.ErrorCode.SYSTEM_ERROR, OBJECT_ERROR_LIST);
         final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
         assertEquals(jsonArray.length(), TOTAL_FIELDS);
@@ -84,7 +85,7 @@ public class ValidationExceptionFormatterTest {
     @Test
     public void testGenerateDetailMessageContents() throws Exception {
         ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
-        ValidationException ex = new ValidationException("Validation Error", OBJECT_ERROR_LIST);
+        ValidationException ex = new ValidationException(StudioException.ErrorCode.SYSTEM_ERROR, OBJECT_ERROR_LIST);
         final JSONArray jsonArray = new JSONObject(messageFormatter.getFormattedMessage(ex)).
                 getJSONArray(AbstractExceptionFormatter.JSON_DETAIL_MESSAGE_KEY);
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -105,7 +106,7 @@ public class ValidationExceptionFormatterTest {
     @Test()
     public void testListOfErrorsEmpty() throws Exception {
         ExceptionFormatter messageFormatter = new ValidationExceptionFormatter();
-        ValidationException ex = new ValidationException("Validation Error", new FastList<ObjectError>());
+        ValidationException ex = new ValidationException(StudioException.ErrorCode.SYSTEM_ERROR, new FastList<ObjectError>());
         messageFormatter.getFormattedMessage(ex);
     }
 }

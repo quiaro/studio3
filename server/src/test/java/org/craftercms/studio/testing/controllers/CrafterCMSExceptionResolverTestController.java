@@ -13,7 +13,7 @@ public class CrafterCMSExceptionResolverTestController {
 
     @RequestMapping(value = "/throwUnregisterCrafterCMSException",method = RequestMethod.GET)
     public void throwUnregisterException()throws Exception{
-         throw new TestException(EXCEPTION_MSG);
+         throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR);
     }
 
     @RequestMapping(value = "/throwUnregisterException",method = RequestMethod.GET)
@@ -21,9 +21,4 @@ public class CrafterCMSExceptionResolverTestController {
         throw new Exception(EXCEPTION_MSG);
     }
 
-    class TestException extends StudioException {
-        TestException(final String message) {
-            super(message);
-        }
-    }
 }

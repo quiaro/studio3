@@ -61,7 +61,7 @@ public class WorkflowController {
 
     @RequestMapping(value = "/start/{site}", method = RequestMethod.POST)
     @ResponseBody
-    public String start(@PathVariable final String site, @Valid @RequestBody final WorkflowStartRequest requestBody) {
+    public String start(@PathVariable final String site, @Valid @RequestBody final WorkflowStartRequest requestBody) throws StudioException {
         return this.workflowManager.start(requestBody.getPackageName(), requestBody.getComments(), requestBody.getItems());
     }
 
@@ -90,7 +90,7 @@ public class WorkflowController {
 
     @RequestMapping(value = "/transition/{site}", method = RequestMethod.POST)
     public void transition(@PathVariable final String site, @Valid @RequestBody WorkflowTransitionRequest requestBody,
-                           final HttpServletRequest request, final HttpServletResponse response) {
+                           final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         this.workflowManager.transition(requestBody.getPackageId(), requestBody.getTransition(), requestBody.getParams());
     }
 
@@ -107,7 +107,7 @@ public class WorkflowController {
 
     @RequestMapping(value = "/cancel/{site}", method = RequestMethod.POST)
     public void cancel(@PathVariable final String site, @RequestParam(required = true) final String packageId,
-                       final HttpServletRequest request, final HttpServletResponse response) {
+                       final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         this.workflowManager.cancel(packageId);
     }
 }

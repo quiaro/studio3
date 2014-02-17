@@ -26,6 +26,7 @@ import org.craftercms.studio.commons.dto.SecurityGroup;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.SecurityRole;
 import org.craftercms.studio.commons.dto.User;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Security Manager mock implementation.
@@ -36,77 +37,77 @@ import org.craftercms.studio.commons.dto.User;
 public class SecurityServiceMock implements SecurityService {
 
     @Override
-    public Context login(final URL repositoryUrl, final String username, final String password) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Context login(final URL repositoryUrl, final String username, final String password) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void logout(final Context context) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void logout(final Context context) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public boolean validate(final Context context) {
-        throw new NotImplementedException("Not implemented yet!");
+    public boolean validate(final Context context) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<User> getUsers(final Context context, final String site) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<User> getUsers(final Context context, final String site) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public String updateUser(final Context context, final User user, final String password, final String role) {
-        throw new NotImplementedException("Not implemented yet!");
+    public String updateUser(final Context context, final User user, final String password, final String role) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void removeUser(final Context context, final String user) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void removeUser(final Context context, final String user) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<SecurityPermission> getPermissions(final Context context, final String site, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<SecurityPermission> getPermissions(final Context context, final String site, final String itemId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void updatePermissions(final Context context, final String site, final String itemId, final User user, final List<SecurityPermission> permissions, final boolean inherit) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void updatePermissions(final Context context, final String site, final String itemId, final User user, final List<SecurityPermission> permissions, final boolean inherit) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void updatePermissions(final Context context, final String site, final String itemId, final SecurityGroup group, final List<SecurityPermission> permissions, final boolean inherit) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void updatePermissions(final Context context, final String site, final String itemId, final SecurityGroup group, final List<SecurityPermission> permissions, final boolean inherit) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<SecurityGroup> getGroups(final Context context, final String site) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<SecurityGroup> getGroups(final Context context, final String site) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void updateGroup(final Context context, final String site, final String groupName) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void updateGroup(final Context context, final String site, final String groupName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void removeGroup(final Context context, final String site, final String groupName) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void removeGroup(final Context context, final String site, final String groupName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<SecurityRole> getRoles(final Context context, final String site) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<SecurityRole> getRoles(final Context context, final String site) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void updateRole(final Context context, final String site, final String roleName) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void updateRole(final Context context, final String site, final String roleName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void removeRole(final Context context, final String site, final String roleName) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void removeRole(final Context context, final String site, final String roleName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

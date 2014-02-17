@@ -22,18 +22,17 @@ import java.util.List;
 import org.craftercms.studio.api.lifecycle.Action;
 import org.craftercms.studio.api.lifecycle.LifecycleManager;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Lifecycle Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 public class LifecycleManagerImpl implements LifecycleManager {
 
     @Override
-    public List<Action> getPossibleActions(final Context context, final String site, final List<String> itemIds) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<Action> getPossibleActions(final Context context, final String site, final List<String> itemIds) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.craftercms.studio.api.audit.AuditService;
 import org.craftercms.studio.commons.dto.Activity;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.exceptions.ValidationException;
 import org.craftercms.studio.validation.AuditValidator;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class AuditController {
     @RequestMapping(value = "/activity/{site}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public List<Activity> getActivities(@PathVariable final String site,
-                                        @RequestParam(required = false) final List<String> filters) {
+                                        @RequestParam(required = false) final List<String> filters) throws StudioException {
         this.log.debug("Retrieving list of activities for {} using filters {}", site, filters);
         return this.auditService.getActivities(null, site, filters);
     }
@@ -64,10 +65,10 @@ public class AuditController {
                     consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
     public Activity logActivity(@PathVariable final String site, @Valid @RequestBody final Activity activity,
-                                final BindingResult result) throws ValidationException
+                                final BindingResult result) throws StudioException
     {
         if ( result.hasErrors() ) {
-            final ValidationException validationException = new ValidationException("Unable to save Activity",
+            final ValidationException validationException = new ValidationException(StudioException.ErrorCode.INVALID_ACTIVITY,
                     result.getAllErrors());
             this.log.error("Unable to save a activity since is not valid", validationException);
             throw validationException;

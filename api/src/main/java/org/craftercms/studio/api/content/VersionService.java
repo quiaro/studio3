@@ -20,6 +20,7 @@ import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Version Manager.
@@ -33,7 +34,7 @@ public interface VersionService {
      * @param itemId  itemId
      * @return tree of version history
      */
-    Tree<Version> history(Context context, String itemId); // tree or list?
+    Tree<Version> history(Context context, String itemId) throws StudioException; // tree or list?
 
 
 // TODO   NEED to tag, tag can be against a whole bunch of things at once (even trees?)
@@ -45,7 +46,7 @@ public interface VersionService {
      * @param itemId        itemId
      * @param revertVersion revertVersion
      */
-    void revert(Context context, String itemId, String revertVersion);
+    void revert(Context context, String itemId, String revertVersion) throws StudioException;
 
     /**
      * Difference between two versions
@@ -56,5 +57,5 @@ public interface VersionService {
      * @param version2 version2
      * @return differences
      */
-    DiffResult diff(Context context, String itemId, String version1, String version2);
+    DiffResult diff(Context context, String itemId, String version1, String version2) throws StudioException;
 }

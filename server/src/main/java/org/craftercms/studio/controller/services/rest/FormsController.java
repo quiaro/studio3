@@ -23,6 +23,7 @@ import javax.validation.Valid;
 
 import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Form;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,26 +50,26 @@ public class FormsController {
     @RequestMapping(value = "/list/{site}", method = RequestMethod.GET)
     @ResponseBody
     public List<Form> list(@PathVariable final String site,
-                                     @RequestParam(required = false) final List<String> filters) {
+                                     @RequestParam(required = false) final List<String> filters) throws StudioException {
         return formService.list(null, site, filters);
     }
 
     @RequestMapping(value = "/update/{site}", method = RequestMethod.POST)
     @ResponseBody
-    public void update(@PathVariable final String site, @Valid @RequestBody final Form form) {
+    public void update(@PathVariable final String site, @Valid @RequestBody final Form form) throws StudioException {
         this.formService.update(null, site, form);
     }
 
     @RequestMapping(value = "/remove/{site}", method = RequestMethod.POST)
     @ResponseBody
-    public void remove(@PathVariable final String site, @RequestParam(required = true) final String type) {
+    public void remove(@PathVariable final String site, @RequestParam(required = true) final String type) throws StudioException {
         this.formService.remove(null, site, type);
     }
 
     @RequestMapping(value = "/copy/{site}", method = RequestMethod.POST)
     @ResponseBody
     public void copy(@PathVariable final String site, @RequestParam(required = true) final String src,
-                     @RequestParam(required = true) final String dst) {
+                     @RequestParam(required = true) final String dst) throws StudioException {
         this.formService.copy(null, site, src, dst);
     }
 }
