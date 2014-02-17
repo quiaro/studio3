@@ -5,8 +5,8 @@ angular.module('crafter.studio-ui.Utils', [])
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['$log', 'ConfigService',
-        function($log, ConfigService) {
+    .service('Utils', ['$log', '$q', '$timeout', '$rootScope', 'ConfigService',
+        function($log, $q, $timeout, $rootScope, ConfigService) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
@@ -65,39 +65,45 @@ angular.module('crafter.studio-ui.Utils', [])
                 var promiseList = [],
                     me = this;
 
-                moduleNamesArray.forEach( function(moduleName) {
-                    var dfd = $.Deferred();
-                    promiseList.push(dfd);
+                if (moduleNamesArray && Array.isArray(moduleNamesArray)) {
 
-                    ConfigService.loadConfiguration(moduleName)
-                        .then( function(configObj) {
+                    moduleNamesArray.forEach( function(moduleName) {
+                        var dfd = $q.defer();
+                        promiseList.push(dfd.promise);
 
-                            var file = me.getUrl(base_url, configObj.base_url) + configObj.main,
-                                modConfig = { config: {} };
+                        ConfigService.loadConfiguration(moduleName)
+                            .then( function(response) {
 
-                            // Set configuration specific to the module
-                            modConfig.config[file] = {
-                                name: configObj.name,
-                                main: file,
-                                config: configObj.config
-                            };
+                                var configObj = response.data,
+                                    file = me.getUrl(base_url, configObj.base_url) + configObj.main,
+                                    modConfig = { config: {} };
 
-                            $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
+                                // Set configuration specific to the module
+                                modConfig.config[file] = {
+                                    name: configObj.name,
+                                    main: file,
+                                    config: configObj.config
+                                };
 
-                            // Make module-specific configuration available
-                            require.config(modConfig);
+                                $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
 
-                            me.loadModule(file)
-                                .then ( function(moduleValue) {
-                                    $log.log('Module ' + moduleName + ' was loaded successfully!');
-                                    dfd.resolve(moduleValue);
-                                }, function () {
-                                    throw new Error('Unable to load module: ' + moduleName);
-                                });
-                        }, function () {
-                            throw new Error('Unable to load configuration for ' + moduleName);
+                                // Make module-specific configuration available
+                                require.config(modConfig);
+
+                                me.loadModule(file)
+                                    .then ( function(moduleValue) {
+                                        $log.log('Module ' + moduleName + ' was loaded successfully!');
+                                        dfd.resolve(moduleValue);
+                                    }, function () {
+                                        throw new Error('Unable to load module: ' + moduleName);
+                                    });
+                            }, function () {
+                                throw new Error('Unable to load configuration for ' + moduleName);
+                            });
                         });
-                    });
+                } else {
+                    $log.warn('moduleNamesArray is not an array of module names: ', moduleNamesArray);
+                }
 
                 return promiseList;
             };
@@ -110,7 +116,7 @@ angular.module('crafter.studio-ui.Utils', [])
              */
 
             this.loadModule = function loadModule(mainFile) {
-                var deferred = $.Deferred();
+                var dfd = $q.defer();
 
                 if (!mainFile || typeof mainFile !== 'string') {
                     throw new Error('Incorrect mainFile value');
@@ -119,10 +125,14 @@ angular.module('crafter.studio-ui.Utils', [])
                 $log.log('Loading file: ' + mainFile);
 
                 require([ mainFile ], function(moduleValue) {
-                    deferred.resolve(moduleValue);
+                    $timeout( function() {
+                        $rootScope.$apply( function() {
+                            dfd.resolve(moduleValue);
+                        });
+                    });
                 });
 
-                return deferred;
+                return dfd.promise;
             };
         }
     ]);

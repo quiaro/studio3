@@ -9,6 +9,7 @@ define(['globals', 'text!./templates/almond.tpl.html'],
     injector.invoke(['NgRegistry', '$log',
         function(NgRegistry, $log) {
 
+            // Register the plugin controller
             NgRegistry
                 .addController('NewCtrl', 
                     ['$scope', '$timeout', function ($scope, $timeout) {

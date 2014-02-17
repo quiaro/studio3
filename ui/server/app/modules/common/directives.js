@@ -83,10 +83,12 @@ define(['globals'], function( globals ) {
             }])
 
             .addDirective('sdoPlugins',
-                ['$compile',
+                ['$q',
+                 '$compile',
                  '$timeout',
+                 '$log',
                  'ConfigService',
-                 'Utils', function ($compile, $timeout, ConfigService, Utils) {
+                 'Utils', function ($q, $compile, $timeout, $log, ConfigService, Utils) {
 
                 return {
                         restrict: "C",
@@ -105,23 +107,21 @@ define(['globals'], function( globals ) {
                                 $log.log('Plugin container with id: "' + containerId + '"');
 
                                 ConfigService.getPlugins(containerId)
-                                    .then( function (configObj) {
+                                    .then( function (response) {
 
-                                        var pluginList = configObj.plugins,
+                                        var pluginList = response.data.plugins,
                                             promiseList;
 
                                         $log.log('Plugins found for "' + containerId + '":', pluginList);
 
                                         promiseList = Utils.loadModules(pluginList, globals.plugins_url);
 
-                                        $.when.apply(window, promiseList).then( function(values) {
-
-                                            console.log('Promise values: ', values);
+                                        $q.all(promiseList).then( function(templates) {
 
                                             // Append templates to directive element
-                                            // scope.templates.forEach( function (tpl) {
-                                                element.append(values);
-                                            // });
+                                            templates.forEach( function (tpl) {
+                                                element.append(tpl);
+                                            });
 
                                             // compile the plugins' templates and create the bindings
                                             // between their models and their templates

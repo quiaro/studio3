@@ -80,22 +80,23 @@
             '$urlRouter',
             '$log',
             '$timeout',
+            '$q',
             'AuthService',
             'UserService',
             'ConfigService',
             'Utils',
             'NgRegistry',
-            function ($rootScope, $location, $state, $controller, $urlRouter, $log, $timeout,
+            function ($rootScope, $location, $state, $controller, $urlRouter, $log, $timeout, $q,
                       AuthService, UserService, ConfigService, Utils, NgRegistry) {
 
             // Get the sections for the app
             ConfigService.loadConfiguration(init_module)
-                .then( function(configObj) {
+                .then( function(response) {
 
                     var promiseList,
                         templatesUrl;
 
-                    CONFIG = configObj;
+                    CONFIG = response.data;
                     GLOBALS = CONFIG.module_globals;
 
                     if ('templates_url' in GLOBALS) {
@@ -128,7 +129,7 @@
 
                     promiseList = Utils.loadModules(CONFIG.modules, CONFIG.base_url);
 
-                    $.when.apply(window, promiseList).then( function() {
+                    $q.all(promiseList).then( function() {
 
                         $log.log('The application ' + init_module + ' is now loaded');
 
