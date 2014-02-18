@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.craftercms.studio.commons.dto.DiffResult;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Version Service.
@@ -38,7 +39,7 @@ public interface VersionService {
      * @param itemId item id
      * @return Id of working copy
      */
-    String checkOut(String ticket, String itemId) throws ItemAlreadyCheckedOutException;
+    String checkOut(String ticket, String itemId) throws StudioException;
 
     /**
      * Cancel checkout.

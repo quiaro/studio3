@@ -42,7 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value = {"/spring/mockito-context.xml", "/spring/unit-testing-context.xml"})
-public abstract class AbstractManagerTest {
+public abstract class AbstractServiceTest {
 
     @Before
     public void setUp() throws Exception {

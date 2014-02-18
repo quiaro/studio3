@@ -6,6 +6,7 @@ import java.util.Map;
 import org.craftercms.studio.api.analytics.AnalyticsService;
 import org.craftercms.studio.commons.dto.AnalyticsReport;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -78,7 +79,7 @@ public class AnalyticsControllerTest extends AbstractControllerTest {
     public void testSiteNotFound() throws Exception {
         when(this.analyticsServiceMock.generateReport((Context)Mockito.any(), Mockito.anyString(),
                 Mockito.anyString(), Mockito.anyMapOf(String.class, Object.class)))
-                .thenThrow(new ItemNotFoundException("Site testSite does Not Exist"));
+                .thenThrow(new StudioException(StudioException.ErrorCode.ITEM_NOT_FOUND));
 
         this.mockMvc.perform(
                 get("/api/1/analytics/report/testSite?report=testReport") //Url
@@ -94,7 +95,7 @@ public class AnalyticsControllerTest extends AbstractControllerTest {
     public void testReportNameNotFound() throws Exception {
         when(this.analyticsServiceMock.generateReport(Mockito.any(Context.class), Mockito.anyString(),
                 Mockito.anyString(), Mockito.anyMapOf(String.class, Object.class)))
-                .thenThrow(new ItemNotFoundException("Report testReport does Not Exist"));
+                .thenThrow(new StudioException(StudioException.ErrorCode.ITEM_NOT_FOUND));
 
         this.mockMvc.perform(
                 get("/api/1/analytics/report/testSite?report=testReport") //Url

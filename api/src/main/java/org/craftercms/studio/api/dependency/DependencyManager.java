@@ -18,6 +18,7 @@ package org.craftercms.studio.api.dependency;
 
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface DependencyManager {
      * @param operation operation
      * @return list of items
      */
-    List<Item> dependsOn(Context context, String itemId, String operation);
+    List<Item> dependsOn(Context context, String itemId, String operation) throws StudioException;
 
     /**
      * Return list of items that are dependant on given item.
@@ -46,7 +47,7 @@ public interface DependencyManager {
      * @param operation operation
      * @return list of items
      */
-    List<Item> dependentOn(Context context, String itemId, String operation);
+    List<Item> dependentOn(Context context, String itemId, String operation) throws StudioException;
 
     /**
      * Refresh dependencies for given item.
@@ -54,7 +55,7 @@ public interface DependencyManager {
      * @param itemId item id
      * @return list of dependency items
      */
-    List<Item> refresh(Context context, String itemId);
+    List<Item> refresh(Context context, String itemId) throws StudioException;
 
     /**
      * Add dependencies for item.
@@ -64,7 +65,7 @@ public interface DependencyManager {
      * @param items items
      */
     void add(Context context, String itemId, String operation,
-             List<Item> items);
+             List<Item> items) throws StudioException;
 
     /**
      * Remove dependencies for item.
@@ -74,7 +75,7 @@ public interface DependencyManager {
      * @param items items
      */
     void remove(Context context, String itemId, String operation,
-                List<Item> items);
+                List<Item> items) throws StudioException;
 
     /**
      * Update dependencies for item.
@@ -84,5 +85,5 @@ public interface DependencyManager {
      * @param items items
      */
     void update(Context context, String itemId, String operation,
-                List<Item> items);
+                List<Item> items) throws StudioException;
 }

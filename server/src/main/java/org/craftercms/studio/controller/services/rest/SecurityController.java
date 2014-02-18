@@ -29,6 +29,7 @@ import org.craftercms.studio.api.security.SecurityService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.SecurityPermission;
 import org.craftercms.studio.commons.dto.User;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.controller.services.rest.dto.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,7 +57,7 @@ public class SecurityController {
     @ResponseBody
     public Context login(@RequestParam(required = true) final String username,
                          @RequestParam(required = true) final String password, final HttpServletRequest request,
-                         final HttpServletResponse response) {
+                         final HttpServletResponse response) throws StudioException {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -66,13 +67,13 @@ public class SecurityController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public void logout() {
+    public void logout() throws StudioException {
         this.securityService.logout(null);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.GET)
     @ResponseBody
-    public void validate(final HttpServletRequest request, final HttpServletResponse response) {
+    public void validate(final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         if (!this.securityService.validate(null)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
@@ -80,27 +81,27 @@ public class SecurityController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> users(@RequestParam(required = true) final String site) {
+    public List<User> users(@RequestParam(required = true) final String site) throws StudioException {
         return this.securityService.getUsers(null, site);
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.POST)
     @ResponseBody
-    public String updateUser(@Valid @RequestBody UpdateUserRequest requestBody) {
+    public String updateUser(@Valid @RequestBody UpdateUserRequest requestBody) throws StudioException {
         return this.securityService.updateUser(null, requestBody.getUser(), requestBody.getPassword(),
             requestBody.getRole());
     }
 
     @RequestMapping(value = "/remove_user", method = RequestMethod.POST)
     @ResponseBody
-    public void removeUser(@RequestParam(required = true) final String user) {
+    public void removeUser(@RequestParam(required = true) final String user) throws StudioException {
         this.securityService.removeUser(null, user);
     }
 
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     @ResponseBody
     public List<SecurityPermission> permissions(@RequestParam(required = true) final String site,
-                                                @RequestParam(required = true) final String itemId) {
+                                                @RequestParam(required = true) final String itemId) throws StudioException {
         return this.securityService.getPermissions(null, site, itemId);
     }
 }

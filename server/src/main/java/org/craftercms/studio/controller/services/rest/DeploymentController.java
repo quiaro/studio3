@@ -134,7 +134,7 @@ public class DeploymentController {
      */
     @RequestMapping(value = "/status/{site}", method = RequestMethod.GET)
     @ResponseBody
-    public String status(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) {
+    public String status(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) throws StudioException {
         return this.deploymentManager.status(null, site, channel);
     }
 
@@ -146,7 +146,7 @@ public class DeploymentController {
      */
     @RequestMapping(value = "/version/{site}", method = RequestMethod.GET)
     @ResponseBody
-    public long version(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) {
+    public long version(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel) throws StudioException {
         return this.deploymentManager.version(null, site, channel);
     }
 
@@ -157,7 +157,7 @@ public class DeploymentController {
      */
     @RequestMapping(value = "/abort/{site}", method = RequestMethod.POST)
     public void abort(@PathVariable final String site, @Valid @RequestBody final DeploymentChannel channel,
-                      final HttpServletRequest request, final HttpServletResponse response) {
+                      final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         this.deploymentManager.abort(null, site, channel);
     }
 }

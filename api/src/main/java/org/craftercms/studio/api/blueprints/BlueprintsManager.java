@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Blueprints Manager.
@@ -36,7 +37,7 @@ public interface BlueprintsManager {
      * @param filters filters
      * @return list of blueprints
      */
-    List<String> list(Context context, Map<String, Object> filters);
+    List<String> list(Context context, Map<String, Object> filters) throws StudioException;
 
     /**
      * Remove blueprint.
@@ -44,7 +45,7 @@ public interface BlueprintsManager {
      * @param context   context
      * @param blueprint blueprint
      */
-    void remove(Context context, String blueprint);
+    void remove(Context context, String blueprint) throws StudioException;
 
     /**
      * Install blueprint.
@@ -52,7 +53,7 @@ public interface BlueprintsManager {
      * @param context    context
      * @param pluginName name of the plugin that holds the blueprint to install
      */
-    void install(Context context, String pluginName);
+    void install(Context context, String pluginName) throws StudioException;
 
     /**
      * Create blueprint from site.
@@ -62,5 +63,5 @@ public interface BlueprintsManager {
      * @param blueprintName blueprint name
      * @param destination   destination
      */
-    void createBlueprintFromSite(Context context, String site, String blueprintName, String destination);
+    void createBlueprintFromSite(Context context, String site, String blueprintName, String destination) throws StudioException;
 }

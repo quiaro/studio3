@@ -157,7 +157,7 @@ public class MongodbDataService {
             return jongoCollectionFactory.getCollection(collectionName).findOne(getQuery(queryName), params).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", queryName);
-            throw new MongoRepositoryException("Unable to queryName mongodb", ex);
+            throw new MongoRepositoryException(ex);
         }
     }
 
@@ -177,7 +177,7 @@ public class MongodbDataService {
             return jongoCollectionFactory.getCollection(collectionName).findOne(getQuery(queryName)).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", queryName);
-            throw new MongoRepositoryException("Unable to queryName mongodb", ex);
+            throw new MongoRepositoryException(ex, queryName);
         }
     }
 
@@ -197,7 +197,7 @@ public class MongodbDataService {
             return jongoCollectionFactory.getCollection(collectionName).findOne(new ObjectId(objectId)).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", objectId);
-            throw new MongoRepositoryException("Unable to queryName mongodb", ex);
+            throw new MongoRepositoryException(ex);
         }
     }
 
@@ -218,7 +218,7 @@ public class MongodbDataService {
                 .GET_BY_GEN_ID), id).as(clazz);
         } catch (MongoException ex) {
             log.error("Unable to find one with queryName {}", id);
-            throw new MongoRepositoryException("Unable to queryName mongodb", ex);
+            throw new MongoRepositoryException(ex, id);
         }
     }
 
@@ -253,7 +253,7 @@ public class MongodbDataService {
             }
         } catch (MongoException ex) {
             log.debug("Unable to search due a error ", ex);
-            throw new MongoRepositoryException("Unable to search ", ex);
+            throw new MongoRepositoryException(ex);
         }
     }
 
@@ -264,7 +264,7 @@ public class MongodbDataService {
             MongoCollection collection = jongoCollectionFactory.getCollection(collectionName);
             return collection.aggregate(getQuery(queryName), params).and(getQuery(sortQuery)).as(clazz);
         } catch (MongoException ex) {
-            throw new MongoRepositoryException("Unable to search using aggregation due a error ", ex);
+            throw new MongoRepositoryException(ex);
         }
 
     }
@@ -291,7 +291,7 @@ public class MongodbDataService {
         String query = jongoQueries.get(queryName);
         if (StringUtils.isBlank(query)) {
             log.debug("Query with name {} can't be found or is empty", queryName);
-            throw new MongoRepositoryException("Unable to find queryName \"" + queryName + "\"");
+            throw new MongoRepositoryException();
         } else {
             return query.trim();
         }

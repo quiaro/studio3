@@ -20,6 +20,7 @@ package org.craftercms.studio.mock.search;
 import org.craftercms.studio.api.search.SearchService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.ResultSet;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Search Manager Mock implementation.
@@ -28,8 +29,14 @@ import org.craftercms.studio.commons.dto.ResultSet;
  */
 public class SearchServiceMock implements SearchService {
 
+
     @Override
-    public ResultSet find(final Context context, final String query) {
-        throw new NotImplementedException("Not implemented yet!");
+    public String studio_search(final Context context, final String query) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public String delivery_search() throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

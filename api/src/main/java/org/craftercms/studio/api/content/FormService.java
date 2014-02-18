@@ -99,7 +99,7 @@ public interface FormService {
      * @param filters filters
      * @return list of forms
      */
-    List<Form> list(Context context, String site, List<String> filters);
+    List<Form> list(Context context, String site, List<String> filters) throws StudioException;
 
     /**
      * Create or update form.
@@ -108,7 +108,7 @@ public interface FormService {
      * @param site    site
      * @param form    form definition
      */
-    void update(Context context, String site, Form form);
+    void update(Context context, String site, Form form) throws StudioException;
 
     /**
      * Remove form.
@@ -117,7 +117,7 @@ public interface FormService {
      * @param site    site
      * @param formId  form id
      */
-    void remove(Context context, String site, String formId);
+    void remove(Context context, String site, String formId) throws StudioException;
 
     /**
      * Copy form.
@@ -127,5 +127,5 @@ public interface FormService {
      * @param source      source
      * @param destination destination
      */
-    void copy(Context context, String site, String source, String destination);
+    void copy(Context context, String site, String source, String destination) throws StudioException;
 }

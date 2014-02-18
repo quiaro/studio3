@@ -25,12 +25,15 @@ import java.util.ResourceBundle;
  * translated to an actual message that is localized and can be more easily supported.
  *
  * @author Sumer Jabri
+ * @author Dejan Brkic
  */
 public class StudioException extends Exception {
+
+    private static final String EXCEPTION_BUNDLE="exception/exception";
     protected static final ResourceBundle errorCodeFormatStrings = ResourceBundle.getBundle(EXCEPTION_BUNDLE,
         Locale.getDefault());
     private static final long serialVersionUID = 8822403836288820982L;
-    private static final String EXCEPTION_BUNDLE="exception";
+
 
     /**
      * Construct with an error code and cause exception.
@@ -64,5 +67,9 @@ public class StudioException extends Exception {
         ACCESS_DENIED,
         INVALID_ACTIVITY,
         STALE_ITEM,
+        SYSTEM_ERROR,
+        REPOSITORY_ERROR,
+        INVALID_CONTENT,
+        REPORT_ERROR
     }
 }

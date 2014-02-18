@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2013 Crafter Software Corporation.
+ * Copyright (C) 2007-2014 Crafter Software Corporation.
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,14 +19,17 @@ package org.craftercms.studio.internal.content;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.exception.StudioException;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Repository Manager.
  *
  * @author Sumer Jabri
+ * @author Dejan Brkic
  */
 public interface ContentManager {
     /**
@@ -63,24 +66,27 @@ public interface ContentManager {
 //
 //    // TODO add version management support here?
 //
-//    /**
-//     * Write content.
-//     *
-//     * @param context context
-//     * @param itemId  item id
-//     * @param lockHandle lock to the item (get your lock here {#}
-//     * @param content content
-//     */
-//    void write(Context context, ItemId itemId, LockHandle lockHandle, InputStream content) throws StudioException,
-//        StaleItemException;
-//
-//    /**
-//     * Delete content items.
-//     *
-//     * @param context       context
-//     * @param itemsToDelete items to delete
-//     */
-//    void delete(Context context, List<Item> itemsToDelete);
+
+    /**
+     * Write content.
+     *
+     * @param context       security context
+     * @param site          site identifier
+     * @param itemId        content identifier
+     * @param lockHandle    lock handle
+     * @param content       content to be written
+     * @throws StudioException
+     */
+    void write(Context context, String site, ItemId itemId, LockHandle lockHandle,
+               InputStream content) throws StudioException;
+
+    /**
+     * Delete content items.
+     *
+     * @param context       context
+     * @param itemsToDelete items to delete
+     */
+    void delete(Context context, List<Item> itemsToDelete);
 //
 //    /**
 //     * Copy items to destination path.

@@ -28,18 +28,6 @@ import org.craftercms.studio.repo.RepositoryException;
 public class RepositoryMockException extends RepositoryException {
     private static final long serialVersionUID = -2878801837270010957L;
 
-    public RepositoryMockException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public RepositoryMockException(final String message) {
-        super(message);
-    }
-
-    public RepositoryMockException(final String message, final Object... args) {
-        super(message, args);
-    }
-
     public RepositoryMockException(final Throwable cause) {
         super(cause);
     }

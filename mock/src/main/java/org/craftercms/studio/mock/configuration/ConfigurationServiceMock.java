@@ -17,12 +17,9 @@
 
 package org.craftercms.studio.mock.configuration;
 
-import java.io.InputStream;
-
 import org.craftercms.studio.api.configuration.ConfigurationService;
-import org.craftercms.studio.commons.dto.Configuration;
 import org.craftercms.studio.commons.dto.Context;
-import org.craftercms.studio.commons.dto.ItemId;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Configuration Manager Mock implementation.
@@ -32,23 +29,12 @@ import org.craftercms.studio.commons.dto.ItemId;
 public class ConfigurationServiceMock implements ConfigurationService {
 
     @Override
-    public Configuration getConfiguration(final Context context, final String site, final String module) {
-        throw new NotImplementedException("Not implemented yet!");
+    public String read(final Context context, final String site, final String urn) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void configure(final Context context, final String site, final String module, final Configuration
-        configuration) {
-        throw new NotImplementedException("Not implemented yet!");
-    }
-
-    @Override
-    public InputStream getContent(final Context context, final String site, final ItemId itemId) {
-        throw new NotImplementedException("Not implemented yet!");
-    }
-
-    @Override
-    public void write(final Context context, final String site, final ItemId itemId, final InputStream content) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void write(final Context context, final String site, final String urn, final String configuration) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

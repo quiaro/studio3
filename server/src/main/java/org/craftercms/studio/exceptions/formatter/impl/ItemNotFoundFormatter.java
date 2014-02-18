@@ -1,11 +1,12 @@
 package org.craftercms.studio.exceptions.formatter.impl;
 
+import org.craftercms.studio.commons.exception.StudioException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
 /**
- * Formats {@link ItemNotFoundException} to a nice JSON
+ * Formats {@link org.craftercms.studio.commons.exception.StudioException} to a nice JSON
  * that will return HTTP status 404 (not found).
  */
 public class ItemNotFoundFormatter extends AbstractExceptionFormatter{
@@ -15,7 +16,7 @@ public class ItemNotFoundFormatter extends AbstractExceptionFormatter{
      * sets Http response code as 404 (not found)
      */
     public ItemNotFoundFormatter() {
-        super(ItemNotFoundException.class);
+        super(StudioException.class);
         setHttpResponseCode(HttpStatus.NOT_FOUND.value());
     }
 

@@ -20,7 +20,8 @@ package org.craftercms.studio.impl.dependency;
 import java.util.UUID;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -29,11 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Unit tests for Dependency Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class DependencyManagerImplTest extends AbstractManagerTest {
+public class DependencyManagerImplTest extends AbstractServiceTest {
 
     @Autowired
     @InjectMocks
@@ -44,172 +43,172 @@ public class DependencyManagerImplTest extends AbstractManagerTest {
 
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependsOn() throws Exception {
         this.dependencyManagerSUT.dependsOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependsOnItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.dependsOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependsOnInvalidItemId() throws Exception {
         this.dependencyManagerSUT.dependsOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependsOnInvalidOperation() throws Exception {
         this.dependencyManagerSUT.dependsOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependentOn() throws Exception {
         this.dependencyManagerSUT.dependentOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependentOnItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.dependentOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependentOnInvalidItemId() throws Exception {
         this.dependencyManagerSUT.dependentOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testDependentOnInvalidOperation() throws Exception {
         this.dependencyManagerSUT.dependentOn(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRefresh() throws Exception {
         this.dependencyManagerSUT.refresh(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRefreshItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.refresh(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRefreshInvalidItemId() throws Exception {
         this.dependencyManagerSUT.refresh(null, UUID.randomUUID().toString());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAdd() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAddItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAddInvalidItemId() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAddInvalidOperation() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAddEmptyList() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testAddInvalidItemInsideList() throws Exception {
         this.dependencyManagerSUT.add(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemove() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidItemId() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidOperation() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveInvalidItemInsideList() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testRemoveEmptyList() throws Exception {
         this.dependencyManagerSUT.remove(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdate() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateItemDoesNotExist() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateInvalidItemId() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateInvalidOperation() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateEmptyList() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testUpdateInvalidItemInsideList() throws Exception {
         this.dependencyManagerSUT.update(null, UUID.randomUUID().toString(),
             RandomStringUtils.randomAlphabetic(10), createItemListMock());

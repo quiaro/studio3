@@ -22,34 +22,33 @@ import java.util.Map;
 
 import org.craftercms.studio.api.blueprints.BlueprintsManager;
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Blueprints Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 public class BlueprintsManagerImpl implements BlueprintsManager {
 
     @Override
-    public List<String> list(final Context context, final Map<String, Object> filters) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<String> list(final Context context, final Map<String, Object> filters) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void remove(final Context context, final String blueprint) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void remove(final Context context, final String blueprint) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void install(final Context context, final String pluginName) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void install(final Context context, final String pluginName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
     public void createBlueprintFromSite(final Context context, final String site, final String blueprintName,
-                                        final String destination) {
-        throw new NotImplementedException("Not implemented yet!");
+                                        final String destination) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

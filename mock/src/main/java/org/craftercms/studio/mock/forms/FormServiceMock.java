@@ -18,10 +18,12 @@
 package org.craftercms.studio.mock.forms;
 
 import java.util.List;
+import java.util.Map;
 
 import org.craftercms.studio.api.content.FormService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Form;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Forms Manager mock implementation.
@@ -31,22 +33,58 @@ import org.craftercms.studio.commons.dto.Form;
 public class FormServiceMock implements FormService {
 
     @Override
-    public List<Form> list(final Context context, final String site, final List<String> filters) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Form create(final Context context, final String site, final String formName, final String formXml, final Map<String, String> properties) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void update(final Context context, final String site, final Form form) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Form duplicate(final Context context, final String site, final String formId, final String formName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void remove(final Context context, final String site, final String formId) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Form duplicate(final Context context, final String site, final String formId, final String destinationSite, final String formName) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void copy(final Context context, final String site, final String source, final String destination) {
-        throw new NotImplementedException("Not implemented yet!");
+    public Form read(final Context context, final String site, final String formId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public Form update() throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public void delete(final Context context, final String site, final String formId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public List<Form> findBy(final Context context, final String site, final String query) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public List<Form> list(final Context context, final String site, final List<String> filters) throws
+        StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public void update(final Context context, final String site, final Form form) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public void remove(final Context context, final String site, final String formId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public void copy(final Context context, final String site, final String source, final String destination) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

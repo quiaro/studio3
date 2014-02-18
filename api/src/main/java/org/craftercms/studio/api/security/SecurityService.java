@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.craftercms.studio.commons.dto.*;
+import org.craftercms.studio.commons.exception.StudioException;
 
 
 /**
@@ -39,14 +40,14 @@ public interface SecurityService {
      * @param password      password
      * @return security context
      */
-    Context login(URL repositoryUrl, String username, String password);
+    Context login(URL repositoryUrl, String username, String password) throws StudioException;
 
     /**
      * Logout.
      *
      * @param context context
      */
-    void logout(Context context);
+    void logout(Context context) throws StudioException;
 
     /**
      * Validate security context.
@@ -54,7 +55,7 @@ public interface SecurityService {
      * @param context context
      * @return true if context is valid, otherwise false
      */
-    boolean validate(Context context);
+    boolean validate(Context context) throws StudioException;
 
     /**
      * Get users for site.
@@ -63,7 +64,7 @@ public interface SecurityService {
      * @param site    site
      * @return list of users
      */
-    List<User> getUsers(Context context, String site);
+    List<User> getUsers(Context context, String site) throws StudioException;
 
     /**
      * Create or update user.
@@ -74,7 +75,7 @@ public interface SecurityService {
      * @param role     role
      * @return user id
      */
-    String updateUser(Context context, User user, String password, String role);
+    String updateUser(Context context, User user, String password, String role) throws StudioException;
 
     /**
      * Remove user.
@@ -82,7 +83,7 @@ public interface SecurityService {
      * @param context context
      * @param user    user
      */
-    void removeUser(Context context, String user);
+    void removeUser(Context context, String user) throws StudioException;
 
     /**
      * Get permissions.
@@ -92,7 +93,7 @@ public interface SecurityService {
      * @param itemId  itemId
      * @return list of permission
      */
-    List<SecurityPermission> getPermissions(Context context, String site, String itemId);
+    List<SecurityPermission> getPermissions(Context context, String site, String itemId) throws StudioException;
 
     /**
      * Update permissions.
@@ -104,7 +105,7 @@ public interface SecurityService {
      * @param permissions permissions
      * @param inherit     inherit true/false
      */
-    void updatePermissions(Context context, String site, String itemId, User user, List<SecurityPermission> permissions, boolean inherit);
+    void updatePermissions(Context context, String site, String itemId, User user, List<SecurityPermission> permissions, boolean inherit) throws StudioException;
 
     /**
      * Update permissions.
@@ -116,7 +117,7 @@ public interface SecurityService {
      * @param permissions permissions
      * @param inherit     inherit true/false
      */
-    void updatePermissions(Context context, String site, String itemId, SecurityGroup group, List<SecurityPermission> permissions, boolean inherit);
+    void updatePermissions(Context context, String site, String itemId, SecurityGroup group, List<SecurityPermission> permissions, boolean inherit) throws StudioException;
 
     /**
      * Get groups.
@@ -125,7 +126,7 @@ public interface SecurityService {
      * @param site    site
      * @return list of groups
      */
-    List<SecurityGroup> getGroups(Context context, String site);
+    List<SecurityGroup> getGroups(Context context, String site) throws StudioException;
 
     /**
      * Create or update group.
@@ -134,7 +135,7 @@ public interface SecurityService {
      * @param site      site
      * @param groupName groupName
      */
-    void updateGroup(Context context, String site, String groupName);
+    void updateGroup(Context context, String site, String groupName) throws StudioException;
 
     /**
      * Remove group.
@@ -143,7 +144,7 @@ public interface SecurityService {
      * @param site      site
      * @param groupName groupName
      */
-    void removeGroup(Context context, String site, String groupName);
+    void removeGroup(Context context, String site, String groupName) throws StudioException;
 
     /**
      * Get roles.
@@ -152,7 +153,7 @@ public interface SecurityService {
      * @param site    site
      * @return list of roles
      */
-    List<SecurityRole> getRoles(Context context, String site);
+    List<SecurityRole> getRoles(Context context, String site) throws StudioException;
 
     /**
      * Create or update role.
@@ -161,7 +162,7 @@ public interface SecurityService {
      * @param site     site
      * @param roleName roleName
      */
-    void updateRole(Context context, String site, String roleName);
+    void updateRole(Context context, String site, String roleName) throws StudioException;
 
     /**
      * Remove role.
@@ -170,5 +171,5 @@ public interface SecurityService {
      * @param site     site
      * @param roleName roleName
      */
-    void removeRole(Context context, String site, String roleName);
+    void removeRole(Context context, String site, String roleName) throws StudioException;
 }

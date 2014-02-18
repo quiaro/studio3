@@ -10,15 +10,14 @@ import org.craftercms.studio.commons.exception.StudioException;
  */
 public class ReportException extends StudioException {
 
-    public ReportException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
 
-    public ReportException(final String message) {
-        super(message);
-    }
+    private static final long serialVersionUID = 4675261806931477828L;
 
     public ReportException(final Throwable cause) {
-        super(cause);
+        super(ErrorCode.REPORT_ERROR, cause);
+    }
+
+    public ReportException() {
+        super(ErrorCode.REPORT_ERROR);
     }
 }

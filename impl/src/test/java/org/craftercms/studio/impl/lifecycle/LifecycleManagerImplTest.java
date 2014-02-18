@@ -18,7 +18,8 @@
 package org.craftercms.studio.impl.lifecycle;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.craftercms.studio.impl.AbstractManagerTest;
+import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.impl.AbstractServiceTest;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,41 +27,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Unit tests for Lifecycle Manager implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
-public class LifecycleManagerImplTest extends AbstractManagerTest {
+public class LifecycleManagerImplTest extends AbstractServiceTest {
 
     @InjectMocks
     @Autowired
     private LifecycleManagerImpl lifecycleManagerSUT;
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetPossibleActions() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetPossibleActionsInvalidSite() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetPossibleActionsInvalidItemList() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetPossibleActionsEmptyItemList() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = StudioException.class)
     public void testGetPossibleActionsItemDoesNotExist() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),
             createItemIdListMock());

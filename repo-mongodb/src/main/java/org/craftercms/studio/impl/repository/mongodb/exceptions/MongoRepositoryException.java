@@ -7,16 +7,13 @@ import org.craftercms.studio.repo.RepositoryException;
  */
 public class MongoRepositoryException extends RepositoryException{
 
+    private static final long serialVersionUID = 5839280102793236386L;
 
-    public MongoRepositoryException(final String message, final Object... args) {
-        super(message, args);
+    public MongoRepositoryException(final Throwable cause, String ... args) {
+        super(cause, args);
     }
 
-    public MongoRepositoryException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public MongoRepositoryException(final Throwable cause) {
-        super(cause);
+    public MongoRepositoryException() {
+        super();
     }
 }

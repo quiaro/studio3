@@ -24,19 +24,19 @@ import org.craftercms.studio.commons.exception.StudioException;
  * repository happens.
  */
 public abstract class RepositoryException  extends StudioException{
-    public RepositoryException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
 
-    public RepositoryException(final String message) {
-        super(message);
-    }
+    private static final long serialVersionUID = 3582031699646144755L;
 
-    public RepositoryException(final String message, final Object... args) {
-        super(message, args);
+    public RepositoryException(final Throwable cause, String ... args) {
+        super(ErrorCode.REPOSITORY_ERROR, cause, args);
     }
 
     public RepositoryException(final Throwable cause) {
-        super(cause);
+        super(ErrorCode.REPOSITORY_ERROR, cause);
     }
+
+    public RepositoryException() {
+        super(ErrorCode.REPOSITORY_ERROR);
+    }
+
 }

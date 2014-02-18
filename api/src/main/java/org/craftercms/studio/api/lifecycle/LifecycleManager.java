@@ -17,6 +17,7 @@
 package org.craftercms.studio.api.lifecycle;
 
 import org.craftercms.studio.commons.dto.Context;
+import org.craftercms.studio.commons.exception.StudioException;
 
 import java.util.List;
 
@@ -34,5 +35,5 @@ public interface LifecycleManager {
      * @param itemIds list of item ids
      * @return list of actions
      */
-    List<Action> getPossibleActions(Context context, String site, List<String> itemIds);
+    List<Action> getPossibleActions(Context context, String site, List<String> itemIds) throws StudioException;
 }

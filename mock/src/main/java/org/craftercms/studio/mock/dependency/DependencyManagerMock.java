@@ -22,6 +22,7 @@ import java.util.List;
 import org.craftercms.studio.api.dependency.DependencyManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Dependency Manager mock implementation.
@@ -32,32 +33,32 @@ import org.craftercms.studio.commons.dto.Item;
 public class DependencyManagerMock implements DependencyManager {
 
     @Override
-    public List<Item> dependsOn(final Context context, final String itemId, final String operation) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<Item> dependsOn(final Context context, final String itemId, final String operation) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<Item> dependentOn(final Context context, final String itemId, final String operation) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<Item> dependentOn(final Context context, final String itemId, final String operation) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<Item> refresh(final Context context, final String itemId) {
-        throw new NotImplementedException("Not implemented yet!");
+    public List<Item> refresh(final Context context, final String itemId) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void add(final Context context, final String itemId, final String operation, final List<Item> items) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void add(final Context context, final String itemId, final String operation, final List<Item> items) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void remove(final Context context, final String itemId, final String operation, final List<Item> items) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void remove(final Context context, final String itemId, final String operation, final List<Item> items) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void update(final Context context, final String itemId, final String operation, final List<Item> items) {
-        throw new NotImplementedException("Not implemented yet!");
+    public void update(final Context context, final String itemId, final String operation, final List<Item> items) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

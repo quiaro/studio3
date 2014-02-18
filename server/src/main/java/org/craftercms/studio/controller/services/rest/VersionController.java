@@ -19,6 +19,7 @@ package org.craftercms.studio.controller.services.rest;
 import org.craftercms.studio.api.content.VersionService;
 import org.craftercms.studio.commons.dto.Tree;
 import org.craftercms.studio.commons.dto.Version;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +51,7 @@ public class VersionController {
     @RequestMapping(value = "/history/{site}", method = RequestMethod.GET)
     @ResponseBody
     public Tree<Version> getVersionHistory(@PathVariable final String site, @RequestParam(required = true) final
-            String itemId, final HttpServletRequest request, final HttpServletResponse response) {
+            String itemId, final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         return this.versionService.history(null, itemId);
     }
 
@@ -65,7 +66,7 @@ public class VersionController {
     @RequestMapping(value = "/revert/{site}", method = RequestMethod.POST)
     public void revert(@PathVariable final String site, @RequestParam(required = true) final String itemId,
         @RequestParam(required = true) final String versionToRevertTo,
-                       final HttpServletRequest request, final HttpServletResponse response) {
+                       final HttpServletRequest request, final HttpServletResponse response) throws StudioException {
         this.versionService.revert(null, itemId, versionToRevertTo);
     }
 }

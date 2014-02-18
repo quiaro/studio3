@@ -23,53 +23,52 @@ import org.craftercms.studio.api.deployment.DeploymentManager;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.DeploymentChannel;
 import org.craftercms.studio.commons.dto.Item;
+import org.craftercms.studio.commons.exception.StudioException;
 
 /**
  * Deployment Manager Implementation.
  *
- * @author Sumer Jabri
  * @author Dejan Brkic
- * @author Carlos Ortiz
  */
 public class DeploymentManagerImpl implements DeploymentManager {
 
     @Override
-    public List<Item> history(final Context context, final String site, final List<String> filters) {
-        throw new NotImplementedException("Not yet implemented!");
+    public List<Item> history(final Context context, final String site, final List<String> filters) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public List<DeploymentChannel> channels(final Context context, final String site, final String environment) {
-        throw new NotImplementedException("Not yet implemented!");
+    public List<DeploymentChannel> channels(final Context context, final String site, final String environment) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void updateChannel(final Context context, final String site, final DeploymentChannel channel) {
-        throw new NotImplementedException("Not yet implemented!");
+    public void updateChannel(final Context context, final String site, final DeploymentChannel channel) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void removeChannel(final Context context, final String site, final DeploymentChannel channel) {
-        throw new NotImplementedException("Not yet implemented!");
+    public void removeChannel(final Context context, final String site, final DeploymentChannel channel) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void deploy(final Context context, final String site, final List<String> itemIds) {
-        throw new NotImplementedException("Not yet implemented!");
+    public void deploy(final Context context, final String site, final List<String> itemIds) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public String status(final Context context, final String site, final DeploymentChannel channel) {
-        throw new NotImplementedException("Not yet implemented!");
+    public String status(final Context context, final String site, final DeploymentChannel channel) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public long version(final Context context, final String site, final DeploymentChannel channel) {
-        throw new NotImplementedException("Not yet implemented!");
+    public long version(final Context context, final String site, final DeploymentChannel channel) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     @Override
-    public void abort(final Context context, final String site, final DeploymentChannel channel) {
-        throw new NotImplementedException("Not yet implemented!");
+    public void abort(final Context context, final String site, final DeploymentChannel channel) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 }

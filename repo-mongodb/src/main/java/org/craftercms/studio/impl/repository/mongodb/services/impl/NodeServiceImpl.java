@@ -104,7 +104,7 @@ public class NodeServiceImpl implements NodeService {
                 }
             } catch (MongoRepositoryException e) {
                 log.error("Unable to save node {} because file was unable to be saved {}", newNode, e.toString());
-                throw new MongoRepositoryException("Unable to save node because file was unable to be saved", e);
+                throw new MongoRepositoryException(e);
             }
         } else {
             log.error("Parent node {} is no a folder. can't create a FileNode with out a folder", parent);
@@ -323,7 +323,7 @@ public class NodeServiceImpl implements NodeService {
             String savedFileId = gridFSService.saveFile(fileName, content);
             coreMetadata.setFileId(savedFileId);
         } catch (IOException e) {
-            throw new MongoRepositoryException("Unable to calculate File size", e);
+            throw new MongoRepositoryException(e);
         }
         return coreMetadata;
     }
