@@ -63,10 +63,41 @@ A established workflow using grunt tasks can be outlined as follows:
        
        Build the application for deployment and run it on any HTTP server.
 
-About Crafter Studio 3 UI
----------------------
+Node Modules
+----
 
-Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI) and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the app's configuration.
+* ejs: Used by server.js to serve index.html
+* grunt-contrib-copy: Copies source files to a temp directory
+* grunt-contrib-uglify: Minifies/compresses JS files and generates source maps
+* grunt-contrib-jshint: Validates files with JSHint
+* grunt-contrib-clean: Cleans files and folders
+* grunt-contrib-imagemin: Minifies PNG, JPEG and GIF images
+* grunt-recess: Compiles LESS to CSS
+* grunt-usemin: Transforms specific construction blocks (of CSS or JS files) in a file into a single line
+* grunt-replace: Replaces text patterns with a given replacement (text pre-processor)
+* grunt-rev: Allows cache busting of static files
+* grunt-karma: Grunt plugin for the karma test runner
+* grunt-open: Opens urls and files from a grunt task
+* matchdep: Filters npm module dependencies by name or a text pattern
+* grunt-ngmin: AngularJS pre-minifier that inserts inline annotations for dependency injections
+* grunt-bower-task: Installs only the files needed from bower packages
+* grunt-newer: Configures grunt tasks to run with newer files only
+* grunt-express-server: Runs an Express server that works with LiveReload + Watch/Regarde
+* grunt-contrib-watch: Run predefined tasks whenever watched files are added, changed or deleted
+* express: Fast minimalist web framework for node
+
+Crafter Studio 3 UI
+----
+
+Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI) and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the [app's configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json).
+
+The project's repository currently includes 4 root folders:
+
+* client: CS3UI bootstrap code, 3rd-party library code and images
+* node_modules
+* server
+* test
+
 
 ### Loading of the App
 
