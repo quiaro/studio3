@@ -65,22 +65,22 @@ public class GridFSServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveFileNameIsNull() throws Exception {
-        gridFSService.saveFile(null, null);
+        gridFSService.createFile(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveFileNameIsEmpty() throws Exception {
-        gridFSService.saveFile("", null);
+        gridFSService.createFile("", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveFileNameIsBlank() throws Exception {
-        gridFSService.saveFile("    ", null);
+        gridFSService.createFile("    ", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveFileInputStreamIsNull() throws Exception {
-        gridFSService.saveFile(FILE_NAME, null);
+        gridFSService.createFile(FILE_NAME, null);
     }
 
     @Test(expected = MongoRepositoryException.class)
@@ -92,7 +92,7 @@ public class GridFSServiceTest {
             .class);
         InputStream inputStream = this.getClass().getResourceAsStream("/files/index.xml");
         Assert.assertNotNull("Test Input Stream is null", inputStream); //make sure we read the file.
-        gridFSService.saveFile(FILE_NAME, inputStream);
+        gridFSService.createFile(FILE_NAME, inputStream);
     }
 
     @Test()
@@ -103,7 +103,7 @@ public class GridFSServiceTest {
             Mockito.anyBoolean())).thenReturn(mockSavedFile);
         InputStream inputStream = this.getClass().getResourceAsStream("/files/index.xml");
         Assert.assertNotNull("Test Input Stream is null", inputStream); //make sure we read the file.
-        String savedFile = gridFSService.saveFile(FILE_NAME, inputStream);
+        String savedFile = gridFSService.createFile(FILE_NAME, inputStream);
         Assert.assertEquals(savedFile, "Omicron Persei 8");//should be the same.
     }
 

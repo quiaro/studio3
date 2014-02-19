@@ -31,12 +31,8 @@ public abstract class RepositoryException  extends StudioException{
         super(ErrorCode.REPOSITORY_ERROR, cause, args);
     }
 
-    public RepositoryException(final Throwable cause) {
-        super(ErrorCode.REPOSITORY_ERROR, cause);
-    }
-
-    public RepositoryException() {
-        super(ErrorCode.REPOSITORY_ERROR);
+    public RepositoryException(String ... args) {
+        super(ErrorCode.REPOSITORY_ERROR, args);
     }
 
 }

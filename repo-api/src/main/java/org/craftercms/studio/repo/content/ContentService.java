@@ -79,7 +79,7 @@ public interface ContentService {
      * @param item      item
      * @param content   content
      */
-    void update(String ticket, Item item, InputStream content);
+    void update(String ticket, Item item, InputStream content) throws RepositoryException;
 
     /**
      * Delete content from repository.
@@ -87,7 +87,7 @@ public interface ContentService {
      * @param ticket    security ticket
      * @param contentId content id
      */
-    void delete(String ticket, String contentId);
+    void delete(String ticket, String contentId) throws RepositoryException;
 
     /**
      * Get children tree.

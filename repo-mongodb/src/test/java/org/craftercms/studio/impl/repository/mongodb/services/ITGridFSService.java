@@ -63,7 +63,7 @@ public class ITGridFSService implements ApplicationContextAware {
         testInput.mark(Integer.MAX_VALUE);
         String currentMD5=getMD5(testInput);
         testInput.reset();
-        String fileId = gridFSService.saveFile(FILE_NAME, testInput);
+        String fileId = gridFSService.createFile(FILE_NAME, testInput);
         Assert.assertNotNull(fileId);
         InputStream stream = gridFSService.getFile(fileId);
         Assert.assertNotNull(stream);

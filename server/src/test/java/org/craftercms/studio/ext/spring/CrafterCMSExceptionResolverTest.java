@@ -20,6 +20,7 @@ package org.craftercms.studio.ext.spring;
 import org.craftercms.studio.exceptions.formatter.impl.AbstractExceptionFormatter;
 import org.craftercms.studio.testing.controllers.CrafterCMSExceptionResolverTestController;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class CrafterCMSExceptionResolverTest {
      * Test default Exception.
      * @throws Exception
      */
+    @Ignore
     @Test
     public void testDoResolveKnowException(){
         try {

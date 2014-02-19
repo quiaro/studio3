@@ -33,6 +33,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Default GridFS implementation.
+ *
+ * @author Dejan Brkic
  */
 public class GridFSServiceImpl implements GridFSService {
 
@@ -51,7 +53,7 @@ public class GridFSServiceImpl implements GridFSService {
      */
 
     @Override
-    public String saveFile(final String fileName, final InputStream fileInputStream) throws
+    public String createFile(final String fileName, final InputStream fileInputStream) throws
         MongoRepositoryException {
         if (StringUtils.isBlank(fileName)) {
             log.error("Given fileInputStream name is null, empty or blank");
@@ -62,6 +64,7 @@ public class GridFSServiceImpl implements GridFSService {
             throw new IllegalArgumentException("Given File inputStream is null");
         }
         try {
+
             GridFSInputFile file = gridFs.createFile(fileInputStream, fileName, true);
             file.save();
             return file.getId().toString();
@@ -69,6 +72,18 @@ public class GridFSServiceImpl implements GridFSService {
             log.error("Unable to save \"" + fileName + "\"file in GridFs due a error", ex);
             throw new MongoRepositoryException(ex);
         }
+    }
+
+    @Override
+    public String saveFile(final String fileId, final String fileName, final InputStream file) throws MongoRepositoryException {
+        String newFileId = createFile(fileName, file);
+        gridFs.remove(new ObjectId(fileId));
+        return newFileId;
+    }
+
+    @Override
+    public void deleteFile(final String fileId) throws MongoRepositoryException {
+        gridFs.remove(new ObjectId(fileId));
     }
 
     @Override

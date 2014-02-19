@@ -13,7 +13,7 @@ public class MongoRepositoryException extends RepositoryException{
         super(cause, args);
     }
 
-    public MongoRepositoryException() {
-        super();
+    public MongoRepositoryException(String ... args) {
+        super(args);
     }
 }

@@ -25,11 +25,13 @@ import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryE
  * Definition of GridFS service. <br/>
  * <b>This class is intended to be use internally only
  * usage outside this artifact could break or corrupt the repository</b>
+ *
+ * @author Dejan Brkic
  */
 public interface GridFSService {
 
     /**
-     * Saves a File in the GridFS.
+     * Create a File in the GridFS.
      *
      *
      * @param fileName File name
@@ -39,7 +41,18 @@ public interface GridFSService {
      * @throws IllegalArgumentException if filename is empty, null or blank <br/> or
      *                                  if InputStream is null.
      */
-    String saveFile(String fileName, InputStream file) throws MongoRepositoryException;
+    String createFile(String fileName, InputStream file) throws MongoRepositoryException;
+
+    /**
+     * Save file in the GridFS.
+     *
+     * @param fileId        File identifier
+     * @param fileName      File name
+     * @param file          File
+     * @return              New file identifier
+     * @throws MongoRepositoryException
+     */
+    String saveFile(String fileId, String fileName, InputStream file) throws MongoRepositoryException;
 
     /**
      * Gets a saved file InputStream.
@@ -49,4 +62,6 @@ public interface GridFSService {
      * @throws MongoRepositoryException if unable to retrieve the file for store.
      */
     InputStream getFile(String fileId) throws MongoRepositoryException;
+
+    void deleteFile(String fileId) throws MongoRepositoryException;
 }

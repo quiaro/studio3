@@ -55,8 +55,12 @@ public class StudioException extends Exception {
     }
 
     protected static String FormatErrorMessage(final ErrorCode errorCode, final String... args) {
-        return String.format(errorCodeFormatStrings.getString(errorCode.toString()),
-            args);
+        String message = errorCodeFormatStrings.getString(errorCode.toString());
+        if (args.length > 0) {
+            return String.format(message, args);
+        } else {
+            return message;
+        }
     }
 
     public enum ErrorCode {
