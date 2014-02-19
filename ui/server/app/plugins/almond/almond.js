@@ -1,4 +1,6 @@
-define(['globals', 'text!./templates/almond.tpl.html'], 
+define(['globals', 
+    'text!./templates/almond.tpl.html', 
+    'less!./almond'], 
     function( globals, html ) {
 
     'use strict';

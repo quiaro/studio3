@@ -112,10 +112,7 @@
                     require.config({
                         baseUrl: CONFIG.base_url,
                         map: {
-                            '*': {
-                                'css': CONFIG.requirejs.css,
-                                'text': CONFIG.requirejs.text
-                            }
+                            '*': CONFIG.requirejs.map
                         },
                         paths: CONFIG.requirejs.module_paths,
                         config: {
