@@ -140,28 +140,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-    htmlmin: {
-      dist: {
-        options: {
-          removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          // collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          // May want to declare Angular directives as empty attributes
-          // removeEmptyAttributes: true,
-          removeOptionalTags: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>',
-          src: ['studio-ui/src/app/**/*.tpl.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
-      }
-    },
     ngmin: {
       dist: {
         files: [{
@@ -289,7 +267,6 @@ module.exports = function (grunt) {
     'replace:build',
     'useminPrepare',
     'imagemin',
-    'htmlmin',
     'concat',
     'copy',
     'ngmin',
