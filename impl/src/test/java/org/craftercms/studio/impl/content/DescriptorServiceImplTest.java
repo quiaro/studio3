@@ -20,6 +20,8 @@ package org.craftercms.studio.impl.content;
 import org.junit.Test;
 
 /**
+ * Unit test for DescriptorService implementation.
+ *
  * @author Dejan Brkic
  */
 public class DescriptorServiceImplTest {

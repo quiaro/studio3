@@ -9,6 +9,10 @@
         <property name="contentManager" ref="ContentManager"/>
     </bean>
 
+    <bean id="DescriptorService" class="org.craftercms.studio.impl.content.DescriptorServiceImpl">
+        <property name="contentManager" ref="ContentManager"/>
+    </bean>
+
     <bean id="AnalyticsService" class="org.craftercms.studio.impl.analytics.AnalyticsServiceImpl">
     </bean>
 

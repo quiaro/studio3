@@ -108,6 +108,10 @@ public class Item implements Comparable<Item> {
     public Item() {
     }
 
+    public Item(Item original) {
+
+    }
+
     /**
      * Compare items.
      *
