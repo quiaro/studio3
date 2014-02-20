@@ -86,7 +86,7 @@ public interface ContentManager {
      * @param context       context
      * @param itemsToDelete items to delete
      */
-    void delete(Context context, List<Item> itemsToDelete);
+    void delete(Context context, List<Item> itemsToDelete) throws StudioException;
 //
 //    /**
 //     * Copy items to destination path.

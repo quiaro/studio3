@@ -224,13 +224,29 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public void update(final String ticket, final Item item, final InputStream content) {
+    public void update(final String ticket, final Item item, final InputStream content) throws RepositoryException {
+        Node nodeItem = nodeService.getNode(item.getId().getItemId());
 
+        if (nodeItem == null) {
+            return;
+        }
+        log.debug("Content found {}", nodeItem);
+        // we can't read folders
+        if (nodeService.isNodeFile(nodeItem)) {
+            log.debug("Content is a file");
+            String fileId = nodeItem.getCore().getFileId(); //gets the file id
+            // File id can't be null,empty or whitespace
+            if (StringUtils.isBlank(fileId)) {
+                log.error("Node {} is broken, since file id is not a valid ID", item, fileId);
+                throw new MongoRepositoryException();
+            }
+            nodeService.updateFileNode(item.getId().getItemId(), content);
+        }
     }
 
     @Override
-    public void delete(final String ticket, final String contentId) {
-
+    public void delete(final String ticket, final String contentId) throws RepositoryException {
+        nodeService.deleteFileNode(contentId);
     }
 
     @Override

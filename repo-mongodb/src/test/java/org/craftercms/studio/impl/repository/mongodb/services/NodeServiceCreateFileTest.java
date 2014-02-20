@@ -78,7 +78,7 @@ public class NodeServiceCreateFileTest {
         when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
             Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
 
-        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
+        when(gridFSService.createFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
             .toString());
 
 
@@ -98,7 +98,7 @@ public class NodeServiceCreateFileTest {
         when(mongodbDataService.findOne(Mockito.anyString(), Mockito.anyString(),
             Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
 
-        doThrow(MongoRepositoryException.class).when(gridFSService).saveFile(Mockito.anyString(),
+        doThrow(MongoRepositoryException.class).when(gridFSService).createFile(Mockito.anyString(),
             (InputStream)Mockito.any());
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
         nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "Test File", "Doctor John A. Zoidberg",
@@ -113,7 +113,7 @@ public class NodeServiceCreateFileTest {
             Mockito.any(Class.class))).thenReturn(new Node(new Node(), NodeType.FOLDER));
         doThrow(MongoRepositoryException.class).when(mongodbDataService).save(Mockito.anyString(),
             Mockito.any(Node.class));
-        when(gridFSService.saveFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
+        when(gridFSService.createFile(Mockito.anyString(), (InputStream)Mockito.any())).thenReturn(new ObjectId()
             .toString());
         InputStream testInput = NodeServiceCreateFileTest.class.getResourceAsStream("/files/index.xml");
         nodeService.createFileNode(nodeService.getRootNode(), "TestFile", "test File", "Doctor John A. Zoidberg",

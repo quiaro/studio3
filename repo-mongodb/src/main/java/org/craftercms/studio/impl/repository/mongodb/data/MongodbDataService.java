@@ -6,6 +6,7 @@ import com.mongodb.MongoException;
 import com.mongodb.WriteResult;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
+import org.craftercms.studio.commons.exception.StudioException;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryQueries;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
@@ -291,10 +292,16 @@ public class MongodbDataService {
         String query = jongoQueries.get(queryName);
         if (StringUtils.isBlank(query)) {
             log.debug("Query with name {} can't be found or is empty", queryName);
-            throw new MongoRepositoryException();
+            throw new MongoRepositoryException("Query not found " + queryName);
         } else {
             return query.trim();
         }
+    }
+
+    public void deleteNode(String collectionName, String itemId) throws MongoRepositoryException{
+        MongoCollection collection = jongoCollectionFactory.getCollection(collectionName);
+        String query = getQuery(MongoRepositoryQueries.GET_BY_GEN_ID);
+        collection.remove(query, itemId);
     }
 
     /**

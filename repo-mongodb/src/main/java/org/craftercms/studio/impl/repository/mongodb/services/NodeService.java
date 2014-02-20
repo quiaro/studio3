@@ -20,6 +20,7 @@ package org.craftercms.studio.impl.repository.mongodb.services;
 import java.io.InputStream;
 import java.util.List;
 
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.impl.repository.mongodb.domain.Node;
 import org.craftercms.studio.impl.repository.mongodb.exceptions.MongoRepositoryException;
 
@@ -188,4 +189,8 @@ public interface NodeService {
      * if there is more that 1, throw a Execution
      */
     void countRootNodes() throws MongoRepositoryException;
+
+    void updateFileNode(String itemId, InputStream content) throws MongoRepositoryException;
+
+    void deleteFileNode(String itemId) throws MongoRepositoryException;
 }

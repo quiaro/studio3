@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import javolution.util.FastList;
 import org.apache.commons.lang.StringUtils;
+import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.repo.content.PathService;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryDefaults;
 import org.craftercms.studio.impl.repository.mongodb.MongoRepositoryQueries;
@@ -320,7 +321,7 @@ public class NodeServiceImpl implements NodeService {
         CoreMetadata coreMetadata = createBasicMetadata(fileName, creatorName, folderLabel);
         try {
             coreMetadata.setSize(content.available());
-            String savedFileId = gridFSService.saveFile(fileName, content);
+            String savedFileId = gridFSService.createFile(fileName, content);
             coreMetadata.setFileId(savedFileId);
         } catch (IOException e) {
             throw new MongoRepositoryException(e);
@@ -340,6 +341,21 @@ public class NodeServiceImpl implements NodeService {
         return coreMetadata;
     }
 
+    @Override
+    public void updateFileNode(final String itemId, final InputStream content) throws MongoRepositoryException {
+
+        Node node = getNode(itemId);
+        String newFileId = gridFSService.saveFile(node.getCore().getFileId(), node.getCore().getNodeName(), content);
+        node.getCore().setFileId(newFileId);
+        dataService.save(NODES_COLLECTION, node);
+    }
+
+    @Override
+    public void deleteFileNode(final String itemId) throws MongoRepositoryException {
+        Node node = getNode(itemId);
+        gridFSService.deleteFile(node.getCore().getFileId());
+        dataService.deleteNode(NODES_COLLECTION, itemId);
+    }
 
     public void setGridFSService(final GridFSService gridFSService) {
         this.gridFSService = gridFSService;

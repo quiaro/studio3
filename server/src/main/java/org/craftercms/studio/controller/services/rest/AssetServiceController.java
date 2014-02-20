@@ -280,7 +280,6 @@ public class AssetServiceController {
         Context context = RestControllerUtils.createMockContext();
         ItemId id = new ItemId(itemId);
         assetService.delete(context, site, id);
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
     }
 
     /**

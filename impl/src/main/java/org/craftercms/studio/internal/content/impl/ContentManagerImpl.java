@@ -42,7 +42,7 @@ public class ContentManagerImpl implements ContentManager {
     }
 
     @Override
-    public void delete(final Context context, final List<Item> itemsToDelete) {
+    public void delete(final Context context, final List<Item> itemsToDelete) throws StudioException {
         for (Item item : itemsToDelete) {
             contentService.delete(context.getTicket(), item.getId().getItemId());
         }
