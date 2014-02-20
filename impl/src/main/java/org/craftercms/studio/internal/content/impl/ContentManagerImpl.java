@@ -48,6 +48,17 @@ public class ContentManagerImpl implements ContentManager {
         }
     }
 
+    @Override
+    public void move(final Context context, final Item item, final String destinationPath) throws StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public void move(final Context context, final List<Item> itemsToMove, final String destinationPath) throws
+        StudioException {
+        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
     // Getters and setters
 
     public ContentService getContentService() {

@@ -98,14 +98,24 @@ public interface ContentManager {
 //     */
 //    void copy(Context context, List<Item> itemsToCopy, String destinationPath, boolean includeChildren);
 //
-//    /**
-//     * Move items to destination path.
-//     *
-//     * @param context         context
-//     * @param itemsToMove     items to move
-//     * @param destinationPath destination path
-//     */
-//    void move(Context context, List<Item> itemsToMove, String destinationPath);
+
+    /**
+     * Move item to destination path.
+     *
+     * @param context           context
+     * @param item              item to move
+     * @param destinationPath   destination path
+     */
+    void move(Context context, Item item, String destinationPath) throws StudioException;
+
+    /**
+     * Move items to destination path.
+     *
+     * @param context         context
+     * @param itemsToMove     items to move
+     * @param destinationPath destination path
+     */
+    void move(Context context, List<Item> itemsToMove, String destinationPath) throws StudioException;
 //
 //    /**
 //     * Get children.
