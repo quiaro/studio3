@@ -30,12 +30,12 @@ module.exports = function (grunt) {
         },
         dev: {
             options: {
-                script: './server/server.js'
+                script: './server/dev/server.js'
             }
         },
         build: {
             options: {
-                script: './server/server.js'
+                script: './server/build/server.js'
             }
         }
     },
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
             files: [
                 {
                     src: '<%= sdo.src.app %>/styles/app.less',
-                    dest: '<%= sdo.output.dev %>/studio.css'
+                    dest: '<%= sdo.output.dev %>/studio-ui/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
@@ -107,7 +107,7 @@ module.exports = function (grunt) {
             files: [
                 {
                     src: '<%= sdo.src.app %>/styles/app.less',
-                    dest: '<%= sdo.output.build %>/studio.css'
+                    dest: '<%= sdo.output.build %>/studio-ui/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
@@ -129,7 +129,7 @@ module.exports = function (grunt) {
             files: [
                 {
                     src: '<%= sdo.src.app %>/styles/app.less',
-                    dest: '<%= sdo.output.dist %>/studio.css'
+                    dest: '<%= sdo.output.dist %>/studio-ui/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
@@ -163,12 +163,12 @@ module.exports = function (grunt) {
     // uglify: {
     //   build: {
     //         src: '<%= sdo.src.app %>/**/*.js',
-    //         dest: '<%= sdo.output.build %>/studio-ui/src/app/studio.js'
+    //         dest: '<%= sdo.output.build %>/studio-ui/studio.js'
     //     }
     //   },
     //   dist: {
     //         src: '<%= sdo.src.app %>/**/*.js',
-    //         dest: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js'
+    //         dest: '<%= sdo.output.dist %>/studio-ui/studio.js'
     //   }
     // },
 
@@ -176,8 +176,8 @@ module.exports = function (grunt) {
       build: {
         files: [
             {
-                src: '<%= sdo.output.build %>/studio-ui/src/app/studio.js',
-                dest: '<%= sdo.output.build %>/studio-ui/src/app/studio.js'
+                src: '<%= sdo.output.build %>/studio-ui/studio.js',
+                dest: '<%= sdo.output.build %>/studio-ui/studio.js'
             },
             {
                 expand: true,
@@ -196,8 +196,8 @@ module.exports = function (grunt) {
       dist: {
         files: [
             {
-                src: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js',
-                dest: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js'
+                src: '<%= sdo.output.dist %>/studio-ui/studio.js',
+                dest: '<%= sdo.output.dist %>/studio-ui/studio.js'
             },
             {
                 expand: true,
@@ -304,11 +304,11 @@ module.exports = function (grunt) {
     usemin: {
         build: {
             html: ['<%= sdo.output.build %>/index.html'],
-            js: ['<%= sdo.output.build %>/studio-ui/src/app/studio.js']
+            js: ['<%= sdo.output.build %>/studio-ui/studio.js']
         },
         dist: {
             html: ['<%= sdo.src.dist %>/index.html'],
-            js: ['<%= sdo.output.dist %>/studio-ui/src/app/studio.js']
+            js: ['<%= sdo.output.dist %>/studio-ui/studio.js']
         }
     },
 
@@ -328,11 +328,15 @@ module.exports = function (grunt) {
         }
       },
       recess: {
-        files: ['<%= recess.dev.files %>'],
-        tasks: ['recess:server']
+        files: [
+            '<%= sdo.src.app %>/styles/app.less',
+            '<%= sdo.src.modules %>/**/*.less',
+            '<%= sdo.src.plugins %>/**/*.less'
+        ],
+        tasks: ['recess:dev']
       },
       replace: {
-        files: ['<%= recess.dev.src %>'],
+        files: ['<%= replace.dev.src %>'],
         tasks: ['replace:dev']
       }
     }

@@ -1,16 +1,32 @@
+function combine(defaultObj, extendObj) {
+    var res = {};
+    for (var key in defaultObj) {
+        // (shallow) copy of attributes in defaultObj
+        res[key] = defaultObj[key];
+    }
+    for (var key in extendObj) {
+        // (shallow) copy of attributes in extendObj
+        // Override any attributes copied from defaultObj
+        res[key] = extendObj[key];
+    }
+    return res;
+}
+
 // Module dependencies
 var express = require('express'),
     http = require('http'),
     path = require('path'),
-    config = require('./config.js'),
-    mock = require('./mock.js');
+    mock = require('../mock.js'),
+    parentConfig = require('../config.js'),
+    localConfig = require('./config.js'),
+    config = combine(parentConfig, localConfig);
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
 
-app.set('views', path.join(__dirname, '../.tmp'));
+app.set('views', path.join(__dirname, config.tmpRoot));
 app.engine('.html', require('ejs').renderFile);
 
 app.use(express.favicon());
@@ -19,20 +35,10 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 
-// development only
-if ('production' === app.get('env')) {
-    app.use(express.static(path.join(__dirname, 'target/META-INF/resources')));
-} else {
-    // Paths are relative to this file
-    app.use(express.static(path.join(__dirname, '../.tmp')));
-    app.use(express.static(path.join(__dirname, '../client')));
-    app.use(express.errorHandler());
-}
-
-// Any requests will be sent to index.html where they'll be redirected accordingly
-// app.get( "/dashboard", function( req, res ) {
-//     res.redirect( '/#/dashboard' );
-// });
+// Paths are relative to this file
+app.use(express.static(path.join(__dirname, config.tmpRoot)));
+app.use(express.static(path.join(__dirname, config.clientRoot)));
+app.use(express.errorHandler());
 
 // set responses for all the services defined
 mock.services.forEach( function(serviceObj) {
@@ -69,19 +75,19 @@ mock.services.forEach( function(serviceObj) {
 });
 
 // Load assets related to the app
-app.get( '/studio-ui/modules/*', function( req, res ) {
+app.get( config.path.modules, function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
     res.sendfile( config['app'].modulesFolder + '/' + req.params[0]);
 });
 
 // Load plugins for the app
-app.get( '/studio-ui/plugins/*', function( req, res ) {
+app.get( config.path.plugins, function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
     res.sendfile( config['app'].pluginsFolder + '/' + req.params[0]);
 });
 
 // Load assets related to a specific site
-app.get( '/site/:site/*', function( req, res ) {
+app.get( config.path.sites, function( req, res ) {
     // The string value of the wildcard (*) will be stored in req.params[0]
     res.sendfile( config[req.params.site].assetsFolder + '/' + req.params[0]);
 });
@@ -96,7 +102,7 @@ app.get( '*', function( req, res ) {
         res.sendfile( config.tmpRoot + req.url);
 
     } else if (!assetUrlRe.test(req.url)) {
-        res.render('index.html');
+        res.render(config.tmpRoot + '/index.html');
 
     } else {
         res.sendfile( config.clientRoot + req.url);

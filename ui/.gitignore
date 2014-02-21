@@ -1,6 +1,6 @@
-./dev
-./build
-./target
+/dev
+/build
+/target
 client/components
 .sass-cache
 .DS_Store
