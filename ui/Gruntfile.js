@@ -84,19 +84,19 @@ module.exports = function (grunt) {
         dev: {
             files: [
                 {
-                    src: '<%= sdo.output.dev %>/studio.css',
-                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ]
+                    src: '<%= sdo.src.app %>/styles/app.less',
+                    dest: '<%= sdo.output.dev %>/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
-                  cwd: '<%= sdo.src.modules %>/',    // Src matches are relative to this path
+                  cwd: '<%= sdo.src.modules %>',    // Src matches are relative to this path
                   src: ['**/*.less'],              // Actual pattern(s) to match.
                   dest: '<%= sdo.output.dev %>/modules/',   // Destination path prefix.
                   ext: '.css'                       // Dest filepaths will have this extension.
                 },
                 {
                   expand: true,
-                  cwd: '<%= sdo.src.plugins %>/',
+                  cwd: '<%= sdo.src.plugins %>',
                   src: ['**/*.less'],
                   dest: '<%= sdo.output.dev %>/plugins/',
                   ext: '.css'
@@ -106,8 +106,8 @@ module.exports = function (grunt) {
         build: {
             files: [
                 {
-                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ],
-                    src: '<%= sdo.output.build %>/studio.css'
+                    src: '<%= sdo.src.app %>/styles/app.less',
+                    dest: '<%= sdo.output.build %>/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
@@ -128,8 +128,8 @@ module.exports = function (grunt) {
         dist: {
             files: [
                 {
-                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ],
-                    src: '<%= sdo.output.dist %>/studio.css'
+                    src: '<%= sdo.src.app %>/styles/app.less',
+                    dest: '<%= sdo.output.dist %>/studio.css'
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
