@@ -5,17 +5,24 @@ module.exports = function (grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   // configurable paths
-  var yeomanConfig = {
-    app: 'client',
-    dist: 'target/META-INF/resources'
+  var appConfig = {
+    output: {
+        dev: 'dev',
+        build: 'build',
+        dist: 'target/META-INF/resources'
+    },
+    src: {
+        root: './client',
+        app: './client/studio-ui/src/app',
+        images: './client/studio-ui/src/images',
+        lib: './client/studio-ui/lib',
+        modules: './server/app/modules',
+        plugins: './server/app/plugins'
+    }
   };
 
-  try {
-    yeomanConfig.app = require('./bower.json').appPath || yeomanConfig.app;
-  } catch (e) {}
-
   grunt.initConfig({
-    yeoman: yeomanConfig,
+    sdo: appConfig,
     express: {
         options: {
             port: process.env.PORT || 9000,
@@ -26,31 +33,11 @@ module.exports = function (grunt) {
                 script: './server/server.js'
             }
         },
-        prod: {
+        build: {
             options: {
                 script: './server/server.js'
             }
         }
-    },
-    watch: {
-      recess: {
-        files: ['<%= yeoman.app %>/studio-ui/src/app/**/*.less'],
-        tasks: ['recess:server']
-      },
-      express: {
-        files: [
-          '{.tmp,<%= yeoman.app %>}/index.html',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.less',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.js',
-          '{.tmp,<%= yeoman.app %>}/studio-ui/src/app/**/*.html',
-          '<%= yeoman.app %>/studio-ui/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
-        ],
-        tasks: ['express:dev'],
-        options: {
-            livereload: true,
-            nospawn: true   //Without this option specified express won't be reloaded
-        }
-      }
     },
 
     open: {
@@ -58,221 +45,320 @@ module.exports = function (grunt) {
         url: 'http://localhost:<%= express.options.port %>'
       }
     },
+
     clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*'
-          ]
-        }]
-      },
-      server: '.tmp'
+      dev: '<%= sdo.output.dev %>',
+      build: '<%= sdo.output.build %>',
+      dist: '<%= sdo.output.dist %>'
     },
+
     jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/studio-ui/src/app/**/*.js'
-      ]
+        options: {
+            jshintrc: '.jshintrc'
+        },
+        app: [
+            'Gruntfile.js',
+            '<%= sdo.src.app %>/**/*.js',
+            '<%= sdo.src.modules %>/**/*.js',
+            '<%= sdo.src.plugins %>/**/*.js',
+        ]
     },
+
     karma: {
       options: {
-        configFile: 'karma.conf.js'
-      },
-      continuous: {
-        browsers: ['Chrome']
+        configFile: './test/config/karma.conf.js'
       },
       dev: {
         autoWatch: true,
         singleRun: false
+      },
+      continuous: {
+        browsers: ['Chrome']
       }
     },
+
     recess: {
         options: {
             compile: true
         },
-        dist: {
-            files: {
-                '<%= yeoman.dist %>/studio-ui/src/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/src/app/style.less'
-                ],
-                '<%= yeoman.dist %>/studio-ui/src/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/src/app/editor/style.less'
-                ]
-            }
+        dev: {
+            files: [
+                {
+                    src: '<%= sdo.output.dev %>/studio.css',
+                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ]
+                },
+                {
+                  expand: true,                     // Enable dynamic expansion
+                  cwd: '<%= sdo.src.modules %>/',    // Src matches are relative to this path
+                  src: ['**/*.less'],              // Actual pattern(s) to match.
+                  dest: '<%= sdo.output.dev %>/modules/',   // Destination path prefix.
+                  ext: '.css'                       // Dest filepaths will have this extension.
+                },
+                {
+                  expand: true,
+                  cwd: '<%= sdo.src.plugins %>/',
+                  src: ['**/*.less'],
+                  dest: '<%= sdo.output.dev %>/plugins/',
+                  ext: '.css'
+                }
+            ]
         },
-        server: {
-            files: {
-                '.tmp/studio-ui/src/styles/studio.css': [
-                    '<%= yeoman.app %>/studio-ui/src/app/style.less'
-                ],
-                '.tmp/studio-ui/src/styles/editor.css': [
-                    '<%= yeoman.app %>/studio-ui/src/app/editor/style.less'
-                ]
-            }
+        build: {
+            files: [
+                {
+                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ],
+                    src: '<%= sdo.output.build %>/studio.css'
+                },
+                {
+                  expand: true,                     // Enable dynamic expansion
+                  cwd: '<%= sdo.src.modules %>',    // Src matches are relative to this path
+                  src: ['/**/*.less'],              // Actual pattern(s) to match.
+                  dest: '<%= sdo.output.build %>/modules/',   // Destination path prefix.
+                  ext: '.css',                      // Dest filepaths will have this extension.
+                },
+                {
+                  expand: true,                     // Enable dynamic expansion
+                  cwd: '<%= sdo.src.plugins %>',    // Src matches are relative to this path
+                  src: ['/**/*.less'], // Actual pattern(s) to match.
+                  dest: '<%= sdo.output.build %>/plugins/',   // Destination path prefix.
+                  ext: '.css',                      // Dest filepaths will have this extension.
+                }
+            ]
+        },
+        dist: {
+            files: [
+                {
+                    dest: [ '<%= sdo.src.app %>/styles/**/*.less' ],
+                    src: '<%= sdo.output.dist %>/studio.css'
+                },
+                {
+                  expand: true,                     // Enable dynamic expansion
+                  cwd: '<%= sdo.src.modules %>',    // Src matches are relative to this path
+                  src: ['**/*.less'],               // Actual pattern(s) to match.
+                  dest: '<%= sdo.output.dist %>/modules/',   // Destination path prefix.
+                  ext: '.css',                      // Dest filepaths will have this extension.
+                },
+                {
+                  expand: true,                     // Enable dynamic expansion
+                  cwd: '<%= sdo.src.plugins %>',    // Src matches are relative to this path
+                  src: ['/**/*.less'], // Actual pattern(s) to match.
+                  dest: '<%= sdo.output.dist %>/plugins/',   // Destination path prefix.
+                  ext: '.css',                      // Dest filepaths will have this extension.
+                }
+            ]
         }
     },
-    useminPrepare: {
-        options: {
-            dest: '<%= yeoman.dist %>'
-        },
-        html: '<%= yeoman.app %>/index.html'
-    },
-    usemin: {
-        options: {
-            dirs: ['<%= yeoman.dist %>']
-        },
-        html: ['<%= yeoman.dist %>/index.html',
-               '<%= yeoman.dist %>/studio-ui/src/app/**/*.tpl.html'],
-        css: ['<%= yeoman.dist %>/studio-ui/src/styles/studio.css']
-    },
+
     imagemin: {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.app %>/studio-ui/src/images',
+          cwd: '<%= sdo.src.images %>',
           src: '**/*.{png,jpg,jpeg}',
-          dest: '<%= yeoman.dist %>/studio-ui/src/images'
+          dest: '<%= sdo.output.dist %>/studio-ui/src/images'
         }]
       }
     },
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>/studio-ui/src/app/**/*.js',
-          src: '**/*.js',
-          dest: '<%= yeoman.dist %>/studio-ui/src/app/**/*.js'
-        }]
-      }
-    },
-    uglify: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/studio-ui/src/scripts.js': [
-            '<%= yeoman.dist %>/studio-ui/src/scripts.js'
-          ]
-        }
-      }
-    },
-    rev: {
-      dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/studio-ui/src/app/**/*.tpl.html',
-            '<%= yeoman.dist %>/studio-ui/src/app/**/*.js',
-            '<%= yeoman.dist %>/studio-ui/src/app/**/*.css',
-            '<%= yeoman.dist %>/studio-ui/src/images/**/*.{png,jpg,jpeg,gif,webp,svg,ico}'
-          ]
-        }
-      }
-    },
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            'studio-ui/lib/**/*.min.js',
-            'studio-ui/lib/**/*.min.css',
-            'studio-ui/src/images/**/*.{gif,webp,ico}',
-            'studio-ui/src/styles/studio.css',
-            'studio-ui/src/app/**/*.tpl.html',
 
-            // Special cases
-            'studio-ui/lib/jquery/js/*.js',
-            'studio-ui/lib/jquery/js/*.map',
-            'studio-ui/lib/toastr/js/*.js',
-            'studio-ui/lib/toastr/js/*.map',
-            'studio-ui/lib/require*/**/*.js',
-            'studio-ui/lib/bootstrap/fonts/*'
-          ]
-        }]
-      }
-    },
-    replace: {
-      dev: {
-        options: {
-          variables: {
-            'min': '',
-            'includeTranslateErrorHandler': '<script ' +
-              'src="studio-ui/lib/angular-translate-handler-log/js/angular-translate-handler-log.js"></script>',
-            'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
-          }
-        },
+    // uglify: {
+    //   build: {
+    //         src: '<%= sdo.src.app %>/**/*.js',
+    //         dest: '<%= sdo.output.build %>/studio-ui/src/app/studio.js'
+    //     }
+    //   },
+    //   dist: {
+    //         src: '<%= sdo.src.app %>/**/*.js',
+    //         dest: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js'
+    //   }
+    // },
+
+    ngmin: {
+      build: {
         files: [
-          { src: ['<%= yeoman.app %>/index.html'],
-            dest: '.tmp/index.html' }
+            {
+                src: '<%= sdo.output.build %>/studio-ui/src/app/studio.js',
+                dest: '<%= sdo.output.build %>/studio-ui/src/app/studio.js'
+            },
+            {
+                expand: true,
+                cwd: '<%= sdo.src.modules %>',
+                src: '**/*.js',
+                dest: '<%= sdo.output.build %>/modules'
+            },
+            {
+                expand: true,
+                cwd: '<%= sdo.src.plugins %>',
+                src: '**/*.js',
+                dest: '<%= sdo.output.build %>/plugins'
+            },
         ]
       },
-      build: {
-        options: {
-          variables: {
-            'min': '.min',
-            'includeTranslateErrorHandler': '',
-            'livereload': ''
-          }
-        },
+      dist: {
         files: [
-          { src: ['<%= yeoman.app %>/index.html'],
-            dest: '<%= yeoman.dist %>/index.html' }
+            {
+                src: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js',
+                dest: '<%= sdo.output.dist %>/studio-ui/src/app/studio.js'
+            },
+            {
+                expand: true,
+                cwd: '<%= sdo.src.modules %>',
+                src: '**/*.js',
+                dest: '<%= sdo.output.dist %>/modules'
+            },
+            {
+                expand: true,
+                cwd: '<%= sdo.src.plugins %>',
+                src: '**/*.js',
+                dest: '<%= sdo.output.dist %>/plugins'
+            },
         ]
       }
     },
+
+    // copy: {
+    //     build: {
+
+    //     },
+    //     dist: {
+    //         files: [{
+    //           expand: true,
+    //           dot: true,
+    //           cwd: '<%= sdo.output.dev %>',
+    //           dest: '<%= sdo.output.dist %>',
+    //           src: [
+    //             'studio-ui/lib/**/*.min.js',
+    //             'studio-ui/lib/**/*.min.css',
+    //             'studio-ui/src/images/**/*.{gif,webp,ico}',
+    //             'studio-ui/src/styles/studio.css',
+    //             'studio-ui/src/app/**/*.tpl.html',
+
+    //             // Special cases
+    //             'studio-ui/lib/jquery/js/*.js',
+    //             'studio-ui/lib/jquery/js/*.map',
+    //             'studio-ui/lib/toastr/js/*.js',
+    //             'studio-ui/lib/toastr/js/*.map',
+    //             'studio-ui/lib/require*/**/*.js',
+    //             'studio-ui/lib/bootstrap/fonts/*'
+    //           ]
+    //         }]
+    //     }
+    // },
+
+    replace: {
+        options: {
+            variables: {
+                'min': '.min',
+                'livereload': ''
+            }
+        },
+        dev: {
+            options: {
+                variables: {
+                    'min': '',
+                    'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
+                }
+            },
+            src: '<%= sdo.src.root %>/index.html',
+            dest: '<%= sdo.output.dev %>/index.html'
+        },
+        build: {
+            src: '<%= replace.dev.src %>',
+            dest: '<%= sdo.output.build %>/index.html'
+        },
+        dist: {
+            src: '<%= replace.dev.src %>',
+            dest: '<%= sdo.output.dist %>/index.html'
+        }
+    },
+
     bower: {
       install: {
         options : {
-          targetDir: './client/studio-ui/lib',
+          targetDir: '<%= sdo.src.lib %>',
           layout: 'byComponent',
           verbose: true
         }
       }
+    },
+
+    symlink: {
+        dev: {
+          src: ['*', '!<%= sdo.output.dev %>'],
+          dest: '<%= sdo.output.dev %>',
+          expand: true,
+          filter: 'isDirectory',
+        }
+    },
+
+    useminPrepare: {
+        build: {
+            src: '<%= sdo.src.root %>/index.html',
+            dest: '<%= sdo.output.build %>'
+        },
+        dist: {
+            src: '<%= useminPrepare.build.src',
+            dest: '<%= sdo.output.dist %>'
+        }
+    },
+
+    usemin: {
+        build: {
+            html: ['<%= sdo.output.build %>/index.html'],
+            js: ['<%= sdo.output.build %>/studio-ui/src/app/studio.js']
+        },
+        dist: {
+            html: ['<%= sdo.src.dist %>/index.html'],
+            js: ['<%= sdo.output.dist %>/studio-ui/src/app/studio.js']
+        }
+    },
+
+    watch: {
+      express: {
+        files: [
+          '<%= sdo.src.root %>/index.html',
+          '<%= sdo.src.images %>/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
+          '<%= sdo.src.app %>/**/*.js',
+          '<%= sdo.src.modules %>/**/*.js',
+          '<%= sdo.src.plugins %>/**/*.js'
+        ],
+        tasks: [],
+        options: {
+            livereload: true,
+            nospawn: true   //Without this option specified express won't be reloaded
+        }
+      },
+      recess: {
+        files: ['<%= recess.dev.files %>'],
+        tasks: ['recess:server']
+      },
+      replace: {
+        files: ['<%= recess.dev.src %>'],
+        tasks: ['replace:dev']
+      }
     }
   });
 
-  // Run unit tests on jasmine
-  grunt.registerTask('test', [
-    'clean:server',
-    'karma:dev'
-  ]);
+  grunt.registerTask('dev',
+    'Start a live-reloading dev webserver on localhost for development',
+    ['clean:dev', 'symlink:dev', 'replace:dev', 'recess:dev', 'express:dev', 'open', 'watch']);
 
-  // Run tests for code linting
-  grunt.registerTask('lint', ['newer:jshint:all']);
+  grunt.registerTask('build',
+    'Build the application for production and run it against a mock server on localhost',
+    ['clean:build', 'lint', 'karma:continuous',
+     'replace:build', 'recess:build', 'imagemin', 'copy', 'ngmin']);
 
-  // Component update
-  grunt.registerTask('cup', ['bower:install']);
+  grunt.registerTask('dist',
+    'Build the application for production so that it is ready to be integrated into a .war or .jar file.',
+    ['clean:dist', 'lint', 'karma:continuous',
+     'replace:dist', 'recess:dist', 'imagemin', 'copy', 'ngmin']);
 
-  // Test look and feel locally
-  grunt.registerTask('server', [
-    'clean:server',
-    'replace:dev',
-    // 'recess:server',
-    'express:dev',
-    'open',
-    'watch'
-  ]);
+  grunt.registerTask('test',
+    'Run unit tests on jasmine',
+    ['clean:dev', 'karma:dev']);
 
-  // Build the project for release
-  grunt.registerTask('build', [
-    'clean:dist',
-    'jshint',
-    // 'recess:dist',
-    'karma:continuous',
-    'replace:build',
-    'useminPrepare',
-    'imagemin',
-    'concat',
-    'copy',
-    'ngmin',
-    // 'uglify',
-    'usemin'
-  ]);
+  grunt.registerTask('lint',
+    'Run jshint on code'
+    ['newer:jshint:app']);
 
-  grunt.registerTask('default', ['build']);
+  grunt.registerTask('default', ['dev']);
 };
