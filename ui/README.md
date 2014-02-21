@@ -55,13 +55,21 @@ A established workflow using grunt tasks can be outlined as follows:
        
        Make sure your code adheres to specific code guidelines.
 
-3.    Run the app : `$ grunt server`
+3.    Run the app : `$ grunt dev`
        
-       Test the look and feel of the app to guarantee a positive user experience.
+       Test the look and feel of the app (with live-reload) against a mock server to guarantee a positive user experience.
 
-4.    Build the app: `$ grunt`
+4.    Build the app: `$ grunt build`
        
-       Build the application for deployment and run it on any HTTP server.
+       Build the application for production and run it against a mock server.
+
+5.    Build the app: `$ grunt dist`
+       
+       Build the application for production so that it is ready to be integrated into a .war or .jar file.
+
+### Support Tasks:
+
+* Install any bower packages from the component folder into the lib folder: `$ grunt bower:install`
 
 Node Modules
 ----
@@ -75,7 +83,6 @@ Node Modules
 * grunt-recess: Compiles LESS to CSS
 * grunt-usemin: Transforms specific construction blocks (of CSS or JS files) in a file into a single line
 * grunt-replace: Replaces text patterns with a given replacement (text pre-processor)
-* grunt-rev: Allows cache busting of static files
 * grunt-karma: Grunt plugin for the karma test runner
 * grunt-open: Opens urls and files from a grunt task
 * matchdep: Filters npm module dependencies by name or a text pattern
