@@ -14,10 +14,10 @@ module.exports = function (grunt) {
     src: {
         root: './client',
         app: './client/studio-ui/src/app',
-        images: './client/studio-ui/src/images',
-        lib: './client/studio-ui/lib',
-        modules: './server/app/modules',
-        plugins: './server/app/plugins'
+        modules: './client/studio-ui/src/modules',
+        plugins: './client/studio-ui/src/plugins',
+        images: './client/studio-ui/images',
+        lib: './client/studio-ui/lib'
     }
   };
 
@@ -114,14 +114,14 @@ module.exports = function (grunt) {
                   cwd: '<%= sdo.src.modules %>',    // Src matches are relative to this path
                   src: ['/**/*.less'],              // Actual pattern(s) to match.
                   dest: '<%= sdo.output.build %>/modules/',   // Destination path prefix.
-                  ext: '.css',                      // Dest filepaths will have this extension.
+                  ext: '.css'                       // Dest filepaths will have this extension.
                 },
                 {
                   expand: true,                     // Enable dynamic expansion
                   cwd: '<%= sdo.src.plugins %>',    // Src matches are relative to this path
                   src: ['/**/*.less'], // Actual pattern(s) to match.
                   dest: '<%= sdo.output.build %>/plugins/',   // Destination path prefix.
-                  ext: '.css',                      // Dest filepaths will have this extension.
+                  ext: '.css'                       // Dest filepaths will have this extension.
                 }
             ]
         },
@@ -132,18 +132,18 @@ module.exports = function (grunt) {
                     dest: '<%= sdo.output.dist %>/studio-ui/studio.css'
                 },
                 {
-                  expand: true,                     // Enable dynamic expansion
-                  cwd: '<%= sdo.src.modules %>',    // Src matches are relative to this path
-                  src: ['**/*.less'],               // Actual pattern(s) to match.
-                  dest: '<%= sdo.output.dist %>/modules/',   // Destination path prefix.
-                  ext: '.css',                      // Dest filepaths will have this extension.
+                  expand: true,
+                  cwd: '<%= sdo.src.modules %>',
+                  src: ['**/*.less'],
+                  dest: '<%= sdo.output.dist %>/modules/',
+                  ext: '.css'
                 },
                 {
-                  expand: true,                     // Enable dynamic expansion
-                  cwd: '<%= sdo.src.plugins %>',    // Src matches are relative to this path
-                  src: ['/**/*.less'], // Actual pattern(s) to match.
-                  dest: '<%= sdo.output.dist %>/plugins/',   // Destination path prefix.
-                  ext: '.css',                      // Dest filepaths will have this extension.
+                  expand: true,
+                  cwd: '<%= sdo.src.plugins %>',
+                  src: ['/**/*.less'],
+                  dest: '<%= sdo.output.dist %>/plugins/',
+                  ext: '.css'
                 }
             ]
         }
