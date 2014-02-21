@@ -1,6 +1,8 @@
-define(['globals', 
-    'text!./templates/almond.tpl.html', 
-    'less!./almond'], 
+/* global define */
+
+define(['globals',
+    'text!./templates/almond.tpl.html',
+    'less!./almond'],
     function( globals, html ) {
 
     'use strict';
@@ -13,15 +15,15 @@ define(['globals',
 
             // Register the plugin controller
             NgRegistry
-                .addController('NewCtrl', 
+                .addController('NewCtrl',
                     ['$scope', '$timeout', function ($scope, $timeout) {
 
                     $timeout( function() {
                         $scope.$apply( function() {
                             // Make sure the templates are updated with the values in the scope
-                            $scope.idValue = "myModuleId";
+                            $scope.idValue = 'myModuleId';
                             $scope.newMethod = function (myVar) {
-                                $log.log("newMethod called with param: ", myVar);
+                                $log.log('newMethod called with param: ', myVar);
                             };
                         });
                     });

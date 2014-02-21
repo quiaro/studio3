@@ -85,7 +85,7 @@ angular.module('crafter.studio-ui.Utils', [])
                                     config: configObj.config
                                 };
 
-                                $log.info("Config info for " + configObj.name + ":", modConfig.config[file]);
+                                $log.info('Config info for ' + configObj.name + ':', modConfig.config[file]);
 
                                 // Make module-specific configuration available
                                 require.config(modConfig);

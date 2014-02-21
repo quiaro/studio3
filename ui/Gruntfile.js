@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                 'Gruntfile.js',
                 '<%= sdo.root %><%= sdo.path.app %>/**/*.js',
                 '<%= sdo.root %><%= sdo.path.modules %>/**/*.js',
-                '<%= sdo.root %><%= sdo.path.plugins %>/**/*.js',
+                '<%= sdo.root %><%= sdo.path.plugins %>/**/*.js'
             ]
         },
 
@@ -183,7 +183,7 @@ module.exports = function(grunt) {
                     cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
                     src: '**/*.js',
                     dest: '<%= sdo.output.build %><%= sdo.path.plugins %>'
-                }, ]
+                }]
             },
             dist: {
                 files: [{
@@ -199,7 +199,7 @@ module.exports = function(grunt) {
                     cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
                     src: '**/*.js',
                     dest: '<%= sdo.output.dist %><%= sdo.path.plugins %>'
-                }, ]
+                }]
             }
         },
 
@@ -274,7 +274,7 @@ module.exports = function(grunt) {
                 src: ['*', '!<%= sdo.output.dev %>'],
                 dest: '<%= sdo.output.dev %>',
                 expand: true,
-                filter: 'isDirectory',
+                filter: 'isDirectory'
             }
         },
 
@@ -331,23 +331,28 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('dev',
-        'Start a live-reloading dev webserver on localhost for development', ['clean:dev', 'symlink:dev', 'replace:dev', 'recess:dev', 'express:dev', 'open', 'watch']);
+        'Start a live-reloading dev webserver on localhost for development',
+        ['clean:dev', 'symlink:dev', 'replace:dev', 'recess:dev', 'express:dev', 'open', 'watch']);
 
     grunt.registerTask('build',
-        'Build the application for production and run it against a mock server on localhost', ['clean:build', 'lint', 'karma:continuous',
+        'Build the application for production and run it against a mock server on localhost',
+        ['clean:build', 'lint', 'karma:continuous',
             'replace:build', 'recess:build', 'imagemin', 'copy', 'ngmin'
         ]);
 
     grunt.registerTask('dist',
-        'Build the application for production so that it is ready to be integrated into a .war or .jar file.', ['clean:dist', 'lint', 'karma:continuous',
+        'Build the application for production so that it is ready to be integrated into a .war or .jar file.',
+        ['clean:dist', 'lint', 'karma:continuous',
             'replace:dist', 'recess:dist', 'imagemin', 'copy', 'ngmin'
         ]);
 
     grunt.registerTask('test',
-        'Run unit tests on jasmine', ['clean:dev', 'karma:dev']);
+        'Run unit tests on jasmine',
+        ['clean:dev', 'karma:dev']);
 
     grunt.registerTask('lint',
-        'Run jshint on code' ['newer:jshint:app']);
+        'Run jshint on code',
+        ['newer:jshint:app']);
 
     grunt.registerTask('default', ['dev']);
 };

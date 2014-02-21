@@ -1,3 +1,5 @@
+/* global define */
+
 define(['globals'], function( globals ) {
 
     'use strict';
@@ -91,14 +93,15 @@ define(['globals'], function( globals ) {
                  'Utils', function ($q, $compile, $timeout, $log, ConfigService, Utils) {
 
                 return {
-                        restrict: "C",
+                        restrict: 'C',
                         scope: {},
                         link : function postLink (scope, element, attrs) {
 
                                 var containerId;
 
                                 if (!attrs.pluginContainer) {
-                                    $log.warn('Plugins directive with id "' + attrs.id + '" is missing data-plugin-container attribute');
+                                    $log.warn('Plugins directive with id "' + attrs.id +
+                                        '" is missing data-plugin-container attribute');
                                     return;
                                 } else {
                                     containerId = attrs.pluginContainer;

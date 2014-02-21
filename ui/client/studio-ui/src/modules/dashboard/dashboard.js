@@ -1,3 +1,5 @@
+/* global define */
+
 define(['require',
         'globals',
         'common',

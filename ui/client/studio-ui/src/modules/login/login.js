@@ -1,3 +1,5 @@
+/* global define */
+
 define(['require',
         'globals',
         'directives',
@@ -28,7 +30,7 @@ define(['require',
 
             .addController('SignUpCtrl', ['$scope', function ($scope) {
                 $scope.signup = function signup (newUser) {
-                    $log.log(newUser + " signing up");
+                    $log.log(newUser + ' signing up');
                 };
             }])
 

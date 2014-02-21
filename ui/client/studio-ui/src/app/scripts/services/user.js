@@ -16,4 +16,4 @@ angular.module('crafter.studio-ui.services.UserService', [])
                 getUserRoles: getUserRoles
             };
         }
-    ])
+    ]);

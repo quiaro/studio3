@@ -1,30 +1,29 @@
 // Karma configuration
 
 // base path, that will be used to resolve files and exclude
-basePath = '.';
+basePath = '../../client/studio-ui/';
 
 // list of files / patterns to load in the browser
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'client/studio-ui/lib/angular/js/angular.min.js',
-  'client/studio-ui/lib/toastr/js/toastr.min.js',
-  'client/studio-ui/lib/angular-translate/js/angular-translate.min.js',
-  'client/studio-ui/lib/requirejs/js/require.js',
-  'client/studio-ui/lib/angular-*/js/*.min.js',
-  'client/studio-ui/lib/angular-mocks/js/angular-mocks.js',
-  'client/studio-ui/lib/jquery/js/jquery.min.js',
+  'lib/angular/js/angular.min.js',
+  'lib/toastr/js/toastr.min.js',
+  'lib/requirejs/js/require.js',
+  'lib/angular-*/js/*.min.js',
+  'lib/angular-mocks/js/angular-mocks.js',
+  'lib/jquery/js/jquery.min.js',
 
-  'client/studio-ui/src/app/**/*.js',
+  'src/app/**/*.js',
    // 'test/mock/**/*.js',
-  'test/spec/**/*.js'
+  '../../test/spec/**/*.js'
 ];
 
 // list of files to exclude
 exclude = [
-	'client/studio-ui/lib/require-css/js/css-builder.js',
-	'client/studio-ui/src/app/editor/main.js',
-	'client/studio-ui/src/app/editor/scripts/*.js',
+	'lib/require-css/js/css-builder.js',
+	'src/app/editor/main.js',
+	'src/app/editor/scripts/*.js',
  ];
 
 // test results reporter to use

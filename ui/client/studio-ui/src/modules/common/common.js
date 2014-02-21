@@ -1,3 +1,5 @@
+/* global define */
+
 define(['globals'], function( globals ) {
 
     'use strict';

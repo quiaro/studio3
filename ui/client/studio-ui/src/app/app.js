@@ -93,8 +93,7 @@
             ConfigService.loadConfiguration(init_module)
                 .then( function(response) {
 
-                    var promiseList,
-                        templatesUrl;
+                    var promiseList;
 
                     CONFIG = response.data;
                     GLOBALS = CONFIG.module_globals;
@@ -116,12 +115,12 @@
                         },
                         paths: CONFIG.requirejs.module_paths,
                         config: {
-                            "globals": GLOBALS
-                        },
+                            'globals': GLOBALS
+                        }
                     });
 
                     if (!('globals' in CONFIG.requirejs.module_paths)) {
-                        $log.error("No path specified for globals module");
+                        $log.error('No path specified for globals module');
                     }
 
                     promiseList = Utils.loadModules(CONFIG.modules, CONFIG.base_url);
