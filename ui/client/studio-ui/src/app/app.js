@@ -73,6 +73,7 @@
         }])
 
         // Initialize the application
+        /*jshint -W072 */
         .run(['$rootScope',
             '$location',
             '$state',
@@ -178,5 +179,6 @@
             });
 
         }]);
+        /*jshint +W072 */
 
 })();

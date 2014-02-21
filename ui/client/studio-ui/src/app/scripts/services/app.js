@@ -2,8 +2,8 @@
 
 angular.module('crafter.studio-ui.common')
 
-    .service('AppService', ['$http', '$q', 'Env', 'REGISTRY',
-        function($http, $q, Env, REGISTRY) {
+    .service('AppService', ['$http', '$q', 'Env', 'REGISTRY', '$modal',
+        function($http, $q, Env, REGISTRY, $modal) {
 
             /*
              * @param api -API Category

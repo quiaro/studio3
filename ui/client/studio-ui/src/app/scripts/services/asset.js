@@ -12,6 +12,7 @@ angular.module('crafter.studio-ui.common')
          'Env',
         function($http, $rootScope, Utils, CONFIG, Env) {
 
+            /*jshint -W074 */
             this.upload = function(config) {
 
                 var serviceDomain = CONFIG.services.domain || '',
@@ -45,9 +46,7 @@ angular.module('crafter.studio-ui.common')
                 config.transformRequest = angular.identity;
                 formData.append(config.fileFormDataName || 'file', config.file, config.file.name);
 
-                /*jslint camelcase:false */
                 formData.__setXHR_ = function(xhr) {
-                /*jslint camelcase:true */
                     config.__XHR = xhr;
                     xhr.upload.addEventListener('progress', function(e) {
                         if (config.progress) {
@@ -93,6 +92,7 @@ angular.module('crafter.studio-ui.common')
 
                 return promise;
             };
+            /*jshint +W074 */
 
             this.read = function (config) {
 
