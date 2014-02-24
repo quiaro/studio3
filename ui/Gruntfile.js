@@ -8,8 +8,7 @@ module.exports = function(grunt) {
     var appConfig = {
         output: {
             dev: 'dev',
-            build: 'build',
-            dist: 'target/META-INF/resources'
+            build: 'target'
         },
         root: './client',
         path: {
@@ -17,7 +16,8 @@ module.exports = function(grunt) {
             modules: '/studio-ui/src/modules',
             plugins: '/studio-ui/src/plugins',
             images: '/studio-ui/images',
-            lib: '/studio-ui/lib'
+            lib: '/studio-ui/lib',
+            build: '/META-INF/resources'
         }
     };
 
@@ -25,17 +25,18 @@ module.exports = function(grunt) {
         sdo: appConfig,
         express: {
             options: {
-                port: process.env.PORT || 9000,
-                debug: false
+                port: process.env.PORT || 9000
             },
             dev: {
                 options: {
-                    script: './server/dev/server.js'
+                    script: './server/dev/server.js',
+                    debug: false
                 }
             },
             build: {
                 options: {
-                    script: './server/build/server.js'
+                    script: './server/build/server.js',
+                    node_env: 'production'
                 }
             }
         },
@@ -48,8 +49,7 @@ module.exports = function(grunt) {
 
         clean: {
             dev: '<%= sdo.output.dev %>',
-            build: '<%= sdo.output.build %>',
-            dist: '<%= sdo.output.dist %>'
+            build: '<%= sdo.output.build %>'
         },
 
         jshint: {
@@ -102,36 +102,18 @@ module.exports = function(grunt) {
             build: {
                 files: [{
                     src: '<%= sdo.root %><%= sdo.path.app %>/styles/app.less',
-                    dest: '<%= sdo.output.build %>/studio-ui/studio.css'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: ['/**/*.less'],
-                    dest: '<%= sdo.output.build %><%= sdo.path.modules %>',
-                    ext: '.css'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: ['/**/*.less'],
-                    dest: '<%= sdo.output.build %><%= sdo.path.plugins %>',
-                    ext: '.css'
-                }]
-            },
-            dist: {
-                files: [{
-                    src: '<%= sdo.root %><%= sdo.path.app %>/styles/app.less',
-                    dest: '<%= sdo.output.dist %>/studio-ui/studio.css'
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.css'
                 }, {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.modules %>',
                     src: ['**/*.less'],
-                    dest: '<%= sdo.output.dist %><%= sdo.path.modules %>',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
                     ext: '.css'
                 }, {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: ['/**/*.less'],
-                    dest: '<%= sdo.output.dist %><%= sdo.path.plugins %>',
+                    src: ['**/*.less'],
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
                     ext: '.css'
                 }]
             }
@@ -143,94 +125,73 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.images %>',
                     src: '**/*.{png,jpg,jpeg}',
-                    dest: '<%= sdo.output.build %><%= sdo.path.images %>'
-                }]
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
-                    src: '**/*.{png,jpg,jpeg}',
-                    dest: '<%= sdo.output.dist %><%= sdo.path.images %>'
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
                 }]
             }
         },
-
-        // uglify: {
-        //   build: {
-        //         src: '<%= sdo.root %><%= sdo.path.app %>/**/*.js',
-        //         dest: '<%= sdo.output.build %>/studio-ui/studio.js'
-        //     }
-        //   },
-        //   dist: {
-        //         src: '<%= sdo.root %><%= sdo.path.app %>/**/*.js',
-        //         dest: '<%= sdo.output.dist %>/studio-ui/studio.js'
-        //   }
-        // },
 
         ngmin: {
             build: {
                 files: [{
-                    src: '<%= sdo.output.build %>/studio-ui/studio.js',
-                    dest: '<%= sdo.output.build %>/studio-ui/studio.js'
+                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js'
                 }, {
                     expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.modules %>'
+                    cwd: '.',
+                    src: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>/**/*.src.js',
+                    ext: '.js'
                 }, {
                     expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.plugins %>'
-                }]
-            },
-            dist: {
-                files: [{
-                    src: '<%= sdo.output.dist %>/studio-ui/studio.js',
-                    dest: '<%= sdo.output.dist %>/studio-ui/studio.js'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.dist %><%= sdo.path.modules %>'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.dist %><%= sdo.path.plugins %>'
+                    cwd: '.',
+                    src: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>/**/*.src.js',
+                    ext: '.js'
                 }]
             }
         },
 
-        // copy: {
-        //     build: {
-
-        //     },
-        //     dist: {
-        //         files: [{
-        //           expand: true,
-        //           dot: true,
-        //           cwd: '<%= sdo.output.dev %>',
-        //           dest: '<%= sdo.output.dist %>',
-        //           src: [
-        //             'studio-ui/lib/**/*.min.js',
-        //             'studio-ui/lib/**/*.min.css',
-        //             'studio-ui/src/images/**/*.{gif,webp,ico}',
-        //             'studio-ui/src/styles/studio.css',
-        //             'studio-ui/src/app/**/*.tpl.html',
-
-        //             // Special cases
-        //             'studio-ui/lib/jquery/js/*.js',
-        //             'studio-ui/lib/jquery/js/*.map',
-        //             'studio-ui/lib/toastr/js/*.js',
-        //             'studio-ui/lib/toastr/js/*.map',
-        //             'studio-ui/lib/require*/**/*.js',
-        //             'studio-ui/lib/bootstrap/fonts/*'
-        //           ]
-        //         }]
-        //     }
-        // },
+        copy: {
+            assets: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
+                    src: '**/*.{gif,webp,ico}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.lib %>',
+                    src: '**/*',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.lib %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
+                    src: '**/*.{html,css}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
+                    src: '**/*.{html,css}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>'
+                }]
+            },
+            js: {
+                files: [{
+                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
+                    src: '**/*.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
+                    ext: '.src.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
+                    src: '**/*.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
+                    ext: '.src.js'
+                }]
+            }
+        },
 
         replace: {
             options: {
@@ -251,11 +212,7 @@ module.exports = function(grunt) {
             },
             build: {
                 src: '<%= replace.dev.src %>',
-                dest: '<%= sdo.output.build %>/index.html'
-            },
-            dist: {
-                src: '<%= replace.dev.src %>',
-                dest: '<%= sdo.output.dist %>/index.html'
+                dest: '<%= sdo.output.build %><%= sdo.path.build %>/index.html'
             }
         },
 
@@ -278,36 +235,54 @@ module.exports = function(grunt) {
             }
         },
 
-        useminPrepare: {
-            build: {
-                src: '<%= sdo.root %>/index.html',
-                dest: '<%= sdo.output.build %>'
+        uglify: {
+            options: {
+                preserveComments: false,
+                report: 'min',
+                sourceMap: true
             },
-            dist: {
-                src: '<%= useminPrepare.build.src',
-                dest: '<%= sdo.output.dist %>'
+            build: {
+                files: [{
+                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
+                    src: '**/*.src.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
+                    ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
+                    src: '**/*.src.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
+                    ext: '.js'
+                }]
             }
         },
 
-        usemin: {
-            build: {
-                html: ['<%= sdo.output.build %>/index.html'],
-                js: ['<%= sdo.output.build %>/studio-ui/studio.js']
+        useminPrepare: {
+            options: {
+                dest: '<%= sdo.output.build %><%= sdo.path.build %>',
+                flow: {
+                    steps: {'js' : ['concat'] },
+                    post: {}
+                }
             },
-            dist: {
-                html: ['<%= sdo.src.dist %>/index.html'],
-                js: ['<%= sdo.output.dist %>/studio-ui/studio.js']
-            }
+            html: '<%= sdo.root %>/index.html'
+        },
+
+        usemin: {
+            html: '<%= sdo.output.build %><%= sdo.path.build %>/index.html'
         },
 
         watch: {
             express: {
                 files: [
-                    '<%= sdo.root %>/index.html',
                     '<%= sdo.root %><%= sdo.path.images %>/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-                    '<%= sdo.root %><%= sdo.path.app %>/**/*.js',
-                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.js',
-                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.js'
+                    '<%= sdo.root %><%= sdo.path.app %>/**/*.{html,js,css}',
+                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css}',
+                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css}'
                 ],
                 tasks: [],
                 options: {
@@ -336,15 +311,16 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build',
         'Build the application for production and run it against a mock server on localhost',
-        ['clean:build', 'lint', 'karma:continuous',
-            'replace:build', 'recess:build', 'imagemin', 'copy', 'ngmin'
-        ]);
+        ['dist', 'express:build', 'open', 'watch']);
 
     grunt.registerTask('dist',
         'Build the application for production so that it is ready to be integrated into a .war or .jar file.',
-        ['clean:dist', 'lint', 'karma:continuous',
-            'replace:dist', 'recess:dist', 'imagemin', 'copy', 'ngmin'
-        ]);
+        ['clean:build', 'lint',
+            'replace:build', 'recess:build', 'imagemin:build', 'copy:assets', 'buildjs', 'usemin']);
+
+    grunt.registerTask('buildjs',
+        'Minify and compress all javascript',
+        ['useminPrepare', 'concat', 'copy:js', 'uglify:build']);
 
     grunt.registerTask('test',
         'Run unit tests on jasmine',
