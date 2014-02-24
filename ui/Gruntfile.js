@@ -130,25 +130,6 @@ module.exports = function(grunt) {
             }
         },
 
-        ngmin: {
-            build: {
-                files: [{
-                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js'
-                }, {
-                    expand: true,
-                    cwd: '.',
-                    src: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>/**/*.src.js',
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: '.',
-                    src: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>/**/*.src.js',
-                    ext: '.js'
-                }]
-            }
-        },
-
         copy: {
             assets: {
                 files: [{
