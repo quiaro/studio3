@@ -70,41 +70,67 @@ A established workflow using grunt tasks can be outlined as follows:
 ### Support Tasks:
 
 * Install any bower packages from the component folder into the lib folder: `$ grunt bower:install`
-
-Node Modules
-----
-
-* ejs: Used by server.js to serve index.html
-* grunt-contrib-copy: Copies source files to a temp directory
-* grunt-contrib-uglify: Minifies/compresses JS files and generates source maps
-* grunt-contrib-jshint: Validates files with JSHint
-* grunt-contrib-clean: Cleans files and folders
-* grunt-contrib-imagemin: Minifies PNG, JPEG and GIF images
-* grunt-recess: Compiles LESS to CSS
-* grunt-usemin: Transforms specific construction blocks (of CSS or JS files) in a file into a single line
-* grunt-replace: Replaces text patterns with a given replacement (text pre-processor)
-* grunt-karma: Grunt plugin for the karma test runner
-* grunt-open: Opens urls and files from a grunt task
-* matchdep: Filters npm module dependencies by name or a text pattern
-* grunt-ngmin: AngularJS pre-minifier that inserts inline annotations for dependency injections
-* grunt-bower-task: Installs only the files needed from bower packages
-* grunt-newer: Configures grunt tasks to run with newer files only
-* grunt-express-server: Runs an Express server that works with LiveReload + Watch/Regarde
-* grunt-contrib-watch: Run predefined tasks whenever watched files are added, changed or deleted
-* express: Fast minimalist web framework for node
+* Clean all files generated during `$ grunt dev`: `$ grunt clean:dev`
+* Clean all files generated during `$ grunt build`: `$ grunt clean:build`
+* Clean all files generated during `$ grunt dist`: `$ grunt clean:dist`
 
 Crafter Studio 3 UI
 ----
 
-Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI) and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the [app's configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json).
+Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI), requesting its own plugins and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the [app's configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json).
 
-The project's repository currently includes 4 root folders:
+### Project Overview
 
-* client: CS3UI bootstrap code, 3rd-party library code and images
-* node_modules
-* server
-* test
+Here is a brief overview of the CS3UI file & folder structure:
 
+**CS3UI: `./client`**
+
+* `./client/studio-ui/lib`: bower packages (i.e. 3rd party libraries)
+* `./client/studio-ui/src/app`: CS3UI core application
+* `./client/studio-ui/src/modules`: CS3UI modules (requested by the core application when it bootstraps)
+* `./client/studio-ui/src/plugins`: CS3UI plugins (requested by any of the CS3UI modules)
+
+**Node Modules: `./node_modules`**
+
+Node modules used by grunt or the mock servers during tasks:
+
+* *ejs*: Used by server.js to serve index.html
+* *grunt-contrib-copy*: Copies source files to a new directory
+* *grunt-contrib-uglify*: Minifies/compresses JS files and generates source maps
+* *grunt-contrib-jshint*: Validates files with JSHint
+* *grunt-contrib-clean*: Cleans files and folders
+* *grunt-contrib-imagemin*: Minifies PNG, JPEG and GIF images
+* *grunt-recess*: Compiles LESS to CSS
+* *grunt-usemin*: Transforms specific construction blocks (of CSS or JS files) in a file into a single line
+* *grunt-replace*: Replaces text patterns with a given replacement (text pre-processor)
+* *grunt-karma*: Grunt plugin for the karma test runner
+* *grunt-open*: Opens urls and files from a grunt task
+* *matchdep*: Filters npm module dependencies by name or a text pattern
+* *grunt-bower-task*: Installs only the files needed from bower packages
+* *grunt-newer*: Configures grunt tasks to run with newer files only
+* *grunt-express-server*: Runs an Express server that works with LiveReload + Watch/Regarde
+* *grunt-contrib-watch*: Run predefined tasks whenever watched files are added, changed or deleted
+* *express*: Fast minimalist web framework for node
+
+**CS3UI Mock Servers and Services: `./server`**
+
+* `./server/app`: Mock data for application services
+* `./server/build`: Build server for the packaged application (see `$ grunt build`)
+* `./server/dev`: Development server for the application (see `$ grunt dev`)
+* `./server/sites`: Mock data for site-specific services
+* `./server/config.js`: Configuration for both the build and dev servers. This configuration can be overwritten or extended via a config.js file inside the server folder (e.g. see `./server/dev/config.js`)
+* `./server/mock.js`: Maps app and site-specific service urls to their corresponding mock data
+
+**CS3UI Tests: `./test`**
+
+**Root Files**
+
+* `./.jshintrc`: JS hint lint rules
+* `./bower.json`: Bower package file. Lists the project's bower package dependencies
+* `./Gruntfile.js`: Configuration file for grunt tasks
+* `./install.sh`: Installation script for the application
+* `./package.json`: Node package file. Lists the project's node module dependencies
+* `./pom.xml`: Configuration file for integrating the application into CS3
 
 ### Loading of the App
 
@@ -116,9 +142,7 @@ When CS3UI starts, it kicks off a bootstrap process responsible for the followin
 
 2) For each module, load their descriptor (e.g. [login descriptor](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/login/descriptor.json) & [dashboard descriptor](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/dashboard/descriptor.json) and then, proceed with the loading of the module. RequireJS handles all dependency calculation and fetches each module's js and css dependencies. In the case of css, import statements may also be used alongside RequireJS.
 
-**Note**: RequireJS is not used to load templates because these are loaded on demand by angular and use angular's own caching system.
-
-#### Loading code on demand with Angular
+#### Loading Code on Demand with Angular
 
 Since Angular does not natively provide the ability to include new elements (i.e. controllers, directives, services, etc) into the app after Angular's bootstrap process has completed, a service called [NgRegistry](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/client/studio-ui/src/app/scripts/ng_registry.js) exists to work around this limitation. 
 
@@ -152,6 +176,39 @@ It's important to remember that all CS3UI modules are loaded on demand by Requir
             }
         ]);
     });
+
+#### Loading Templates
+
+The CS3UI core is responsible for loading the application's modules, but it does not have a template (i.e. graphic interface) associated with it. Only the modules and plugins can have templates linked to them, and they both have a slightly different way of loading them.
+
+##### Template Loaded by a Module
+
+Each module adds one more states to the application (using [ui-router](https://github.com/angular-ui/ui-router) behind the scenes) and it can assign a specific template to each one of them. 
+
+For example, the following is a bare bones module defining a new state (moduleNamespace.sampleState) in the application and a template for it (my-template.tpl.html):
+
+    define(['require',
+            'globals',
+            'css!./mycss'], function( require, globals ) {
+
+        'use strict';
+
+        var injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['NgRegistry',
+            function(NgRegistry) {
+
+                NgRegistry
+                    .addState('moduleNamespace.sampleState', {
+                        url: '/sample-state',
+                        templateUrl: require.toUrl('./templates/my-template.tpl.html')
+                    });
+            }
+        ]);
+
+    });
+
+Notice that the location of the both the stylesheet (mycss.css) and the template is relative to the module JS file. Also, notice that RequireJS is not used to load templates for modules because these are loaded on demand by angular when the user navigates to their corresponding url. In this example, the template will not be loaded until the user navigates to 'http://sample-domain.net/sample-state'.
 
 ### App Configuration
 
@@ -246,3 +303,4 @@ Modules can also declare their own specific configuration values. This can be do
           }
         ]);
     });
+
