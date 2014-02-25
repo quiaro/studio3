@@ -23,6 +23,66 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         sdo: appConfig,
+
+        bower: {
+            install: {
+                options: {
+                    targetDir: '<%= sdo.root %><%= sdo.path.lib %>',
+                    layout: 'byComponent',
+                    verbose: true
+                }
+            }
+        },
+
+        clean: {
+            dev: '<%= sdo.output.dev %>',
+            build: '<%= sdo.output.build %>'
+        },
+
+        copy: {
+            assets: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
+                    src: '**/*.{gif,webp,ico}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.lib %>',
+                    src: '**/*',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.lib %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
+                    src: '**/*.{html,css}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
+                    src: '**/*.{html,css,less}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>'
+                }]
+            },
+            js: {
+                files: [{
+                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
+                    src: '**/*.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
+                    ext: '.src.js'
+                }, {
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
+                    src: '**/*.js',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
+                    ext: '.src.js'
+                }]
+            }
+        },
+
         express: {
             options: {
                 port: process.env.PORT || 9000
@@ -41,15 +101,15 @@ module.exports = function(grunt) {
             }
         },
 
-        open: {
-            server: {
-                url: 'http://localhost:<%= express.options.port %>'
+        imagemin: {
+            build: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
+                    src: '**/*.{png,jpg,jpeg}',
+                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
+                }]
             }
-        },
-
-        clean: {
-            dev: '<%= sdo.output.dev %>',
-            build: '<%= sdo.output.build %>'
         },
 
         jshint: {
@@ -77,6 +137,12 @@ module.exports = function(grunt) {
             }
         },
 
+        open: {
+            server: {
+                url: 'http://localhost:<%= express.options.port %>'
+            }
+        },
+
         recess: {
             options: {
                 compile: true
@@ -91,12 +157,6 @@ module.exports = function(grunt) {
                     src: ['**/*.less'], // Actual pattern(s) to match.
                     dest: '<%= sdo.output.dev %><%= sdo.path.modules %>', // Destination path prefix.
                     ext: '.css' // Dest filepaths will have this extension.
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: ['**/*.less'],
-                    dest: '<%= sdo.output.dev %><%= sdo.path.plugins %>',
-                    ext: '.css'
                 }]
             },
             build: {
@@ -109,67 +169,6 @@ module.exports = function(grunt) {
                     src: ['**/*.less'],
                     dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
                     ext: '.css'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: ['**/*.less'],
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
-                    ext: '.css'
-                }]
-            }
-        },
-
-        imagemin: {
-            build: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
-                    src: '**/*.{png,jpg,jpeg}',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
-                }]
-            }
-        },
-
-        copy: {
-            assets: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.images %>',
-                    src: '**/*.{gif,webp,ico}',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.images %>'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.lib %>',
-                    src: '**/*',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.lib %>'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: '**/*.{html,css}',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: '**/*.{html,css}',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>'
-                }]
-            },
-            js: {
-                files: [{
-                    src: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %>/studio-ui/studio.src.js'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
-                    ext: '.src.js'
-                }, {
-                    expand: true,
-                    cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: '**/*.js',
-                    dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>',
-                    ext: '.src.js'
                 }]
             }
         },
@@ -194,16 +193,6 @@ module.exports = function(grunt) {
             build: {
                 src: '<%= replace.dev.src %>',
                 dest: '<%= sdo.output.build %><%= sdo.path.build %>/index.html'
-            }
-        },
-
-        bower: {
-            install: {
-                options: {
-                    targetDir: '<%= sdo.root %><%= sdo.path.lib %>',
-                    layout: 'byComponent',
-                    verbose: true
-                }
             }
         },
 
@@ -261,9 +250,9 @@ module.exports = function(grunt) {
             express: {
                 files: [
                     '<%= sdo.root %><%= sdo.path.images %>/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-                    '<%= sdo.root %><%= sdo.path.app %>/**/*.{html,js,css}',
-                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css}',
-                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css}'
+                    '<%= sdo.root %><%= sdo.path.app %>/**/*.{html,js,css,less}',
+                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css,less}',
+                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css,less}'
                 ],
                 tasks: [],
                 options: {
@@ -273,9 +262,8 @@ module.exports = function(grunt) {
             },
             recess: {
                 files: [
-                    '<%= sdo.root %><%= sdo.path.app %>/styles/app.less',
-                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.less',
-                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.less'
+                    '<%= sdo.root %><%= sdo.path.app %>/styles/*.less',
+                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.less'
                 ],
                 tasks: ['recess:dev']
             },
@@ -292,7 +280,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build',
         'Build the application for production and run it against a mock server on localhost',
-        ['dist', 'express:build', 'open', 'watch']);
+        ['dist', 'express:build', 'open', 'watch:express']);
 
     grunt.registerTask('dist',
         'Build the application for production so that it is ready to be integrated into a .war or .jar file.',
