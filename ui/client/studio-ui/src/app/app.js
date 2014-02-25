@@ -3,13 +3,7 @@
     'use strict';
 
     var init_module = 'crafter.studio-ui',
-
-        // App object for global variables. It has a default url value; however, its
-        // real values will be loaded via ConfigService (and override the default url value)
-        GLOBALS = { default_url: ''},
-
-        // App config object
-        CONFIG;
+        GLOBALS, CONFIG;
 
     angular.module(init_module, [
             'crafter.studio-ui.services.AuthService',
@@ -105,6 +99,10 @@
                     if ('plugins_url' in GLOBALS) {
                         GLOBALS.plugins_url = Utils.getUrl(CONFIG.base_url, GLOBALS.plugins_url);
                     }
+
+                    // Expose configuration to angular app
+                    NgRegistry.addValue('CONFIG', CONFIG);
+                    NgRegistry.addValue('GLOBALS', GLOBALS);
 
                     $log.info('Config info for ' + init_module + ': ', CONFIG);
 
