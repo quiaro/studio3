@@ -13,6 +13,13 @@
         <property name="contentManager" ref="ContentManager"/>
     </bean>
 
+    <bean id="ContentTypeService" class="org.craftercms.studio.impl.content.ContentTypeServiceImpl">
+    </bean>
+
+    <bean id="TemplateService" class="org.craftercms.studio.impl.content.TemplateServiceImpl">
+
+    </bean>
+
     <bean id="AnalyticsService" class="org.craftercms.studio.impl.analytics.AnalyticsServiceImpl">
     </bean>
 

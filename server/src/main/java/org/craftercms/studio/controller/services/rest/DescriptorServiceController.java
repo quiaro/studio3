@@ -74,7 +74,8 @@ public class DescriptorServiceController {
     @ApiModel(type = Item.class)
     @RequestMapping(
         value = "/create/{site}",
-        method = RequestMethod.POST
+        method = RequestMethod.POST,
+        params = { "content_type_id", "parent_id", "file_name", "file" }
     )
     @ResponseBody
     public Item create(
@@ -91,7 +92,7 @@ public class DescriptorServiceController {
             @ApiParam(name = "file_name", required = true, value = "String")
             @RequestParam(value ="file_name", required = true) String fileName,
 
-            @ApiParam(name = "content", required = true, value = "MultipartFile")
+            @ApiParam(name = "file", required = true, value = "MultipartFile")
             @RequestParam(value = "file") MultipartFile file,
 
             @ApiParam(name = "properties", required = false, value = "Map<String, String>")
@@ -120,7 +121,8 @@ public class DescriptorServiceController {
     @ApiModel(type = Item.class)
     @RequestMapping(
         value = "/create/{site}",
-        method = RequestMethod.POST
+        method = RequestMethod.POST,
+        params = { "content_type_id", "parent_id", "file_name", "content" }
     )
     @ResponseBody
     public Item create(

@@ -13,6 +13,18 @@
         <beans:constructor-arg value="org.craftercms.studio.api.content.AssetService"/>
     </beans:bean>
 
+    <beans:bean id="contentTypeService" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.content.ContentTypeService"/>
+    </beans:bean>
+
+    <beans:bean id="descriptorService" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.content.DescriptorService"/>
+    </beans:bean>
+
+    <beans:bean id="templateService" class="org.mockito.Mockito" factory-method="mock">
+        <beans:constructor-arg value="org.craftercms.studio.api.content.TemplateService"/>
+    </beans:bean>
+
     <beans:bean id="analyticsService" class="org.mockito.Mockito" factory-method="mock">
         <beans:constructor-arg value="org.craftercms.studio.api.analytics.AnalyticsService" />
     </beans:bean>
