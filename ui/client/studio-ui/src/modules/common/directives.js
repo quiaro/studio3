@@ -93,46 +93,83 @@ define(['globals'], function( globals ) {
                  'Utils', function ($q, $compile, $timeout, $log, ConfigService, Utils) {
 
                 return {
-                        restrict: 'C',
-                        scope: {},
-                        link : function postLink (scope, element, attrs) {
+                    restrict: 'E',
+                    scope: {},
+                    template: '<div class="sdo-plugins"></div>',
+                    replace: true,
+                    link : function postLink (scope, element, attrs) {
 
-                                var containerId;
+                            var containerId;
 
-                                if (!attrs.pluginContainer) {
-                                    $log.warn('Plugins directive with id "' + attrs.id +
-                                        '" is missing data-plugin-container attribute');
-                                    return;
-                                } else {
-                                    containerId = attrs.pluginContainer;
-                                }
+                            if (!attrs.pluginContainer) {
+                                $log.warn('Plugins directive with id "' + attrs.id +
+                                    '" is missing data-plugin-container attribute');
+                                return;
+                            } else {
+                                containerId = attrs.pluginContainer;
+                            }
 
-                                $log.log('Plugin container with id: "' + containerId + '"');
+                            $log.log('Plugin container with id: "' + containerId + '"');
 
-                                ConfigService.getPlugins(containerId)
-                                    .then( function (response) {
+                            ConfigService.getPlugins(containerId)
+                                .then( function (response) {
 
-                                        var pluginList = response.data.plugins,
-                                            promiseList;
+                                    var pluginList = response.data.plugins,
+                                        promiseList;
 
-                                        $log.log('Plugins found for "' + containerId + '":', pluginList);
+                                    $log.log('Plugins found for "' + containerId + '":', pluginList);
 
-                                        promiseList = Utils.loadModules(pluginList, globals.plugins_url);
+                                    promiseList = Utils.loadModules(pluginList, globals.plugins_url);
 
-                                        $q.all(promiseList).then( function(templates) {
+                                    $q.all(promiseList).then( function(templates) {
 
-                                            // Append templates to directive element
-                                            templates.forEach( function (tpl) {
-                                                element.append(tpl);
-                                            });
-
-                                            // compile the plugins' templates and create the bindings
-                                            // between their models and their templates
-                                            $compile(element.contents())(scope);
+                                        // Append templates to directive element
+                                        templates.forEach( function (tpl) {
+                                            element.append(tpl);
                                         });
+
+                                        // compile the plugins' templates and create the bindings
+                                        // between their models and their templates
+                                        $compile(element.contents())(scope);
                                     });
+                                });
+                    }
+                };
+            }])
+
+            .addDirective('pluginSrc',
+                ['$q',
+                 '$compile',
+                 '$log',
+                 'Utils',
+                 'GLOBALS', function($q, $compile, $log, Utils, GLOBALS) {
+
+                return {
+                    restrict: 'A',
+                    compile: function(element, attr) {
+
+                        var pluginName = attr.pluginSrc,
+                            promiseList;
+
+                        if (!attr['pluginLoaded']) {
+
+                            $log.log('Loading plugin ' + pluginName + ' from directive ...');
+
+                            promiseList = Utils.loadModules([pluginName], GLOBALS.plugins_url);
+
+                            return function (scope, element, attr) {
+
+                                attr.$set('pluginLoaded', true);
+
+                                $q.all(promiseList).then( function() {
+                                    // after all the plugin's resources have been loaded,
+                                    // compile the plugin directive
+                                    $compile(element)(scope);
+                                });
+                            };
                         }
-                    };
+                    }
+                };
             }]);
 
     }]);
