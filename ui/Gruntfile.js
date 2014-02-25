@@ -36,7 +36,8 @@ module.exports = function(grunt) {
 
         clean: {
             dev: '<%= sdo.output.dev %>',
-            build: '<%= sdo.output.build %>'
+            build: '<%= sdo.output.build %>',
+            dist: '<%= clean.build %>'
         },
 
         copy: {
