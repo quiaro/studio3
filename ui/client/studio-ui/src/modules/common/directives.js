@@ -137,7 +137,7 @@ define(['globals'], function( globals ) {
                 };
             }])
 
-            .addDirective('pluginSrc',
+            .addDirective('sdoPluginSrc',
                 ['$q',
                  '$compile',
                  '$log',
@@ -148,10 +148,10 @@ define(['globals'], function( globals ) {
                     restrict: 'A',
                     compile: function(element, attr) {
 
-                        var pluginName = attr.pluginSrc,
+                        var pluginName = attr.sdoPluginSrc,
                             promiseList;
 
-                        if (!attr['pluginLoaded']) {
+                        if (!attr['sdoPluginLoaded']) {
 
                             $log.log('Loading plugin ' + pluginName + ' from directive ...');
 
@@ -159,7 +159,7 @@ define(['globals'], function( globals ) {
 
                             return function (scope, element, attr) {
 
-                                attr.$set('pluginLoaded', true);
+                                attr.$set('sdoPluginLoaded', true);
 
                                 $q.all(promiseList).then( function() {
                                     // after all the plugin's resources have been loaded,
