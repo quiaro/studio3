@@ -1,37 +1,42 @@
 /* global define */
 
-define(['globals',
-    'text!./templates/almond.tpl.html',
-    'less!./almond'],
-    function( globals, html ) {
+define(['require', 'globals', 'less!./almond'],
+    function( require, globals ) {
 
     'use strict';
 
     // Get the app's injector
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', '$log',
-        function(NgRegistry, $log) {
+    injector.invoke(['NgRegistry', function(NgRegistry) {
 
-            // Register the plugin controller
             NgRegistry
-                .addController('NewCtrl',
+                .addController('AlmondCtrl',
                     ['$scope', '$timeout', function ($scope, $timeout) {
 
                     $timeout( function() {
                         $scope.$apply( function() {
                             // Make sure the templates are updated with the values in the scope
-                            $scope.idValue = 'myModuleId';
-                            $scope.newMethod = function (myVar) {
-                                $log.log('newMethod called with param: ', myVar);
-                            };
+                            $scope.idValue = 'Alice';
                         });
                     });
+
+                }])
+
+                .addDirective('sdoPluginAlmond', [function() {
+
+                    return {
+                        restrict: 'E',
+                        controller: 'AlmondCtrl',
+                        replace: true,
+                        scope: {},
+                        templateUrl: require.toUrl('./templates/almond.tpl.html')
+                    };
 
                 }]);
 
         }
     ]);
 
-    return html;
+    return '<sdo-plugin-almond></sdo-plugin-almond>';
 });
