@@ -177,6 +177,74 @@ It's important to remember that all CS3UI modules are loaded on demand by Requir
         ]);
     });
 
+##### Loading Plugins
+
+Plugins are modules that **must return their directive** as their module value. This means that plugins are also loaded on demand by RequireJS after Angular bootstraps. More specifically, plugins are loaded when the view corresponding to a state of the application renders (see Loading Templates with Modules). Plugins can be loaded individually or as a group for a specific container.
+
+Below is a sample plugin referenced by the tag <sdo-plugin-almond></sdo-plugin-almond>:
+
+    define(['require', 'globals', 'less!./almond'],
+        function( require, globals ) {
+
+        'use strict';
+
+        var injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['NgRegistry', function(NgRegistry) {
+
+                NgRegistry
+                    .addController('AlmondCtrl',
+                        ['$scope', '$timeout', function ($scope, $timeout) {
+
+                        $timeout( function() {
+                            $scope.$apply( function() {
+                                // Make sure the templates are updated with the values in the scope
+                                $scope.name = 'Gustavo';
+                            });
+                        });
+                    }])
+
+                    .addDirective('sdoPluginAlmond', [function() {
+
+                        return {
+                            restrict: 'E',
+                            controller: 'AlmondCtrl',
+                            replace: true,
+                            scope: {},
+                            template: '<div>Hello World! My name is {{name}}</div>'
+                        };
+                    }]);
+            }
+        ]);
+
+        return '<sdo-plugin-almond></sdo-plugin-almond>';
+    });
+
+When this plugin is rendered, all it will do is print out: "Hello World! My name is Gustavo". 
+
+###### Loading Individual Plugins
+
+Based on the previous example, to load the plugin on a page the user would write the plugin's directive together with the sdoPluginSrc directive, similar to the following:
+
+    <sdo-plugin-almond sdo-plugin-src="crafter.studio-ui.plugin.almond"></sdo-plugin-almond>
+
+... where "crafter.studio-ui.plugin.almond" is the plugin's name as it appears in its descriptor file. Loading a plugin individually makes it possible to set specific plugin behavior/configuration via attributes. Imagine wanting to add some custom behavior like controlling the length of the message by adding another directive, for example:
+
+    <sdo-plugin-almond sdo-almond-length="10" sdo-plugin-src="crafter.studio-ui.plugin.almond"></sdo-plugin-almond>
+ 
+In this case, you are able to set the length of the message using the sdoAlmondLength directive and create different instances in the page of the same plugin:
+
+    <sdo-plugin-almond sdo-almond-length="6" sdo-plugin-src="crafter.studio-ui.plugin.almond"></sdo-plugin-almond>
+    <sdo-plugin-almond sdo-almond-length="12" sdo-plugin-src="crafter.studio-ui.plugin.almond"></sdo-plugin-almond>
+
+###### Loading All Plugins for a Container
+
+Plugins can also be loaded in bulk using the sdoPlugins directive, which loads all plugins for a specific container. The following example shows how to load all plugins for a container named "activity":
+
+    <sdo-plugins plugin-container="activity"></sdo-plugins>
+
+Unlike loading plugins individually, this method of loading plugins does not allow the user to control the settings/behavior of each one of the plugins loaded. This means that all plugins will be loaded with their default settings. 
+
 #### Loading Templates
 
 The CS3UI core is responsible for loading the application's modules, but it does not have a template (i.e. graphic interface) associated with it. Only the modules and plugins can have templates linked to them, and they both have a slightly different way of loading them.
