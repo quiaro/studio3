@@ -419,3 +419,30 @@ Modules can also declare their own specific configuration values. This can be do
           }
         ]);
     });
+
+### LESS Support
+
+CS3UI, its modules and its plugins, all have support for [LESS](http://lesscss.org/). However, LESS stylesheets for the app and its modules are pre-processed and turned into CSS as part of the development cycle, meaning that the app and its modules will actually consume these stylesheets as CSS. Therefore, CS3UI and all its modules should reference their stylesheets as CSS and not as LESS.
+
+Consider the following example:
+
+    my-module.js  >> depends on: require (module), globals (module), my-stylesheet.less
+
+This would ordinarily correspond to the following AMD module definition:
+
+    define(['require', 'globals', 'less!./my-stylesheet'],
+      function( require, globals ) { ... });
+
+However, since my-stylesheet.less will be pre-processed as part of the development cycle, the correct way to define my-module.js would be:
+
+    define(['require', 'globals', 'css!./my-stylesheet'],
+      function( require, globals ) { ... });
+                                   
+Since plugins are expected to be loaded and change during runtime, their stylesheets are not pre-processed during the development cycle like those of the modules. Instead, they are pre-processed on runtime (by means of the [LESS loader plugin](https://github.com/guybedford/require-less)) and as a result of this, any dependencies on LESS stylesheets need to be declared as such. For example,
+
+    my-plugin.js  >> depends on: globals (module), my-stylesheet.less
+  
+This plugin would correspond to the following AMD module definition:
+
+    define(['globals', 'less!./my-stylesheet'],
+      function( globals ) { ... });
