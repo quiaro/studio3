@@ -118,7 +118,7 @@ Node modules used by grunt or the mock servers during tasks:
 * `./server/build`: Build server for the packaged application (see `$ grunt build`)
 * `./server/dev`: Development server for the application (see `$ grunt dev`)
 * `./server/sites`: Mock data for site-specific services
-* `./server/config.js`: Configuration for both the build and dev servers. This configuration can be overwritten or extended via a config.js file inside the server folder (e.g. see `./server/dev/config.js`)
+* `./server/config.js`: Configuration for both the build and dev servers. This configuration can be overridden or extended via a config.js file inside the server folder (e.g. see `./server/dev/config.js`)
 * `./server/mock.js`: Maps app and site-specific service urls to their corresponding mock data
 
 **CS3UI Tests: `./test`**
@@ -181,7 +181,7 @@ It's important to remember that all CS3UI modules are loaded on demand by Requir
 
 The CS3UI core is responsible for loading the application's modules, but it does not have a template (i.e. graphic interface) associated with it. Only the modules and plugins can have templates linked to them, and they both have a slightly different way of loading them.
 
-##### Template Loaded by a Module
+##### Loading Templates with Modules
 
 Each module adds one more states to the application (using [ui-router](https://github.com/angular-ui/ui-router) behind the scenes) and it can assign a specific template to each one of them. 
 
@@ -208,7 +208,39 @@ For example, the following is a bare bones module defining a new state (moduleNa
 
     });
 
-Notice that the location of the both the stylesheet (mycss.css) and the template is relative to the module JS file. Also, notice that RequireJS is not used to load templates for modules because these are loaded on demand by angular when the user navigates to their corresponding url. In this example, the template will not be loaded until the user navigates to 'http://sample-domain.net/sample-state'.
+Notice that the location of both the stylesheet (mycss.css) and the template is relative to the module's JS file. Also, notice that RequireJS is not used to load templates for modules because these are loaded on demand by Angular when the user navigates to their corresponding url. In this example, the template will not be loaded until the user navigates to 'http://sample-domain.net/sample-state'.
+
+##### Loading Templates with Plugins
+
+When a module template loads, it may load specific plugins referenced by a custom directive and/or it may load all plugins for a specific container type by using the 'sdoPlugins' directive. In both cases, as long as the plugin is declared as an Angular directive, it is possible to load its template via the directive's *template* or *templateUrl* properties.
+
+The following is a sample plugin encapsulated within the custom directive `<sdo-plugin-almond>`:
+
+    define(['require', 'globals', 'less!./almond'],
+        function( require, globals ) {
+
+        'use strict';
+
+        var injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['NgRegistry', function(NgRegistry) {
+
+                NgRegistry
+                    .addDirective('sdoPluginAlmond', [function() {
+                        return {
+                            restrict: 'E',
+                            replace: true,
+                            scope: {},
+                            templateUrl: require.toUrl('./templates/almond.tpl.html')
+                        };
+                    }]);
+            }
+        ]);
+
+        return '<sdo-plugin-almond></sdo-plugin-almond>';
+    });
+
+Notice that the location of the stylesheet (almond.less) and the template (almond.tpl.html) is relative to the module's JS file. Also, notice that, similar to loading templates with modules, RequireJS is not used to load templates; instead, these are loaded on demand by Angular.
 
 ### App Configuration
 
@@ -226,6 +258,26 @@ The app descriptor sets app-wide settings, including settings shared by all modu
         // Default base URL for all modules of the app
         "base_url": "http://localhost:9000/studio-ui/modules",
 
+        // Configuration for requirejs
+        "requirejs": {
+
+            // Map for plugins
+            "map": {
+                "css": "lib/require-css/js/css",
+                "less": "lib/require-less/js/less",
+                "text": "lib/requirejs-text/js/text"
+            },
+
+            // Path mappings for internal modules (i.e. modules that may be used as dependencies
+            // by the modules of the application). The path settings are assumed to be relative to 
+            // "base_url", unless the path value starts with a "/" or has a URL protocol in it (e.g. "http:")
+            "module_paths": {
+                "globals": "modules/common/globals",
+                "common": "modules/common/common",
+                "directives": "modules/common/directives"
+            }
+        },
+
         // Settings/values shared by all modules
         "module_globals": {
             "dom_root": "#studio-ui",
@@ -233,16 +285,12 @@ The app descriptor sets app-wide settings, including settings shared by all modu
             "default_url": "/login",
             "unauthorized_state": "unauthorized",
             "unauthorized_url": "/unauthorized",
-            "templates_url": "studio-ui/modules/common/templates"
-        },
 
-        // Path mappings for internal modules (i.e. modules that may be used as dependencies
-        // by the modules of application). The path settings are assumed to be relative to 
-        // "base_url", unless the paths setting starts with a "/" or has a URL protocol 
-        // in it ("like http:")
-        "module_paths": {
-            "globals": "studio-ui/modules/common/globals",
-            "common": "studio-ui/modules/common/common"
+            // Path for common templates used within the app
+            "templates_url": "studio-ui/modules/common/templates",
+
+            // Path for plugins (can be overridden within a plugin descriptor)
+            "plugins_url": "plugins"
         },
 
         // Modules to load for the app
@@ -303,4 +351,3 @@ Modules can also declare their own specific configuration values. This can be do
           }
         ]);
     });
-
