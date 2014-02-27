@@ -26,7 +26,7 @@ var app = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 
-app.set('views', path.join(__dirname, config.tmpRoot));
+app.set('views', path.join(__dirname, config.clientRoot));
 app.engine('.html', require('ejs').renderFile);
 
 app.use(express.favicon());
@@ -36,7 +36,6 @@ app.use(express.methodOverride());
 app.use(app.router);
 
 // Paths are relative to this file
-app.use(express.static(path.join(__dirname, config.tmpRoot)));
 app.use(express.static(path.join(__dirname, config.clientRoot)));
 app.use(express.errorHandler());
 
@@ -94,16 +93,12 @@ app.get( config.path.sites, function( req, res ) {
 
 app.get( '*', function( req, res ) {
 
-    // Assets will be loaded from the client root (except for the files listed in tmpFiles)
+    // Assets will be loaded from the client root
     var assetUrlRe = /[\w\/\-:]*\.[\w]+/,
         fileName = req.url.substr(req.url.lastIndexOf("/") + 1);
 
-    if (config.tmpFiles.indexOf(fileName) >= 0) {
-        res.sendfile( config.tmpRoot + req.url);
-
-    } else if (!assetUrlRe.test(req.url)) {
-        res.render(config.tmpRoot + '/index.html');
-
+    if (!assetUrlRe.test(req.url)) {
+        res.render(config.clientRoot + '/index.html');
     } else {
         res.sendfile( config.clientRoot + req.url);
     }

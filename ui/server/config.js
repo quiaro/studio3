@@ -2,9 +2,6 @@ path = require('path');
 
 module.exports = {
 
-    // Files that need to be loaded from the tmp directory (i.e. dev or build)
-    tmpFiles: ['studio.css'],
-
     // Paths from the root (i.e. http://localhost:9000/)
     path: {
         modules: '/studio-ui/modules/*',

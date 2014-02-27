@@ -2,9 +2,6 @@ path = require('path');
 
 module.exports = {
 
-    // Root directory where temporary app files are placed
-    tmpRoot: path.resolve(__dirname, '../../target/META-INF/resources'),
-
     // Root directory for the client app
     clientRoot: path.resolve(__dirname, '../../target/META-INF/resources'),
 
