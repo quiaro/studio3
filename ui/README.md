@@ -181,7 +181,7 @@ It's important to remember that all CS3UI modules are loaded on demand by Requir
 
 Plugins are modules that **must return their directive** as their module value. This means that plugins are also loaded on demand by RequireJS after Angular bootstraps. More specifically, plugins are loaded when the view corresponding to a state of the application renders (see Loading Templates with Modules). Plugins can be loaded individually or as a group for a specific container.
 
-Below is a sample plugin referenced by the tag <sdo-plugin-almond></sdo-plugin-almond>:
+Below is a sample plugin referenced by the tag `<sdo-plugin-almond></sdo-plugin-almond>`:
 
     define(['require', 'globals', 'less!./almond'],
         function( require, globals ) {

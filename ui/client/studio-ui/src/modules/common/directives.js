@@ -151,7 +151,7 @@ define(['globals'], function( globals ) {
                         var pluginName = attr.sdoPluginSrc,
                             promiseList;
 
-                        if (!attr['sdoPluginLoaded']) {
+                        if (!attr.sdoPluginLoaded) {
 
                             $log.log('Loading plugin ' + pluginName + ' from directive ...');
 
