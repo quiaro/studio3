@@ -100,7 +100,7 @@ Node modules used by grunt or the mock servers during tasks:
 * *grunt-contrib-jshint*: Validates files with JSHint
 * *grunt-contrib-clean*: Cleans files and folders
 * *grunt-contrib-imagemin*: Minifies PNG, JPEG and GIF images
-* *grunt-recess*: Compiles LESS to CSS
+* *grunt-contrib-less*: Compiles LESS to CSS
 * *grunt-usemin*: Transforms specific construction blocks (of CSS or JS files) in a file into a single line
 * *grunt-replace*: Replaces text patterns with a given replacement (text pre-processor)
 * *grunt-karma*: Grunt plugin for the karma test runner

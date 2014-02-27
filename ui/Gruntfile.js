@@ -41,6 +41,12 @@ module.exports = function(grunt) {
         },
 
         copy: {
+            dev: {
+                expand: true,
+                cwd: '<%= sdo.root %><%= sdo.path.modules %>',
+                src: '**/*.{html,css,js}',
+                dest: '<%= sdo.output.dev %><%= sdo.path.modules %>'
+            },
             assets: {
                 files: [{
                     expand: true,
@@ -144,9 +150,11 @@ module.exports = function(grunt) {
             }
         },
 
-        recess: {
+        less: {
             options: {
-                compile: true
+                paths: ['<%= sdo.root %><%= sdo.path.app %>/styles',
+                        '<%= sdo.root %><%= sdo.path.modules %>/common/styles'],
+                ieCompat: false
             },
             dev: {
                 files: [{
@@ -199,10 +207,21 @@ module.exports = function(grunt) {
 
         symlink: {
             dev: {
-                src: ['*', '!<%= sdo.output.dev %>'],
-                dest: '<%= sdo.output.dev %>',
-                expand: true,
-                filter: 'isDirectory'
+                // There will not be a symbolic link for modules because
+                // their less files need to be pre-compiled
+                files: [{
+                    src: '<%= sdo.root %><%= sdo.path.images %>',
+                    dest: '<%= sdo.output.dev %><%= sdo.path.images %>'
+                }, {
+                    src: '<%= sdo.root %><%= sdo.path.lib %>',
+                    dest: '<%= sdo.output.dev %><%= sdo.path.lib %>'
+                }, {
+                    src: '<%= sdo.root %><%= sdo.path.app %>',
+                    dest: '<%= sdo.output.dev %><%= sdo.path.app %>'
+                }, {
+                    src: '<%= sdo.root %><%= sdo.path.plugins %>',
+                    dest: '<%= sdo.output.dev %><%= sdo.path.plugins %>'
+                }]
             }
         },
 
@@ -261,12 +280,12 @@ module.exports = function(grunt) {
                     nospawn: true //Without this option specified express won't be reloaded
                 }
             },
-            recess: {
+            less: {
                 files: [
                     '<%= sdo.root %><%= sdo.path.app %>/styles/*.less',
                     '<%= sdo.root %><%= sdo.path.modules %>/**/*.less'
                 ],
-                tasks: ['recess:dev']
+                tasks: ['less:dev']
             },
             replace: {
                 files: ['<%= replace.dev.src %>'],
@@ -277,7 +296,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('dev',
         'Start a live-reloading dev webserver on localhost for development',
-        ['clean:dev', 'symlink:dev', 'replace:dev', 'recess:dev', 'express:dev', 'open', 'watch']);
+        ['clean:dev', 'symlink:dev', 'replace:dev', 'less:dev', 'copy:dev', 'express:dev', 'open', 'watch']);
 
     grunt.registerTask('build',
         'Build the application for production and run it against a mock server on localhost',
@@ -286,7 +305,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dist',
         'Build the application for production so that it is ready to be integrated into a .war or .jar file.',
         ['clean:build', 'lint',
-            'replace:build', 'recess:build', 'imagemin:build', 'copy:assets', 'buildjs', 'usemin']);
+            'replace:build', 'less:build', 'imagemin:build', 'copy:assets', 'buildjs', 'usemin']);
 
     grunt.registerTask('buildjs',
         'Minify and compress all javascript',
