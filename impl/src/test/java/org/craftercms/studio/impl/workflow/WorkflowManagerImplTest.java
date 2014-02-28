@@ -41,8 +41,8 @@ public class WorkflowManagerImplTest extends AbstractServiceTest {
     @InjectMocks
     private WorkflowManagerImpl workflowManagerSUT;
 
-    @After
-    public void tearDown() throws Exception {
+    @Override
+    protected void resetMocks() {
 
     }
 

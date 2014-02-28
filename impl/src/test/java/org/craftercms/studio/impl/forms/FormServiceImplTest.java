@@ -38,8 +38,8 @@ public class FormServiceImplTest extends AbstractServiceTest {
     @Autowired
     private FormServiceImpl formsManagerSUT;
 
-    @After
-    public void tearDown() throws Exception {
+    @Override
+    protected void resetMocks() {
 
     }
 

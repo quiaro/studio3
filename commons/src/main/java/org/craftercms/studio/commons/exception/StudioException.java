@@ -34,6 +34,7 @@ public class StudioException extends Exception {
         Locale.getDefault());
     private static final long serialVersionUID = 8822403836288820982L;
 
+    private ErrorCode errorCode;
 
     /**
      * Construct with an error code and cause exception.
@@ -43,6 +44,7 @@ public class StudioException extends Exception {
      */
     public StudioException(final ErrorCode errorCode, final Throwable cause, final String... args) {
         super(FormatErrorMessage(errorCode, args), cause);
+        this.errorCode = errorCode;
     }
 
     /**
@@ -52,6 +54,7 @@ public class StudioException extends Exception {
      */
     public StudioException(final ErrorCode errorCode, final String... args) {
         super(FormatErrorMessage(errorCode, args));
+        this.errorCode = errorCode;
     }
 
     protected static String FormatErrorMessage(final ErrorCode errorCode, final String... args) {
@@ -61,6 +64,10 @@ public class StudioException extends Exception {
         } else {
             return message;
         }
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
     public enum ErrorCode {

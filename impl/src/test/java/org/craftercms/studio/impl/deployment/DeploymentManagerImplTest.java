@@ -33,6 +33,11 @@ public class DeploymentManagerImplTest extends AbstractServiceTest {
     @InjectMocks
     private DeploymentManagerImpl deploymentManagerSUT;
 
+    @Override
+    protected void resetMocks() {
+
+    }
+
     @Test(expected = StudioException.class)
     public void testHistory() throws Exception {
         this.deploymentManagerSUT.history(null, RandomStringUtils.randomAlphabetic(10),

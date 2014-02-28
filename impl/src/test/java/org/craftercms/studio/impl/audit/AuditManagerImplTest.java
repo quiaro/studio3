@@ -36,8 +36,8 @@ public class AuditManagerImplTest extends AbstractServiceTest {
     @Autowired
     private AuditServiceImpl auditManagerSUT;
 
-    @After
-    public void tearDown() throws Exception {
+    @Override
+    protected void resetMocks() {
 
     }
 
