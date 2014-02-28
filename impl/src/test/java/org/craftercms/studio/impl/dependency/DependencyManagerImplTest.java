@@ -38,8 +38,8 @@ public class DependencyManagerImplTest extends AbstractServiceTest {
     @InjectMocks
     private DependencyManagerImpl dependencyManagerSUT;
 
-    @After
-    public void tearDown() throws Exception {
+    @Override
+    protected void resetMocks() {
 
     }
 

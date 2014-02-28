@@ -17,6 +17,7 @@
 
 package org.craftercms.studio.impl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,20 +35,31 @@ import org.craftercms.studio.commons.dto.WorkflowTransition;
 import org.craftercms.studio.commons.extractor.ItemExtractor;
 import org.craftercms.studio.commons.filter.ItemFilter;
 import org.craftercms.studio.commons.filter.WorkflowPackageFilter;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.mockito.Mockito.reset;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(value = {"/spring/mockito-context.xml", "/spring/unit-testing-context.xml"})
+@ContextConfiguration(value = {"/spring/unit-testing-context.xml"})
 public abstract class AbstractServiceTest {
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
+
+    @After
+    public void tearDown() throws Exception {
+        resetMocks();
+    }
+
+    protected abstract void resetMocks();
+
 
     protected List<Item> createItemListMock() {
         List<Item> itemListMock = new ArrayList<>();
@@ -76,6 +88,8 @@ public abstract class AbstractServiceTest {
         item.setScheduledDate(new Date());
         item.setState(RandomStringUtils.randomAlphabetic(10));
         item.setLabel(RandomStringUtils.randomAlphabetic(10));
+        InputStream sampleContent = this.getClass().getResourceAsStream("/content/sample.xml");
+        item.setInputStream(sampleContent);
         return item;
     }
 

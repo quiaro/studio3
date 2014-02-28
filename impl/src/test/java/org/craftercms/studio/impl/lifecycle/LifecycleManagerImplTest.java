@@ -35,6 +35,11 @@ public class LifecycleManagerImplTest extends AbstractServiceTest {
     @Autowired
     private LifecycleManagerImpl lifecycleManagerSUT;
 
+    @Override
+    protected void resetMocks() {
+
+    }
+
     @Test(expected = StudioException.class)
     public void testGetPossibleActions() throws Exception {
         this.lifecycleManagerSUT.getPossibleActions(null, RandomStringUtils.randomAlphabetic(10),

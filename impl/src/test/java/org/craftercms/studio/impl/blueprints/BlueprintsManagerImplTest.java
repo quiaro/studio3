@@ -38,8 +38,8 @@ public class BlueprintsManagerImplTest extends AbstractServiceTest {
     @Autowired
     private BlueprintsManagerImpl blueprintsManagerSUT;
 
-    @After
-    public void tearDown() throws Exception {
+    @Override
+    protected void resetMocks() {
 
     }
 

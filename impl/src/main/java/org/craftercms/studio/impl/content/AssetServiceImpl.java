@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.AssetService;
+import org.craftercms.studio.api.security.SecurityService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
@@ -43,6 +44,7 @@ import org.craftercms.studio.internal.content.ContentManager;
 public class AssetServiceImpl implements AssetService {
 
     private ContentManager contentManager;
+    private SecurityService securityService;
 
     // TODO: review this function ..
     // Content manager requires Item object to add new item to repository
@@ -69,13 +71,17 @@ public class AssetServiceImpl implements AssetService {
      */
     @Override
     public Item create(final Context context, final String site, final String destinationPath, final String fileName, final InputStream content, final String mimeType, final Map<String, String> properties) throws StudioException {
-        StringBuilder sb = new StringBuilder(destinationPath);
-        sb.append(File.separator);
-        sb.append(fileName);
-        Item item = createAssetItem(fileName);
-        ItemId itemId = contentManager.create(context, site, sb.toString(), item, content);
-        item = contentManager.read(context, site, itemId.getItemId());
-        return item;
+        if (context != null && securityService.validate(context)) {
+            StringBuilder sb = new StringBuilder(destinationPath);
+            sb.append(File.separator);
+            sb.append(fileName);
+            Item item = createAssetItem(fileName);
+            ItemId itemId = contentManager.create(context, site, sb.toString(), item, content);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     /**
@@ -94,86 +100,119 @@ public class AssetServiceImpl implements AssetService {
     public Item create(final Context context, final String site, final String destinationPath, final String fileName,
                        final String content, final String mimeType, final Map<String, String> properties
     ) throws StudioException {
-        StringBuilder sb = new StringBuilder(destinationPath);
-        sb.append(File.separator);
-        sb.append(fileName);
-        Item item = createAssetItem(fileName);
-        InputStream contentStream = IOUtils.toInputStream(content);
-        ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
-        item = contentManager.read(context, site, itemId.getItemId());
-        return item;
+        if (context != null && securityService.validate(context)) {
+            StringBuilder sb = new StringBuilder(destinationPath);
+            sb.append(File.separator);
+            sb.append(fileName);
+            Item item = createAssetItem(fileName);
+            InputStream contentStream = IOUtils.toInputStream(content);
+            ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public Item create(final Context context, final String site, final String destinationPath, final String fileName, final byte[] content, final String mimeType, final Map<String, String> properties) throws StudioException {
-        StringBuilder sb = new StringBuilder(destinationPath);
-        sb.append(File.separator);
-        sb.append(fileName);
-        Item item = createAssetItem(fileName);
-        InputStream contentStream = new ByteArrayInputStream(content);
-        ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
-        item = contentManager.read(context, site, itemId.getItemId());
-        return item;
+        if (context != null && securityService.validate(context)) {
+            StringBuilder sb = new StringBuilder(destinationPath);
+            sb.append(File.separator);
+            sb.append(fileName);
+            Item item = createAssetItem(fileName);
+            InputStream contentStream = new ByteArrayInputStream(content);
+            ItemId itemId = contentManager.create(context, site, sb.toString(), item, contentStream);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public Item read(final Context context, final String site, final String itemId) throws StudioException {
-        return contentManager.read(context, site, itemId);
+        if (context != null && securityService.validate(context)) {
+            return contentManager.read(context, site, itemId);
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public String getTextContent(final Context context, final String site, final String itemId) throws StudioException {
-        Item item = read(context, site, itemId);
-        InputStream content = item.getInputStream();
-        try {
-            return IOUtils.toString(content);
-        } catch (IOException e) {
-            throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
+        if (context != null && securityService.validate(context)) {
+            Item item = contentManager.read(context, site, itemId);
+            InputStream content = item.getInputStream();
+            try {
+                return IOUtils.toString(content);
+            } catch (IOException e) {
+                throw new StudioException(StudioException.ErrorCode.SYSTEM_ERROR, e);
+            }
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
         }
     }
 
     @Override
     public InputStream getInputStream(final Context context, final String site,
                                       final ItemId itemId) throws StudioException {
-        Item item = read(context, site, itemId.getItemId());
-        return item.getInputStream();
+        if (context != null && securityService.validate(context)) {
+            Item item = contentManager.read(context, site, itemId.getItemId());
+            return item.getInputStream();
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final InputStream content,
                        final Map<String, String> properties) throws StudioException {
-        LockHandle lockHandle = new LockHandle();
-        contentManager.write(context, site, itemId, lockHandle, content);
-        return contentManager.read(context, site, itemId.getItemId());
+        if (context != null && securityService.validate(context)) {
+            LockHandle lockHandle = new LockHandle();
+            contentManager.write(context, site, itemId, lockHandle, content);
+            return contentManager.read(context, site, itemId.getItemId());
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final String content,
                        final Map<String, String> properties) throws StudioException {
-
-        LockHandle lockHandle = new LockHandle();
-        InputStream contentStream = IOUtils.toInputStream(content);
-        contentManager.write(context, site, itemId, lockHandle, contentStream);
-        return contentManager.read(context, site, itemId.getItemId());
+        if (context != null && securityService.validate(context)) {
+            LockHandle lockHandle = new LockHandle();
+            InputStream contentStream = IOUtils.toInputStream(content);
+            contentManager.write(context, site, itemId, lockHandle, contentStream);
+            return contentManager.read(context, site, itemId.getItemId());
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public Item update(final Context context, final String site, final ItemId itemId, final byte[] content,
                        final Map<String, String> properties) throws StudioException {
-
-        LockHandle lockHandle = new LockHandle();
-        InputStream contentStream = new ByteArrayInputStream(content);
-        contentManager.write(context, site, itemId, lockHandle, contentStream);
-        return contentManager.read(context, site, itemId.getItemId());
+        if (context != null && securityService.validate(context)) {
+            LockHandle lockHandle = new LockHandle();
+            InputStream contentStream = new ByteArrayInputStream(content);
+            contentManager.write(context, site, itemId, lockHandle, contentStream);
+            return contentManager.read(context, site, itemId.getItemId());
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
     public void delete(final Context context, final String site, final ItemId itemId) throws StudioException {
-
-        List<Item> itemList = new ArrayList<>();
-        Item item = contentManager.read(context, site, itemId.getItemId());
-        itemList.add(item);
-        contentManager.delete(context, itemList);
+        if (context != null && securityService.validate(context)) {
+            List<Item> itemList = new ArrayList<>();
+            Item item = contentManager.read(context, site, itemId.getItemId());
+            itemList.add(item);
+            contentManager.delete(context, itemList);
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     @Override
@@ -183,11 +222,11 @@ public class AssetServiceImpl implements AssetService {
 
     // Getters and setters
 
-    public ContentManager getContentManager() {
-        return contentManager;
-    }
-
     public void setContentManager(final ContentManager contentManager) {
         this.contentManager = contentManager;
+    }
+
+    public void setSecurityService(final SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

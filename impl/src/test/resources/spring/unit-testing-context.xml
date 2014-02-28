@@ -20,6 +20,20 @@
 
     <bean id="blueprintsManagerSUT" class="org.craftercms.studio.impl.blueprints.BlueprintsManagerImpl" />
 
-    <bean id="assetServiceSUT" class="org.craftercms.studio.impl.content.AssetServiceImpl" />
+    <bean id="assetServiceSUT" class="org.craftercms.studio.impl.content.AssetServiceImpl"/>
+
+
+    <!-- Mock beans -->
+    <bean id="contentManagerMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.craftercms.studio.internal.content.ContentManager" />
+    </bean>
+
+    <bean id="securityServiceMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.craftercms.studio.api.security.SecurityService" />
+    </bean>
+
+    <bean id="versionServiceMock" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.craftercms.studio.repo.content.VersionService"/>
+    </bean>
 
 </beans>

@@ -17,7 +17,6 @@
 
 package org.craftercms.studio.controller.services.rest;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 

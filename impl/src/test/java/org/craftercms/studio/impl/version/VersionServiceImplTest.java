@@ -49,6 +49,11 @@ public class VersionServiceImplTest extends AbstractServiceTest {
     @InjectMocks
     private VersionServiceImpl versionManagerSUT;
 
+    @Override
+    protected void resetMocks() {
+
+    }
+
     @Test(expected = StudioException.class)
     public void testHistory() throws Exception {
         when(this.versionServiceMock.getAllVersions(Mockito.anyString(), Mockito.anyString())).thenReturn
