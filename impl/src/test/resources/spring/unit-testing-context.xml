@@ -24,6 +24,8 @@
 
     <bean id="templateServiceSUT" class="org.craftercms.studio.impl.content.TemplateServiceImpl"/>
 
+    <bean id="descriptorServiceSUT" class="org.craftercms.studio.impl.content.DescriptorServiceImpl"/>
+
 
     <!-- Mock beans -->
     <bean id="contentManagerMock" class="org.mockito.Mockito" factory-method="mock">
