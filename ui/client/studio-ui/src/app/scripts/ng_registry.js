@@ -42,7 +42,7 @@
             };
 
             ngRegistry.addFilter = function( name, filter ) {
-                $filterProvider.filter( name, filter );
+                $filterProvider.register( name, filter );
                 return( this );
             };
 
