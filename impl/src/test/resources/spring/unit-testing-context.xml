@@ -22,6 +22,8 @@
 
     <bean id="assetServiceSUT" class="org.craftercms.studio.impl.content.AssetServiceImpl"/>
 
+    <bean id="templateServiceSUT" class="org.craftercms.studio.impl.content.TemplateServiceImpl"/>
+
 
     <!-- Mock beans -->
     <bean id="contentManagerMock" class="org.mockito.Mockito" factory-method="mock">

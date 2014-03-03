@@ -17,15 +17,19 @@
 
 package org.craftercms.studio.impl.content;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.TemplateService;
+import org.craftercms.studio.api.security.SecurityService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.exception.StudioException;
+import org.craftercms.studio.internal.content.ContentManager;
 
 /**
  * Template service implementation.
@@ -33,6 +37,9 @@ import org.craftercms.studio.commons.exception.StudioException;
  * @author Dejan Brkic
  */
 public class TemplateServiceImpl implements TemplateService {
+
+    private ContentManager contentManager;
+    private SecurityService securityService;
 
     /**
      * Create new template.
@@ -49,7 +56,25 @@ public class TemplateServiceImpl implements TemplateService {
      */
     @Override
     public Item create(final Context context, final String site, final String parentId, final String fileName, final InputStream content, final Map<String, String> properties) throws StudioException {
-        throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+        if (context != null && securityService.validate(context)) {
+            StringBuilder sb = new StringBuilder(parentId);
+            sb.append(File.separator);
+            sb.append(fileName);
+            Item item = createTemplateItem(fileName);
+            ItemId itemId = contentManager.create(context, site, sb.toString(), item, content);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
+    }
+
+    private Item createTemplateItem(String fileName) {
+        Item item = new Item();
+        item.setCreatedBy(RandomStringUtils.random(10));
+        item.setFileName(fileName);
+        item.setLabel(fileName);
+        return item;
     }
 
     /**
@@ -145,5 +170,13 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public List<Item> findBy(final Context context, final String site, final String query) throws StudioException {
         throw new StudioException(StudioException.ErrorCode.NOT_IMPLEMENTED);
+    }
+
+    public void setContentManager(final ContentManager contentManager) {
+        this.contentManager = contentManager;
+    }
+
+    public void setSecurityService(final SecurityService securityService) {
+        this.securityService = securityService;
     }
 }
