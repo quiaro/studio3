@@ -1,0 +1,54 @@
+<div id="{{widget.name.id}}" class="panel panel-default {{widget.name.class}}">
+
+    <div class="panel-heading">
+        <h3 class="panel-title" translate>{{widget.name.header}}</h3>
+        <div class="filters">
+            <span class="filter type" ng-hide="!widget.name.filterType.show">
+                <b>Type</b>
+                <select title="Filter by item type"
+                        class="form-control input-sm"
+                        ng-model="widget.name.filterType.value">
+                  <option value="">Any</option>
+                  <option value="page">Page</option>
+                  <option value="component">Component</option>
+                  <option value="asset">Asset</option>
+                </select>
+            </span>
+            <span class="filter length" ng-hide="!widget.name.filterLength.show">
+                <b>Items</b>
+                <input title="Filter by number of results"
+                       class="form-control input-sm" type="number"
+                       ng-model="widget.name.filterLength.value"
+                       min="0" max="100" required />
+                of <b>{{widget.name.data.length}}</b>
+            </span>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <table class="item-list">
+            <thead>
+                <tr>
+                    <th class="selector">&nbsp;</th>
+                    <th ng-repeat="column in widget.name.columns"
+                        class="{{column.class}}"
+                        ng-class="widget.name.setSortClass(column.name)"
+                        ng-click="widget.name.changeSorting(column.name)"
+                        translate>{{column.header}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in widget.name.data | orderBy : widget.name.sort.column : widget.name.sort.descending | limitTo : widget.name.filterLength.value | typeFilter : widget.name.filterType.value">
+
+                    <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>
+                    <td ng-repeat="column in widget.name.columns"
+                        class="{{column.class}}" ng-switch="$index">
+                        <a ng-switch-when="0" ui-sref="studio.authoring({ path: 'site/mango/crafter_community' })">{{item[column.name]}}</a>
+                        <span ng-switch-default>{{item[column.name]}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
