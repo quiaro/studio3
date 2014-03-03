@@ -1,0 +1,9 @@
+<span class="filter type">
+    <b>{{filterType.header}}</b>
+    <select title="{{filterType.tip}}"
+            class="form-control input-sm"
+            ng-model="filterType.selected"
+            ng-options="obj.value as obj.text for obj in filterType.options"
+            >
+    </select>
+</span>

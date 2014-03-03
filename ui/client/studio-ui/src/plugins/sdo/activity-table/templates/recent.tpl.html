@@ -1,0 +1,36 @@
+<div class="panel panel-default activity-table">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">{{table.header}}</h3>
+        <div class="filters">
+            <sdo-activity-table-filter-type></sdo-activity-table-filter-type>
+            <sdo-activity-table-filter-length></sdo-activity-table-filter-length>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <table class="item-list">
+            <thead>
+                <tr>
+                    <th class="selector">&nbsp;</th>
+                    <th ng-repeat="column in table.columns"
+                        class="{{column.class}}"
+                        ng-class="table.setSortClass(column.name)"
+                        ng-click="table.changeSorting(column.name)">{{column.header}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in table.data | orderBy : table.sort.column : table.sort.descending | limitTo : filterLength.value | sdoActivityTableTypeFilter : filterType.selected">
+
+                    <td class="selector"><input type="checkbox" name="{{item.id}}" /></td>
+                    <td ng-repeat="column in table.columns"
+                        class="{{column.class}}" ng-switch="$index">
+                        <a ng-switch-when="0" ui-sref="studio.authoring({ path: 'site/mango/crafter_community' })">{{item[column.name]}}</a>
+                        <span ng-switch-default>{{item[column.name]}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

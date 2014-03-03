@@ -1,0 +1,6 @@
+{
+    "name": "crafter.studio-ui.sections.login",
+    "version": "0.1.0",
+    "base_url": "modules/login/",
+    "main": "login.js"
+}
