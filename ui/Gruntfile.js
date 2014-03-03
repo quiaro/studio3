@@ -274,7 +274,7 @@ module.exports = function(grunt) {
                     '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css,less}',
                     '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css,less}'
                 ],
-                tasks: ['newer:copy:dev'],
+                tasks: ['any-newer:copy:dev'],
                 options: {
                     livereload: true,
                     nospawn: true //Without this option specified express won't be reloaded
