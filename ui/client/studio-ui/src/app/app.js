@@ -6,6 +6,8 @@
         GLOBALS, CONFIG;
 
     angular.module(init_module, [
+            'crafter.studio-ui.services.AppService',
+            'crafter.studio-ui.services.AuditService',
             'crafter.studio-ui.services.AuthService',
             'crafter.studio-ui.services.UserService',
             'crafter.studio-ui.services.ConfigService',
@@ -14,6 +16,13 @@
             'ui.router',
             'ui.bootstrap'
         ])
+
+        // TO-DO: Read sitename from the url. Rename 'Env' to 'API' and define as .constant
+        .value('Env', {
+            siteName: 'mango',
+            urlBase: 'api',
+            apiVersion: '1'
+        })
 
         .config(['$locationProvider',
             '$stateProvider',

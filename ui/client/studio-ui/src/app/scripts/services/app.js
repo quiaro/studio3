@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('crafter.studio-ui.common')
+angular.module('crafter.studio-ui.services.AppService', [])
 
-    .service('AppService', ['$http', '$q', 'Env', 'REGISTRY', '$modal',
-        function($http, $q, Env, REGISTRY, $modal) {
+    .service('AppService', ['$http', '$q', 'Env', '$modal',
+        function($http, $q, Env, $modal) {
 
             /*
              * @param api -API Category
@@ -57,22 +57,6 @@ angular.module('crafter.studio-ui.common')
                 } else {
                     throw new ReferenceError(property + ' is not a valid property of Env');
                 }
-            };
-
-            /*
-             * Get the app registry (and cache it if it doesn't exist yet)
-             * @return promise : on success it will pass the registry as a JSON object
-             */
-            this.getRegistry = function getRegistry() {
-                var deferred = $q.defer();
-
-                $http.get(REGISTRY.path)
-                    .success(function(data) {
-                        deferred.resolve(data);
-                    }).error(function() {
-                        deferred.reject(null);
-                    });
-                return deferred.promise;
             };
 
             this.makeServiceCall = function makeServiceCall(url, deferred) {

@@ -1,3 +1,4 @@
 {
-    "plugins": ["crafter.studio-ui.plugins.almond"]
+    "plugins": ["crafter.studio-ui.plugins.almond",
+                "crafter.studio-ui.plugins.sdo.activity-table.recent"]
 }

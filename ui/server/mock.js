@@ -28,6 +28,9 @@ module.exports = {
         }, {
             arguments: { module: "crafter.studio-ui.plugins.almond"},
             path: '/config/list/almond/descriptor',
+        }, {
+            arguments: { module: "crafter.studio-ui.plugins.sdo.activity-table.recent"},
+            path: '/config/list/recent/descriptor',
         }]
     }, {
         method: 'get',
