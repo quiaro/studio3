@@ -1,0 +1,35 @@
+{
+    "name": "crafter.studio-ui",
+
+    "version": "0.1.0",
+
+    "base_url": "http://localhost:9000/studio-ui",
+
+    "requirejs": {
+        "map": {
+            "css": "lib/require-css/js/css",
+            "less": "lib/require-less/js/less",
+            "text": "lib/requirejs-text/js/text"
+        },
+        "module_paths": {
+            "globals": "modules/common/globals",
+            "common": "modules/common/common",
+            "directives": "modules/common/directives"
+        }
+    },
+
+    "module_globals": {
+        "dom_root": "#studio-ui",
+        "default_state": "login",
+        "default_url": "/login",
+        "unauthorized_state": "unauthorized",
+        "unauthorized_url": "/unauthorized",
+        "templates_url": "modules/common/templates",
+        "plugins_url": "plugins"
+    },
+
+    "modules": [
+        "crafter.studio-ui.section.login",
+        "crafter.studio-ui.section.dashboard"
+    ]
+}

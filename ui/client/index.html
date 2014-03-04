@@ -1,8 +1,8 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
     <head>
         <base href="/">
         <meta charset="utf-8">
@@ -11,46 +11,32 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="icon" href="studio-ui/src/images/icons/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="studio-ui/images/icons/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="studio-ui/lib/bootstrap/css/bootstrap@@min.css">
         <link rel="stylesheet" href="studio-ui/lib/toastr/css/toastr@@min.css">
 
-        <link rel="stylesheet" href="studio-ui/src/styles/studio.css">
+        <link rel="stylesheet" href="studio-ui/studio.css">
     </head>
 
-    <body id="studio" ng-app="studio-ui" ng-controller="AppCtrl">
+    <body id="studio-ui" ng-app="crafter.studio-ui">
 
         <div ui-view></div>
 
         <script src="studio-ui/lib/jquery/js/jquery@@min.js"></script>
-        <script src="studio-ui/lib/toastr/js/toastr@@min.js"></script>
         <script src="studio-ui/lib/angular/js/angular@@min.js"></script>
         <script src="studio-ui/lib/angular-bootstrap/js/ui-bootstrap-tpls@@min.js"></script>
-        <script src="studio-ui/lib/angular-cookies/js/angular-cookies@@min.js"></script>
         <script src="studio-ui/lib/angular-ui-router/js/angular-ui-router@@min.js"></script>
-        <script src="studio-ui/lib/angular-translate/js/angular-translate@@min.js"></script>
-        <script src="studio-ui/lib/angular-translate-storage-cookie/js/angular-translate-storage-cookie@@min.js"></script>
-        <script src="studio-ui/lib/angular-translate-storage-local/js/angular-translate-storage-local@@min.js"></script>
-        <script src="studio-ui/lib/angular-translate-loader-static-files/js/angular-translate-loader-static-files@@min.js"></script>
-        @@includeTranslateErrorHandler
+        <script src="studio-ui/lib/requirejs/js/require.js"></script>
 
-        <!-- build:js studio-ui/src/scripts/scripts.js -->
-        <script src="studio-ui/src/app/main.js"></script>
-        <script src="studio-ui/src/app/common/main.js"></script>
-        <script src="studio-ui/src/app/common/scripts/directives.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/app.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/asset.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/audit.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/auth.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/config.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/notification.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/user.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/utils.js"></script>
-        <script src="studio-ui/src/app/common/scripts/services/widget.js"></script>
-        <script src="studio-ui/src/app/dashboard/main.js"></script>
-        <script src="studio-ui/src/app/authoring/main.js"></script>
-        <script src="studio-ui/src/app/test-service/main.js"></script>
-        <script src="studio-ui/src/app/login/main.js"></script>
+        <!-- build:js studio-ui/studio.js -->
+        <script src="studio-ui/src/app/scripts/services/app.js"></script>
+        <script src="studio-ui/src/app/scripts/services/audit.js"></script>
+        <script src="studio-ui/src/app/scripts/services/auth.js"></script>
+        <script src="studio-ui/src/app/scripts/services/user.js"></script>
+        <script src="studio-ui/src/app/scripts/services/config.js"></script>
+        <script src="studio-ui/src/app/scripts/ng_registry.js"></script>
+        <script src="studio-ui/src/app/scripts/utils.js"></script>
+        <script src="studio-ui/src/app/app.js"></script>
         <!-- endbuild -->
 
         @@livereload

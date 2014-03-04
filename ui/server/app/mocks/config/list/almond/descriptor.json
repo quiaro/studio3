@@ -1,0 +1,6 @@
+{
+    "name": "crafter.studio-ui.plugins.almond",
+    "version": "0.1.0",
+    "base_url": "/almond/",
+    "main": "almond.js"
+}
