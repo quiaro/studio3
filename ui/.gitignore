@@ -1,6 +1,7 @@
-target
+/dev
+/build
+/target
 client/components
-.tmp
 .sass-cache
 .DS_Store
 *.iml
