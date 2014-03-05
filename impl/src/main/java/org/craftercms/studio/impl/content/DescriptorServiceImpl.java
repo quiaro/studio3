@@ -25,12 +25,13 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.craftercms.studio.api.content.DescriptorService;
+import org.craftercms.studio.api.security.SecurityService;
 import org.craftercms.studio.commons.dto.Context;
 import org.craftercms.studio.commons.dto.Item;
 import org.craftercms.studio.commons.dto.ItemId;
 import org.craftercms.studio.commons.dto.LockHandle;
 import org.craftercms.studio.commons.exception.StudioException;
-import org.craftercms.studio.internal.content.impl.ContentManagerImpl;
+import org.craftercms.studio.internal.content.ContentManager;
 
 /**
  * Descriptor Service implementation.
@@ -39,7 +40,9 @@ import org.craftercms.studio.internal.content.impl.ContentManagerImpl;
  */
 public class DescriptorServiceImpl implements DescriptorService {
 
-    private ContentManagerImpl contentManager;
+    private ContentManager contentManager;
+
+    private SecurityService securityService;
 
     /**
      * Create a new descriptor.
@@ -60,11 +63,14 @@ public class DescriptorServiceImpl implements DescriptorService {
     public Item create(final Context context, final String site, final String contentTypeId, final String parentId,
                        final String fileName, final InputStream content, final Map<String, String> properties
     ) throws StudioException {
-
-        Item item = createDescriptorItem(fileName);
-        ItemId itemId = contentManager.create(context, site, parentId, item, content);
-        item = contentManager.read(context, site, itemId.getItemId());
-        return item;
+        if (context != null && securityService.validate(context)) {
+            Item item = createDescriptorItem(fileName);
+            ItemId itemId = contentManager.create(context, site, parentId, item, content);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     /**
@@ -87,12 +93,15 @@ public class DescriptorServiceImpl implements DescriptorService {
                        final String fileName, final String content, final Map<String, String> properties
 
     ) throws StudioException {
-
-        Item item = createDescriptorItem(fileName);
-        InputStream contentStream = IOUtils.toInputStream(content);
-        ItemId itemId = contentManager.create(context, site, parentId, item, contentStream);
-        item = contentManager.read(context, site, itemId.getItemId());
-        return item;
+        if (context != null && securityService.validate(context)) {
+            Item item = createDescriptorItem(fileName);
+            InputStream contentStream = IOUtils.toInputStream(content);
+            ItemId itemId = contentManager.create(context, site, parentId, item, contentStream);
+            item = contentManager.read(context, site, itemId.getItemId());
+            return item;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     /**
@@ -109,12 +118,15 @@ public class DescriptorServiceImpl implements DescriptorService {
     @Override
     public Item duplicate(final Context context, final String site, final ItemId itemId, final String parentId,
                           final String fileName) throws StudioException {
-
-        Item original = contentManager.read(context, site, itemId.getItemId());
-        InputStream content = original.getInputStream();
-        ItemId copyItemId = contentManager.create(context, site, parentId, original, content);
-        Item copy = contentManager.read(context, site, copyItemId.getItemId());
-        return copy;
+        if (context != null && securityService.validate(context)) {
+            Item original = contentManager.read(context, site, itemId.getItemId());
+            InputStream content = original.getInputStream();
+            ItemId copyItemId = contentManager.create(context, site, parentId, original, content);
+            Item copy = contentManager.read(context, site, copyItemId.getItemId());
+            return copy;
+        } else {
+            throw new StudioException(StudioException.ErrorCode.INVALID_CONTEXT);
+        }
     }
 
     /**
@@ -181,7 +193,11 @@ public class DescriptorServiceImpl implements DescriptorService {
         return item;
     }
 
-    public void setContentManager(final ContentManagerImpl contentManager) {
+    public void setContentManager(final ContentManager contentManager) {
         this.contentManager = contentManager;
+    }
+
+    public void setSecurityService(final SecurityService securityService) {
+        this.securityService = securityService;
     }
 }
