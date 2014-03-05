@@ -12,8 +12,17 @@
     <!-- DispatcherServlet Context: defines this servlet's request-processing
         infrastructure -->
     <context:component-scan base-package="org.craftercms.studio"/>
-    <context:property-placeholder file-encoding="UTF-8" location="classpath*:cstudio.properties"/>
-    <context:property-placeholder file-encoding="UTF-8" location="classpath*:/extension/studio3/cstudio.properties"/>
+    <beans:bean name="studio.server.properties"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="fileEncoding" value="UTF-8"/>
+        <beans:property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <beans:property name="locations">
+            <beans:list>
+                <beans:value>classpath*:cstudio.properties</beans:value>
+                <beans:value>classpath*:/extension/studio3/cstudio.properties</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
 
     <annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true"
                        >
@@ -41,6 +50,8 @@
     </annotation-driven>
 
     <resources mapping="/studio-ui/**" location="/studio-ui/"/>
+    <resources mapping="/documentation.html" location="/WEB-INF/" />
+    <resources mapping="/swagger-ui/**" location="/swagger-ui/" />
 
     <beans:bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -82,6 +93,7 @@
         <beans:property name="suffix" value=".ftl"/>
     </beans:bean>
 
+    <beans:import resource="classpath*:/spring/rest-api-documentation-context.xml"/>
 
     <beans:import resource="classpath*:/spring/*-studio3-web-context.xml"/>
     <beans:import resource="classpath*:/extension/studio3/*-studio3-web-context.xml"/>
