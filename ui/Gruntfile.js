@@ -267,19 +267,6 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            express: {
-                files: [
-                    '<%= sdo.root %><%= sdo.path.images %>/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
-                    '<%= sdo.root %><%= sdo.path.app %>/**/*.{html,js,css,less}',
-                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css,less}',
-                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css,less}'
-                ],
-                tasks: ['any-newer:copy:dev'],
-                options: {
-                    livereload: true,
-                    nospawn: true //Without this option specified express won't be reloaded
-                }
-            },
             less: {
                 files: [
                     '<%= sdo.root %><%= sdo.path.app %>/styles/*.less',
@@ -290,6 +277,22 @@ module.exports = function(grunt) {
             replace: {
                 files: ['<%= replace.dev.src %>'],
                 tasks: ['replace:dev']
+            },
+            express: {
+                files: [
+                    '<%= sdo.output.dev %>/index.html',
+                    '<%= sdo.output.dev %>/studio-ui/studio.css',
+                    '<%= sdo.output.dev %><%= sdo.path.modules %>/**/*.css',
+                    '<%= sdo.root %><%= sdo.path.images %>/**/*.{png,jpg,jpeg,gif,webp,svg,ico}',
+                    '<%= sdo.root %><%= sdo.path.app %>/**/*.js',
+                    '<%= sdo.root %><%= sdo.path.modules %>/**/*.{html,js,css,less}',
+                    '<%= sdo.root %><%= sdo.path.plugins %>/**/*.{html,js,css,less}'
+                ],
+                tasks: ['any-newer:copy:dev'],
+                options: {
+                    livereload: true,
+                    nospawn: true //Without this option specified express won't be reloaded
+                }
             }
         }
     });
