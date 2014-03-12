@@ -39,6 +39,13 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, config.clientRoot)));
 app.use(express.errorHandler());
 
+// Enable CORS
+app.all( '*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 // set responses for all the services defined
 mock.services.forEach( function(serviceObj) {
 
