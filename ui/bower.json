@@ -15,7 +15,8 @@
         "require-less": "0.1.1",
         "requirejs-text": "2.0.10",
         "requirejs-domready": "2.0.1",
-        "pubsub-js": "1.4.0"
+        "pubsub-js": "1.4.0",
+        "studio-js-services": "0.1.0"
     },
     "devDependencies": {
         "angular-mocks": "~1.0.5",
@@ -47,6 +48,9 @@
         },
         "require*": {
             "js": "*.js"
+        },
+        "studio-js-services": {
+            "js": "./dist/*.{js,map}"
         }
     }
 }
