@@ -1,5 +1,6 @@
-/* global require, define */
+/* global define */
 
+/*jshint -W040 */
 define(['require', 'globals'],
     function( require, globals ) {
 
@@ -93,3 +94,4 @@ define(['require', 'globals'],
     };
 
 });
+/*jshint -W040 */

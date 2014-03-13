@@ -1,3 +1,5 @@
+/* global requirejs */
+
 requirejs(['studioServices'], function (studioServices) {
 
     'use strict';

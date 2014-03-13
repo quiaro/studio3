@@ -1,4 +1,4 @@
-/* global require, define */
+/* global define */
 
 define(['require', 'globals', './activity-table.js', 'less!./activity-table'],
     function( require, globals, activityTable) {
