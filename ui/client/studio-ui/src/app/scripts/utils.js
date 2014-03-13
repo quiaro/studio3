@@ -5,8 +5,8 @@ angular.module('crafter.studio-ui.Utils', [])
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['$log', '$q', '$timeout', '$rootScope', 'ConfigService',
-        function($log, $q, $timeout, $rootScope, ConfigService) {
+    .service('Utils', ['$log', '$q', '$timeout', '$rootScope', 'StudioServices',
+        function($log, $q, $timeout, $rootScope, StudioServices) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
@@ -71,21 +71,20 @@ angular.module('crafter.studio-ui.Utils', [])
                         var dfd = $q.defer();
                         promiseList.push(dfd.promise);
 
-                        ConfigService.loadConfiguration(moduleName)
-                            .then( function(response) {
+                        StudioServices.Config.getDescriptor(moduleName)
+                            .then( function(descriptor) {
 
-                                var configObj = response.data,
-                                    file = me.getUrl(base_url, configObj.base_url) + configObj.main,
+                                var file = me.getUrl(base_url, descriptor.base_url) + descriptor.main,
                                     modConfig = { config: {} };
 
                                 // Set configuration specific to the module
                                 modConfig.config[file] = {
-                                    name: configObj.name,
+                                    name: descriptor.name,
                                     main: file,
-                                    config: configObj.config
+                                    config: descriptor.config
                                 };
 
-                                $log.info('Config info for ' + configObj.name + ':', modConfig.config[file]);
+                                $log.info('Config info for ' + descriptor.name + ':', modConfig.config[file]);
 
                                 // Make module-specific configuration available
                                 require.config(modConfig);

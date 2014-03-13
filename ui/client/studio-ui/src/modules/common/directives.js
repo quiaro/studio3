@@ -89,8 +89,8 @@ define(['globals'], function( globals ) {
                  '$compile',
                  '$timeout',
                  '$log',
-                 'ConfigService',
-                 'Utils', function ($q, $compile, $timeout, $log, ConfigService, Utils) {
+                 'StudioServices',
+                 'Utils', function ($q, $compile, $timeout, $log, StudioServices, Utils) {
 
                 return {
                     restrict: 'E',
@@ -111,10 +111,10 @@ define(['globals'], function( globals ) {
 
                             $log.log('Plugin container with id: "' + containerId + '"');
 
-                            ConfigService.getPlugins(containerId)
-                                .then( function (response) {
+                            StudioServices.Config.getPlugins(containerId)
+                                .then( function (data) {
 
-                                    var pluginList = response.data.plugins,
+                                    var pluginList = data.plugins,
                                         promiseList;
 
                                     $log.log('Plugins found for "' + containerId + '":', pluginList);
