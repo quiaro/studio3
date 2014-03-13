@@ -6,8 +6,8 @@ define(['globals'], function( globals ) {
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', '$log',
-        function(NgRegistry, $log) {
+    injector.invoke(['NgRegistry', 'StudioServices', '$log',
+        function(NgRegistry, StudioServices, $log) {
 
         NgRegistry
             .addDirective('sdoSubmit', ['$parse', '$timeout', function($parse, $timeout) {
@@ -89,8 +89,7 @@ define(['globals'], function( globals ) {
                  '$compile',
                  '$timeout',
                  '$log',
-                 'StudioServices',
-                 'Utils', function ($q, $compile, $timeout, $log, StudioServices, Utils) {
+                 'Utils', function ($q, $compile, $timeout, $log, Utils) {
 
                 return {
                     restrict: 'E',
