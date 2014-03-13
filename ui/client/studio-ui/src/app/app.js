@@ -13,7 +13,6 @@ requirejs(['studioServices'], function (studioServices) {
             'crafter.studio-ui.services.AuditService',
             'crafter.studio-ui.services.AuthService',
             'crafter.studio-ui.services.UserService',
-            'crafter.studio-ui.services.ConfigService',
             'crafter.studio-ui.NgRegistry',
             'crafter.studio-ui.Utils',
             'ui.router',
@@ -36,6 +35,7 @@ requirejs(['studioServices'], function (studioServices) {
             // Expose configuration to angular app
             $provide.value( 'CONFIG', CONFIG );
             $provide.value( 'GLOBALS', GLOBALS );
+            $provide.value( 'StudioServices', services);
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
@@ -95,13 +95,12 @@ requirejs(['studioServices'], function (studioServices) {
             '$q',
             'AuthService',
             'UserService',
-            'ConfigService',
             'Utils',
             'NgRegistry',
             'CONFIG',
             'GLOBALS',
             function ($rootScope, $location, $state, $controller, $urlRouter, $log, $timeout, $q,
-                      AuthService, UserService, ConfigService, Utils, NgRegistry, CONFIG, GLOBALS) {
+                      AuthService, UserService, Utils, NgRegistry, CONFIG, GLOBALS) {
 
             var promiseList;
 
@@ -162,7 +161,6 @@ requirejs(['studioServices'], function (studioServices) {
 
         }]);
         /*jshint +W072 */
-
 
     services.Config.getDescriptor(init_module).then( function(descriptor) {
 
