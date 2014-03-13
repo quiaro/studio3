@@ -186,14 +186,16 @@ module.exports = function(grunt) {
             options: {
                 variables: {
                     'min': '.min',
-                    'livereload': ''
+                    'livereload': '',
+                    'debug': ''
                 }
             },
             dev: {
                 options: {
                     variables: {
                         'min': '',
-                        'livereload': '<script src="http://localhost:35729/livereload.js"></script>'
+                        'livereload': '<script src="http://localhost:35729/livereload.js"></script>',
+                        'debug': 'var DEBUG = false;'
                     }
                 },
                 src: '<%= sdo.root %>/index.html',

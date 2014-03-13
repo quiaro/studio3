@@ -1984,6 +1984,21 @@ define('utils',['request_agent', 'config'], function(requestAgent, CFG) {
         return this.config.services.site;
     };
 
+    /*
+     * @param url: base url value
+     * @param path: path or url value
+     * @return url value: the value returned will be that of path if it includes a protocol;
+     *                    otherwise, the value of path will be appended to that of url
+     *                    (a forward slash will be added between them, if necessary)
+     */
+    module.prototype.mergePath = function mergePath(url, path) {
+        return (path.indexOf('://') !== -1) ?
+                    path :
+                    (path.indexOf('/') === 0) ?
+                        url + path :
+                        url + '/' + path;
+    };
+
     module.prototype.setSite = function setSite(siteName) {
         if (typeof siteName === 'string' && !!siteName) {
             this.config.services.site = siteName;
