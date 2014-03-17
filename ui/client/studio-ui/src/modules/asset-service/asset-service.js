@@ -68,12 +68,12 @@ define(['require',
 
                     $scope.readAsset = function (assetId) {
 
-                        console.log("Reading asset!");
-
                         StudioServices.Asset.getContent(assetId)
-                            .then(function(content) {
+                            .then(function(content, status, xhr) {
 
                                 console.log("Asset Content: ", content);
+
+                                console.log("Mime Type: ", xhr.getResponseHeader('Content-Type'));
 
                                 $timeout( function() {
                                     $scope.$apply(function () {
