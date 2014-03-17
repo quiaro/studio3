@@ -73,6 +73,7 @@ A established workflow using grunt tasks can be outlined as follows:
 * Clean all files generated during `$ grunt dev`: `$ grunt clean:dev`
 * Clean all files generated during `$ grunt build`: `$ grunt clean:build`
 * Clean all files generated during `$ grunt dist`: `$ grunt clean:dist`
+* Update the studio-js-services library: `$ grunt services`
 
 Crafter Studio 3 UI
 ----

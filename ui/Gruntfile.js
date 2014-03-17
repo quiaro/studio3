@@ -17,7 +17,8 @@ module.exports = function(grunt) {
             plugins: '/studio-ui/src/plugins',
             images: '/studio-ui/images',
             lib: '/studio-ui/lib',
-            build: '/META-INF/resources'
+            build: '/META-INF/resources',
+            components: '/components'
         }
     };
 
@@ -37,7 +38,9 @@ module.exports = function(grunt) {
         clean: {
             dev: '<%= sdo.output.dev %>',
             build: '<%= sdo.output.build %>',
-            dist: '<%= clean.build %>'
+            dist: '<%= clean.build %>',
+            services: ['<%= sdo.root %><%= sdo.path.components %>/studio-js-services',
+                       '<%= sdo.root %><%= sdo.path.lib %>/studio-js-services']
         },
 
         copy: {
@@ -323,6 +326,10 @@ module.exports = function(grunt) {
     grunt.registerTask('lint',
         'Run jshint on code',
         ['newer:jshint:app']);
+
+    grunt.registerTask('services',
+        'Updates studio-js-services library',
+        ['clean:services', 'bower:install']);
 
     grunt.registerTask('default', ['dev']);
 };
