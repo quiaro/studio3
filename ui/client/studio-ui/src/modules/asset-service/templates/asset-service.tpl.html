@@ -1,30 +1,38 @@
-<div class="test-asset">
+<div class="test-asset" ng-controller="AssetCtrl">
 
-    <div>
+    <div class="list-section">
+        <h1>Assets</h1>
+        <ul>
+            <li class="asset-link" ng-repeat="asset in assetList">
+                <a class="button" ng-click="readAsset(asset.id)">{{asset.name}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="upload-section">
         <h1>Upload Asset</h1>
         <form   name="uploadForm"
                 novalidate
                 role="form"
-                ng-submit="uploadAsset(asset)"
-                ng-controller="AssetUploadCtrl">
+                ng-submit="uploadAsset(asset)">
 
             <div class="form-group">
                 <input  type="text"
-                        class="form-control"
+                        class="form-control input-sm"
                         name="assetPath"
                         ng-model="asset.path"
                         placeholder="Parent ID"
                         required />
 
                 <input  type="text"
-                        class="form-control"
+                        class="form-control input-sm"
                         name="assetName"
                         ng-model="asset.name"
                         placeholder="File name"
                         required />
 
                 <input  type="file"
-                        class="form-control"
+                        class="form-control input-sm"
                         name="assetContent"
                         sdo-file-select="onFileSelect($files)"
                         required />
@@ -39,35 +47,9 @@
         </form>
     </div>
 
-    <div>
-        <h1>Read content from previous post</h1>
-        <form   name="readForm"
-                novalidate
-                role="form"
-                ng-submit="readAsset(asset)"
-                ng-controller="AssetReadCtrl">
-
-            <div class="form-group">
-                <input  type="text"
-                        class="form-control"
-                        name="assetId"
-                        ng-model="asset.id"
-                        placeholder="Asset ID"
-                        required />
-            </div>
-
-            <textarea   class="form-control"
-                        ng-model="asset.content"
-                        ng-show="asset.content">{{asset.content}}</textarea>
-
-            <div class="form-group">
-                <button type="submit"
-                        class="btn btn-primary">Submit</button>
-            </div>
-
-        </form>
-
+    <div class="view-section">
+        <div ng-model="assetContent"
+             ng-show="assetContent">{{assetContent}}</div>
     </div>
-
 
 </div>

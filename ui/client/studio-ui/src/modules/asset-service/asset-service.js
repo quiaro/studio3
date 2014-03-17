@@ -8,8 +8,10 @@ define(['require',
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', 'StudioServices', '$state', '$log',
+    injector.invoke(['NgRegistry', 'TestStudioServices', '$state', '$log',
         function(NgRegistry, StudioServices, $state, $log) {
+
+        console.log('StudioServices: ', StudioServices);
 
         NgRegistry
             .addState('test', {
@@ -20,10 +22,19 @@ define(['require',
                 rolesAllowed: ['admin', 'editor']
             })
 
-            .controller('AssetUploadCtrl',
-                ['$scope', 'AssetService', function($scope, AssetService) {
+            .addController('AssetCtrl',
+                ['$scope', '$timeout', function($scope, $timeout) {
 
                     $scope.selectedFiles = null;
+                    $scope.assets = {};
+                    $scope.assetList = [
+                        {   id: '7e4919d0-34bc-49d5-8369-53ff79f763b5',
+                            name: 'chp2.txt'
+                        }, {
+                            id: '4da8fa24-f5be-4f10-be87-471ae6aac768',
+                            name: 'myimg.png'
+                        }
+                    ];
 
                     $scope.uploadAsset = function (asset) {
                         var $file;
@@ -31,23 +42,48 @@ define(['require',
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
 
-                            AssetService.upload({
-                                /*jslint camelcase:false */
-                                data: {
+                            StudioServices.Asset.create({
                                     parent_id: asset.path,
                                     file_name: asset.name,
+                                    file: $file,
                                     mime_type: $file.type
-                                },
-                                /*jslint camelcase:true */
-                                file: $file
-                            }).success(function(data, status, headers, config) {
-                                // file is uploaded successfully
-                                console.log('File uploaded successfully!');
-                                console.log(data);
-                            }).error( function () {
-                                console.log('Unable to upload file');
-                            });
+                                }).then( function( asset ){
+                                    console.log('File uploaded successfully!');
+                                    console.log(asset);
+
+                                    $timeout( function() {
+                                        $scope.$apply(function () {
+                                            $scope.assetList.push({
+                                                id: asset.id.itemId,
+                                                name: asset.fileName
+                                            });
+                                        });
+                                    });
+
+                                }, function() {
+                                    console.log('Unable to upload file');
+                                });
                         }
+                    };
+
+                    $scope.readAsset = function (assetId) {
+
+                        console.log("Reading asset!");
+
+                        StudioServices.Asset.getContent(assetId)
+                            .then(function(content) {
+
+                                console.log("Asset Content: ", content);
+
+                                $timeout( function() {
+                                    $scope.$apply(function () {
+                                        $scope.assetContent = content;
+                                    });
+                                });
+
+                            }, function() {
+                                console.log('Unable to read data from post with id: ' + assetId);
+                            });
                     };
 
                     $scope.onFileSelect = function($files) {
@@ -56,30 +92,7 @@ define(['require',
                     };
             }])
 
-            .controller('AssetReadCtrl',
-                ['$scope', '$timeout', 'AssetService', function($scope, $timeout, AssetService) {
-
-                    $scope.readAsset = function (asset) {
-
-                        AssetService.read({
-                            params: {
-                                /*jslint camelcase:false */
-                                item_id: asset.id
-                                /*jslint camelcase:true */
-                            }
-                        }).success(function(data, status, headers, config) {
-                            $timeout( function() {
-                                $scope.$apply(function () {
-                                    $scope.asset.content = data;
-                                });
-                            });
-                        }).error(function () {
-                            console.log('Unable to read data from post with id: ' + asset.id);
-                        });
-                    };
-            }])
-
-            .directive('sdoFileSelect', ['$parse', '$http',
+            .addDirective('sdoFileSelect', ['$parse', '$http',
                 function($parse, $http) {
                     return function(scope, elem, attr) {
                         var fn = $parse(attr.sdoFileSelect);

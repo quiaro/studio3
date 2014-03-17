@@ -1,4 +1,42 @@
 @import "variables.less";
 @import "mixins.less";
 
-.test-asset {}
+.test-asset {
+    margin: 10px 2em;
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .upload-section {
+        float: left;
+
+        .form-group {
+            width: 600px;
+
+            .form-control {
+                margin: 5px 0;
+            }
+        }
+    }
+
+    .list-section {
+        width: 400px;
+        float: left;
+
+        ul > li > a {
+            color: @gray;
+
+            &:hover {
+                color: @gray-dark;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .view-section {
+        clear: both;
+        padding-top: 20px;
+        width: 1000px;
+    }
+}
