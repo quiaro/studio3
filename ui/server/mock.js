@@ -24,13 +24,16 @@ module.exports = {
             path: '/config/list/login/descriptor'
         }, {
             arguments: { module: "crafter.studio-ui.section.dashboard"},
-            path: '/config/list/dashboard/descriptor',
+            path: '/config/list/dashboard/descriptor'
+        }, {
+            arguments: { module: "crafter.studio-ui.section.test-service"},
+            path: '/config/list/asset-service/descriptor'
         }, {
             arguments: { module: "crafter.studio-ui.plugins.almond"},
-            path: '/config/list/almond/descriptor',
+            path: '/config/list/almond/descriptor'
         }, {
             arguments: { module: "crafter.studio-ui.plugins.sdo.activity-table.recent"},
-            path: '/config/list/recent/descriptor',
+            path: '/config/list/recent/descriptor'
         }]
     }, {
         method: 'get',

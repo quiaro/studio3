@@ -30,6 +30,7 @@
 
     "modules": [
         "crafter.studio-ui.section.login",
-        "crafter.studio-ui.section.dashboard"
+        "crafter.studio-ui.section.dashboard",
+        "crafter.studio-ui.section.test-service"
     ]
 }
