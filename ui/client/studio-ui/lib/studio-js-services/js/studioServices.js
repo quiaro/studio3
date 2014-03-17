@@ -1851,7 +1851,7 @@ define('config',{
     services: {
         domain: '',
         port: '',
-        protocol: 'http',
+        protocol: 'http:',
         site: ''
     },
     api: {
@@ -1861,15 +1861,171 @@ define('config',{
 });
 
 
-/* global define */
+/* global define, DEBUG */
 
-define('services/asset',['request_agent', '../config'], function(RA, CFG){
+define('services/asset',['request_agent', '../config'], function(requestAgent, CFG){
 
     'use strict';
 
-    //TO-DO: Write constructor and methods following config service's example
+    var module = function (utils) {
+        this.utils = utils;
+        this.baseUrl = utils.getBaseUrl() + '/content/asset';
 
-    return {};
+        if (DEBUG) {
+            this.utils.logService({
+                name: 'Asset',
+                url: this.baseUrl
+            });
+        }
+    };
+
+    /*
+     * @param asset object with all the necessary asset properties
+     */
+    module.prototype.create = function create (asset) {
+        var siteName = this.utils.getSite(),
+            formData = new FormData(),
+            fields,
+            serviceUrl,
+            promise,
+            key;
+
+        // Set the field value to true, if the field is required
+        fields = {
+            parent_id: { required: true },
+            file_name: { required: true },
+            file: { type: 'file',
+                    required: true },
+            mime_type: { required: true }
+        };
+
+        if (!requestAgent.isPlainObject(asset)) {
+            throw new Error('Incorrect asset value. Expecting an object.');
+
+        } else if (typeof siteName !== 'string') {
+            throw new Error('Incorrect value for site name');
+
+        } else if (!siteName) {
+            throw new Error('Site name has not been set');
+
+        } else {
+
+            for (key in asset) {
+
+                // Only process properties that we ask for
+                if (key in fields) {
+
+                    if (fields[key].type === 'file') {
+                        formData.append(key, asset[key], asset[key].name);
+                    } else {
+                        formData.append(key, asset[key]);
+                    }
+
+                    // Do not process the field again
+                    delete fields[key];
+                }
+            }
+
+            // Make sure that all required fields were processed
+            for (key in fields) {
+                if (fields[key].required) {
+                    throw new Error('Property \'' + fields[key] + '\' is required, but it is missing' );
+                }
+            }
+
+            serviceUrl = this.baseUrl + '/create/' + siteName;
+            promise = requestAgent.ajax({
+                                            contentType: false,
+                                            data: formData,
+                                            processData: false,
+                                            type: 'POST',
+                                            url: serviceUrl
+                                        });
+
+            if (DEBUG) {
+                this.utils.logMethod({
+                    name: 'Asset.create',
+                    params: arguments,
+                    url: serviceUrl,
+                    promise: promise
+                });
+            }
+
+            return promise;
+        }
+    };
+
+    /*
+     * @param itemId id of the asset for which contents are being retrieved
+     * @return contents of the asset (content type varies)
+     */
+    module.prototype.getContent = function getContent (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        if (typeof itemId !== 'string' || !itemId) {
+            throw new Error('Incorrect value for itemId');
+
+        } else if (typeof siteName !== 'string') {
+            throw new Error('Incorrect value for site name');
+
+        } else if (!siteName) {
+            throw new Error('Site name has not been set');
+
+        } else {
+            serviceUrl = this.baseUrl + '/get_content/' + siteName + '?item_id=' + itemId;
+            promise = requestAgent.ajax(serviceUrl);
+
+            if (DEBUG) {
+                this.utils.logMethod({
+                    name: 'Asset.getContent',
+                    params: arguments,
+                    url: serviceUrl,
+                    promise: promise
+                });
+            }
+
+            return promise;
+        }
+    };
+
+    /*
+     * @param itemId id of the asset to delete
+     * @return contents of the asset (content type varies)
+     */
+    module.prototype.delete = function deleteFn (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        if (typeof itemId !== 'string' || !itemId) {
+            throw new Error('Incorrect value for itemId');
+
+        } else if (typeof siteName !== 'string') {
+            throw new Error('Incorrect value for site name');
+
+        } else if (!siteName) {
+            throw new Error('Site name has not been set');
+
+        } else {
+            serviceUrl = this.baseUrl + '/delete/' + siteName + '?item_id=' + itemId;
+            promise = requestAgent.post(serviceUrl);
+
+            if (DEBUG) {
+                this.utils.logMethod({
+                    name: 'Asset.delete',
+                    params: arguments,
+                    url: serviceUrl,
+                    promise: promise
+                });
+            }
+
+            return promise;
+        }
+    };
+
+    return module;
 
 });
 
@@ -1967,18 +2123,52 @@ define('utils',['request_agent', 'config'], function(requestAgent, CFG) {
         }
     };
 
-    module.prototype.getBaseUrl = function getBaseUrl() {
-        var path;
+    /*
+     * @param overrideObj Object with properties to momentarily override
+              the default (this.config.services)
+     * @return base url to use with additional specific url service info
+     */
 
-        if (this.config.services.domain) {
-            path = [this.config.services.protocol, '://',
-                    this.config.services.domain, ':', this.config.services.port,
-                    '/', this.config.api.base, '/', this.config.api.version].join('');
-        } else {
-            path = ['/', this.config.api.base, '/', this.config.api.version].join('');
+    // TO-DO: Check cyclomatic complexity of this function so the js hint comment
+    //        can be removed
+    /*jshint -W074 */
+    module.prototype.getBaseUrl = function getBaseUrl(overrideObj) {
+
+        var path = [],
+            override = overrideObj || {},
+            location, protocol, domain, port;
+
+        // Better not assume that the window object exists
+        location = window && window.location || {};
+
+        protocol = override.protocol || this.config.services.protocol || location.protocol;
+
+        domain = override.domain || this.config.services.domain || location.hostname;
+
+        port = (override.port) ? override.port :
+                    (typeof this.config.services.port === 'undefined' ||
+                     typeof this.config.services.port === 'string' &&
+                        !isNaN(+this.config.services.port)) ? this.config.services.port :
+                            location.port;
+
+        if (protocol && domain) {
+            path.push(protocol);
+            path.push('//');
+            path.push(domain);
+
+            if (port) {
+                path.push(':');
+                path.push(port);
+            }
         }
-        return path;
+        path.push('/');
+        path.push(this.config.api.base);
+        path.push('/');
+        path.push(this.config.api.version);
+
+        return path.join('');
     };
+    /*jshint +W074 */
 
     module.prototype.getSite = function getSite() {
         return this.config.services.site;
@@ -2030,7 +2220,7 @@ define('utils',['request_agent', 'config'], function(requestAgent, CFG) {
                 method.promise.fail(function(reason){
                     console.log('*** Request from ' + method.name);
                     console.log('*** URL: ' + method.url);
-                    console.log('*** FAILED: ', reason);
+                    console.error('*** FAILED: ', reason);
                 });
             } else {
                 console.log('*** No promise for: ' + method.name);
@@ -2055,10 +2245,11 @@ define('studioServices',['services/asset',
     return function(customConfig) {
 
         var utils = new Utils(customConfig),
-            config = new Config(utils);
+            config = new Config(utils),
+            asset = new Asset(utils);
 
         return Object.freeze({
-            Asset: Asset,
+            Asset: asset,
             Config: config,
             Template: Template,
             Utils: utils
