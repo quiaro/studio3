@@ -75,21 +75,21 @@ A established workflow using grunt tasks can be outlined as follows:
 * Clean all files generated during `$ grunt dist`: `$ grunt clean:dist`
 * Update the studio-js-services library: `$ grunt services`
 
-Crafter Studio 3 UI
+Crafter Studio UI
 ----
 
-Crafter Studio 3 UI (CS3UI) is a flexible and extensible client app for Crafter Studio 3. CS3UI is made up of different modules, each one responsible for providing its own user interface (UI), requesting its own plugins and gathering its data through the REST services that Crafter Studio 3 provides. The presence of these modules is determined by the [app's configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json).
+Crafter Studio UI (CSUI) is a flexible and extensible client app for Crafter Studio. CSUI is made up of different modules, each one responsible for providing its own user interface (UI), requesting its own plugins and gathering its data through the REST services that Crafter Studio provides. The presence of these modules is determined by the [app's configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json).
 
 ### Project Overview
 
-Here is a brief overview of the CS3UI file & folder structure:
+Here is a brief overview of the CSUI file & folder structure:
 
-**CS3UI: `./client`**
+**CSUI: `./client`**
 
 * `./client/studio-ui/lib`: bower packages (i.e. 3rd party libraries)
-* `./client/studio-ui/src/app`: CS3UI core application
-* `./client/studio-ui/src/modules`: CS3UI modules (requested by the core application when it bootstraps)
-* `./client/studio-ui/src/plugins`: CS3UI plugins (requested by any of the CS3UI modules)
+* `./client/studio-ui/src/app`: CSUI core application
+* `./client/studio-ui/src/modules`: CSUI modules (requested by the core application when it bootstraps)
+* `./client/studio-ui/src/plugins`: CSUI plugins (requested by any of the CSUI modules)
 
 **Node Modules: `./node_modules`**
 
@@ -113,7 +113,7 @@ Node modules used by grunt or the mock servers during tasks:
 * *grunt-contrib-watch*: Run predefined tasks whenever watched files are added, changed or deleted
 * *express*: Fast minimalist web framework for node
 
-**CS3UI Mock Servers and Services: `./server`**
+**CSUI Mock Servers and Services: `./server`**
 
 * `./server/app`: Mock data for application services
 * `./server/build`: Build server for the packaged application (see `$ grunt build`)
@@ -122,7 +122,7 @@ Node modules used by grunt or the mock servers during tasks:
 * `./server/config.js`: Configuration for both the build and dev servers. This configuration can be overridden or extended via a config.js file inside the server folder (e.g. see `./server/dev/config.js`)
 * `./server/mock.js`: Maps app and site-specific service urls to their corresponding mock data
 
-**CS3UI Tests: `./test`**
+**CSUI Tests: `./test`**
 
 **Root Files**
 
@@ -135,9 +135,9 @@ Node modules used by grunt or the mock servers during tasks:
 
 ### Loading of the App
 
-To achieve its goals of flexibility and extensibility, CS3UI is an Angular app that combines RequireJS to load scripts on demand, giving it the ability load itself dynamically in run time based on its configuration. 
+To achieve its goals of flexibility and extensibility, CSUI is an Angular app that combines RequireJS to load scripts on demand, giving it the ability load itself dynamically in run time based on its configuration. 
 
-When CS3UI starts, it kicks off a bootstrap process responsible for the following:
+When CSUI starts, it kicks off a bootstrap process responsible for the following:
 
 1) Get the [application configuration](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json), which includes the modules that should be loaded into the application.
 
@@ -152,7 +152,7 @@ NgRegistry follows an approach similar to that described in the following articl
 * [Lazy Loading in AngularJS](http://ify.io/lazy-loading-in-angularjs/)
 * [Dynamically Loading Controllers and Views with AngularJS and RequireJS](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx)
 
-It's important to remember that all CS3UI modules are loaded on demand by RequireJS (and are therefore structured as [AMD modules](http://requirejs.org/docs/whyamd.html)) after Angular bootstraps; consequently, NgRegistry is key in incorporating their code into the app. Since NgRegistry is a service visible only within the app (that exists within the Angular framework), it is necessary to retrieve the app's injector which grants access to all of the app's object instances (including NgRegistry) to javascript code outside the Angular framework. As a result of this, most modules will likely follow this pattern:
+It's important to remember that all CSUI modules are loaded on demand by RequireJS (and are therefore structured as [AMD modules](http://requirejs.org/docs/whyamd.html)) after Angular bootstraps; consequently, NgRegistry is key in incorporating their code into the app. Since NgRegistry is a service visible only within the app (that exists within the Angular framework), it is necessary to retrieve the app's injector which grants access to all of the app's object instances (including NgRegistry) to javascript code outside the Angular framework. As a result of this, most modules will likely follow this pattern:
 
     define(['globals',
         'css!./mycss'], function( globals ) {
@@ -248,7 +248,7 @@ Unlike loading plugins individually, this method of loading plugins does not all
 
 #### Loading Templates
 
-The CS3UI core is responsible for loading the application's modules, but it does not have a template (i.e. graphic interface) associated with it. Only the modules and plugins can have templates linked to them, and they both have a slightly different way of loading them.
+The CSUI core is responsible for loading the application's modules, but it does not have a template (i.e. graphic interface) associated with it. Only the modules and plugins can have templates linked to them, and they both have a slightly different way of loading them.
 
 ##### Loading Templates with Modules
 
@@ -313,7 +313,7 @@ Notice that the location of the stylesheet (almond.less) and the template (almon
 
 ### App Configuration
 
-CS3UI and its modules are configured by means of configuration files, also known as descriptors. There is a [descriptor for the app](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json) and one for each module of the application.
+CSUI and its modules are configured by means of configuration files, also known as descriptors. There is a [descriptor for the app](https://github.com/quiaro/studio3/blob/2217857ec16da4c3c69877f50cd4f2b067c2e4ce/ui/server/app/mocks/config/list/app/descriptor.json) and one for each module of the application.
 
 The app descriptor sets app-wide settings, including settings shared by all modules of the application. Below is a sample app descriptor with comments:
 
@@ -423,7 +423,7 @@ Modules can also declare their own specific configuration values. This can be do
 
 ### LESS Support
 
-CS3UI, its modules and its plugins, all have support for [LESS](http://lesscss.org/). However, LESS stylesheets for the app and its modules are pre-processed and turned into CSS as part of the development cycle, meaning that the app and its modules will actually consume these stylesheets as CSS. Therefore, CS3UI and all its modules should reference their stylesheets as CSS and not as LESS.
+CSUI, its modules and its plugins, all have support for [LESS](http://lesscss.org/). However, LESS stylesheets for the app and its modules are pre-processed and turned into CSS as part of the development cycle, meaning that the app and its modules will actually consume these stylesheets as CSS. Therefore, CSUI and all its modules should reference their stylesheets as CSS and not as LESS.
 
 Consider the following example:
 
