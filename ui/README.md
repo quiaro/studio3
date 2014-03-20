@@ -70,9 +70,10 @@ A established workflow using grunt tasks can be outlined as follows:
 ### Support Tasks:
 
 * Install any bower packages from the component folder into the lib folder: `$ grunt bower:install`
-* Clean all files generated during `$ grunt dev`: `$ grunt clean:dev`
-* Clean all files generated during `$ grunt build`: `$ grunt clean:build`
-* Clean all files generated during `$ grunt dist`: `$ grunt clean:dist`
+* Clean all folders/files generated during `$ grunt dev`: `$ grunt clean:dev`
+* Clean all folders/files generated during `$ grunt build`: `$ grunt clean:build`
+* Clean all folders/files generated during `$ grunt dist`: `$ grunt clean:dist`
+* Remove all folders/files generated during `$ grunt dev`, `$ grunt build` and/or `$ grunt dist`: `$ grunt cl`
 * Update the studio-js-services library: `$ grunt services`
 
 Crafter Studio UI
