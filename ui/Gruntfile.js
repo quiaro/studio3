@@ -349,5 +349,9 @@ module.exports = function(grunt) {
         'Updates studio-js-services library',
         ['clean:services', 'bower:install']);
 
+    grunt.registerTask('cl',
+        'Remove all development and production folders',
+        ['clean:dev', 'clean:build', 'clean:dist']);
+
     grunt.registerTask('default', ['dev']);
 };
