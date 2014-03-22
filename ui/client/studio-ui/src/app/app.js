@@ -5,7 +5,11 @@ requirejs(['studioServices'], function (studioServices) {
     'use strict';
 
     var init_module = 'crafter.studio-ui',
-        services = new studioServices({}),
+        services = new studioServices({
+            server: {
+                port: 9000
+            }
+        }),
         GLOBALS, CONFIG;
 
     angular.module(init_module, [
