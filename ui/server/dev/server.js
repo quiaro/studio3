@@ -107,7 +107,7 @@ app.get( '*', function( req, res ) {
     if (!assetUrlRe.test(req.url)) {
         res.render(config.clientRoot + '/index.html');
     } else {
-        res.sendfile( config.clientRoot + req.url);
+        res.sendfile( config.clientRoot + req.path);
     }
 });
 
