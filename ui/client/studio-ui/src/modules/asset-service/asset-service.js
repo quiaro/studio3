@@ -2,7 +2,8 @@
 
 define(['require',
         'globals',
-        'css!./asset-service'], function( require, globals ) {
+        'ckeditor',
+        'css!./asset-service'], function( require, globals, CKEDITOR ) {
 
     'use strict';
 
@@ -25,6 +26,8 @@ define(['require',
             .addController('AssetCtrl',
                 ['$scope', '$timeout', function($scope, $timeout) {
 
+                    CKEDITOR.replace('editor1');
+
                     $scope.selectedFiles = null;
                     $scope.assets = {};
                     $scope.assetList = [
@@ -35,6 +38,19 @@ define(['require',
                             name: 'myimg.png'
                         }
                     ];
+                    $scope.descriptor = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+                    '<page>\n' +
+                    '  <content-type>/page/page</content-type>\n' +
+                    '  <merge-strategy>inherit-levels</merge-strategy>\n' +
+                    '  <file-name>site-dashboard.xml</file-name>\n' +
+                    '  <folder-name>site-dashboard</folder-name>\n' +
+                    '  <internal-name>Site Dashboard</internal-name>\n' +
+                    '  <title>PAGE-TITLE-SITE-DASHBOARD</title>\n' +
+                    '  <url>site-dashboard</url>\n' +
+                    '  <template>site-dashboard</template>\n' +
+                    '  <createdDate>1/3/2014 14:57:31</createdDate>\n' +
+                    '  <lastModifiedDate>1/3/2014 14:57:31</lastModifiedDate>\n' +
+                    '</page>\n';
 
                     $scope.uploadAsset = function (asset) {
                         var $file;
