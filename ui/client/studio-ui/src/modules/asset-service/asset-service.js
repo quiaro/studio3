@@ -28,6 +28,7 @@ define(['require',
 
                     CKEDITOR.replace('editor1');
 
+                    $scope.action = 'code';
                     $scope.selectedFiles = null;
                     $scope.assets = {};
                     $scope.assetList = [
@@ -38,7 +39,7 @@ define(['require',
                             name: 'myimg.png'
                         }
                     ];
-                    $scope.descriptor = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+                    $scope.code = '<?xml version="1.0" encoding="UTF-8"?>\n' +
                     '<page>\n' +
                     '  <content-type>/page/page</content-type>\n' +
                     '  <merge-strategy>inherit-levels</merge-strategy>\n' +

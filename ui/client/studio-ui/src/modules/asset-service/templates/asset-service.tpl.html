@@ -1,57 +1,75 @@
 <div class="test-asset" ng-controller="AssetCtrl">
 
-    <form>
-        <textarea ng-model="descriptor" name="editor1" id="editor1" rows="10" cols="80"></textarea>
-    </form>
-
-    <div class="list-section">
-        <h1>Assets</h1>
-        <ul>
-            <li class="asset-link" ng-repeat="asset in assetList">
-                <a class="button" ng-click="readAsset(asset.id)">{{asset.name}}</a>
-            </li>
-        </ul>
+    <div class="side-column">
+        <div class="list-actions">
+            <h2>Actions</h2>
+            <button class="btn btn-primary" ng-click="action='code'">Write XML</button>
+            <button class="btn btn-primary" ng-click="action='upload'">Upload Asset</button>
+        </div>
+        <div class="list-assets">
+            <h2>Assets</h2>
+            <ul>
+                <li class="asset-link" ng-repeat="asset in assetList">
+                    <a class="button" ng-click="readAsset(asset.id)">{{asset.name}}</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="upload-section">
-        <h1>Upload Asset</h1>
-        <form   name="uploadForm"
-                novalidate
-                role="form"
-                ng-submit="uploadAsset(asset)">
+    <div class="main-column">
+        <div class="upload" ng-show="action=='upload'">
+            <h1>Upload Asset</h1>
+            <form   name="uploadForm"
+                    novalidate
+                    role="form"
+                    ng-submit="uploadAsset(asset)">
 
-            <div class="form-group">
-                <input  type="text"
-                        class="form-control input-sm"
-                        name="assetPath"
-                        ng-model="asset.path"
-                        placeholder="Parent ID"
-                        required />
+                <div class="form-group">
+                    <input  type="text"
+                            class="form-control input-sm"
+                            name="assetPath"
+                            ng-model="asset.path"
+                            placeholder="Parent ID"
+                            required />
 
-                <input  type="text"
-                        class="form-control input-sm"
-                        name="assetName"
-                        ng-model="asset.name"
-                        placeholder="File name"
-                        required />
+                    <input  type="text"
+                            class="form-control input-sm"
+                            name="assetName"
+                            ng-model="asset.name"
+                            placeholder="File name"
+                            required />
 
-                <input  type="file"
-                        class="form-control input-sm"
-                        name="assetContent"
-                        sdo-file-select="onFileSelect($files)"
-                        required />
+                    <input  type="file"
+                            class="form-control input-sm"
+                            name="assetContent"
+                            sdo-file-select="onFileSelect($files)"
+                            required />
 
-            </div>
+                </div>
 
-            <div class="form-group">
-                <button type="submit"
-                        class="btn btn-primary">Submit</button>
-            </div>
+                <div class="form-group">
+                    <button type="submit"
+                            class="btn btn-primary">Submit</button>
+                </div>
 
-        </form>
+            </form>
+        </div>
+
+        <div class="editor" ng-show="action=='code'">
+            <h1>Write XML</h1>
+            <form   name="addCode"
+                    novalidate
+                    role="form"
+                    ng-submit="submitCode(code)">
+
+                <textarea ng-model="code" name="editor1" id="editor1" rows="10" cols="80"></textarea>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
 
     <div class="view-section">
+        <h1>Preview Section</h1>
         <div ng-model="assetContent"
              ng-show="assetContent">{{assetContent}}</div>
     </div>

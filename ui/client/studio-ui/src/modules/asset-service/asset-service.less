@@ -2,34 +2,40 @@
 @import "mixins.less";
 
 .test-asset {
-    margin: 10px 2em;
+    margin: 15px 2em;
 
-    h1 {
-        font-size: 18px;
-    }
+    h1 { font-size: 22px; }
 
-    .upload-section {
+    .side-column {
+        width: 270px;
         float: left;
 
-        .form-group {
-            width: 600px;
+        h2 { font-size: 18px; }
 
-            .form-control {
-                margin: 5px 0;
-            }
-        }
-    }
-
-    .list-section {
-        width: 400px;
-        float: left;
-
-        ul > li > a {
+        .list-assets ul > li > a {
             color: @gray;
 
             &:hover {
                 color: @gray-dark;
                 cursor: pointer;
+            }
+        }
+    }
+
+    .main-column {
+        float: left;
+
+        .form-group {
+            width: 700px;
+
+            .form-control {
+                margin: 5px 0;
+            }
+        }
+
+        .editor {
+            button[type="submit"] {
+                margin-top: 15px;
             }
         }
     }
