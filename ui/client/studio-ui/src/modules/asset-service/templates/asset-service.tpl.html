@@ -3,7 +3,7 @@
     <div class="side-column">
         <div class="list-actions">
             <h2>Actions</h2>
-            <button class="btn btn-primary" ng-click="action='code'">Write XML</button>
+            <button class="btn btn-primary" ng-click="action='code'">Write Code</button>
             <button class="btn btn-primary" ng-click="action='upload'">Upload Asset</button>
         </div>
         <div class="list-assets">
@@ -56,14 +56,22 @@
         </div>
 
         <div class="editor" ng-show="action=='code'">
-            <h1>Write XML</h1>
+            <h1>Write Code</h1>
+            <div class="sample-buttons">
+                <button class="btn btn-primary" ng-click="insertCode('xml')">Insert Sample XML</button>
+                <button class="btn btn-primary" ng-click="insertCode('ftl')">Insert Sample FTL</button>
+            </div>
             <form   name="addCode"
                     novalidate
                     role="form"
                     ng-submit="submitCode(code)">
 
-                <textarea ng-model="code" name="editor1" id="editor1" rows="10" cols="80"></textarea>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <pre id="code-editor" name="code-editor"></pre>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-primary" ng-click="reset()">Reset</button>
+                </div>
             </form>
         </div>
     </div>

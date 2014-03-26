@@ -2,8 +2,8 @@
 
 define(['require',
         'globals',
-        'ckeditor',
-        'css!./asset-service'], function( require, globals, CKEDITOR ) {
+        'ace/ace',
+        'css!./asset-service'], function( require, globals, ace ) {
 
     'use strict';
 
@@ -26,7 +26,10 @@ define(['require',
             .addController('AssetCtrl',
                 ['$scope', '$timeout', function($scope, $timeout) {
 
-                    CKEDITOR.replace('editor1');
+                    var editor = ace.edit("code-editor");
+
+                    editor.setTheme("ace/theme/textmate");
+                    editor.getSession().setMode("ace/mode/html");
 
                     $scope.action = 'code';
                     $scope.selectedFiles = null;
@@ -39,19 +42,49 @@ define(['require',
                             name: 'myimg.png'
                         }
                     ];
-                    $scope.code = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-                    '<page>\n' +
-                    '  <content-type>/page/page</content-type>\n' +
-                    '  <merge-strategy>inherit-levels</merge-strategy>\n' +
-                    '  <file-name>site-dashboard.xml</file-name>\n' +
-                    '  <folder-name>site-dashboard</folder-name>\n' +
-                    '  <internal-name>Site Dashboard</internal-name>\n' +
-                    '  <title>PAGE-TITLE-SITE-DASHBOARD</title>\n' +
-                    '  <url>site-dashboard</url>\n' +
-                    '  <template>site-dashboard</template>\n' +
-                    '  <createdDate>1/3/2014 14:57:31</createdDate>\n' +
-                    '  <lastModifiedDate>1/3/2014 14:57:31</lastModifiedDate>\n' +
-                    '</page>\n';
+
+                    $scope.reset = function () {
+                        editor.setValue('');
+                    };
+
+                    $scope.insertCode = function (sampleCodeType) {
+                        var sampleCode;
+
+                        switch(sampleCodeType) {
+                            case 'xml':
+                                editor.getSession().setMode("ace/mode/xml");
+                                sampleCode = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+                                             '<page>\n' +
+                                             '  <content-type>/page/page</content-type>\n' +
+                                             '  <merge-strategy>inherit-levels</merge-strategy>\n' +
+                                             '  <file-name>site-dashboard.xml</file-name>\n' +
+                                             '  <folder-name>site-dashboard</folder-name>\n' +
+                                             '  <internal-name>Site Dashboard</internal-name>\n' +
+                                             '  <title>PAGE-TITLE-SITE-DASHBOARD</title>\n' +
+                                             '  <url>site-dashboard</url>\n' +
+                                             '  <template>site-dashboard</template>\n' +
+                                             '  <createdDate>1/3/2014 14:57:31</createdDate>\n' +
+                                             '  <lastModifiedDate>1/3/2014 14:57:31</lastModifiedDate>\n' +
+                                             '</page>\n';
+                                break;
+                            case 'ftl':
+                                editor.getSession().setMode("ace/mode/ftl");
+                                sampleCode = '<html>\n' +
+                                             '<head>\n' +
+                                             '  <title>Welcome!</title>\n' +
+                                             '</head>\n' +
+                                             '<body>\n' +
+                                             '  <h1>\n' +
+                                             '    Welcome ${user}<#if user == "Big Joe">, our beloved leader</#if>!\n' +
+                                             '  </h1>\n' +
+                                             '  <p>Our latest product:\n' +
+                                             '  <a href="${latestProduct.url}">${latestProduct.name}</a>!\n' +
+                                             '</body>\n' +
+                                             '</html>\n';
+                                break;
+                        }
+                        editor.getSession().setValue(sampleCode);
+                    };
 
                     $scope.uploadAsset = function (asset) {
                         var $file;

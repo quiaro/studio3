@@ -1,6 +1,8 @@
 @import "variables.less";
 @import "mixins.less";
 
+@form-height: 400px;
+
 .test-asset {
     margin: 15px 2em;
 
@@ -29,20 +31,39 @@
             width: 700px;
 
             .form-control {
-                margin: 5px 0;
+                margin: 6px 0;
             }
         }
 
         .editor {
-            button[type="submit"] {
-                margin-top: 15px;
+            form {
+                position: relative;
+                height: @form-height;
+            }
+
+            .sample-buttons {
+                margin-bottom: 15px;
+            }
+
+            .form-group {
+                position: absolute;
+                left: 0;
+                bottom: 0;
             }
         }
     }
 
     .view-section {
         clear: both;
-        padding-top: 20px;
         width: 1000px;
+    }
+
+    #code-editor {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: @form-height - 65px;
+        width: 800px;
     }
 }
