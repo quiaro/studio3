@@ -2384,6 +2384,32 @@ define('validation',['request_agent', 'serviceError'], function(requestAgent, Se
         }
     }
 
+    function checkRequired(param) {
+
+        var value = param.value,
+            required = param.required,
+            empty = (typeof param.empty === 'boolean') ? param.empty : true;
+
+        if (required) {
+
+            if (typeof value === 'undefined' || value === null) {
+
+                throw new ServiceError({
+                    type: 'MissingField',
+                    message: param.name + ' is required, but it is null or undefined'
+                });
+
+            } else if (!empty && typeof value === 'string' && !value) {
+
+                throw new ServiceError({
+                    type: 'MissingField',
+                    message: param.name + ' is required, but it is an empty string'
+                });
+
+            }
+        }
+    }
+
     /*
      * @param param parameter object of the form:
      *   {
@@ -2408,82 +2434,70 @@ define('validation',['request_agent', 'serviceError'], function(requestAgent, Se
     function validateParam(param) {
 
         // Create shortcuts
-        var value, required, type, empty;
+        var value;
 
         if (param && requestAgent.isPlainObject(param)) {
 
-            value = param.value,
-            required = param.required,
-            type = param.type,
-            empty = (typeof param.empty === 'boolean') ? param.empty : true;
+            value = param.value;
 
-            if (required) {
+            // Check required fields
+            checkRequired(param);
 
-                if (typeof value === 'undefined' || value === null) {
+            // Only check the type of fields that have a value
+            if (typeof value !== 'undefined') {
 
-                    throw new ServiceError({
-                        type: 'MissingField',
-                        message: param.name + ' is required, but it is null or undefined'
-                    });
+                switch (param.type) {
+                    case 'string':
+                        if (typeof value !== 'string') {
 
-                } else if (!empty && typeof value === 'string' && !value) {
+                            throw new ServiceError({
+                                type: 'InvalidType',
+                                message: 'Incorrect value for ' + param.name + ' -expecting a string'
+                            });
+                        } break;
 
-                    throw new ServiceError({
-                        type: 'MissingField',
-                        message: param.name + ' is required, but it is an empty string'
-                    });
+                    case 'number':
+                        if (!requestAgent.isNumeric(value)) {
 
+                            throw new ServiceError({
+                                type: 'InvalidType',
+                                message: 'Incorrect value for ' + param.name + ' -expecting a number'
+                            });
+                        } break;
+
+                    case 'object':
+                        if (!requestAgent.isPlainObject(value)) {
+
+                            throw new ServiceError({
+                                type: 'InvalidType',
+                                message: 'Incorrect value for ' + param.name + ' -expecting an object'
+                            });
+
+                        } else {
+                            if (param.properties) {
+                                // Validate its properties only if there are rules defined for these
+                                validateObject(value, param.properties);
+                            }
+                        } break;
+
+                    case 'array':
+                        if (!Array.isArray(value)) {
+
+                            throw new ServiceError({
+                                type: 'InvalidType',
+                                message: 'Incorrect value for ' + param.name + ' -expecting an array'
+                            });
+                        } break;
+
+                    case 'function':
+                        if (!requestAgent.isFunction(value)) {
+
+                            throw new ServiceError({
+                                type: 'InvalidType',
+                                message: 'Incorrect value for ' + param.name + ' -expecting a function'
+                            });
+                        } break;
                 }
-            }
-
-            switch (type) {
-                case 'string':
-                    if (typeof value !== 'string') {
-
-                        throw new ServiceError({
-                            type: 'InvalidType',
-                            message: 'Incorrect value for ' + param.name + ' -expecting a string'
-                        });
-                    } break;
-
-                case 'number':
-                    if (!requestAgent.isNumeric(value)) {
-
-                        throw new ServiceError({
-                            type: 'InvalidType',
-                            message: 'Incorrect value for ' + param.name + ' -expecting a number'
-                        });
-                    } break;
-
-                case 'object':
-                    if (!requestAgent.isPlainObject(value)) {
-
-                        throw new ServiceError({
-                            type: 'InvalidType',
-                            message: 'Incorrect value for ' + param.name + ' -expecting an object'
-                        });
-
-                    } else {
-                        validateObject(value, param.properties);
-                    } break;
-
-                case 'array':
-                    if (!Array.isArray(value)) {
-
-                        throw new ServiceError({
-                            type: 'InvalidType',
-                            message: 'Incorrect value for ' + param.name + ' -expecting an array'
-                        });
-                    } break;
-
-                case 'function':
-                    if (!requestAgent.isFunction(value)) {
-
-                        throw new ServiceError({
-                            type: 'InvalidType',
-                            message: 'Incorrect value for ' + param.name + ' -expecting a function'
-                        });
-                    } break;
             }
 
         } else {
@@ -2539,12 +2553,13 @@ define('services/asset',['request_agent', '../validation'], function(requestAgen
     'use strict';
 
     var module = function (utils) {
+        this.name = 'Asset';
         this.utils = utils;
         this.baseUrl = utils.getBaseUrl() + '/content/asset';
 
         if (DEBUG) {
             this.utils.logService({
-                name: 'Asset',
+                name: this.name,
                 url: this.baseUrl
             });
         }
@@ -2621,7 +2636,7 @@ define('services/asset',['request_agent', '../validation'], function(requestAgen
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Asset.create',
+                name: this.name + '.create',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2658,7 +2673,7 @@ define('services/asset',['request_agent', '../validation'], function(requestAgen
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Asset.getContent',
+                name: this.name + '.getContent',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2689,12 +2704,166 @@ define('services/asset',['request_agent', '../validation'], function(requestAgen
             empty: false
         }]);
 
-        serviceUrl = this.baseUrl + '/delete/' + siteName + '?item_id=' + itemId;
-        promise = requestAgent.post(serviceUrl);
+        serviceUrl = this.baseUrl + '/delete/' + siteName;
+        promise = requestAgent.post(serviceUrl, { item_id: itemId });
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Asset.delete',
+                name: this.name + '.delete',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param obj object with all the necessary asset properties
+     */
+    module.prototype.duplicate = function duplicate (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/duplicate/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.duplicate',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param queryObj object with the query information
+     * @return TO-DO
+     */
+    module.prototype.find = function find (queryObj) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'query object',
+            value: queryObj,
+            type: 'object',
+            required: true
+        }]);
+
+        serviceUrl = this.baseUrl + '/find/' + siteName + '?' + requestAgent.param(queryObj);
+        promise = requestAgent.get(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.find',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+        /*
+     * @param obj object with all the necessary asset properties
+     */
+    module.prototype.move = function move (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/move/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.move',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2731,7 +2900,114 @@ define('services/asset',['request_agent', '../validation'], function(requestAgen
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Asset.read',
+                name: this.name + '.read',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the asset to read
+     * @return TO-DO
+     */
+    module.prototype.readText = function readText (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/read_text/' + siteName + '?item_id=' + itemId;
+        promise = requestAgent.get(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.readText',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param asset object with all the necessary asset properties
+     */
+    module.prototype.update = function update (asset) {
+        var siteName = this.utils.getSite(),
+            formData = new FormData(),
+            params,
+            assetProperties,
+            serviceUrl,
+            promise;
+
+        assetProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file',
+            name: 'property: file',
+            type: 'file',
+            required: true
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'asset',
+            value: asset,
+            type: 'object',
+            required: true,
+            properties: assetProperties
+        }];
+
+        validation.validateParams(params);
+
+        assetProperties.forEach( function(propertyObj) {
+
+            var propId = propertyObj.id;
+
+            if (propertyObj.type === 'file') {
+                formData.append(propId, asset[propId], asset[propId].name);
+            } else {
+                formData.append(propId, asset[propId]);
+            }
+        });
+
+        serviceUrl = this.baseUrl + '/update/' + siteName;
+        promise = requestAgent.ajax({
+            contentType: false,
+            data: formData,
+            processData: false,
+            type: 'POST',
+            url: serviceUrl
+        });
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.update',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2751,12 +3027,13 @@ define('services/config',['request_agent', '../validation'], function(requestAge
     'use strict';
 
     var module = function (utils) {
+        this.name = 'Config';
         this.utils = utils;
         this.baseUrl = utils.getBaseUrl() + '/config';
 
         if (DEBUG) {
             this.utils.logService({
-                name: 'Config',
+                name: this.name,
                 url: this.baseUrl
             });
         }
@@ -2778,7 +3055,7 @@ define('services/config',['request_agent', '../validation'], function(requestAge
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Config.getDescriptor',
+                name: this.name + '.getDescriptor',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2803,7 +3080,7 @@ define('services/config',['request_agent', '../validation'], function(requestAge
 
         if (DEBUG) {
             this.utils.logMethod({
-                name: 'Config.getPlugins',
+                name: this.name + '.getPlugins',
                 url: serviceUrl,
                 promise: promise
             });
@@ -2816,15 +3093,884 @@ define('services/config',['request_agent', '../validation'], function(requestAge
 
 });
 
-/* global define */
+/* global define, DEBUG */
 
-define('services/template',[],function(){
+define('services/descriptor',['request_agent', '../validation'], function(requestAgent, validation) {
 
     'use strict';
 
-    //TO-DO: Write constructor and methods following config service's example
+    var module = function (utils) {
+        this.name = 'Descriptor';
+        this.utils = utils;
+        this.baseUrl = utils.getBaseUrl() + '/descriptor';
 
-    return {};
+        if (DEBUG) {
+            this.utils.logService({
+                name: this.name,
+                url: this.baseUrl
+            });
+        }
+    };
+
+    /*
+     * @param descriptor object with all the necessary descriptor properties
+     */
+    module.prototype.create = function create (descriptor) {
+        var siteName = this.utils.getSite(),
+            formData,
+            params,
+            descriptorProperties,
+            serviceUrl = this.baseUrl + '/create/' + siteName,
+            promise;
+
+        descriptorProperties = [{
+            id: 'content_type_id',
+            name: 'property: content_type_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'descriptor',
+            value: descriptor,
+            type: 'object',
+            required: true,
+            properties: descriptorProperties
+        }];
+
+        if (descriptor.file) {
+            // Create new descriptor from file
+            descriptorProperties.push({
+                id: 'file',
+                name: 'property: file',
+                type: 'file',
+                required: true
+            });
+
+            validation.validateParams(params);
+
+            formData = new FormData();
+
+            descriptorProperties.forEach( function(propertyObj) {
+
+                var propId = propertyObj.id;
+
+                if (propertyObj.type === 'file') {
+                    formData.append(propId, descriptor[propId], descriptor[propId].name);
+                } else {
+                    formData.append(propId, descriptor[propId]);
+                }
+            });
+
+            promise = requestAgent.ajax({
+                contentType: false,
+                data: formData,
+                processData: false,
+                type: 'POST',
+                url: serviceUrl
+            });
+
+        } else {
+            // Create new descriptor from inline content
+            descriptorProperties.push({
+                id: 'content',
+                name: 'property: content',
+                type: 'string',
+                required: true,
+                empty: false
+            });
+
+            validation.validateParams(params);
+
+            promise = requestAgent.post(serviceUrl, descriptor);
+        }
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.create',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the descriptor to delete
+     */
+    module.prototype.delete = function deleteFn (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/delete/' + siteName;
+        promise = requestAgent.post(serviceUrl, { item_id: itemId });
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.delete',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param obj object with all the necessary descriptor properties
+     */
+    module.prototype.duplicate = function duplicate (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/duplicate/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.duplicate',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param obj object with all the necessary descriptor properties
+     */
+    module.prototype.move = function move (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/move/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.move',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the descriptor to read
+     * @return descriptorMetadata metadata of an descriptor
+     */
+    module.prototype.read = function read (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/read/' + siteName + '?item_id=' + itemId;
+        promise = requestAgent.getJSON(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.read',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the descriptor to read
+     * @return Text value of the descriptor
+     */
+    module.prototype.readText = function readText (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/read_text/' + siteName + '?item_id=' + itemId;
+        promise = requestAgent.get(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.readText',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param descriptor object with all the necessary descriptor properties
+     */
+    module.prototype.update = function update (descriptor) {
+        var siteName = this.utils.getSite(),
+            formData,
+            params,
+            descriptorProperties,
+            serviceUrl = this.baseUrl + '/update/' + siteName,
+            promise;
+
+        descriptorProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'descriptor',
+            value: descriptor,
+            type: 'object',
+            required: true,
+            properties: descriptorProperties
+        }];
+
+        if (descriptor.file) {
+            // Update new descriptor from file
+            descriptorProperties.push({
+                id: 'file',
+                name: 'property: file',
+                type: 'file',
+                required: true
+            });
+
+            validation.validateParams(params);
+
+            formData = new FormData();
+
+            descriptorProperties.forEach( function(propertyObj) {
+
+                var propId = propertyObj.id;
+
+                if (propertyObj.type === 'file') {
+                    formData.append(propId, descriptor[propId], descriptor[propId].name);
+                } else {
+                    formData.append(propId, descriptor[propId]);
+                }
+            });
+
+            promise = requestAgent.ajax({
+                contentType: false,
+                data: formData,
+                processData: false,
+                type: 'POST',
+                url: serviceUrl
+            });
+
+        } else {
+            // Update new descriptor from inline content
+            descriptorProperties.push({
+                id: 'content',
+                name: 'property: content',
+                type: 'string',
+                required: true,
+                empty: false
+            });
+
+            validation.validateParams(params);
+
+            promise = requestAgent.post(serviceUrl, descriptor);
+        }
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.update',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    return module;
+
+});
+
+/* global define, DEBUG */
+
+define('services/template',['request_agent', '../validation'], function(requestAgent, validation) {
+
+    'use strict';
+
+    var module = function (utils) {
+        this.name = 'Template';
+        this.utils = utils;
+        this.baseUrl = utils.getBaseUrl() + '/template';
+
+        if (DEBUG) {
+            this.utils.logService({
+                name: this.name,
+                url: this.baseUrl
+            });
+        }
+    };
+
+    /*
+     * @param template object with all the necessary template properties
+     */
+    module.prototype.create = function create (template) {
+        var siteName = this.utils.getSite(),
+            formData,
+            params,
+            templateProperties,
+            serviceUrl = this.baseUrl + '/create/' + siteName,
+            promise;
+
+        templateProperties = [{
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'template',
+            value: template,
+            type: 'object',
+            required: true,
+            properties: templateProperties
+        }];
+
+        if (template.file) {
+            // Create new template from file
+            templateProperties.push({
+                id: 'file',
+                name: 'property: file',
+                type: 'file',
+                required: true
+            });
+
+            validation.validateParams(params);
+
+            formData = new FormData();
+
+            templateProperties.forEach( function(propertyObj) {
+
+                var propId = propertyObj.id;
+
+                if (propertyObj.type === 'file') {
+                    formData.append(propId, template[propId], template[propId].name);
+                } else {
+                    formData.append(propId, template[propId]);
+                }
+            });
+
+            promise = requestAgent.ajax({
+                contentType: false,
+                data: formData,
+                processData: false,
+                type: 'POST',
+                url: serviceUrl
+            });
+
+        } else {
+            // Create new template from inline content
+            templateProperties.push({
+                id: 'content',
+                name: 'property: content',
+                type: 'string',
+                required: true,
+                empty: false
+            });
+
+            validation.validateParams(params);
+
+            promise = requestAgent.post(serviceUrl, template);
+        }
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.create',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the template to delete
+     */
+    module.prototype.delete = function deleteFn (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/delete/' + siteName;
+        promise = requestAgent.post(serviceUrl, { item_id: itemId });
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.delete',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param obj object with all the necessary template properties
+     */
+    module.prototype.duplicate = function duplicate (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/duplicate/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.duplicate',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param obj object with all the necessary template properties
+     */
+    module.prototype.move = function move (obj) {
+        var siteName = this.utils.getSite(),
+            params,
+            objProperties,
+            serviceUrl,
+            promise;
+
+        objProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            id: 'parent_id',
+            name: 'property: parent_id',
+            type: 'string',
+            required: true
+        }, {
+            id: 'file_name',
+            name: 'property: file_name',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'obj',
+            value: obj,
+            type: 'object',
+            required: true,
+            properties: objProperties
+        }];
+
+        validation.validateParams(params);
+
+        serviceUrl = this.baseUrl + '/move/' + siteName;
+        promise = requestAgent.post(serviceUrl, obj);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.move',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the template to read
+     * @return templateMetadata metadata of an template
+     */
+    module.prototype.read = function read (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/read/' + siteName + '?item_id=' + itemId;
+        promise = requestAgent.getJSON(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.read',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param itemId id of the template to read
+     * @return Text value of the template
+     */
+    module.prototype.readText = function readText (itemId) {
+        var siteName = this.utils.getSite(),
+            serviceUrl,
+            promise;
+
+        validation.validateParams([{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'itemId',
+            value: itemId,
+            type: 'string',
+            required: true,
+            empty: false
+        }]);
+
+        serviceUrl = this.baseUrl + '/read_text/' + siteName + '?item_id=' + itemId;
+        promise = requestAgent.get(serviceUrl);
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.readText',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    /*
+     * @param template object with all the necessary template properties
+     */
+    module.prototype.update = function update (template) {
+        var siteName = this.utils.getSite(),
+            formData,
+            params,
+            templateProperties,
+            serviceUrl = this.baseUrl + '/update/' + siteName,
+            promise;
+
+        templateProperties = [{
+            id: 'item_id',
+            name: 'property: item_id',
+            type: 'string',
+            required: true,
+            empty: false
+        }];
+
+        params = [{
+            name: 'site name',
+            value: siteName,
+            type: 'string',
+            required: true,
+            empty: false
+        }, {
+            name: 'template',
+            value: template,
+            type: 'object',
+            required: true,
+            properties: templateProperties
+        }];
+
+        if (template.file) {
+            // Update new template from file
+            templateProperties.push({
+                id: 'file',
+                name: 'property: file',
+                type: 'file',
+                required: true
+            });
+
+            validation.validateParams(params);
+
+            formData = new FormData();
+
+            templateProperties.forEach( function(propertyObj) {
+
+                var propId = propertyObj.id;
+
+                if (propertyObj.type === 'file') {
+                    formData.append(propId, template[propId], template[propId].name);
+                } else {
+                    formData.append(propId, template[propId]);
+                }
+            });
+
+            promise = requestAgent.ajax({
+                contentType: false,
+                data: formData,
+                processData: false,
+                type: 'POST',
+                url: serviceUrl
+            });
+
+        } else {
+            // Update new template from inline content
+            templateProperties.push({
+                id: 'content',
+                name: 'property: content',
+                type: 'string',
+                required: true,
+                empty: false
+            });
+
+            validation.validateParams(params);
+
+            promise = requestAgent.post(serviceUrl, template);
+        }
+
+        if (DEBUG) {
+            this.utils.logMethod({
+                name: this.name + '.update',
+                url: serviceUrl,
+                promise: promise
+            });
+        }
+
+        return promise;
+    };
+
+    return module;
 
 });
 
@@ -2881,7 +4027,7 @@ define('utils',['request_agent', 'config'], function(requestAgent, CFG) {
         domain = override.domain || this.config.server.domain || location.hostname;
 
         port = (override.port) ? override.port :
-                    (typeof this.config.server.port === 'undefined' ||
+                    (typeof this.config.server.port === 'number' ||
                      typeof this.config.server.port === 'string' &&
                         !isNaN(+this.config.server.port)) ? this.config.server.port :
                             location.port;
@@ -2971,21 +4117,25 @@ define('utils',['request_agent', 'config'], function(requestAgent, CFG) {
 
 define('studioServices',['services/asset',
         'services/config',
+        'services/descriptor',
         'services/template',
-        'utils'], function (Asset, Config, Template, Utils) {
+        'utils'], function (Asset, Config, Descriptor, Template, Utils) {
 
     'use strict';
 
     return function(customConfig) {
 
         var utils = new Utils(customConfig),
+            asset = new Asset(utils),
             config = new Config(utils),
-            asset = new Asset(utils);
+            descriptor = new Descriptor(utils),
+            template = new Template(utils);
 
         return Object.freeze({
             Asset: asset,
             Config: config,
-            Template: Template,
+            Descriptor: descriptor,
+            Template: template,
             Utils: utils
         });
     };
