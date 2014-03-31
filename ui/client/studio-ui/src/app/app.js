@@ -6,19 +6,19 @@ requirejs(['studioServices'], function (studioServices) {
 
     var init_module = 'crafter.studio-ui',
         services = new studioServices({
-            services: {
+            server: {
                 port: 9000
             }
         }),
 
         testServices = new studioServices({
-            services: {
-                domain: 'studio3.craftercms.org',
-                site: 'coconut'
+            server: {
+                domain: 'studio3.craftercms.org'
             },
             api: {
                 base: 'studio-server/api'
-            }
+            },
+            site: 'coconut'
         }),
 
         GLOBALS, CONFIG;
