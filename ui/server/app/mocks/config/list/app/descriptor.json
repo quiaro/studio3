@@ -20,8 +20,8 @@
 
     "module_globals": {
         "dom_root": "#studio-ui",
-        "default_state": "login",
-        "default_url": "/login",
+        "default_state": "test",
+        "default_url": "/test-service",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
         "templates_url": "modules/common/templates",
@@ -29,8 +29,6 @@
     },
 
     "modules": [
-        "crafter.studio-ui.section.login",
-        "crafter.studio-ui.section.dashboard",
         "crafter.studio-ui.section.test-service"
     ]
 }
