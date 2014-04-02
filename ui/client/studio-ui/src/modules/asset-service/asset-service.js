@@ -9,7 +9,7 @@ define(['require',
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', 'TestStudioServices', '$state', '$log',
+    injector.invoke(['NgRegistry', 'StudioServices', '$state', '$log',
         function(NgRegistry, StudioServices, $state, $log) {
 
         console.log('StudioServices: ', StudioServices);

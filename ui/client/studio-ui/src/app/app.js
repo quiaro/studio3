@@ -5,22 +5,7 @@ requirejs(['studioServices'], function (studioServices) {
     'use strict';
 
     var init_module = 'crafter.studio-ui',
-        services = new studioServices({
-            server: {
-                port: 9000
-            }
-        }),
-
-        testServices = new studioServices({
-            server: {
-                domain: 'studio3.craftercms.org'
-            },
-            api: {
-                base: 'studio-server/api'
-            },
-            site: 'coconut'
-        }),
-
+        services = new studioServices({ site: 'coconut' }),
         GLOBALS, CONFIG;
 
     angular.module(init_module, [
@@ -51,9 +36,6 @@ requirejs(['studioServices'], function (studioServices) {
             $provide.value( 'CONFIG', CONFIG );
             $provide.value( 'GLOBALS', GLOBALS );
             $provide.value( 'StudioServices', services);
-
-            // Provide another instance of the services with different configuration
-            $provide.value( 'TestStudioServices', testServices);
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
