@@ -1,4 +1,4 @@
-/* global define */
+/* global define, alert, prompt */
 
 define(['require',
         'globals',
@@ -40,10 +40,10 @@ define(['require',
                         });
                     }
 
-                    var editor = ace.edit("code-editor");
+                    var editor = ace.edit('code-editor');
 
-                    editor.setTheme("ace/theme/textmate");
-                    editor.getSession().setMode("ace/mode/html");
+                    editor.setTheme('ace/theme/textmate');
+                    editor.getSession().setMode('ace/mode/html');
 
                     $scope.flags = {
                         action: {
@@ -110,7 +110,9 @@ define(['require',
                         var flags = $scope.flags;
 
                         for (var i in flags[type]) {
-                            flags[type][i] = (i == flag) ? true : false;
+                            if (flags[type].hasOwnProperty(i)) {
+                                flags[type][i] = (i === flag) ? true : false;
+                            }
                         }
                     };
 
@@ -126,7 +128,7 @@ define(['require',
 
                         switch(code) {
                             case 'xml':
-                                editor.getSession().setMode("ace/mode/xml");
+                                editor.getSession().setMode('ace/mode/xml');
                                 sampleCode = '<?xml version="1.0" encoding="UTF-8"?>\n' +
                                              '<page>\n' +
                                              '  <content-type>/page/page</content-type>\n' +
@@ -142,7 +144,7 @@ define(['require',
                                              '</page>\n';
                                 break;
                             case 'ftl':
-                                editor.getSession().setMode("ace/mode/ftl");
+                                editor.getSession().setMode('ace/mode/ftl');
                                 sampleCode = '<html>\n' +
                                              '<head>\n' +
                                              '  <title>Welcome!</title>\n' +
@@ -258,25 +260,25 @@ define(['require',
                             case 'descriptor':
                                 promise = StudioServices.Descriptor.readText(itemId);
                                 option = 'xml';
-                                editor.getSession().setMode("ace/mode/xml");
+                                editor.getSession().setMode('ace/mode/xml');
                                 break;
                             case 'template':
                                 promise = StudioServices.Template.readText(itemId);
                                 option = 'ftl';
-                                editor.getSession().setMode("ace/mode/ftl");
+                                editor.getSession().setMode('ace/mode/ftl');
                                 break;
                             case 'asset':
                                 promise = StudioServices.Asset.getContent(itemId);
                                 option = 'asset';
-                                editor.getSession().setMode("ace/mode/text");
+                                editor.getSession().setMode('ace/mode/text');
                                 break;
                         }
 
                         promise.done( function(content, status, xhr) {
 
-                            console.log("Item Content: ", content);
+                            console.log('Item Content: ', content);
 
-                            console.log("Mime Type: ", xhr.getResponseHeader('Content-Type'));
+                            console.log('Mime Type: ', xhr.getResponseHeader('Content-Type'));
 
                             $timeout( function() {
                                 $scope.$apply(function () {
