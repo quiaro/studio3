@@ -2,6 +2,7 @@
     "name": "studio-ui",
     "version": "0.1.0",
     "dependencies": {
+        "almond": "0.2.9",
         "angular": "~1.0.8",
         "angular-bootstrap": "~0.6.0",
         "angular-cookies": "~1.0.0",
@@ -15,13 +16,16 @@
         "requirejs-text": "2.0.10",
         "requirejs-domready": "2.0.1",
         "pubsub-js": "1.4.0",
-        "studio-js-services": "0.1.0"
+        "request-agent": "~1.0.0"
     },
     "devDependencies": {
         "angular-mocks": "~1.0.5",
         "angular-scenario": "~1.0.5"
     },
     "exportsOverride": {
+        "almond": {
+            "js": "*.js"
+        },
         "angular": {
             "js": "*.js"
         },
@@ -47,6 +51,9 @@
         },
         "require*": {
             "js": "*.js"
+        },
+        "request-agent": {
+            "js": "./dist/*.{js,map}"
         },
         "studio-js-services": {
             "js": "./dist/*.{js,map}"
