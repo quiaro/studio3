@@ -240,7 +240,7 @@ module.exports = function(grunt) {
                     optimize: 'none',
                     out: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.services %>/studioServices.src.js',
                     paths: {
-                        request_agent: '<%= sdo.root %><%= sdo.path.lib %>/request-agent/js/request-agent.min',
+                        request_agent: 'empty:',
                         studioServices: '<%= sdo.root %><%= sdo.path.services %>'
                     },
                     preserveLicenseComments: false,
