@@ -29,7 +29,8 @@ module.exports = function(grunt) {
                 images: '/studio-ui/images',
                 lib: '/studio-ui/lib',
                 build: '/META-INF/resources',
-                components: '/components'
+                components: '/components',
+                services: '/studio-ui/src/modules/common/studio-js-services'
             }
         };
 
@@ -49,9 +50,7 @@ module.exports = function(grunt) {
         clean: {
             dev: '<%= sdo.output.dev %>',
             build: '<%= sdo.output.build %>',
-            dist: '<%= clean.build %>',
-            services: ['<%= sdo.root %><%= sdo.path.components %>/studio-js-services',
-                       '<%= sdo.root %><%= sdo.path.lib %>/studio-js-services']
+            dist: '<%= clean.build %>'
         },
 
         copy: {
@@ -99,7 +98,12 @@ module.exports = function(grunt) {
                     cwd: '<%= sdo.root %><%= sdo.path.modules %>',
                     src: '**/*.js',
                     dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>',
-                    ext: '.src.js'
+                    ext: '.src.js',
+                    filter: function (filepath) {
+                        // Do not copy studio js services files; they will be
+                        // processed separately
+                        return filepath.indexOf(appConfig.path.services) === -1;
+                    }
                 }, {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
@@ -207,7 +211,7 @@ module.exports = function(grunt) {
                 variables: {
                     'min': '.min',
                     'livereload': '',
-                    'debug': ''
+                    'debug': 'var DEBUG = false;'
                 }
             },
             dev: {
@@ -224,6 +228,25 @@ module.exports = function(grunt) {
             build: {
                 src: '<%= replace.dev.src %>',
                 dest: '<%= sdo.output.build %><%= sdo.path.build %>/index.html'
+            }
+        },
+
+        requirejs: {
+            build: {
+                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+                options: {
+                    generateSourceMaps: false,
+                    name: 'studioServices/studioServices',
+                    optimize: 'none',
+                    out: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.services %>/studioServices.src.js',
+                    paths: {
+                        request_agent: '<%= sdo.root %><%= sdo.path.lib %>/request-agent/js/request-agent.min',
+                        studioServices: '<%= sdo.root %><%= sdo.path.services %>'
+                    },
+                    preserveLicenseComments: false,
+                    useStrict: true,
+                    wrap: false
+                }
             }
         },
 
@@ -335,7 +358,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('buildjs',
         'Minify and compress all javascript',
-        ['useminPrepare', 'concat', 'copy:js', 'uglify:build']);
+        ['useminPrepare', 'concat', 'copy:js', 'requirejs:build', 'uglify:build']);
 
     grunt.registerTask('test',
         'Run unit tests on jasmine',
@@ -344,10 +367,6 @@ module.exports = function(grunt) {
     grunt.registerTask('lint',
         'Run jshint on code',
         ['newer:jshint:app']);
-
-    grunt.registerTask('services',
-        'Updates studio-js-services library',
-        ['clean:services', 'bower:install']);
 
     grunt.registerTask('cl',
         'Remove all development and production folders',

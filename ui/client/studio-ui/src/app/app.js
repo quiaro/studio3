@@ -1,6 +1,6 @@
 /* global requirejs */
 
-requirejs(['studioServices'], function (studioServices) {
+requirejs(['studioServices/studioServices'], function (studioServices) {
 
     'use strict';
 

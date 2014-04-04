@@ -16,7 +16,7 @@
   "trailing": true,
   "maxparams": 7,
   "maxdepth": 4,
-  "maxcomplexity": 10,
+  "maxcomplexity": 15,
   "maxlen": 120,
 
   "browser": true,
