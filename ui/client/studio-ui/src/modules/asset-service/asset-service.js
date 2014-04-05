@@ -3,6 +3,7 @@
 define(['require',
         'globals',
         'ace/ace',
+        './tree-navigation.js',
         'css!./asset-service'], function( require, globals, ace ) {
 
     'use strict';
@@ -97,6 +98,8 @@ define(['require',
                             name: 'service.ftl'
                         }
                     ];
+
+                    $scope.templatePath = require.toUrl('./templates');
 
                     $scope.reset = function () {
                         $scope.flags.code = {
