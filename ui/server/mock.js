@@ -15,6 +15,13 @@ module.exports = {
         }]
     }, {
         method: 'get',
+        url: '/api/1/repo/tree/:site',
+        mock: [{
+            arguments: {},
+            path: '/repo/tree/tree'
+        }]
+    }, {
+        method: 'get',
         url: '/api/1/config/list/:module',
         mock: [{
             arguments: { module: "crafter.studio-ui"},
