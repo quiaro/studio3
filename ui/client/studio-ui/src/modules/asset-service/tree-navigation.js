@@ -4,41 +4,76 @@ define(['require', 'globals'], function(require, globals){
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', function(NgRegistry) {
+    injector.invoke(['NgRegistry', 'StudioServices', function(NgRegistry, StudioServices) {
 
         NgRegistry
             .addController('AbnTestController', function($scope, $timeout) {
-                var tree, treedata;
+                var tree, treeData, assetsData, descriptorsData, templatesData;
+
                 $scope.my_tree_handler = function(branch) {
-                    var _ref;
-                    $scope.output = "You selected: " + branch.label;
-                    if ((_ref = branch.data) != null ? _ref.description : void 0) {
-                        return $scope.output += '(' + branch.data.description + ')';
-                    }
+                    // console.log("You selected: " + branch.label);
+                    // console.log("Created By: " + branch.createdBy);
                 };
 
-                treedata = [{
+                treeData = [];
+
+                // Tree data sections
+                assetsData = {
                     label: 'Assets',
                     children: ['... loading']
-                }, {
+                };
+                descriptorsData = {
                     label: 'Descriptors',
                     children: ['... loading']
-                }, {
+                };
+                templatesData = {
                     label: 'Templates',
                     children: ['... loading']
-                }];
+                };
+
+                treeData.push(assetsData);
+                treeData.push(descriptorsData);
+                treeData.push(templatesData);
 
                 $scope.tree = {};
 
-                $scope.tree.data = treedata;
+                $scope.tree.data = treeData;
 
                 $scope.tree.inst = tree = {};
+
+                // Load data for the tree
+                StudioServices.Asset.tree().then( function(data) {
+                    console.log('Assets: ', data);
+                    $timeout( function() {
+                        $scope.$apply( function() {
+                            assetsData.children = data;
+                        })
+                    });
+                });
+
+                StudioServices.Descriptor.tree().then( function(data) {
+                    console.log('Descriptors: ', data);
+                    $timeout( function() {
+                        $scope.$apply( function() {
+                            descriptorsData.children = data;
+                        })
+                    });
+                });
+
+                StudioServices.Template.tree().then( function(data) {
+                    console.log('Templates: ', data);
+                    $timeout( function() {
+                        $scope.$apply( function() {
+                            templatesData.children = data;
+                        })
+                    });
+                });
 
                 $scope.try_async_load = function() {
                     $scope.tree.data = [];
                     $scope.doing_async = true;
                     return $timeout(function() {
-                        $scope.tree.data = treedata;
+                        $scope.tree.data = treeData;
                         $scope.doing_async = false;
                         return tree.expand_all();
                     }, 1000);
@@ -51,9 +86,6 @@ define(['require', 'globals'], function(require, globals){
                         data: {
                             definition: "A plant or part of a plant used as food, typically as accompaniment to meat or fish, such as a cabbage, potato, carrot, or bean.",
                             data_can_contain_anything: true
-                        },
-                        onSelect: function(branch) {
-                            return $scope.output = "Vegetable: " + branch.data.definition;
                         },
                         children: [{
                             label: 'Oranges'
