@@ -41,9 +41,13 @@ define(['require', 'globals'], function(require, globals){
 
                 $scope.tree.inst = tree = {};
 
-                // Load data for the tree
-                StudioServices.Asset.tree().then( function(data) {
-                    console.log('Assets: ', data);
+                // Load data for the categories
+                StudioServices.Asset.list().then( function(data) {
+                    data.forEach( function(item) {
+                        if (item.folder) {
+                            item.children = ['... loading'];
+                        }
+                    });
                     $timeout( function() {
                         $scope.$apply( function() {
                             assetsData.children = data;
@@ -51,8 +55,12 @@ define(['require', 'globals'], function(require, globals){
                     });
                 });
 
-                StudioServices.Descriptor.tree().then( function(data) {
-                    console.log('Descriptors: ', data);
+                StudioServices.Descriptor.list().then( function(data) {
+                    data.forEach( function(item) {
+                        if (item.folder) {
+                            item.children = ['... loading'];
+                        }
+                    });
                     $timeout( function() {
                         $scope.$apply( function() {
                             descriptorsData.children = data;
@@ -60,8 +68,12 @@ define(['require', 'globals'], function(require, globals){
                     });
                 });
 
-                StudioServices.Template.tree().then( function(data) {
-                    console.log('Templates: ', data);
+                StudioServices.Template.list().then( function(data) {
+                    data.forEach( function(item) {
+                        if (item.folder) {
+                            item.children = ['... loading'];
+                        }
+                    });
                     $timeout( function() {
                         $scope.$apply( function() {
                             templatesData.children = data;

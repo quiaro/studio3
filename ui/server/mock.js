@@ -15,24 +15,24 @@ module.exports = {
         }]
     }, {
         method: 'get',
-        url: '/api/1/content/asset/tree/:site',
+        url: '/api/1/content/asset/list/:site',
         mock: [{
             arguments: {},
-            path: '/repo/tree/assets'
+            path: '/repo/list/assets'
         }]
     }, {
         method: 'get',
-        url: '/api/1/descriptor/tree/:site',
+        url: '/api/1/descriptor/list/:site',
         mock: [{
             arguments: {},
-            path: '/repo/tree/descriptors'
+            path: '/repo/list/descriptors'
         }]
     }, {
         method: 'get',
-        url: '/api/1/template/tree/:site',
+        url: '/api/1/template/list/:site',
         mock: [{
             arguments: {},
-            path: '/repo/tree/templates'
+            path: '/repo/list/templates'
         }]
     }, {
         method: 'get',
