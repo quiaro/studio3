@@ -1,3 +1,5 @@
+/* global define */
+
 define(['require', 'globals'], function(require, globals){
 
     'use strict';
@@ -51,7 +53,7 @@ define(['require', 'globals'], function(require, globals){
                     $timeout( function() {
                         $scope.$apply( function() {
                             assetsData.children = data;
-                        })
+                        });
                     });
                 });
 
@@ -64,7 +66,7 @@ define(['require', 'globals'], function(require, globals){
                     $timeout( function() {
                         $scope.$apply( function() {
                             descriptorsData.children = data;
-                        })
+                        });
                     });
                 });
 
@@ -77,7 +79,7 @@ define(['require', 'globals'], function(require, globals){
                     $timeout( function() {
                         $scope.$apply( function() {
                             templatesData.children = data;
-                        })
+                        });
                     });
                 });
 
@@ -90,13 +92,13 @@ define(['require', 'globals'], function(require, globals){
                         return tree.expand_all();
                     }, 1000);
                 };
-                return $scope.try_adding_a_branch = function() {
+                $scope.try_adding_a_branch = function() {
                     var b;
                     b = tree.get_selected_branch();
                     return tree.add_branch(b, {
                         label: 'Vegetable',
                         data: {
-                            definition: "A plant or part of a plant used as food, typically as accompaniment to meat or fish, such as a cabbage, potato, carrot, or bean.",
+                            definition: 'A plant',
                             data_can_contain_anything: true
                         },
                         children: [{
@@ -117,4 +119,4 @@ define(['require', 'globals'], function(require, globals){
 
     }]);
 
-})
+});
