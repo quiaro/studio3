@@ -13,7 +13,31 @@
             </div>
         </div>
 
-        <ng-include src="templatePath + '/tree-navigation.tpl.html'"></ng-include>
+        <div class="list-assets">
+            <h2>Assets</h2>
+            <ul>
+                <li class="asset-link" ng-repeat="asset in assetList">
+                    <a class="button" ng-click="readItem('asset', asset.id)">{{asset.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="list-desc">
+            <h2>Descriptors</h2>
+            <ul>
+                <li class="desc-link" ng-repeat="desc in descList">
+                    <a class="button" ng-click="readItem('descriptor', desc.id)">{{desc.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="list-tmpl">
+            <h2>Templates</h2>
+            <ul>
+                <li class="tmpl-link" ng-repeat="tmpl in tmplList">
+                    <a class="button" ng-click="readItem('template', tmpl.id)">{{tmpl.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <!-- <ng-include src="templatePath + '/tree-navigation.tpl.html'"></ng-include> -->
     </div>
 
     <div class="main-column">
