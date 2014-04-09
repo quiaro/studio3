@@ -6,115 +6,121 @@ define(['require', 'globals'], function(require, globals){
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', 'StudioServices', function(NgRegistry, StudioServices) {
+    injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addController('AbnTestController', function($scope, $timeout) {
-                var tree, treeData, assetsData, descriptorsData, templatesData;
+            .addDirective('sdoTree', function($timeout, $log){
+                return {
+                    restrict: 'E',
+                    scope: {},
+                    replace: true,
+                    template: '<div><abn-tree tree-data="tree.data" tree-control="tree.inst" on-select="my_tree_handler(branch)" expand-level="0" ></abn-tree></div>',
+                    controller: ['$scope',
+                                 '$element',
+                                 '$attrs',
+                                 '$transclude',
+                                 '$timeout',
+                                 'StudioServices',
+                                    function ($scope, $el, $attrs, $transclude, $timeout, StudioServices) {
 
-                $scope.my_tree_handler = function(branch) {
-                    // console.log("You selected: " + branch.label);
-                    // console.log("Created By: " + branch.createdBy);
-                };
+                        var tree, treeData, assetsData, descriptorsData, templatesData;
 
-                treeData = [];
+                        $scope.my_tree_handler = function(branch) {
+                            // console.log("You selected: " + branch.label);
+                            // console.log("Created By: " + branch.createdBy);
+                        };
 
-                // Tree data sections
-                assetsData = {
-                    label: 'Assets',
-                    children: ['... loading']
-                };
-                descriptorsData = {
-                    label: 'Descriptors',
-                    children: ['... loading']
-                };
-                templatesData = {
-                    label: 'Templates',
-                    children: ['... loading']
-                };
+                        treeData = [];
 
-                treeData.push(assetsData);
-                treeData.push(descriptorsData);
-                treeData.push(templatesData);
+                        // Tree data sections
+                        assetsData = {
+                            label: 'Assets',
+                            children: ['... loading']
+                        };
+                        descriptorsData = {
+                            label: 'Descriptors',
+                            children: ['... loading']
+                        };
+                        templatesData = {
+                            label: 'Templates',
+                            children: ['... loading']
+                        };
 
-                $scope.tree = {};
+                        treeData.push(assetsData);
+                        treeData.push(descriptorsData);
+                        treeData.push(templatesData);
 
-                $scope.tree.data = treeData;
+                        $scope.tree = {};
 
-                $scope.tree.inst = tree = {};
-
-                // Load data for the categories
-                StudioServices.Asset.list().then( function(data) {
-                    data.forEach( function(item) {
-                        if (item.folder) {
-                            item.children = ['... loading'];
-                        }
-                    });
-                    $timeout( function() {
-                        $scope.$apply( function() {
-                            assetsData.children = data;
-                        });
-                    });
-                });
-
-                StudioServices.Descriptor.list().then( function(data) {
-                    data.forEach( function(item) {
-                        if (item.folder) {
-                            item.children = ['... loading'];
-                        }
-                    });
-                    $timeout( function() {
-                        $scope.$apply( function() {
-                            descriptorsData.children = data;
-                        });
-                    });
-                });
-
-                StudioServices.Template.list().then( function(data) {
-                    data.forEach( function(item) {
-                        if (item.folder) {
-                            item.children = ['... loading'];
-                        }
-                    });
-                    $timeout( function() {
-                        $scope.$apply( function() {
-                            templatesData.children = data;
-                        });
-                    });
-                });
-
-                $scope.try_async_load = function() {
-                    $scope.tree.data = [];
-                    $scope.doing_async = true;
-                    return $timeout(function() {
                         $scope.tree.data = treeData;
-                        $scope.doing_async = false;
-                        return tree.expand_all();
-                    }, 1000);
-                };
-                $scope.try_adding_a_branch = function() {
-                    var b;
-                    b = tree.get_selected_branch();
-                    return tree.add_branch(b, {
-                        label: 'Vegetable',
-                        data: {
-                            definition: 'A plant',
-                            data_can_contain_anything: true
-                        },
-                        children: [{
-                            label: 'Oranges'
-                        }, {
-                            label: 'Apples',
-                            children: [{
-                                label: 'Granny Smith'
-                            }, {
-                                label: 'Red Delicous'
-                            }, {
-                                label: 'Fuji'
-                            }]
-                        }]
-                    });
-                };
+
+                        $scope.tree.inst = tree = {};
+
+                        // Load data for the categories
+                        StudioServices.Asset.list().then( function(data) {
+                            data.forEach( function(item) {
+                                if (item.folder) {
+                                    item.children = ['... loading'];
+                                }
+                            });
+                            $timeout( function() {
+                                $scope.$apply( function() {
+                                    assetsData.children = data;
+                                });
+                            });
+                        });
+
+                        StudioServices.Descriptor.list().then( function(data) {
+                            data.forEach( function(item) {
+                                if (item.folder) {
+                                    item.children = ['... loading'];
+                                }
+                            });
+                            $timeout( function() {
+                                $scope.$apply( function() {
+                                    descriptorsData.children = data;
+                                });
+                            });
+                        });
+
+                        StudioServices.Template.list().then( function(data) {
+                            data.forEach( function(item) {
+                                if (item.folder) {
+                                    item.children = ['... loading'];
+                                }
+                            });
+                            $timeout( function() {
+                                $scope.$apply( function() {
+                                    templatesData.children = data;
+                                });
+                            });
+                        });
+
+                        $scope.try_adding_a_branch = function() {
+                            var b;
+                            b = tree.get_selected_branch();
+                            return tree.add_branch(b, {
+                                label: 'Vegetable',
+                                data: {
+                                    definition: 'A plant',
+                                    data_can_contain_anything: true
+                                },
+                                children: [{
+                                    label: 'Oranges'
+                                }, {
+                                    label: 'Apples',
+                                    children: [{
+                                        label: 'Granny Smith'
+                                    }, {
+                                        label: 'Red Delicous'
+                                    }, {
+                                        label: 'Fuji'
+                                    }]
+                                }]
+                            });
+                        };
+                    }]
+                }
             });
 
     }]);
