@@ -5,11 +5,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
     'use strict';
 
     var init_module = 'crafter.studio-ui',
-        services = new studioServices({
-            server: {
-                port: 9000
-            }
-        }),
+        services = new studioServices({ site: 'coconut' }),
         GLOBALS, CONFIG;
 
     angular.module(init_module, [
