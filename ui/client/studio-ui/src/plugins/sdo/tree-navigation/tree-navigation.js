@@ -9,12 +9,12 @@ define(['require', 'globals'], function(require, globals){
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addDirective('sdoTree', function($timeout, $log){
+            .addDirective('sdoTreeNavigation', function($timeout, $log){
                 return {
                     restrict: 'E',
                     scope: {},
                     replace: true,
-                    template: '<div><abn-tree tree-data="tree.data" tree-control="tree.inst" on-select="my_tree_handler(branch)" expand-level="0" ></abn-tree></div>',
+                    templateUrl: require.toUrl('./templates/tree-navigation.tpl.html'),
                     controller: ['$scope',
                                  '$element',
                                  '$attrs',
@@ -124,5 +124,7 @@ define(['require', 'globals'], function(require, globals){
             });
 
     }]);
+
+    return '<sdo-tree-navigation></sdo-tree-navigation>';
 
 });

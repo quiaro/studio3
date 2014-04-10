@@ -55,6 +55,9 @@ module.exports = {
         }, {
             arguments: { module: "crafter.studio-ui.plugins.sdo.activity-table.recent"},
             path: '/config/list/recent/descriptor'
+        }, {
+            arguments: { module: "crafter.studio-ui.plugins.tree-navigation"},
+            path: '/config/list/tree-navigation/descriptor'
         }]
     }, {
         method: 'get',

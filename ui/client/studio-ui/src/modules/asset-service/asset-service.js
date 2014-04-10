@@ -3,7 +3,6 @@
 define(['require',
         'globals',
         'ace/ace',
-        './tree-navigation.js',
         'css!./asset-service'], function( require, globals, ace ) {
 
     'use strict';
