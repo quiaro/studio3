@@ -3,6 +3,7 @@
 define(['require',
         'globals',
         'ace/ace',
+        'directives',
         'css!./asset-service'], function( require, globals, ace ) {
 
     'use strict';

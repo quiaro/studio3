@@ -1,10 +1,11 @@
 /* global define */
 
-define(['require', 'globals'], function(require, globals){
+define(['require', 'globals', 'module'], function(require, globals, module){
 
     'use strict';
 
-    var injector = angular.element(globals.dom_root).injector();
+    var config = module.config().config,
+        injector = angular.element(globals.dom_root).injector();
 
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
@@ -23,77 +24,62 @@ define(['require', 'globals'], function(require, globals){
                                  'StudioServices',
                                     function ($scope, $el, $attrs, $transclude, $timeout, StudioServices) {
 
-                        var tree, treeData, assetsData, descriptorsData, templatesData;
+                        var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...',
+
+                            // TO-DO: Instantiate global providers from app configuration
+                            // and save references to these providers in the 'globals' variable
+                            contentProviders = {};
+
+                        contentProviders['StudioServices'] = StudioServices;
+
+                        console.log("Tree config: ", config);
 
                         $scope.my_tree_handler = function(branch) {
                             // console.log("You selected: " + branch.label);
                             // console.log("Created By: " + branch.createdBy);
                         };
 
-                        treeData = [];
-
-                        // Tree data sections
-                        assetsData = {
-                            label: 'Assets',
-                            children: ['... loading']
-                        };
-                        descriptorsData = {
-                            label: 'Descriptors',
-                            children: ['... loading']
-                        };
-                        templatesData = {
-                            label: 'Templates',
-                            children: ['... loading']
+                        $scope.tree = {
+                            data: [],
+                            control: {}
                         };
 
-                        treeData.push(assetsData);
-                        treeData.push(descriptorsData);
-                        treeData.push(templatesData);
+                        tree = $scope.tree.control;
 
-                        $scope.tree = {};
+                        config.sections.forEach( function(section) {
 
-                        $scope.tree.data = treeData;
+                            var node = {
+                                label: section.label,
+                                children: [loadingStr]
+                            };
 
-                        $scope.tree.inst = tree = {};
+                            $scope.tree.data.push(node);
 
-                        // Load data for the categories
-                        StudioServices.Asset.list().then( function(data) {
-                            data.forEach( function(item) {
-                                if (item.folder) {
-                                    item.children = ['... loading'];
-                                }
-                            });
-                            $timeout( function() {
-                                $scope.$apply( function() {
-                                    assetsData.children = data;
+                            if (!section.content) {
+                                throw new Error('Content information missing for navigation section');
+                            }
+
+                            if (!contentProviders[section.content.provider]) {
+                                throw new Error('Content provider: ' + section.content.provider + ' has not been registered');
+                            }
+
+                            if (!section.content.service) {
+                                throw new Error('No content service specified');
+                            }
+
+                            contentProviders[section.content.provider].Asset.list().then( function(data) {
+                                data.forEach( function(item) {
+                                    if (item.folder) {
+                                        item.children = [loadingStr];
+                                    }
+                                });
+                                $timeout( function() {
+                                    $scope.$apply( function() {
+                                        node.children = data;
+                                    });
                                 });
                             });
-                        });
 
-                        StudioServices.Descriptor.list().then( function(data) {
-                            data.forEach( function(item) {
-                                if (item.folder) {
-                                    item.children = ['... loading'];
-                                }
-                            });
-                            $timeout( function() {
-                                $scope.$apply( function() {
-                                    descriptorsData.children = data;
-                                });
-                            });
-                        });
-
-                        StudioServices.Template.list().then( function(data) {
-                            data.forEach( function(item) {
-                                if (item.folder) {
-                                    item.children = ['... loading'];
-                                }
-                            });
-                            $timeout( function() {
-                                $scope.$apply( function() {
-                                    templatesData.children = data;
-                                });
-                            });
                         });
 
                         $scope.try_adding_a_branch = function() {

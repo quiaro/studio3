@@ -2,5 +2,15 @@
     "name": "crafter.studio-ui.plugins.tree-navigation",
     "version": "0.1.0",
     "base_url": "sdo/tree-navigation/",
-    "main": "tree-navigation.js"
+    "main": "tree-navigation.js",
+
+    "config": {
+        "sections": [{
+            "label": "Assets",
+            "content": {
+                "provider": "StudioServices",
+                "service": "Asset.list"
+            }
+        }]
+    }
 }
