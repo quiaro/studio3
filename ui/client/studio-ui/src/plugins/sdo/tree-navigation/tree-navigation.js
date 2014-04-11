@@ -10,7 +10,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addDirective('sdoTreeNavigation', function($timeout, $log){
+            .addDirective('sdoTreeNavigation', function($timeout, $log, Utils){
                 return {
                     restrict: 'E',
                     scope: {},
@@ -27,8 +27,25 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                         var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...';
 
                         $scope.my_tree_handler = function(branch) {
-                            // console.log("You selected: " + branch.label);
-                            // console.log("Created By: " + branch.createdBy);
+                            console.log("You selected: " + branch.label);
+
+                            console.log("Branch service: ", branch.service);
+
+                            if (branch.service && branch.children[0].label === loadingStr) {
+                                branch.service.method.apply(branch.service.context, []).then( function(data) {
+                                    data.forEach( function(item) {
+                                        if (item.folder) {
+                                            item.children = [loadingStr];
+                                            item.service = branch.service;
+                                        }
+                                    });
+                                    $timeout( function() {
+                                        $scope.$apply( function() {
+                                            branch.children = data;
+                                        });
+                                    });
+                                });
+                            }
                         };
 
                         $scope.tree = {
@@ -41,28 +58,44 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                         config.sections.forEach( function(section) {
 
                             var node = {
-                                label: section.label,
-                                children: [loadingStr]
-                            };
+                                    label: section.label,
+                                    children: [loadingStr]
+                                },
+                                serviceProvider,
+                                serviceStr,
+                                serviceContext,
+                                serviceMethod;
 
                             $scope.tree.data.push(node);
 
-                            if (!section.content) {
+                            if (section.content) {
+                                serviceProvider = section.content.serviceProvider,
+                                serviceStr = section.content.service;
+                            } else {
                                 throw new Error('Content information missing for navigation section');
                             }
 
-                            if (!ServiceProviders[section.content.serviceProvider]) {
-                                throw new Error('Content provider: ' + section.content.serviceProvider + ' has not been registered');
+                            if (ServiceProviders[serviceProvider]) {
+                                serviceProvider = ServiceProviders[serviceProvider];
+                            } else {
+                                throw new Error('Service provider \'' + serviceProvider + '\' not found');
                             }
 
-                            if (!section.content.service) {
+                            if (!serviceStr) {
                                 throw new Error('No content service specified');
                             }
 
-                            ServiceProviders[section.content.serviceProvider].Asset.list().then( function(data) {
+                            serviceContext = Utils.getContext(serviceProvider, serviceStr);
+                            serviceMethod = Utils.getMethod(serviceProvider, serviceStr);
+
+                            serviceMethod.apply(serviceContext, []).then( function(data) {
                                 data.forEach( function(item) {
                                     if (item.folder) {
                                         item.children = [loadingStr];
+                                        item.service = {
+                                            context: serviceContext,
+                                            method: serviceMethod
+                                        };
                                     }
                                 });
                                 $timeout( function() {

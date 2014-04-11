@@ -35,6 +35,29 @@ angular.module('crafter.studio-ui.Utils', [])
             };
 
             /*
+             * @param rootObj: an object
+             * @param dotNotationStr: A string in dot notation to a function from the previous object.
+             *             For example: "level1.level2.service"
+             * @return function context reference: reference to the function context
+             *             For example: "level1.level2.service" will return a reference to "level2"
+             */
+            this.getContext = function getContext(rootObj, dotNotationStr) {
+                var fragments = dotNotationStr.split(".");
+                return fragments.splice(0, fragments.length-1).reduce(function(o, p) { return o[p] }, rootObj);
+            };
+
+            /*
+             * @param rootObj: an object
+             * @param dotNotationStr: A string in dot notation to a function from the previous object.
+             *             For example: "level1.level2.service"
+             * @return function reference: reference to the object's function
+             *             For example: "level1.level2.method" will return a reference to "method"
+             */
+            this.getMethod = function getMethod(rootObj, dotNotationStr) {
+                return dotNotationStr.split(".").reduce(function(o, p) { return o[p] }, rootObj);
+            };
+
+            /*
              * @param url: base url value
              * @param path: path or url value
              * @return url value: the value returned will be that of path if it includes a protocol;
