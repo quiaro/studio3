@@ -21,18 +21,10 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                  '$attrs',
                                  '$transclude',
                                  '$timeout',
-                                 'StudioServices',
-                                    function ($scope, $el, $attrs, $transclude, $timeout, StudioServices) {
+                                 'ServiceProviders',
+                                    function ($scope, $el, $attrs, $transclude, $timeout, ServiceProviders) {
 
-                        var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...',
-
-                            // TO-DO: Instantiate global providers from app configuration
-                            // and save references to these providers in the 'globals' variable
-                            contentProviders = {};
-
-                        contentProviders['StudioServices'] = StudioServices;
-
-                        console.log("Tree config: ", config);
+                        var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...';
 
                         $scope.my_tree_handler = function(branch) {
                             // console.log("You selected: " + branch.label);
@@ -59,15 +51,15 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                 throw new Error('Content information missing for navigation section');
                             }
 
-                            if (!contentProviders[section.content.provider]) {
-                                throw new Error('Content provider: ' + section.content.provider + ' has not been registered');
+                            if (!ServiceProviders[section.content.serviceProvider]) {
+                                throw new Error('Content provider: ' + section.content.serviceProvider + ' has not been registered');
                             }
 
                             if (!section.content.service) {
                                 throw new Error('No content service specified');
                             }
 
-                            contentProviders[section.content.provider].Asset.list().then( function(data) {
+                            ServiceProviders[section.content.serviceProvider].Asset.list().then( function(data) {
                                 data.forEach( function(item) {
                                     if (item.folder) {
                                         item.children = [loadingStr];

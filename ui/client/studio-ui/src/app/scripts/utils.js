@@ -5,8 +5,9 @@ angular.module('crafter.studio-ui.Utils', [])
     /*
      * Miscellaneous functions used all over
      */
-    .service('Utils', ['$log', '$q', '$timeout', '$rootScope', 'StudioServices',
-        function($log, $q, $timeout, $rootScope, StudioServices) {
+    .service('Utils',
+        ['$log', '$q', '$timeout', '$rootScope', 'ServiceProviders', 'DefaultServiceProvider',
+        function($log, $q, $timeout, $rootScope, ServiceProviders, DefaultServiceProvider) {
 
             // Takes a string of the form: "the {tree} is behind the {building}" and uses a
             // replace object { 'tree': 'cedar', 'building': 'National Museum'} to replace the
@@ -71,7 +72,7 @@ angular.module('crafter.studio-ui.Utils', [])
                         var dfd = $q.defer();
                         promiseList.push(dfd.promise);
 
-                        StudioServices.Config.getDescriptor(moduleName)
+                        ServiceProviders[DefaultServiceProvider].Config.getDescriptor(moduleName)
                             .then( function(descriptor) {
 
                                 var file = me.getUrl(base_url, descriptor.base_url) + descriptor.main,

@@ -8,8 +8,14 @@
         "sections": [{
             "label": "Assets",
             "content": {
-                "provider": "StudioServices",
+                "serviceProvider": "LocalStudioServices",
                 "service": "Asset.list"
+            }
+        }, {
+            "label": "Descriptors",
+            "content": {
+                "serviceProvider": "LocalStudioServices",
+                "service": "Template.list"
             }
         }]
     }

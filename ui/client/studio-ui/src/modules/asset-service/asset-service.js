@@ -3,17 +3,23 @@
 define(['require',
         'globals',
         'ace/ace',
+        'module',
         'directives',
-        'css!./asset-service'], function( require, globals, ace ) {
+        'css!./asset-service'], function( require, globals, ace, module ) {
 
     'use strict';
 
-    var injector = angular.element(globals.dom_root).injector();
+    var config = module.config().config,
+        injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', 'StudioServices', '$state', '$log',
-        function(NgRegistry, StudioServices, $state, $log) {
+    injector.invoke(['NgRegistry', 'ServiceProviders', 'DefaultServiceProvider', '$state', '$log',
+        function(NgRegistry, ServiceProviders, DefaultServiceProvider, $state, $log) {
 
-        console.log('StudioServices: ', StudioServices);
+        var serviceProvider = (config && config.serviceProvider) ?
+                                ServiceProviders[config.serviceProvider] :
+                                ServiceProviders[DefaultServiceProvider];
+
+        console.log('Service Provider: ', serviceProvider);
 
         NgRegistry
             .addState('test', {
@@ -171,7 +177,7 @@ define(['require',
 
                         if (content) {
                             if (codeFlags.xml) {
-                                StudioServices.Descriptor.create({
+                                serviceProvider.Descriptor.create({
                                     content_type_id: 'sampleId',
                                     parent_id: '/test/path',
                                     file_name: fileName,
@@ -180,7 +186,7 @@ define(['require',
                                     addToList('descList', descriptor);
                                 });
                             } else {
-                                StudioServices.Template.create({
+                                serviceProvider.Template.create({
                                     parent_id: '/test/path',
                                     file_name: fileName,
                                     content: content
@@ -203,7 +209,7 @@ define(['require',
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
 
-                            StudioServices.Asset.create({
+                            serviceProvider.Asset.create({
                                     parent_id: asset.path,
                                     file_name: asset.name,
                                     file: $file,
@@ -222,7 +228,7 @@ define(['require',
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
 
-                            StudioServices.Descriptor.create({
+                            serviceProvider.Descriptor.create({
                                     content_type_id: descriptor.content_type_id,
                                     parent_id: descriptor.path,
                                     file_name: descriptor.name,
@@ -241,7 +247,7 @@ define(['require',
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
 
-                            StudioServices.Template.create({
+                            serviceProvider.Template.create({
                                     parent_id: template.path,
                                     file_name: template.name,
                                     file: $file
@@ -261,17 +267,17 @@ define(['require',
 
                         switch(type) {
                             case 'descriptor':
-                                promise = StudioServices.Descriptor.readText(itemId);
+                                promise = serviceProvider.Descriptor.readText(itemId);
                                 option = 'xml';
                                 editor.getSession().setMode('ace/mode/xml');
                                 break;
                             case 'template':
-                                promise = StudioServices.Template.readText(itemId);
+                                promise = serviceProvider.Template.readText(itemId);
                                 option = 'ftl';
                                 editor.getSession().setMode('ace/mode/ftl');
                                 break;
                             case 'asset':
-                                promise = StudioServices.Asset.getContent(itemId);
+                                promise = serviceProvider.Asset.getContent(itemId);
                                 option = 'asset';
                                 editor.getSession().setMode('ace/mode/text');
                                 break;

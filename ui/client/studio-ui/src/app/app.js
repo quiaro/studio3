@@ -5,7 +5,8 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
     'use strict';
 
     var init_module = 'crafter.studio-ui',
-        services = new studioServices({ site: 'coconut' }),
+        bootstrapService = new studioServices(),
+        serviceProviders = {},
         GLOBALS, CONFIG;
 
     angular.module(init_module, [
@@ -37,7 +38,9 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             // Expose configuration to angular app
             $provide.value( 'CONFIG', CONFIG );
             $provide.value( 'GLOBALS', GLOBALS );
-            $provide.value( 'StudioServices', services);
+            $provide.value( 'DefaultServiceProvider', GLOBALS.default_service_provider );
+            $provide.value( 'ServiceProviders', serviceProviders );
+            $provide.value( GLOBALS.default_service_provider, serviceProviders[GLOBALS.default_service_provider] );
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
@@ -164,16 +167,35 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
         }]);
         /*jshint +W072 */
 
-    services.Config.getDescriptor(init_module).then( function(descriptor) {
+    // Set up app
+    bootstrapService.Config.getDescriptor(init_module).then( function(descriptor) {
+
+        function initServiceProviders(spConfig) {
+
+            var spList = {};
+            spList[GLOBALS.default_service_provider] = bootstrapService;
+
+            spConfig.forEach( function(sp) {
+                if (!sp.name) {
+                    throw new Error('Service provider must have a name');
+                } else {
+                    requirejs([sp.main], function(spContructor){
+                        spList[sp.name] = new spContructor(sp.config);
+                    });
+                }
+            });
+
+            return spList;
+        }
 
         CONFIG = descriptor;
         GLOBALS = CONFIG.module_globals;
 
         if ('templates_url' in GLOBALS) {
-            GLOBALS.templates_url = services.Utils.mergePath(CONFIG.base_url, GLOBALS.templates_url);
+            GLOBALS.templates_url = bootstrapService.Utils.mergePath(CONFIG.base_url, GLOBALS.templates_url);
         }
         if ('plugins_url' in GLOBALS) {
-            GLOBALS.plugins_url = services.Utils.mergePath(CONFIG.base_url, GLOBALS.plugins_url);
+            GLOBALS.plugins_url = bootstrapService.Utils.mergePath(CONFIG.base_url, GLOBALS.plugins_url);
         }
 
         // Set app configuration
@@ -187,6 +209,9 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
                 'globals': GLOBALS
             }
         });
+
+        // Initialize service providers and save references to them
+        serviceProviders = initServiceProviders(CONFIG.serviceProviders);
 
         // Manual bootstrap
         angular.bootstrap(angular.element(GLOBALS.dom_root), [init_module]);

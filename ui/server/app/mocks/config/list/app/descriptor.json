@@ -22,6 +22,7 @@
         "dom_root": "#studio-ui",
         "default_state": "test",
         "default_url": "/test-service",
+        "default_service_provider": "StudioServices",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
         "templates_url": "modules/common/templates",
@@ -30,5 +31,26 @@
 
     "modules": [
         "crafter.studio-ui.section.test-service"
-    ]
+    ],
+
+    "serviceProviders": [{
+        "name": "LocalStudioServices",
+        "main": "studioServices/studioServices",
+        "config": {
+            "server": {
+                "port": 9000
+            },
+            "site": "mango"
+        }
+    }, {
+        "name": "RemoteStudioServices",
+        "main": "studioServices/studioServices",
+        "config": {
+            "server": {
+                "domain": "studio3.craftercms.org",
+                "port": ""
+            },
+            "site": "coconut"
+        }
+    }]
 }

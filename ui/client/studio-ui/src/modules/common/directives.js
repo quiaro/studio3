@@ -6,7 +6,7 @@ define(['globals'], function( globals ) {
 
     var injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', 'StudioServices', '$log',
+    injector.invoke(['NgRegistry', globals.default_service_provider, '$log',
         function(NgRegistry, StudioServices, $log) {
 
         NgRegistry
