@@ -8,10 +8,10 @@ define(function(require){
     var requestAgent = require('request_agent'),
         validation = require('../validation');
 
-    var module = function (utils) {
+    var module = function (utils, overrideObj) {
         this.name = 'Config';
         this.utils = utils;
-        this.baseUrl = utils.getBaseUrl() + '/config';
+        this.baseUrl = utils.getBaseUrl(overrideObj) + '/config';
 
         if (DEBUG) {
             this.utils.logService({

@@ -14,10 +14,10 @@ define(function (require) {
     return function(customConfig) {
 
         var utils = new Utils(customConfig),
-            asset = new Asset(utils),
-            config = new Config(utils),
-            descriptor = new Descriptor(utils),
-            template = new Template(utils);
+            asset = new Asset(utils, customConfig.Asset),
+            config = new Config(utils, customConfig.Config),
+            descriptor = new Descriptor(utils, customConfig.Descriptor),
+            template = new Template(utils, customConfig.Template);
 
         return Object.freeze({
             Asset: asset,

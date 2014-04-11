@@ -9,9 +9,9 @@ define(function(require) {
         validation = require('../validation'),
         Item = require('./item');
 
-    var Asset = function (utils) {
+    var Asset = function (utils, overrideObj) {
         // Call the parent constructor
-        Item.apply(this, ['Asset', utils, '/content/asset']);
+        Item.apply(this, ['Asset', utils, overrideObj, '/content/asset']);
     };
 
     Asset.prototype = Object.create(Item.prototype);

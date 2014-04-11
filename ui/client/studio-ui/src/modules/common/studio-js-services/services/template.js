@@ -7,9 +7,9 @@ define(function(require) {
     // module dependencies
     var Item = require('./item');
 
-    var Template = function (utils) {
+    var Template = function (utils, overrideObj) {
         // Call the parent constructor
-        Item.apply(this, ['Template', utils, '/template']);
+        Item.apply(this, ['Template', utils, overrideObj, '/template']);
     };
 
     Template.prototype = Object.create(Item.prototype);

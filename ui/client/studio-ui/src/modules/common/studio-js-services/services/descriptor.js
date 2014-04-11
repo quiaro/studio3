@@ -7,9 +7,9 @@ define(function(require) {
     // module dependencies
     var Item = require('./item');
 
-    var Descriptor = function (utils) {
+    var Descriptor = function (utils, overrideObj) {
         // Call the parent constructor
-        Item.apply(this, ['Descriptor', utils, '/descriptor']);
+        Item.apply(this, ['Descriptor', utils, overrideObj, '/descriptor']);
     };
 
     Descriptor.prototype = Object.create(Item.prototype);
