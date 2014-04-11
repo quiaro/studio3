@@ -8,7 +8,7 @@ define(function(require) {
     var requestAgent = require('request_agent'),
         CFG = require('./config');
 
-    var module = function (customConfig) {
+    var Utils = function (customConfig) {
         this.config = requestAgent.extend(true, {}, CFG, customConfig);
 
         if (DEBUG) {
@@ -25,7 +25,7 @@ define(function(require) {
     // TO-DO: Check cyclomatic complexity of this function so the js hint comment
     //        can be removed
     /*jshint -W074 */
-    module.prototype.getBaseUrl = function getBaseUrl(overrideObj) {
+    Utils.prototype.getBaseUrl = function getBaseUrl(overrideObj) {
 
         var path = [],
             override = overrideObj || {},
@@ -63,7 +63,7 @@ define(function(require) {
     };
     /*jshint +W074 */
 
-    module.prototype.getSite = function getSite() {
+    Utils.prototype.getSite = function getSite() {
         return this.config.site;
     };
 
@@ -74,7 +74,7 @@ define(function(require) {
      *                    otherwise, the value of path will be appended to that of url
      *                    (a forward slash will be added between them, if necessary)
      */
-    module.prototype.mergePath = function mergePath(url, path) {
+    Utils.prototype.mergePath = function mergePath(url, path) {
         return (path.indexOf('://') !== -1) ?
                     path :
                     (path.indexOf('/') === 0) ?
@@ -82,7 +82,7 @@ define(function(require) {
                         url + '/' + path;
     };
 
-    module.prototype.setSite = function setSite(siteName) {
+    Utils.prototype.setSite = function setSite(siteName) {
         if (typeof siteName === 'string' && !!siteName) {
             this.config.site = siteName;
             return this.config.site;
@@ -92,14 +92,14 @@ define(function(require) {
     };
 
     if (DEBUG) {
-        module.prototype.logService = function logService(service) {
+        Utils.prototype.logService = function logService(service) {
             console.log(service.name + ' | base URL: ', service.url);
         };
 
         /*
          * @param method : an object with the method properties (: name, arguments, url, promise)
          */
-        module.prototype.logMethod = function logMethod(method) {
+        Utils.prototype.logMethod = function logMethod(method) {
 
             if (method.promise) {
                 method.promise.done(function(result) {
@@ -120,7 +120,7 @@ define(function(require) {
         };
     }
 
-    return module;
+    return Utils;
 
 });
 

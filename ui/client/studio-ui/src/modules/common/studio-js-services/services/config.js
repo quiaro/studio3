@@ -8,7 +8,7 @@ define(function(require){
     var requestAgent = require('request_agent'),
         validation = require('../validation');
 
-    var module = function (utils, overrideObj) {
+    var Config = function (utils, overrideObj) {
         this.name = 'Config';
         this.utils = utils;
         this.baseUrl = utils.getBaseUrl(overrideObj) + '/config';
@@ -21,7 +21,7 @@ define(function(require){
         }
     };
 
-    module.prototype.getDescriptor = function getDescriptor (moduleName) {
+    Config.prototype.getDescriptor = function getDescriptor (moduleName) {
         var serviceUrl, promise;
 
         validation.validateParams([{
@@ -46,7 +46,7 @@ define(function(require){
         return promise;
     };
 
-    module.prototype.getPlugins = function getPlugins (containerName) {
+    Config.prototype.getPlugins = function getPlugins (containerName) {
         var serviceUrl, promise;
 
         validation.validateParams([{
@@ -71,6 +71,6 @@ define(function(require){
         return promise;
     };
 
-    return module;
+    return Config;
 
 });
