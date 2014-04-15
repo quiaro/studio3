@@ -1,13 +1,13 @@
 [
     {
         "id": {
-            "itemId": "61e84e02-2d89-4da3-b0e0-f8cafd693fa8"
+            "itemId": "c2fb0f22-d7d5-4a8e-a099-1962282373f1"
         },
         "objectVersionNumber": 5,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "labore",
-        "fileName": "est.ftl",
+        "label": "Sample Tmpl",
+        "fileName": "sample-tmpl.ftl",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Corina Hoover",
         "creationDate": "2014-02-10T14:37:13 +06:00",
@@ -31,13 +31,13 @@
     },
     {
         "id": {
-            "itemId": "515ad252-7e8d-433f-88ff-998fc33143cc"
+            "itemId": ""
         },
         "objectVersionNumber": 0,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
         "label": "nostrud",
-        "fileName": "ad.ftl",
+        "fileName": "",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Kari Hurst",
         "creationDate": "2014-02-19T16:24:38 +06:00",
@@ -57,17 +57,17 @@
         "scheduledDate": null,
         "packages": null,
         "properties": null,
-        "folder": false
+        "folder": true
     },
     {
         "id": {
-            "itemId": "8e9cdf34-ce24-4a65-a08b-33ee7f812465"
+            "itemId": ""
         },
         "objectVersionNumber": 6,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
         "label": "exercitation",
-        "fileName": "consectetur.ftl",
+        "fileName": "",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Autumn Pratt",
         "creationDate": "2014-01-05T23:58:41 +06:00",
@@ -91,13 +91,13 @@
     },
     {
         "id": {
-            "itemId": "722d6eaa-2208-401b-99a4-b85c67064ad3"
+            "itemId": "7e035a2e-1a50-4037-805f-4a647b80cf8f"
         },
         "objectVersionNumber": 10,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "laboris",
-        "fileName": "minim.ftl",
+        "label": "Service",
+        "fileName": "service.ftl",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Odessa Lynn",
         "creationDate": "2014-03-14T13:39:13 +06:00",
@@ -121,13 +121,13 @@
     },
     {
         "id": {
-            "itemId": "c99ab331-6b3c-4218-bb4d-c1a3d538739e"
+            "itemId": ""
         },
         "objectVersionNumber": 1,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
         "label": "fugiat",
-        "fileName": "duis.ftl",
+        "fileName": "",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Carlene Crawford",
         "creationDate": "2014-04-01T15:11:03 +06:00",
@@ -151,13 +151,13 @@
     },
     {
         "id": {
-            "itemId": "73655f81-dd42-4c49-b650-3f6caafd27f4"
+            "itemId": ""
         },
         "objectVersionNumber": 4,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
         "label": "officia",
-        "fileName": "irure.ftl",
+        "fileName": "",
         "path": "/some/fake/path/somefilename.ftl",
         "createdBy": "Buckner Dean",
         "creationDate": "2014-01-11T22:59:15 +06:00",
@@ -177,36 +177,6 @@
         "scheduledDate": null,
         "packages": null,
         "properties": null,
-        "folder": false
-    },
-    {
-        "id": {
-            "itemId": "67c06110-3e08-4072-8c8c-9f6007aa8a17"
-        },
-        "objectVersionNumber": 9,
-        "ancestors": null,
-        "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "exercitation",
-        "fileName": "est.ftl",
-        "path": "/some/fake/path/somefilename.ftl",
-        "createdBy": "Reilly Perez",
-        "creationDate": "2014-02-28T15:58:13 +06:00",
-        "modifiedBy": "Garcia Byers",
-        "lastModifiedDate": "2014-01-16T18:36:54 +06:00",
-        "type": null,
-        "state": null,
-        "workflow": null,
-        "mimeType": "application/octet-stream",
-        "placeInNav": true,
-        "disabled": true,
-        "lockOwner": null,
-        "previewUrl": null,
-        "securityInherited": false,
-        "contentType": null,
-        "renderingTemplates": null,
-        "scheduledDate": null,
-        "packages": null,
-        "properties": null,
-        "folder": false
+        "folder": true
     }
 ]
