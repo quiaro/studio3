@@ -32,7 +32,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                             console.log("Branch service: ", branch.service);
 
                             if (branch.service && branch.children[0].label === loadingStr) {
-                                branch.service.method.apply(branch.service.context, []).then( function(data) {
+                                branch.service.method.apply(branch.service.context, [branch.id.itemId]).then( function(data) {
                                     data.forEach( function(item) {
                                         if (item.folder) {
                                             item.children = [loadingStr];

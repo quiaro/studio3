@@ -403,6 +403,12 @@ define(function(require) {
         }]);
 
         serviceUrl = this.baseUrl + '/list/' + siteName;
+
+        // Add item_id param if it's available
+        if (itemId) {
+            serviceUrl += '?item_id=' + itemId;
+        }
+
         promise = requestAgent.get(serviceUrl);
 
         if (DEBUG) {

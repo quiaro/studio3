@@ -15,6 +15,12 @@
             "label": "Descriptors",
             "content": {
                 "serviceProvider": "LocalStudioServices",
+                "service": "Descriptor.list"
+            }
+        }, {
+            "label": "Templates",
+            "content": {
+                "serviceProvider": "LocalStudioServices",
                 "service": "Template.list"
             }
         }]

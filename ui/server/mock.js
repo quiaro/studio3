@@ -19,6 +19,21 @@ module.exports = {
         mock: [{
             arguments: {},
             path: '/repo/list/assets'
+        }, {
+            arguments: {
+                item_id: "folder-f8ab"
+            },
+            path: '/repo/list/assets/f8ab'
+        }, {
+            arguments: {
+                item_id: "folder-f5c8"
+            },
+            path: '/repo/list/assets/f5c8'
+        }, {
+            arguments: {
+                item_id: "folder-4d29"
+            },
+            path: '/repo/list/assets/4d29'
         }]
     }, {
         method: 'get',

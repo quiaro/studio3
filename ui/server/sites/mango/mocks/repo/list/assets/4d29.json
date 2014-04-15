@@ -1,13 +1,13 @@
 [
     {
         "id": {
-            "itemId": "7e4919d0-34bc-49d5-8369-53ff79f763b5"
+            "itemId": "asdf"
         },
         "objectVersionNumber": 9,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "chp2.txt",
-        "fileName": "chp2.txt",
+        "label": "Sample 30",
+        "fileName": "sample30.txt",
         "path": "/some/fake/path/somefilename.txt",
         "createdBy": "Frederick Potter",
         "creationDate": "2014-02-09T22:06:26 +06:00",
@@ -31,43 +31,13 @@
     },
     {
         "id": {
-            "itemId": "folder-f8ab"
-        },
-        "objectVersionNumber": 2,
-        "ancestors": null,
-        "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "Folder 1",
-        "fileName": "",
-        "path": "/some/fake/path/somefilename.txt",
-        "createdBy": "Guthrie Richardson",
-        "creationDate": "2014-01-07T23:28:46 +06:00",
-        "modifiedBy": "Katelyn Hinton",
-        "lastModifiedDate": "2014-02-18T03:14:16 +06:00",
-        "type": null,
-        "state": null,
-        "workflow": null,
-        "mimeType": "plain/txt",
-        "placeInNav": false,
-        "disabled": false,
-        "lockOwner": null,
-        "previewUrl": null,
-        "securityInherited": false,
-        "contentType": null,
-        "renderingTemplates": null,
-        "scheduledDate": null,
-        "packages": null,
-        "properties": null,
-        "folder": true
-    },
-    {
-        "id": {
-            "itemId": "4da8fa24-f5be-4f10-be87-471ae6aac768"
+            "itemId": "qwer"
         },
         "objectVersionNumber": 6,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "myimg.png",
-        "fileName": "myimg.png",
+        "label": "Sample 31",
+        "fileName": "sample31.txt",
         "path": "/some/fake/path/somefilename.txt",
         "createdBy": "Rene Velazquez",
         "creationDate": "2014-02-26T11:09:47 +06:00",
@@ -91,43 +61,13 @@
     },
     {
         "id": {
-            "itemId": "folder-f5c8"
-        },
-        "objectVersionNumber": 8,
-        "ancestors": null,
-        "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "Folder 2",
-        "fileName": "",
-        "path": "/some/fake/path/somefilename.txt",
-        "createdBy": "Natalie Harding",
-        "creationDate": "2014-01-24T12:41:50 +06:00",
-        "modifiedBy": "Ray Houston",
-        "lastModifiedDate": "2014-01-03T15:58:16 +06:00",
-        "type": null,
-        "state": null,
-        "workflow": null,
-        "mimeType": "plain/txt",
-        "placeInNav": true,
-        "disabled": true,
-        "lockOwner": null,
-        "previewUrl": null,
-        "securityInherited": false,
-        "contentType": null,
-        "renderingTemplates": null,
-        "scheduledDate": null,
-        "packages": null,
-        "properties": null,
-        "folder": true
-    },
-    {
-        "id": {
-            "itemId": "folder-4d29"
+            "itemId": "zxcv"
         },
         "objectVersionNumber": 10,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "Folder 3",
-        "fileName": "",
+        "label": "Sample 32",
+        "fileName": "sample32.txt",
         "path": "/some/fake/path/somefilename.txt",
         "createdBy": "Kathrine Estes",
         "creationDate": "2014-01-10T16:22:26 +06:00",
@@ -147,17 +87,17 @@
         "scheduledDate": null,
         "packages": null,
         "properties": null,
-        "folder": true
+        "folder": false
     },
     {
         "id": {
-            "itemId": "916ee2f3-b3c3-43eb-b178-68fbcd802fab"
+            "itemId": "fghj"
         },
         "objectVersionNumber": 1,
         "ancestors": null,
         "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "chp1.txt",
-        "fileName": "chp1.txt",
+        "label": "Sample 33",
+        "fileName": "sample33.txt",
         "path": "/some/fake/path/somefilename.txt",
         "createdBy": "Lottie Stevens",
         "creationDate": "2014-01-13T00:03:40 +06:00",
@@ -178,35 +118,5 @@
         "packages": null,
         "properties": null,
         "folder": false
-    },
-    {
-        "id": {
-            "itemId": ""
-        },
-        "objectVersionNumber": 2,
-        "ancestors": null,
-        "repoId": "4da8fa24-f5be-4f10-be87-471ae6aac768",
-        "label": "Etcetera",
-        "fileName": "",
-        "path": "/some/fake/path/somefilename.txt",
-        "createdBy": "Guthrie Richardson",
-        "creationDate": "2014-01-07T23:28:46 +06:00",
-        "modifiedBy": "Katelyn Hinton",
-        "lastModifiedDate": "2014-02-18T03:14:16 +06:00",
-        "type": null,
-        "state": null,
-        "workflow": null,
-        "mimeType": "plain/txt",
-        "placeInNav": false,
-        "disabled": false,
-        "lockOwner": null,
-        "previewUrl": null,
-        "securityInherited": false,
-        "contentType": null,
-        "renderingTemplates": null,
-        "scheduledDate": null,
-        "packages": null,
-        "properties": null,
-        "folder": true
     }
 ]
