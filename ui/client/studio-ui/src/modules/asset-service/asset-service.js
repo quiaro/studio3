@@ -309,6 +309,12 @@ define(['require',
                         // $files: an array of files selected, each file has name, size, and type.
                         $scope.selectedFiles = $files;
                     };
+
+                    // Event listeners
+                    $scope.$on('$sdoTreeNavFileSelected',
+                        function(event, file) {
+                            $scope.readItem(file.type, file.id.itemId);
+                        });
             }])
 
             .addDirective('sdoFileSelect', ['$parse', '$http',
