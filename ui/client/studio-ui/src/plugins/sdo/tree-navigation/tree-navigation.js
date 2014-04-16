@@ -20,18 +20,31 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                  '$element',
                                  '$attrs',
                                  '$transclude',
+                                 '$rootScope',
                                  '$timeout',
                                  'ServiceProviders',
-                                    function ($scope, $el, $attrs, $transclude, $timeout, ServiceProviders) {
+                                    function ($scope, $el, $attrs, $transclude, $rootScope, $timeout, ServiceProviders) {
 
                         var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...';
 
-                        $scope.my_tree_handler = function(branch) {
+                        /*
+                         * @broadcast $sdoTreeNavFileSelected, fired when a file (i.e. leaf) is selected.
+                         *            Sends the selected file descriptor as its first argument
+                         *
+                         * @broadcast $sdoTreeNavFolderSelected, fired when a folder is selected.
+                         *            Sends the selected folder descriptor as its first argument
+                         */
+                        $scope.branchSelected = function(branch) {
+
                             console.log("You selected: " + branch.label);
 
-                            console.log("Branch service: ", branch.service);
+                            if (!branch.children ||
+                                (Array.isArray(branch.children) && !branch.children.length)) {
 
-                            if (branch.service && branch.children[0].label === loadingStr) {
+                                console.log('Yup, this is a LEAF!');
+                                $rootScope.$broadcast('$sdoTreeNavFileSelected', branch);
+
+                            } else if (branch.service && branch.children[0].label === loadingStr) {
                                 branch.service.method.apply(branch.service.context, [branch.id.itemId]).then( function(data) {
                                     data.forEach( function(item) {
                                         if (item.folder) {
@@ -46,6 +59,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                     });
                                 });
                             }
+                            $rootScope.$broadcast('$sdoTreeNavFolderSelected', branch);
                         };
 
                         $scope.tree = {
