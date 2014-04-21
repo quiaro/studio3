@@ -10,31 +10,28 @@ define(['require', 'globals', 'module'], function(require, globals, module){
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addDirective('sdoTreeNavigation', function($timeout, $log, Utils){
+            .addDirective('sdoTreeNavigation', function($timeout, ServiceProviders, Utils){
                 return {
                     restrict: 'E',
-                    scope: {},
+                    scope: {
+                        onSelect: '&',
+                        treeControl: '=?'
+                    },
                     replace: true,
                     templateUrl: require.toUrl('./templates/tree-navigation.tpl.html'),
-                    controller: ['$scope',
-                                 '$element',
-                                 '$attrs',
-                                 '$transclude',
-                                 '$rootScope',
-                                 '$timeout',
-                                 'ServiceProviders',
-                                    function ($scope, $el, $attrs, $transclude, $rootScope, $timeout, ServiceProviders) {
+                    controller: ['$scope', function ($scope) {
 
-                        var tree, treeData, assetsData, descriptorsData, templatesData, loadingStr = 'loading ...';
+                        // Initialize scope values needed by the abn-tree (child) directive
+                        $scope.treeData = [];
+                        $scope.treeControl = $scope.treeControl || {};
 
-                        /*
-                         * @broadcast $sdoTreeNavFileSelected, fired when a file (i.e. leaf) is selected.
-                         *            Sends the selected file descriptor as its first argument
-                         *
-                         * @broadcast $sdoTreeNavFolderSelected, fired when a folder is selected.
-                         *            Sends the selected folder descriptor as its first argument
-                         */
-                        $scope.branchSelected = function(branch) {
+                    }],
+                    link: function postLink(scope, el, attrs) {
+
+                        var tree = scope.treeControl,
+                            loadingStr = 'loading ...';
+
+                        scope.branchSelected = function(branch) {
 
                             console.log("You selected: " + branch.label);
 
@@ -42,7 +39,6 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                 (Array.isArray(branch.children) && !branch.children.length)) {
 
                                 console.log('Yup, this is a LEAF!');
-                                $rootScope.$broadcast('$sdoTreeNavFileSelected', branch);
 
                             } else if (branch.service && branch.children[0].label === loadingStr) {
                                 branch.service.method.apply(branch.service.context, [branch.id.itemId]).then( function(data) {
@@ -53,22 +49,16 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         }
                                     });
                                     $timeout( function() {
-                                        $scope.$apply( function() {
+                                        scope.$apply( function() {
                                             branch.children = data;
                                         });
                                     });
                                 });
                             }
-                            $rootScope.$broadcast('$sdoTreeNavFolderSelected', branch);
                         };
 
-                        $scope.tree = {
-                            data: [],
-                            control: {}
-                        };
-
-                        tree = $scope.tree.control;
-
+                        // Get all the first-level children for each one of
+                        // the tree nav sections
                         config.sections.forEach( function(section) {
 
                             var node = {
@@ -80,7 +70,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                 serviceContext,
                                 serviceMethod;
 
-                            $scope.tree.data.push(node);
+                            scope.treeData.push(node);
 
                             if (section.content) {
                                 serviceProvider = section.content.serviceProvider,
@@ -105,6 +95,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                             serviceMethod.apply(serviceContext, []).then( function(data) {
                                 data.forEach( function(item) {
                                     if (item.folder) {
+                                        // Extend the folder items with service & children information
                                         item.children = [loadingStr];
                                         item.service = {
                                             context: serviceContext,
@@ -113,39 +104,15 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                     }
                                 });
                                 $timeout( function() {
-                                    $scope.$apply( function() {
+                                    scope.$apply( function() {
                                         node.children = data;
                                     });
                                 });
                             });
 
                         });
-
-                        $scope.try_adding_a_branch = function() {
-                            var b;
-                            b = tree.get_selected_branch();
-                            return tree.add_branch(b, {
-                                label: 'Vegetable',
-                                data: {
-                                    definition: 'A plant',
-                                    data_can_contain_anything: true
-                                },
-                                children: [{
-                                    label: 'Oranges'
-                                }, {
-                                    label: 'Apples',
-                                    children: [{
-                                        label: 'Granny Smith'
-                                    }, {
-                                        label: 'Red Delicous'
-                                    }, {
-                                        label: 'Fuji'
-                                    }]
-                                }]
-                            });
-                        };
-                    }]
-                }
+                    }
+                };
             });
 
     }]);

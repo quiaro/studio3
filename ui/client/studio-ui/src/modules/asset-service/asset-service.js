@@ -47,6 +47,8 @@ define(['require',
                         });
                     }
 
+                    var treeNav = $scope.treeNav = {};
+
                     var editor = ace.edit('code-editor');
 
                     editor.setTheme('ace/theme/textmate');
