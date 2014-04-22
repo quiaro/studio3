@@ -97,35 +97,14 @@ define(['require',
                     };
 
                     $scope.reset = function () {
-                        $scope.flags.code = {
-                            xml: true,
-                            ftl: false
-                        };
                         editor.setValue('');
                     };
 
-                    $scope.setFlag = function (type, flag) {
-                        var flags = $scope.flags;
+                    $scope.insertCode = function (fileType) {
+                        var sampleCode;
 
-                        for (var i in flags[type]) {
-                            if (flags[type].hasOwnProperty(i)) {
-                                flags[type][i] = (i === flag) ? true : false;
-                            }
-                        }
-                    };
-
-                    $scope.insertCode = function (codeFlags) {
-                        var code, sampleCode;
-
-                        for (var i in codeFlags) {
-                            if (codeFlags[i]) {
-                                code = i;
-                                break;
-                            }
-                        }
-
-                        switch(code) {
-                            case 'xml':
+                        switch(fileType) {
+                            case 'descriptor':
                                 editor.getSession().setMode('ace/mode/xml');
                                 sampleCode = '<?xml version="1.0" encoding="UTF-8"?>\n' +
                                              '<page>\n' +
@@ -141,7 +120,7 @@ define(['require',
                                              '  <lastModifiedDate>1/3/2014 14:57:31</lastModifiedDate>\n' +
                                              '</page>\n';
                                 break;
-                            case 'ftl':
+                            case 'template':
                                 editor.getSession().setMode('ace/mode/ftl');
                                 sampleCode = '<html>\n' +
                                              '<head>\n' +
