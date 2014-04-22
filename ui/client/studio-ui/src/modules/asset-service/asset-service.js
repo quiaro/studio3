@@ -89,12 +89,16 @@ define(['require',
                         editor.setValue('');
 
                         // If the action currently selected is upload, then stay as is
-                        if ($scope.action != 'upload') {
-                            if ($scope.isFolder) {
-                                $scope.action = 'create';
-                            } else {
-                                $scope.action = 'edit';
-                                $scope.readItem(branch.contentType, branch.id.itemId);
+                        if ($scope.fileType == 'asset') {
+                            $scope.action = 'upload';
+                        } else {
+                            if ($scope.action != 'upload') {
+                                if ($scope.isFolder) {
+                                    $scope.action = 'create';
+                                } else {
+                                    $scope.action = 'edit';
+                                    $scope.readItem(branch.contentType, branch.id.itemId);
+                                }
                             }
                         }
                     };
@@ -321,22 +325,19 @@ define(['require',
                     };
 
                     $scope.readItem = function (type, itemId) {
-                        var promise, option;
+                        var promise;
 
                         switch(type) {
                             case 'descriptor':
                                 promise = serviceProvider.Descriptor.readText(itemId);
-                                option = 'xml';
                                 editor.getSession().setMode('ace/mode/xml');
                                 break;
                             case 'template':
                                 promise = serviceProvider.Template.readText(itemId);
-                                option = 'ftl';
                                 editor.getSession().setMode('ace/mode/ftl');
                                 break;
                             case 'asset':
                                 promise = serviceProvider.Asset.getContent(itemId);
-                                option = 'asset';
                                 editor.getSession().setMode('ace/mode/text');
                                 break;
                         }

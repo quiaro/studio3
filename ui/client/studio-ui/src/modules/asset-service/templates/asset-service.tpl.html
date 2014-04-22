@@ -12,7 +12,7 @@
     <div class="main-column">
         <div class="list-actions">
             <h1>Actions</h1>
-            <div class="btn-group" ng-show="nodeSelected">
+            <div class="btn-group" ng-show="nodeSelected && fileType != 'asset'">
                 <button class="btn btn-primary"
                         ng-class="{ 'active': action == 'create' }"
                         ng-click="action = 'create'"
@@ -127,15 +127,15 @@
 
         </div>
 
-        <div class="editor" ng-show="action == 'create' || action == 'edit'">
+        <div class="editor" ng-show="action != 'upload' || fileType == 'asset'">
             <form   name="addCode"
                     novalidate
                     role="form"
                     ng-submit="submitCode(action, fileType, nodeSelected)">
 
-                <pre id="code-editor" name="code-editor"></pre>
+                <pre id="code-editor" name="code-editor" ng-hide="fileType == 'asset' && isFolder"></pre>
 
-                <div class="form-group">
+                <div class="form-group" ng-hide="fileType == 'asset'">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-primary" ng-click="reset()">Reset</button>
                 </div>
