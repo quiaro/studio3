@@ -86,12 +86,15 @@ define(['require',
                         $scope.fileType = branch.contentType;
                         $scope.isFolder = branch.folder;
 
+                        editor.setValue('');
+
                         // If the action currently selected is upload, then stay as is
                         if ($scope.action != 'upload') {
                             if ($scope.isFolder) {
                                 $scope.action = 'create';
                             } else {
                                 $scope.action = 'edit';
+                                $scope.readItem(branch.contentType, branch.id.itemId);
                             }
                         }
                     };
@@ -139,94 +142,181 @@ define(['require',
                         editor.getSession().setValue(sampleCode);
                     };
 
-                    $scope.submitCode = function (codeFlags) {
+                    $scope.submitCode = function (action, fileType, nodeSelected) {
                         var content = editor.getSession().getValue(),
-                            fileName = prompt('Please type in a file name');
+                            itemId,
+                            fileName;
 
                         if (content) {
-                            if (codeFlags.xml) {
-                                serviceProvider.Descriptor.create({
-                                    content_type_id: 'sampleId',
-                                    parent_id: '/test/path',
-                                    file_name: fileName,
-                                    content: content
-                                }).then( function(descriptor) {
-                                    addToList('descList', descriptor);
-                                });
+
+                            if (action == 'create') {
+
+                                fileName = prompt('Please type in a file name');
+
+                                if (!fileName) {
+                                    alert('Please type in a file name and try again!');
+                                    return;
+                                }
+
+                                if (fileType == 'descriptor') {
+                                    serviceProvider.Descriptor.create({
+                                        content_type_id: 'sampleId',
+                                        parent_id: '/test/path',
+                                        file_name: fileName,
+                                        content: content
+                                    }).then( function(descriptor) {
+                                        console.log('New descriptor: ', descriptor);
+
+                                        // addToList('descList', descriptor);
+                                    });
+                                } else if (fileType == 'template') {
+                                    serviceProvider.Template.create({
+                                        parent_id: '/test/path',
+                                        file_name: fileName,
+                                        content: content
+                                    }).then( function(template) {
+
+                                        console.log('New template: ', template);
+                                        // addToList('tmplList', template);
+                                    });
+                                }
                             } else {
-                                serviceProvider.Template.create({
-                                    parent_id: '/test/path',
-                                    file_name: fileName,
-                                    content: content
-                                }).then( function(template) {
-                                    addToList('tmplList', template);
-                                });
+
+                                itemId = nodeSelected.id.itemId || null;
+
+                                // update existing content
+                                if (fileType == 'descriptor') {
+                                    serviceProvider.Descriptor.update({
+                                        item_id: itemId,
+                                        content: content
+                                    }).then( function(descriptor) {
+                                        console.log('Descriptor updated: ', descriptor);
+
+                                        // addToList('descList', descriptor);
+                                    });
+                                } else if (fileType == 'template') {
+                                    serviceProvider.Template.update({
+                                        item_id: itemId,
+                                        content: content
+                                    }).then( function(template) {
+
+                                        console.log('Template updated: ', template);
+                                        // addToList('tmplList', template);
+                                    });
+                                }
                             }
                         } else {
-                            if (fileName) {
-                                alert('The editor is empty. Add some code and try again!');
-                            } else {
-                                alert('Please type in a file name and try again!');
-                            }
+                            alert('The editor is empty. Add some code and try again!');
                         }
                     };
 
-                    $scope.uploadAsset = function (asset) {
-                        var $file;
+                    $scope.uploadAsset = function (isFolder, nodeSelected, asset) {
+                        var $file, itemId;
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || null;
 
-                            serviceProvider.Asset.create({
-                                    parent_id: asset.path,
+                            if (isFolder) {
+
+                                serviceProvider.Asset.create({
+                                    parent_id: itemId,
                                     file_name: asset.name,
                                     file: $file,
                                     mime_type: $file.type
                                 }).then( function( asset ){
-                                    addToList('assetList', asset);
+                                    console.log('New asset: ', asset);
+
+                                    // addToList('assetList', asset);
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
+                            } else {
+
+                                serviceProvider.Asset.update({
+                                    item_id: itemId,
+                                    file: $file
+                                }).then( function( asset ){
+                                    console.log('Asset updated: ', asset);
+
+                                    // addToList('assetList', asset);
+                                }, function() {
+                                    console.log('Unable to upload file');
+                                });
+                            }
                         }
                     };
 
-                    $scope.uploadDescriptor = function (descriptor) {
-                        var $file;
+                    $scope.uploadDescriptor = function (isFolder, nodeSelected, descriptor) {
+                        var $file, itemId;
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || null;
 
-                            serviceProvider.Descriptor.create({
+                            if (isFolder) {
+
+                                serviceProvider.Descriptor.create({
                                     content_type_id: descriptor.content_type_id,
-                                    parent_id: descriptor.path,
+                                    parent_id: itemId,
                                     file_name: descriptor.name,
                                     file: $file
                                 }).then( function( descriptor ){
-                                    addToList('descList', descriptor);
+                                    console.log('New descriptor: ', descriptor);
+
+                                    // addToList('descList', descriptor);
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
+                            } else {
+
+                                serviceProvider.Descriptor.update({
+                                    item_id: itemId,
+                                    file: $file
+                                }).then( function( descriptor ){
+                                    console.log('Descriptor updated: ', descriptor);
+
+                                    // addToList('assetList', asset);
+                                }, function() {
+                                    console.log('Unable to upload file');
+                                });
+                            }
                         }
                     };
 
-                    $scope.uploadTemplate = function (template) {
-                        var $file;
+                    $scope.uploadTemplate = function (isFolder, nodeSelected, template) {
+                        var $file, itemId;
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || null;
 
-                            serviceProvider.Template.create({
-                                    parent_id: template.path,
+                            if (isFolder) {
+
+                                serviceProvider.Template.create({
+                                    parent_id: itemId,
                                     file_name: template.name,
                                     file: $file
                                 }).then( function( template ){
+                                    console.log('New template: ', template);
 
-                                    console.log(template);
-
-                                    addToList('tmplList', template);
+                                    // addToList('tmplList', template);
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
+                            } else {
+
+                                serviceProvider.Template.update({
+                                    item_id: itemId,
+                                    file: $file
+                                }).then( function( template ){
+                                    console.log('Template updated: ', template);
+
+                                    // addToList('assetList', asset);
+                                }, function() {
+                                    console.log('Unable to upload file');
+                                });
+                            }
                         }
                     };
 
@@ -259,9 +349,6 @@ define(['require',
 
                             $timeout( function() {
                                 $scope.$apply(function () {
-                                    $scope.setFlag('action', 'insert');
-                                    $scope.setFlag('code', option);
-
                                     editor.getSession().setValue(content);
                                 });
                             });
@@ -278,11 +365,6 @@ define(['require',
                         $scope.selectedFiles = $files;
                     };
 
-                    // Event listeners
-                    $scope.$on('$sdoTreeNavFileSelected',
-                        function(event, file) {
-                            $scope.readItem(file.type, file.id.itemId);
-                        });
             }])
 
             .addDirective('sdoFileSelect', ['$parse', '$http',

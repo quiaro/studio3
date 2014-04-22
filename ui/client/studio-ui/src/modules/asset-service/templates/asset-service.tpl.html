@@ -39,30 +39,22 @@
             <form   name="uploadAssetForm"
                     novalidate
                     role="form"
-                    ng-submit="uploadAsset(asset)"
+                    ng-submit="uploadAsset(isFolder, nodeSelected, asset)"
                     ng-show="fileType == 'asset'">
 
                 <div class="form-group">
                     <input  type="text"
                             class="form-control input-sm"
-                            name="assetPath"
-                            ng-model="asset.path"
-                            placeholder="Parent ID"
-                            required />
-
-                    <input  type="text"
-                            class="form-control input-sm"
                             name="assetName"
                             ng-model="asset.name"
+                            ng-show="isFolder"
                             placeholder="File name"
                             required />
 
                     <input  type="file"
                             class="form-control input-sm"
-                            name="assetContent"
                             sdo-file-select="onFileSelect($files)"
                             required />
-
                 </div>
 
                 <div class="form-group">
@@ -74,7 +66,7 @@
             <form   name="uploadDescriptorForm"
                     novalidate
                     role="form"
-                    ng-submit="uploadDescriptor(descriptor)"
+                    ng-submit="uploadDescriptor(isFolder, nodeSelected, descriptor)"
                     ng-show="fileType == 'descriptor'">
 
                 <div class="form-group">
@@ -87,24 +79,16 @@
 
                     <input  type="text"
                             class="form-control input-sm"
-                            name="descPath"
-                            ng-model="descriptor.path"
-                            placeholder="Parent ID"
-                            required />
-
-                    <input  type="text"
-                            class="form-control input-sm"
                             name="descName"
                             ng-model="descriptor.name"
+                            ng-show="isFolder"
                             placeholder="File name"
                             required />
 
                     <input  type="file"
                             class="form-control input-sm"
-                            name="descContent"
                             sdo-file-select="onFileSelect($files)"
                             required />
-
                 </div>
 
                 <div class="form-group">
@@ -116,30 +100,23 @@
             <form   name="uploadTemplateForm"
                     novalidate
                     role="form"
-                    ng-submit="uploadTemplate(template)"
+                    ng-submit="uploadTemplate(isFolder, nodeSelected, template)"
                     ng-show="fileType == 'template'">
 
                 <div class="form-group">
-                    <input  type="text"
-                            class="form-control input-sm"
-                            name="tmplPath"
-                            ng-model="template.path"
-                            placeholder="Parent ID"
-                            required />
 
                     <input  type="text"
                             class="form-control input-sm"
                             name="tmplName"
                             ng-model="template.name"
+                            ng-show="isFolder"
                             placeholder="File name"
                             required />
 
                     <input  type="file"
                             class="form-control input-sm"
-                            name="tmplContent"
                             sdo-file-select="onFileSelect($files)"
                             required />
-
                 </div>
 
                 <div class="form-group">
@@ -154,7 +131,7 @@
             <form   name="addCode"
                     novalidate
                     role="form"
-                    ng-submit="submitCode()">
+                    ng-submit="submitCode(action, fileType, nodeSelected)">
 
                 <pre id="code-editor" name="code-editor"></pre>
 
