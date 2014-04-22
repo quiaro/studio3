@@ -20,7 +20,7 @@
 
                 <button class="btn btn-primary"
                         ng-class="{ 'active': action == 'edit', 'border-left': true }"
-                        ng-click="action = 'edit'"
+                        ng-click="action = 'edit'; readItem(fileType, nodeSelected.id.itemId);"
                         ng-show="!isFolder">Edit</button>
 
                 <button class="btn btn-primary"
