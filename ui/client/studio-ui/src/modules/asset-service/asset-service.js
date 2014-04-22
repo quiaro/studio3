@@ -47,67 +47,54 @@ define(['require',
                         });
                     }
 
-                    var treeNav = $scope.treeNav = {};
+                    var treeNav, treeNavClearWatch,
+                        editor = ace.edit('code-editor');
 
-                    var editor = ace.edit('code-editor');
+                    // Initialize scope values
+                    treeNav = $scope.treeNav = {};
+                    $scope.selectedFiles = null;
+                    $scope.nodeSelected = null;
+                    $scope.action = '';
+                    $scope.templatePath = require.toUrl('./templates');
 
+                    // Set editor settings
                     editor.setTheme('ace/theme/textmate');
                     editor.getSession().setMode('ace/mode/html');
 
-                    $scope.flags = {
-                        action: {
-                            insert: true,
-                            upload: false
-                        },
-                        code: {
-                            xml: true,
-                            ftl: false,
-                            asset: false
-                        },
-                        upload: {
-                            xml: false,
-                            ftl: false,
-                            asset: true
+                    // Set up watches
+                    treeNavClearWatch = $scope.$watchCollection('treeNav', function(newValue, oldValue) {
+
+                        if (newValue === oldValue) { return; }
+
+                        $scope.nodeSelected = treeNav.select_first_branch();
+                        $scope.fileType = $scope.nodeSelected.contentType;
+                        $scope.isFolder = $scope.nodeSelected.folder;
+
+                        if ($scope.isFolder) {
+                            $scope.action = 'create';
+                        } else {
+                            $scope.action = 'edit';
+                        }
+
+                        console.log('Selected Node: ', $scope.nodeSelected);
+
+                        treeNavClearWatch();
+                    });
+
+                    $scope.updateSelected = function updateSelected(branch) {
+                        $scope.nodeSelected = branch;
+                        $scope.fileType = branch.contentType;
+                        $scope.isFolder = branch.folder;
+
+                        // If the action currently selected is upload, then stay as is
+                        if ($scope.action != 'upload') {
+                            if ($scope.isFolder) {
+                                $scope.action = 'create';
+                            } else {
+                                $scope.action = 'edit';
+                            }
                         }
                     };
-
-                    $scope.codeType = 'xml';
-
-                    $scope.selectedFiles = null;
-                    $scope.assetList = [
-                        {
-                            id: '7e4919d0-34bc-49d5-8369-53ff79f763b5',
-                            name: 'chp2.txt'
-                        }, {
-                            id: '4da8fa24-f5be-4f10-be87-471ae6aac768',
-                            name: 'myimg.png'
-                        }, {
-                            id: '916ee2f3-b3c3-43eb-b178-68fbcd802fab',
-                            name: 'chp1.txt'
-                        }
-                    ];
-
-                    $scope.descList = [
-                        {
-                            id: '8a6c2ab3-8b66-4a86-8a1b-b222310d8475',
-                            name: 'sample-descriptor.xml'
-                        }, {
-                            id: '1a6d450c-71ef-4daa-b527-e27aec941308',
-                            name: 'page-2.xml'
-                        }
-                    ];
-
-                    $scope.tmplList = [
-                        {
-                            id: 'c2fb0f22-d7d5-4a8e-a099-1962282373f1',
-                            name: 'sample-tmpl.ftl'
-                        }, {
-                            id: '7e035a2e-1a50-4037-805f-4a647b80cf8f',
-                            name: 'service.ftl'
-                        }
-                    ];
-
-                    $scope.templatePath = require.toUrl('./templates');
 
                     $scope.reset = function () {
                         $scope.flags.code = {

@@ -1,46 +1,46 @@
 <div class="test-asset" ng-controller="AssetCtrl">
 
     <div class="side-column">
-        <div class="list-actions">
-            <h2>Actions</h2>
-            <div class="btn-group-vertical">
-                <button class="btn btn-primary"
-                        ng-class="{active:flags.action.insert}"
-                        ng-click="setFlag('action','insert')">Write/Edit</button>
-                <button class="btn btn-primary"
-                        ng-class="{active:flags.action.upload}"
-                        ng-click="setFlag('action','upload')">Upload</button>
-            </div>
-        </div>
+        <h1>Files</h1>
 
-        <sdo-tree-navigation tree-control="treeNav" sdo-plugin-src="crafter.studio-ui.plugins.tree-navigation">
+        <sdo-tree-navigation on-select="updateSelected(branch)"
+                             sdo-plugin-src="crafter.studio-ui.plugins.tree-navigation"
+                             tree-control="treeNav">
             </sdo-tree-navigation>
-
     </div>
 
     <div class="main-column">
-        <div class="upload" ng-show="flags.action.upload">
-            <h1>Upload</h1>
-            <div class="btn-group">
+        <div class="list-actions">
+            <h1>Actions</h1>
+            <div class="btn-group" ng-show="nodeSelected">
                 <button class="btn btn-primary"
-                        ng-class="{active:flags.upload.asset}"
-                        ng-click="setFlag('upload','asset')">Asset</button>
+                        ng-class="{ 'active': action == 'create' }"
+                        ng-click="action = 'create'"
+                        ng-show="isFolder">Create</button>
 
                 <button class="btn btn-primary"
-                        ng-class="{active:flags.upload.xml}"
-                        ng-click="setFlag('upload','xml')">Descriptor</button>
+                        ng-class="{ 'active': action == 'edit', 'border-left': true }"
+                        ng-click="action = 'edit'"
+                        ng-show="!isFolder">Edit</button>
 
                 <button class="btn btn-primary"
-                        ng-class="{active:flags.upload.ftl}"
-                        ng-click="setFlag('upload','ftl')">Template</button>
-
+                        ng-class="{ 'active': action == 'upload' }"
+                        ng-click="action = 'upload'">Upload</button>
             </div>
+
+            <button class="btn btn-primary"
+                    ng-click="insertCode(fileType)"
+                    ng-show="action == 'create' && (fileType == 'descriptor' || fileType == 'template')">Insert Sample Code</button>
+        </div>
+
+
+        <div class="upload" ng-show="action == 'upload'">
 
             <form   name="uploadAssetForm"
                     novalidate
                     role="form"
                     ng-submit="uploadAsset(asset)"
-                    ng-show="flags.upload.asset">
+                    ng-show="fileType == 'asset'">
 
                 <div class="form-group">
                     <input  type="text"
@@ -75,7 +75,7 @@
                     novalidate
                     role="form"
                     ng-submit="uploadDescriptor(descriptor)"
-                    ng-show="flags.upload.xml">
+                    ng-show="fileType == 'descriptor'">
 
                 <div class="form-group">
                     <input  type="text"
@@ -117,7 +117,7 @@
                     novalidate
                     role="form"
                     ng-submit="uploadTemplate(template)"
-                    ng-show="flags.upload.ftl">
+                    ng-show="fileType == 'template'">
 
                 <div class="form-group">
                     <input  type="text"
@@ -150,32 +150,11 @@
 
         </div>
 
-        <div class="editor" ng-show="flags.action.insert">
-            <h1>Write/Edit</h1>
-            <div class="sample-buttons">
-
-                <div class="btn-group">
-                    <button class="btn btn-primary"
-                            ng-class="{active:flags.code.xml}"
-                            ng-click="setFlag('code','xml')">XML</button>
-
-                    <button class="btn btn-primary"
-                            ng-class="{active:flags.code.ftl}"
-                            ng-click="setFlag('code','ftl')">FTL</button>
-
-                    <button class="btn btn-primary"
-                            ng-class="{active:flags.code.asset}"
-                            ng-click="setFlag('code','asset')">Asset</button>
-                </div>
-
-                <button class="btn btn-primary"
-                        ng-click="insertCode(flags.code)"
-                        ng-show="flags.code.xml || flags.code.ftl">Insert Sample Code</button>
-            </div>
+        <div class="editor" ng-show="action == 'create' || action == 'edit'">
             <form   name="addCode"
                     novalidate
                     role="form"
-                    ng-submit="submitCode(flags.code)">
+                    ng-submit="submitCode()">
 
                 <pre id="code-editor" name="code-editor"></pre>
 
@@ -185,6 +164,7 @@
                 </div>
             </form>
         </div>
+
     </div>
 
 </div>

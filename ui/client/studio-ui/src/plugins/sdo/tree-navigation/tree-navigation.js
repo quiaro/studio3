@@ -11,6 +11,9 @@ define(['require', 'globals', 'module'], function(require, globals, module){
 
         NgRegistry
             .addDirective('sdoTreeNavigation', function($timeout, ServiceProviders, Utils){
+
+                var loadingStr = 'loading ...';
+
                 return {
                     restrict: 'E',
                     scope: {
@@ -25,28 +28,35 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                         $scope.treeData = [];
                         $scope.treeControl = $scope.treeControl || {};
 
+                        // Set all the first-level nodes
+                        config.sections.forEach( function(section) {
+
+                            var node = {
+                                label: section.label,
+                                children: [loadingStr],
+                                folder: true
+                            };
+
+                            $scope.treeData.push(node);
+                        });
+
                     }],
                     link: function postLink(scope, el, attrs) {
 
-                        var tree = scope.treeControl,
-                            loadingStr = 'loading ...';
+                        var tree = scope.treeControl;
 
                         scope.branchSelected = function(branch) {
 
-                            console.log("You selected: " + branch.label);
-
-                            if (!branch.children ||
-                                (Array.isArray(branch.children) && !branch.children.length)) {
-
-                                console.log('Yup, this is a LEAF!');
-
-                            } else if (branch.service && branch.children[0].label === loadingStr) {
+                            if (branch.service && branch.children[0].label === loadingStr) {
+                                // Load the children, if they haven't been loaded
                                 branch.service.method.apply(branch.service.context, [branch.id.itemId]).then( function(data) {
                                     data.forEach( function(item) {
                                         if (item.folder) {
                                             item.children = [loadingStr];
                                             item.service = branch.service;
                                         }
+                                        // TO-DO: remove once contentType value is returned in the metadata
+                                        item.contentType = branch.contentType;
                                     });
                                     $timeout( function() {
                                         scope.$apply( function() {
@@ -55,26 +65,34 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                     });
                                 });
                             }
+                            if (scope.onSelect !== null && typeof scope.onSelect == 'function') {
+                                $timeout( function() {
+                                    scope.onSelect({
+                                       branch: branch
+                                    });
+                                });
+                            }
                         };
 
-                        // Get all the first-level children for each one of
-                        // the tree nav sections
-                        config.sections.forEach( function(section) {
+                        // Get the children for each one of the tree nav sections
+                        config.sections.forEach( function(section, idx) {
 
-                            var node = {
-                                    label: section.label,
-                                    children: [loadingStr]
-                                },
+                            var node,
                                 serviceProvider,
                                 serviceStr,
                                 serviceContext,
-                                serviceMethod;
+                                serviceMethod,
 
-                            scope.treeData.push(node);
+                                // TO-DO: remove once contentType value is returned in the metadata
+                                contentType;
+
+                            node = scope.treeData[idx];
 
                             if (section.content) {
                                 serviceProvider = section.content.serviceProvider,
                                 serviceStr = section.content.service;
+                                contentType = section.content.type;
+                                node.contentType = contentType;
                             } else {
                                 throw new Error('Content information missing for navigation section');
                             }
@@ -93,6 +111,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                             serviceMethod = Utils.getMethod(serviceProvider, serviceStr);
 
                             serviceMethod.apply(serviceContext, []).then( function(data) {
+
                                 data.forEach( function(item) {
                                     if (item.folder) {
                                         // Extend the folder items with service & children information
@@ -102,6 +121,8 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                             method: serviceMethod
                                         };
                                     }
+                                    // TO-DO: remove once contentType value is returned in the metadata
+                                    item.contentType = contentType;
                                 });
                                 $timeout( function() {
                                     scope.$apply( function() {

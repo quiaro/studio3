@@ -6,17 +6,14 @@
 .test-asset {
     margin: 15px 2em;
 
-    h1 { font-size: 22px; }
+    h1 {
+        font-size: 20px;
+        margin-left: 10px;
+    }
 
     .side-column {
         width: 270px;
         float: left;
-
-        h2 { font-size: 18px; }
-
-        .list-actions {
-            margin-bottom: 20px;
-        }
 
         .tree-nav {
             width:250px;
@@ -28,6 +25,15 @@
 
     .main-column {
         float: left;
+
+        .list-actions {
+            margin-bottom: 15px;
+
+            .border-left {
+                border-top-left-radius: 4px !important;
+                border-bottom-left-radius: 4px !important;
+            }
+        }
 
         .form-group {
             width: 700px;
@@ -41,10 +47,6 @@
             form {
                 position: relative;
                 height: @form-height;
-            }
-
-            .sample-buttons {
-                margin-bottom: 15px;
             }
 
             .form-group {
