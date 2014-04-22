@@ -91,6 +91,9 @@ define(['require',
                         // If the action currently selected is upload, then stay as is
                         if ($scope.fileType == 'asset') {
                             $scope.action = 'upload';
+                            if (!$scope.isFolder) {
+                                $scope.readItem(branch.contentType, branch.id.itemId);
+                            }
                         } else {
                             if ($scope.action != 'upload') {
                                 if ($scope.isFolder) {
