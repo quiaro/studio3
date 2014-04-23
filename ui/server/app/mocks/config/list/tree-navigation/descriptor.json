@@ -9,21 +9,21 @@
             "label": "Assets",
             "content": {
                 "type": "asset",
-                "serviceProvider": "LocalStudioServices",
+                "serviceProvider": "RemoteStudioServices",
                 "service": "Asset.list"
             }
         }, {
             "label": "Descriptors",
             "content": {
                 "type": "descriptor",
-                "serviceProvider": "LocalStudioServices",
+                "serviceProvider": "RemoteStudioServices",
                 "service": "Descriptor.list"
             }
         }, {
             "label": "Templates",
             "content": {
                 "type": "template",
-                "serviceProvider": "LocalStudioServices",
+                "serviceProvider": "RemoteStudioServices",
                 "service": "Template.list"
             }
         }]
