@@ -42,8 +42,8 @@ angular.module('crafter.studio-ui.Utils', [])
              *             For example: "level1Obj.level2Obj.method" will return a reference to "level2Obj"
              */
             this.getContext = function getContext(rootObj, dotNotationStr) {
-                var fragments = dotNotationStr.split(".");
-                return fragments.splice(0, fragments.length-1).reduce(function(o, p) { return o[p] }, rootObj);
+                var fragments = dotNotationStr.split('.');
+                return fragments.splice(0, fragments.length-1).reduce(function(o, p) { return o[p]; }, rootObj);
             };
 
             /*
@@ -54,7 +54,7 @@ angular.module('crafter.studio-ui.Utils', [])
              *             For example: "level1Obj.level2Obj.method" will return a reference to "method"
              */
             this.getMethod = function getMethod(rootObj, dotNotationStr) {
-                return dotNotationStr.split(".").reduce(function(o, p) { return o[p] }, rootObj);
+                return dotNotationStr.split('.').reduce(function(o, p) { return o[p]; }, rootObj);
             };
 
             /*

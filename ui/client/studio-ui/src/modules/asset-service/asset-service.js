@@ -70,13 +70,13 @@ define(['require',
                         editor.setValue('');
 
                         // If the action currently selected is upload, then stay as is
-                        if ($scope.fileType == 'asset') {
+                        if ($scope.fileType === 'asset') {
                             $scope.action = 'upload';
                             if (!$scope.isFolder) {
                                 $scope.readItem(branch.contentType, branch.id.itemId);
                             }
                         } else {
-                            if ($scope.action != 'upload') {
+                            if ($scope.action !== 'upload') {
                                 if ($scope.isFolder) {
                                     $scope.action = 'create';
                                 } else {
@@ -137,7 +137,7 @@ define(['require',
 
                         if (content) {
 
-                            if (action == 'create') {
+                            if (action === 'create') {
 
                                 fileName = prompt('Please type in a file name');
 
@@ -146,7 +146,7 @@ define(['require',
                                     return;
                                 }
 
-                                if (fileType == 'descriptor') {
+                                if (fileType === 'descriptor') {
                                     serviceProvider.Descriptor.create({
                                         content_type_id: 'sampleId',
                                         parent_id: itemId,
@@ -158,7 +158,7 @@ define(['require',
                                             treeNav.add_branch(nodeSelected, descriptor);
                                         });
                                     });
-                                } else if (fileType == 'template') {
+                                } else if (fileType === 'template') {
                                     serviceProvider.Template.create({
                                         parent_id: itemId,
                                         file_name: fileName,
@@ -173,14 +173,14 @@ define(['require',
                             } else {
 
                                 // update existing content
-                                if (fileType == 'descriptor') {
+                                if (fileType === 'descriptor') {
                                     serviceProvider.Descriptor.update({
                                         item_id: itemId,
                                         content: content
                                     }).then( function(descriptor) {
                                         // console.log('Descriptor updated: ', descriptor);
                                     });
-                                } else if (fileType == 'template') {
+                                } else if (fileType === 'template') {
                                     serviceProvider.Template.update({
                                         item_id: itemId,
                                         content: content

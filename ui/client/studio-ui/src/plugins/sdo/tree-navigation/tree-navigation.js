@@ -10,7 +10,8 @@ define(['require', 'globals', 'module'], function(require, globals, module){
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addDirective('sdoTreeNavigation', function($timeout, ServiceProviders, Utils){
+            .addDirective('sdoTreeNavigation', ['$timeout', 'ServiceProviders', 'Utils',
+                function($timeout, ServiceProviders, Utils){
 
                 var loadingStr = 'loading ...';
 
@@ -43,29 +44,28 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                     }],
                     link: function postLink(scope, el, attrs) {
 
-                        var tree = scope.treeControl;
-
                         scope.branchSelected = function(branch) {
 
                             if (branch.service && branch.children[0].label === loadingStr) {
                                 // Load the children, if they haven't been loaded
-                                branch.service.method.apply(branch.service.context, [branch.id.itemId]).then( function(data) {
-                                    data.forEach( function(item) {
-                                        if (item.folder) {
-                                            item.children = [loadingStr];
-                                            item.service = branch.service;
-                                        }
-                                        // TO-DO: remove once contentType value is returned in the metadata
-                                        item.contentType = branch.contentType;
-                                    });
-                                    $timeout( function() {
-                                        scope.$apply( function() {
-                                            branch.children = data;
+                                branch.service.method.apply(branch.service.context, [branch.id.itemId])
+                                    .then( function(data) {
+                                        data.forEach( function(item) {
+                                            if (item.folder) {
+                                                item.children = [loadingStr];
+                                                item.service = branch.service;
+                                            }
+                                            // TO-DO: remove once contentType value is returned in the metadata
+                                            item.contentType = branch.contentType;
                                         });
-                                    });
+                                        $timeout( function() {
+                                            scope.$apply( function() {
+                                                branch.children = data;
+                                            });
+                                        });
                                 });
                             }
-                            if (scope.onSelect !== null && typeof scope.onSelect == 'function') {
+                            if (scope.onSelect !== null && typeof scope.onSelect === 'function') {
                                 $timeout( function() {
                                     scope.onSelect({
                                        branch: branch
@@ -89,7 +89,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                             node = scope.treeData[idx];
 
                             if (section.content) {
-                                serviceProvider = section.content.serviceProvider,
+                                serviceProvider = section.content.serviceProvider;
                                 serviceStr = section.content.service;
                                 contentType = section.content.type;
                                 node.contentType = contentType;
@@ -134,7 +134,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                         });
                     }
                 };
-            });
+            }]);
 
     }]);
 
