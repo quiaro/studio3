@@ -19,8 +19,6 @@ define(['require',
                                 ServiceProviders[config.serviceProvider] :
                                 ServiceProviders[DefaultServiceProvider];
 
-        console.log('Service Provider: ', serviceProvider);
-
         NgRegistry
             .addState('test', {
                 url: '/test-service',
@@ -32,20 +30,6 @@ define(['require',
 
             .addController('AssetCtrl',
                 ['$scope', '$timeout', function($scope, $timeout) {
-
-                    function addToList (list, itemObj) {
-                        console.log('File uploaded successfully!');
-                        console.log(itemObj);
-
-                        $timeout( function() {
-                            $scope.$apply(function () {
-                                $scope[list].push({
-                                    id: itemObj.id.itemId,
-                                    name: itemObj.fileName
-                                });
-                            });
-                        });
-                    }
 
                     var treeNav, treeNavClearWatch,
                         editor = ace.edit('code-editor');
@@ -261,9 +245,10 @@ define(['require',
                                     file_name: descriptor.name,
                                     file: $file
                                 }).then( function( descriptor ){
-                                    console.log('New descriptor: ', descriptor);
-
-                                    // addToList('descList', descriptor);
+                                    descriptor.contentType = nodeSelected.contentType;
+                                    $timeout( function() {
+                                        treeNav.add_branch(nodeSelected, descriptor);
+                                    });
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
@@ -274,8 +259,6 @@ define(['require',
                                     file: $file
                                 }).then( function( descriptor ){
                                     console.log('Descriptor updated: ', descriptor);
-
-                                    // addToList('assetList', asset);
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
@@ -297,9 +280,10 @@ define(['require',
                                     file_name: template.name,
                                     file: $file
                                 }).then( function( template ){
-                                    console.log('New template: ', template);
-
-                                    // addToList('tmplList', template);
+                                    template.contentType = nodeSelected.contentType;
+                                    $timeout( function() {
+                                        treeNav.add_branch(nodeSelected, template);
+                                    });
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
@@ -310,8 +294,6 @@ define(['require',
                                     file: $file
                                 }).then( function( template ){
                                     console.log('Template updated: ', template);
-
-                                    // addToList('assetList', asset);
                                 }, function() {
                                     console.log('Unable to upload file');
                                 });
