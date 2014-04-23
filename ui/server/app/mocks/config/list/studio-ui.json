@@ -30,7 +30,7 @@
     },
 
     "modules": [
-        "crafter.studio-ui.section.test-service"
+        "test-service"
     ],
 
     "serviceProviders": [{

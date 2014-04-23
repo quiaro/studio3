@@ -4,7 +4,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
 
     'use strict';
 
-    var init_module = 'crafter.studio-ui',
+    var init_module = 'studio-ui',
         bootstrapService = new studioServices(),
         serviceProviders = {},
         GLOBALS, CONFIG;
