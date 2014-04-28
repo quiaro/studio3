@@ -145,32 +145,29 @@ define(['globals'], function( globals ) {
 
                 return {
                     restrict: 'A',
+                    priority: 1000,
                     compile: function(element, attr) {
 
                         var pluginName = attr.sdoPluginSrc,
                             promiseList;
 
-                        // Has this directive been processed yet?
-                        if (!attr.sdoPluginLoaded) {
+                        // Remove this directive so it doesn't create an endless loop
+                        // since it calls on the $compile function
+                        attr.$set('sdoPluginSrc', null);
 
-                            // The directive has not been loaded yet, proceed to load it
-                            $log.log('Loading plugin ' + pluginName + '...');
+                        // Proceed to load the directive
+                        $log.log('Loading plugin ' + pluginName + '...');
 
-                            promiseList = Utils.loadModules([pluginName], GLOBALS.plugins_url);
+                        promiseList = Utils.loadModules([pluginName], GLOBALS.plugins_url);
 
-                            return function postLink (scope, element, attr) {
+                        return function postLink (scope, element, attr) {
 
-                                $q.all(promiseList).then( function() {
-                                    // Do not process this directive anymore
-                                    attr.$set('sdoPluginLoaded', true);
-
-                                    // after all the plugin's resources have been loaded,
-                                    // compile the plugin directive
-                                    $compile(element)(scope);
-                                });
-                            };
-
-                        }
+                            $q.all(promiseList).then( function() {
+                                // After all the plugin's resources have been loaded,
+                                // compile the plugin directive
+                                $compile(element)(scope);
+                            });
+                        };
                     }
                 };
             }]);

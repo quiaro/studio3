@@ -23,7 +23,7 @@ angular.module('crafter.studio-ui.Language', [])
                         fileName = sessionStorage[lang_key] + ".js",
                         langFile = Utils.getUrl(baseUrl, fileName);
 
-                        console.log('Lang File: ', langFile);
+                        $log.log('Lang File: ', langFile);
 
                     $http({
                         method: 'GET',
