@@ -1,0 +1,3 @@
+{
+    "loadingStr": "my loading string"
+}

@@ -1,0 +1,3 @@
+{
+    "loadingStr": "veuillez patientez ..."
+}
