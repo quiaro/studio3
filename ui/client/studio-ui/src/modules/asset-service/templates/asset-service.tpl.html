@@ -19,9 +19,8 @@
 
     </div>
 
-    <div class="main-column">
+    <div class="main-column {{fileType}}">
         <div class="list-actions">
-            <h1>Actions</h1>
             <div class="btn-group" ng-show="nodeSelected && fileType != 'asset'">
                 <button class="btn btn-primary"
                         ng-class="{ 'active': action == 'create' }"
