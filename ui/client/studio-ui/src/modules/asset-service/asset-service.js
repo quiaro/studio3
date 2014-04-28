@@ -15,8 +15,8 @@ define(['require',
     injector.invoke(['NgRegistry', 'ServiceProviders', 'DefaultServiceProvider', '$state', '$log',
         function(NgRegistry, ServiceProviders, DefaultServiceProvider, $state, $log) {
 
-        var serviceProvider = (config && config.serviceProvider) ?
-                                ServiceProviders[config.serviceProvider] :
+        var serviceProvider = (config && config.service_provider) ?
+                                ServiceProviders[config.service_provider] :
                                 ServiceProviders[DefaultServiceProvider];
 
         NgRegistry

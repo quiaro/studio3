@@ -34,7 +34,7 @@
         "test-service"
     ],
 
-    "serviceProviders": [{
+    "service_providers": [{
         "name": "LocalStudioServices",
         "main": "studioServices/studioServices",
         "config": {

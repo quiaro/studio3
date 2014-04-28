@@ -212,7 +212,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
         });
 
         // Initialize service providers and save references to them
-        serviceProviders = initServiceProviders(CONFIG.serviceProviders);
+        serviceProviders = initServiceProviders(CONFIG.service_providers);
 
         // Manual bootstrap
         angular.bootstrap(angular.element(GLOBALS.dom_root), [init_module]);

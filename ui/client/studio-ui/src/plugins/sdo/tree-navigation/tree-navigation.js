@@ -62,7 +62,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         scope.treeData.push(node);
 
                                         if (section.content) {
-                                            serviceProvider = section.content.serviceProvider;
+                                            serviceProvider = section.content.service_provider;
                                             serviceStr = section.content.service;
                                             contentType = section.content.type;
                                             node.contentType = contentType;
