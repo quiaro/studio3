@@ -150,22 +150,26 @@ define(['globals'], function( globals ) {
                         var pluginName = attr.sdoPluginSrc,
                             promiseList;
 
+                        // Has this directive been processed yet?
                         if (!attr.sdoPluginLoaded) {
 
-                            $log.log('Loading plugin ' + pluginName + ' from directive ...');
+                            // The directive has not been loaded yet, proceed to load it
+                            $log.log('Loading plugin ' + pluginName + '...');
 
                             promiseList = Utils.loadModules([pluginName], GLOBALS.plugins_url);
 
-                            return function (scope, element, attr) {
-
-                                attr.$set('sdoPluginLoaded', true);
+                            return function postLink (scope, element, attr) {
 
                                 $q.all(promiseList).then( function() {
+                                    // Do not process this directive anymore
+                                    attr.$set('sdoPluginLoaded', true);
+
                                     // after all the plugin's resources have been loaded,
                                     // compile the plugin directive
                                     $compile(element)(scope);
                                 });
                             };
+
                         }
                     }
                 };

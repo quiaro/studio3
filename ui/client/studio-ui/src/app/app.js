@@ -14,6 +14,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             'crafter.studio-ui.services.AuditService',
             'crafter.studio-ui.services.AuthService',
             'crafter.studio-ui.services.UserService',
+            'crafter.studio-ui.Language',
             'crafter.studio-ui.NgRegistry',
             'crafter.studio-ui.Utils',
             'angularBootstrapNavTree',
@@ -41,6 +42,18 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             $provide.value( 'DefaultServiceProvider', GLOBALS.default_service_provider );
             $provide.value( 'ServiceProviders', serviceProviders );
             $provide.value( GLOBALS.default_service_provider, serviceProviders[GLOBALS.default_service_provider] );
+
+            $provide.decorator('$state', function ($delegate, $stateParams) {
+                // Force a reload on the ui-router $state
+                $delegate.forceReload = function () {
+                    return $delegate.go($delegate.current, $stateParams, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    });
+                };
+                return $delegate;
+            });
 
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {

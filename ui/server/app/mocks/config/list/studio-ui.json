@@ -23,6 +23,7 @@
         "default_state": "test",
         "default_url": "/test-service",
         "default_service_provider": "StudioServices",
+        "default_language": "en",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
         "templates_url": "modules/common/templates",
