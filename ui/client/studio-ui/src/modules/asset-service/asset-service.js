@@ -23,13 +23,21 @@ define(['require',
             .addState('test', {
                 url: '/test-service',
                 templateUrl: require.toUrl('./templates/asset-service.tpl.html'),
+                resolve: {
+                    content: ['Language', function (Language) {
+                        return Language.from(require.toUrl('./lang'));
+                    }]
+                },
+                controller: ['$scope', 'content', function($scope, content) {
+                    $scope.content = content;
+                }],
 
                 requireAuth: false,
                 rolesAllowed: ['admin', 'editor']
             })
 
             .addController('AssetCtrl',
-                ['$scope', '$timeout', function($scope, $timeout) {
+                ['$scope', '$timeout', '$rootScope', function($scope, $timeout, $rootScope) {
 
                     var treeNav, treeNavClearWatch,
                         editor = ace.edit('code-editor');
@@ -44,23 +52,6 @@ define(['require',
                     // Set editor settings
                     editor.setTheme('ace/theme/textmate');
                     editor.getSession().setMode('ace/mode/html');
-
-                    // Set up watches
-                    treeNavClearWatch = $scope.$watchCollection('treeNav', function(newValue, oldValue) {
-
-                        if (newValue === oldValue) { return; }
-
-                        $scope.nodeSelected = treeNav.select_first_branch();
-                        $scope.fileType = $scope.nodeSelected.contentType;
-                        $scope.isFolder = $scope.nodeSelected.folder;
-
-                        if ($scope.isFolder) {
-                            $scope.action = 'create';
-                        } else {
-                            $scope.action = 'edit';
-                        }
-                        treeNavClearWatch();
-                    });
 
                     $scope.updateSelected = function updateSelected(branch) {
                         $scope.nodeSelected = branch;
@@ -337,6 +328,10 @@ define(['require',
                         // $files: an array of files selected, each file has name, size, and type.
                         $scope.selectedFiles = $files;
                     };
+
+                    $scope.changeLanguage = function changeLanguage (langId) {
+                        $rootScope.$broadcast('$sdoLanguageChange', langId);
+                    }
 
             }])
 

@@ -7,6 +7,16 @@
                              on-select="updateSelected(branch)"
                              tree-control="treeNav">
             </sdo-tree-navigation>
+
+        <h4>Language</h4>
+        <div class="btn-group">
+            <button class="btn btn-primary"
+                    ng-click="changeLanguage('en')">{{content.english}}</button>
+
+            <button class="btn btn-primary"
+                    ng-click="changeLanguage('fr')">{{content.french}}</button>
+        </div>
+
     </div>
 
     <div class="main-column">
