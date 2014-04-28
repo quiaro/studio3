@@ -16,16 +16,8 @@ angular.module('crafter.studio-ui.Language', [])
                 sessionStorage[lang_key] = GLOBALS.default_language;
             }
 
-            // On language change event, save value in session storage
-            // and reload the page
-            $rootScope.$on('$sdoLanguageChange', function (evt, langId){
-                console.log('Event handler for language change with param: ', langId);
-                sessionStorage[lang_key] = langId;
-                $state.forceReload();
-                // window.location.reload();
-            });
-
             return {
+                // Define where the language files will be read from
                 from: function from (baseUrl) {
                     var dfd = $q.defer(),
                         fileName = sessionStorage[lang_key] + ".js",
@@ -61,6 +53,12 @@ angular.module('crafter.studio-ui.Language', [])
                     });
 
                     return dfd.promise;
+                },
+                changeTo: function changeTo (langId) {
+                    // Save the new language value in session storage
+                    // and refresh the view
+                    sessionStorage[lang_key] = langId;
+                    $state.forceReload();
                 }
             };
 

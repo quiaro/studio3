@@ -37,7 +37,7 @@ define(['require',
             })
 
             .addController('AssetCtrl',
-                ['$scope', '$timeout', '$rootScope', function($scope, $timeout, $rootScope) {
+                ['$scope', '$timeout', 'Language', function($scope, $timeout, Language) {
 
                     var treeNav, treeNavClearWatch,
                         editor = ace.edit('code-editor');
@@ -330,7 +330,7 @@ define(['require',
                     };
 
                     $scope.changeLanguage = function changeLanguage (langId) {
-                        $rootScope.$broadcast('$sdoLanguageChange', langId);
+                        Language.changeTo(langId);
                     }
 
             }])
