@@ -31,7 +31,7 @@
     },
 
     "modules": [
-        "test-service"
+        "login", "dashboard", "test-service"
     ],
 
     "service_providers": [{
