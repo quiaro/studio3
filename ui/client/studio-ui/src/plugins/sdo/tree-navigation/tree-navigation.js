@@ -44,19 +44,10 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                     config.sections.forEach( function(section) {
 
                                         var node = {
-                                            label: section.label,
-                                            children: [loadingStr],
-                                            folder: true
-                                        };
-
-                                        scope.treeData.push(node);
-                                    });
-
-
-                                    // Get the children for each one of the tree nav sections
-                                    config.sections.forEach( function(section, idx) {
-
-                                        var node,
+                                                label: section.label,
+                                                children: [loadingStr],
+                                                folder: true
+                                            },
                                             serviceProvider,
                                             serviceStr,
                                             serviceContext,
@@ -65,7 +56,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                             // TO-DO: remove once contentType value is returned in the metadata
                                             contentType;
 
-                                        node = scope.treeData[idx];
+                                        scope.treeData.push(node);
 
                                         if (section.content) {
                                             serviceProvider = section.content.serviceProvider;
@@ -89,6 +80,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         serviceContext = Utils.getContext(serviceProvider, serviceStr);
                                         serviceMethod = Utils.getMethod(serviceProvider, serviceStr);
 
+                                        // Get the children for each one of the first-level nodes
                                         serviceMethod.apply(serviceContext, []).then( function(data) {
 
                                             data.forEach( function(item) {
@@ -111,7 +103,6 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         });
 
                                     });
-
 
                                 });
 
