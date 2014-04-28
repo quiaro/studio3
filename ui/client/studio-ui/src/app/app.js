@@ -43,18 +43,6 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             $provide.value( 'ServiceProviders', serviceProviders );
             $provide.value( GLOBALS.default_service_provider, serviceProviders[GLOBALS.default_service_provider] );
 
-            $provide.decorator('$state', function ($delegate, $stateParams) {
-                // Force a reload on the ui-router $state
-                $delegate.forceReload = function () {
-                    return $delegate.go($delegate.current, $stateParams, {
-                        reload: true,
-                        inherit: false,
-                        notify: true
-                    });
-                };
-                return $delegate;
-            });
-
             var logOutUserOn401 = ['$q', '$location',
                 function($q, $location) {
                     var success = function(response) {

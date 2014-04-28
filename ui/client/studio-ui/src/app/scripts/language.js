@@ -23,7 +23,7 @@ angular.module('crafter.studio-ui.Language', [])
                         fileName = sessionStorage[lang_key] + ".js",
                         langFile = Utils.getUrl(baseUrl, fileName);
 
-                        $log.log('Lang File: ', langFile);
+                        $log.log('Language File: ', langFile);
 
                     $http({
                         method: 'GET',
@@ -55,10 +55,10 @@ angular.module('crafter.studio-ui.Language', [])
                     return dfd.promise;
                 },
                 changeTo: function changeTo (langId) {
-                    // Save the new language value in session storage
-                    // and refresh the view
+                    // Save the new language value in session storage and
+                    // and broadcast event to all listeners
                     sessionStorage[lang_key] = langId;
-                    $state.forceReload();
+                    $rootScope.$broadcast('$sdoChangeLanguage', langId);
                 }
             };
 

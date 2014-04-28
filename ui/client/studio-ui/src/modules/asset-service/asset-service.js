@@ -37,7 +37,8 @@ define(['require',
             })
 
             .addController('AssetCtrl',
-                ['$scope', '$timeout', 'Language', function($scope, $timeout, Language) {
+                ['$scope', '$timeout', '$rootScope', '$log', 'Language',
+                    function($scope, $timeout, $rootScope, $log, Language) {
 
                     var treeNav, treeNavClearWatch,
                         editor = ace.edit('code-editor');
@@ -169,14 +170,14 @@ define(['require',
                                         item_id: itemId,
                                         content: content
                                     }).then( function(descriptor) {
-                                        // console.log('Descriptor updated: ', descriptor);
+                                        // $log.log('Descriptor updated: ', descriptor);
                                     });
                                 } else if (fileType === 'template') {
                                     serviceProvider.Template.update({
                                         item_id: itemId,
                                         content: content
                                     }).then( function(template) {
-                                        // console.log('Template updated: ', template);
+                                        // $log.log('Template updated: ', template);
                                     });
                                 }
                             }
@@ -205,7 +206,7 @@ define(['require',
                                         treeNav.add_branch(nodeSelected, asset);
                                     });
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             } else {
 
@@ -215,7 +216,7 @@ define(['require',
                                 }).then( function( asset ){
                                     $scope.readItem(nodeSelected.contentType, itemId);
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             }
                         }
@@ -241,7 +242,7 @@ define(['require',
                                         treeNav.add_branch(nodeSelected, descriptor);
                                     });
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             } else {
 
@@ -249,9 +250,9 @@ define(['require',
                                     item_id: itemId,
                                     file: $file
                                 }).then( function( descriptor ){
-                                    console.log('Descriptor updated: ', descriptor);
+                                    $log.log('Descriptor updated: ', descriptor);
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             }
                         }
@@ -276,7 +277,7 @@ define(['require',
                                         treeNav.add_branch(nodeSelected, template);
                                     });
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             } else {
 
@@ -284,9 +285,9 @@ define(['require',
                                     item_id: itemId,
                                     file: $file
                                 }).then( function( template ){
-                                    console.log('Template updated: ', template);
+                                    $log.log('Template updated: ', template);
                                 }, function() {
-                                    console.log('Unable to upload file');
+                                    $log.log('Unable to upload file');
                                 });
                             }
                         }
@@ -320,7 +321,7 @@ define(['require',
                         });
 
                         promise.fail( function() {
-                            console.log('Unable to read data from post with id: ' + itemId);
+                            $log.log('Unable to read data from post with id: ' + itemId);
                         });
                     };
 
@@ -332,6 +333,12 @@ define(['require',
                     $scope.changeLanguage = function changeLanguage (langId) {
                         Language.changeTo(langId);
                     }
+
+                    $rootScope.$on('$sdoChangeLanguage', function(evt, langId){
+                        Language.from(require.toUrl('./lang')).then( function(content) {
+                            $scope.content = content;
+                        });
+                    });
 
             }])
 
