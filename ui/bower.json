@@ -33,7 +33,7 @@
             "css": "{./dist/*.css,LICENSE}"
         },
         "angular-*": {
-            "js": "*.js"
+            "js": "*.{js,map}"
         },
         "bootstrap": {
             "css": "./dist/css/*.css",
