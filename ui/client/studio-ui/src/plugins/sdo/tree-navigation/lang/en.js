@@ -1,3 +1,3 @@
 {
-    "loadingStr": "my loading string"
+    "loadingStr": "loading ..."
 }

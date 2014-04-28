@@ -10,8 +10,9 @@ define(['require', 'globals', 'module'], function(require, globals, module){
     injector.invoke(['NgRegistry', function(NgRegistry) {
 
         NgRegistry
-            .addDirective('sdoTreeNavigation', ['$timeout', 'ServiceProviders', 'Utils', 'Language',
-                function($timeout, ServiceProviders, Utils, Language){
+            .addDirective('sdoTreeNavigation',
+                ['$rootScope', '$timeout', 'ServiceProviders', 'Utils', 'Language',
+                function($rootScope, $timeout, ServiceProviders, Utils, Language){
 
                 return {
                     restrict: 'E',
@@ -34,18 +35,20 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                             },
                             post: function postLink (scope, el, attrs) {
 
-                                var loadingStr = '';
+                                var tnContent = {
+                                    loadingStr: ''
+                                };
 
                                 contentPromise.then( function(content) {
 
-                                    loadingStr = content.loadingStr;
+                                    tnContent = content;
 
                                     // Set all the first-level nodes
                                     config.sections.forEach( function(section) {
 
                                         var node = {
                                                 label: section.label,
-                                                children: [loadingStr],
+                                                children: [''],
                                                 folder: true
                                             },
                                             serviceProvider,
@@ -86,7 +89,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                             data.forEach( function(item) {
                                                 if (item.folder) {
                                                     // Extend the folder items with service & children information
-                                                    item.children = [loadingStr];
+                                                    item.children = [''];
                                                     item.service = {
                                                         context: serviceContext,
                                                         method: serviceMethod
@@ -108,13 +111,17 @@ define(['require', 'globals', 'module'], function(require, globals, module){
 
                                 scope.branchSelected = function(branch) {
 
-                                    if (branch.service && branch.children[0].label === loadingStr) {
-                                        // Load the children, if they haven't been loaded
+                                    // Load the children, if they haven't been loaded yet
+                                    if (branch.service && branch.children[0].label === '') {
+                                        // Use the appropriate loading string per the language
+                                        // currently selected
+                                        branch.children = [tnContent.loadingStr];
+
                                         branch.service.method.apply(branch.service.context, [branch.id.itemId])
                                             .then( function(data) {
                                                 data.forEach( function(item) {
                                                     if (item.folder) {
-                                                        item.children = [loadingStr];
+                                                        item.children = [''];
                                                         item.service = branch.service;
                                                     }
                                                     // TO-DO: remove once contentType value is returned in the metadata
@@ -135,6 +142,12 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         });
                                     }
                                 };
+
+                                $rootScope.$on('$sdoChangeLanguage', function(evt, langId){
+                                    Language.from(require.toUrl('./lang')).then( function(content) {
+                                        tnContent = content;
+                                    });
+                                });
 
                             }
                         }
