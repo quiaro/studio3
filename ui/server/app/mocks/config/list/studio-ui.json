@@ -12,6 +12,8 @@
             "text": "lib/requirejs-text/js/text"
         },
         "module_paths": {
+            "ace": "lib/ace",
+            "ckeditor": "lib/ckeditor/ckeditor",
             "globals": "modules/common/globals",
             "common": "modules/common/common",
             "directives": "modules/common/directives"
