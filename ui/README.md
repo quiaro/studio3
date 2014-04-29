@@ -162,11 +162,58 @@ Additionally, `index.html` also includes the path (i.e. RequireJS shortcut) to t
 
 ##### Static Dependencies in Modules
 
-Module dependencies on other JavaScript modules and stylesheets (CSS & LESS) must be declared in the module definition. 
+Module dependencies on other modules, JavaScript files and stylesheets (CSS & LESS) must be declared in the module definition. 
 
-##### Support for LESS
+###### Shared Modules
 
-CSUI core, its modules and its plugins, all have support for [LESS](http://lesscss.org/). However, LESS stylesheets for the app and its modules are pre-processed and turned into CSS as part of the development cycle, meaning that the app and its modules will actually consume these stylesheets as CSS. Therefore, CSUI and all its modules should reference their stylesheets as CSS and not as LESS.
+Modules are supposed to be autonomous, therefore they should not declare dependencies on other modules. However, there are modules shared through out the application (typically found under `./client/studio-ui/src/modules/common`). These common modules should be exposed via a path mapping in the [app's configuration](https://github.com/quiaro/studio3/blob/test-asset-service/ui/server/app/mocks/config/list/studio-ui.json) under the `module_paths` property. These modules can then be referenced by their path mapping.
+
+Consider the following example:
+
+    my-module.js  >> depends on: globals (common module) & directives (common module)
+
+The AMD module definition for my-module.js would then be:
+
+    define(['globals', 'directives'],
+      function( globals, directives ) { ... });
+
+###### JavaScript Files
+
+When a module is loaded, a URL prefix is determined based on the `base_url` values of the app configuration file and its own descriptor file. This URL prefix is combined with `main` property in the descriptor file to calculate the URL of the module's main file. A module may declare dependencies on other JavaScript files that are part of the module. To load these JavaScript files, a path relative to the module's main file may be used. RequireJS uses the same URL prefix as for the main file to calculate the URLs of these JavaScript dependencies and, like the main file, **these dependencies must include their .js extension**.
+
+Consider the following example:
+
+    my-module.js  >> depends on: 
+                     globals (common module)
+                     my-dependency.js (located in the `scripts` folder, i.e. ./scripts/my-dependency.js)
+
+The AMD module definition for my-module.js would then be:
+
+    define(['globals', './scripts/my-dependency.js'],
+      function( globals, MyDependency ) { ... });
+
+
+###### Stylesheets (CSS & LESS)
+
+RequireJS loader plugins for [LESS](https://github.com/guybedford/require-less) & [CSS](https://github.com/guybedford/require-css) allow modules to declare dependencies on LESS and/or CSS files respectively.
+
+For example:
+
+    my-plugin.js  >> depends on: 
+                     my-dependency.js
+                     my-css-file.css
+                     my-less-file.less
+
+The AMD module definition for my-plugin.js would then be:
+
+    define(['./my-dependency.js', 'css!./my-css-file', 'less!./my-less-file'],
+      function( MyDependency ) { ... });
+
+Notice that the CSS plugin is invoked by the `css!` prefix while the LESS plugin is invoked by the `less!` prefix. These prefixes correspond to the key values under the `map` property, inside the `requirejs` property of the [app's configuration file](https://github.com/quiaro/studio3/blob/test-asset-service/ui/server/app/mocks/config/list/studio-ui.json). Notice also that **the paths to both CSS and LESS files are relative to the module's main file and should not include the file's extension**.
+
+###### LESS Support
+
+CSUI core, its modules and its plugins, all have support for [LESS](http://lesscss.org/). However, LESS stylesheets for the app and its modules are pre-processed and turned into CSS as part of the development workflow, meaning that the app and its modules will actually consume these stylesheets as CSS. Therefore, CSUI and all its modules should reference their stylesheets as CSS and not as LESS.
 
 Consider the following example:
 
@@ -177,12 +224,12 @@ This would ordinarily correspond to the following AMD module definition:
     define(['require', 'globals', 'less!./my-stylesheet'],
       function( require, globals ) { ... });
 
-However, since my-stylesheet.less will be pre-processed as part of the development cycle, the correct way to define my-module.js would be:
+However, since my-stylesheet.less will be pre-processed as part of the development workflow, the correct way to define my-module.js is:
 
     define(['require', 'globals', 'css!./my-stylesheet'],
       function( require, globals ) { ... });
                                    
-Since plugins are expected to be loaded and change during runtime, their stylesheets are not pre-processed during the development cycle like those of the modules. Instead, they are pre-processed on runtime (by means of the [LESS loader plugin](https://github.com/guybedford/require-less)) and as a result of this, any dependencies on LESS stylesheets need to be declared as such. For example,
+Since plugins are expected to load and change during runtime, their stylesheets are not pre-processed during the development workflow like those of the modules. Instead, they are pre-processed on runtime (by means of the [LESS loader plugin](https://github.com/guybedford/require-less)) and as a result of this, any dependencies on LESS stylesheets need to be declared as such. For example,
 
     my-plugin.js  >> depends on: globals (module), my-stylesheet.less
   
