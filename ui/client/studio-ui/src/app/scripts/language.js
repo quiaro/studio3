@@ -1,4 +1,4 @@
-/* global define, sessionStorage */
+/* global define, localStorage */
 'use strict';
 
 angular.module('crafter.studio-ui.Language', [])
@@ -9,21 +9,21 @@ angular.module('crafter.studio-ui.Language', [])
         // session storage language key
         var lang_key = 'studio_ui_lang';
 
-        if (sessionStorage) {
+        if (localStorage) {
 
-            if (!sessionStorage[lang_key]) {
+            if (!localStorage[lang_key]) {
                 // If no language has been set, set it to the default
-                sessionStorage[lang_key] = GLOBALS.default_language;
+                localStorage[lang_key] = GLOBALS.default_language;
             }
 
             return {
                 // Define where the language files will be read from
                 from: function from (baseUrl) {
                     var dfd = $q.defer(),
-                        fileName = sessionStorage[lang_key] + ".js",
+                        fileName = localStorage[lang_key] + ".js",
                         langFile = Utils.getUrl(baseUrl, fileName);
 
-                        $log.log('Language File: ', langFile);
+                        $log.log('Loading language file: ', langFile);
 
                     $http({
                         method: 'GET',
@@ -57,7 +57,7 @@ angular.module('crafter.studio-ui.Language', [])
                 changeTo: function changeTo (langId) {
                     // Save the new language value in session storage and
                     // and broadcast event to all listeners
-                    sessionStorage[lang_key] = langId;
+                    localStorage[lang_key] = langId;
                     $rootScope.$broadcast('$sdoChangeLanguage', langId);
                 }
             };
