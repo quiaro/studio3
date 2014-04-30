@@ -5,6 +5,7 @@
     "main": "asset-service.js",
 
     "config": {
-        "service_provider": "RemoteStudioServices"
+        "service_provider": "RemoteStudioServices",
+        "lang_folder": "./lang"
     }
 }

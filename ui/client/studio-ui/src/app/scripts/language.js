@@ -55,10 +55,13 @@ angular.module('crafter.studio-ui.Language', [])
                     return dfd.promise;
                 },
                 changeTo: function changeTo (langId) {
-                    // Save the new language value in session storage and
-                    // and broadcast event to all listeners
-                    localStorage[lang_key] = langId;
-                    $rootScope.$broadcast('$sdoChangeLanguage', langId);
+
+                    if (langId !== localStorage[lang_key]) {
+                        // Save the new language value in session storage and
+                        // and broadcast event to all listeners
+                        localStorage[lang_key] = langId;
+                        $rootScope.$broadcast('$sdoChangeLanguage', langId);
+                    }
                 }
             };
 

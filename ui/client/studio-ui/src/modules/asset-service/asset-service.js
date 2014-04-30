@@ -25,11 +25,19 @@ define(['require',
                 templateUrl: require.toUrl('./templates/asset-service.tpl.html'),
                 resolve: {
                     content: ['Language', function (Language) {
-                        return Language.from(require.toUrl('./lang'));
+                        return Language.from(require.toUrl(config.lang_folder));
                     }]
                 },
-                controller: ['$scope', 'content', function($scope, content) {
+                controller: ['$scope', '$rootScope', 'Language', 'content',
+                    function($scope, $rootScope, Language, content) {
+
                     $scope.content = content;
+
+                    $rootScope.$on('$sdoChangeLanguage', function(evt, langId){
+                        Language.from(require.toUrl(config.lang_folder)).then( function(content) {
+                            $scope.content = content;
+                        });
+                    });
                 }],
 
                 requireAuth: false,
@@ -333,12 +341,6 @@ define(['require',
                     $scope.changeLanguage = function changeLanguage (langId) {
                         Language.changeTo(langId);
                     }
-
-                    $rootScope.$on('$sdoChangeLanguage', function(evt, langId){
-                        Language.from(require.toUrl('./lang')).then( function(content) {
-                            $scope.content = content;
-                        });
-                    });
 
             }])
 
