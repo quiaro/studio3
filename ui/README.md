@@ -416,7 +416,7 @@ The following is a sample plugin encapsulated within the custom directive `<sdo-
 
 Notice that the location of the stylesheet (almond.less) and the template (almond.tpl.html) are relative to the module's JS file. Also, notice that, similar to loading templates with modules, RequireJS is not used to load templates; instead, these are loaded on demand by Angular.
 
-### App Configuration
+### <a name="app_configuration"></a>App Configuration
 
 CSUI and its modules are configured by means of configuration files, also known as descriptors. There is a [descriptor for the app](https://github.com/quiaro/studio3/blob/test-asset-service/ui/server/app/mocks/config/list/studio-ui.json) and one for each module of the application.
 
@@ -467,8 +467,13 @@ The app descriptor sets app-wide settings, including settings shared by all modu
 
             // Name of the application's default service provider. If no other service
             // providers are defined or if they are defined, but are named differently 
-            // than the default_service_provider then this will serve as reference to the 
-            // service provider used to boostrap the application. 
+            // than the default_service_provider then this name will serve as reference 
+            // to the service provider used to boostrap the application. If one of the 
+            // service providers in the 'service_providers' property has the same name 
+            // as the default_service_provider then the service provider used to bootstrap
+            // the application is not accessible to any modules or plugins (in other
+            // words, the services used to bootstrap the application will be hidden to 
+            // everyone except to the CSUI core)
             "default_service_provider": "StudioServices",
 
             // Default language for modules/plugins that have multi-language support
@@ -534,10 +539,7 @@ The app descriptor sets app-wide settings, including settings shared by all modu
 
 When the app bootstraps, all settings found under `module_globals` are put in a module called `globals`. All app modules that declare a dependency on this `globals` module can then have access to these settings. For example:
 
-    // This module declares 2 dependencies: one to the globals module and another to a
-    // stylesheet, 'mycss.css'
-    define(['globals',
-        'css!./mycss'], function( globals ) {
+    define(['globals'], function( globals ) {
 
         'use strict';
 
@@ -546,9 +548,40 @@ When the app bootstraps, all settings found under `module_globals` are put in a 
         console.log("The application's default state is: " + globals.default_state);
     });
 
-#### Module & Plugin Specific Settings
+#### Service Providers
 
-Modules & plugins can also declare their own specific configuration values. This can be done by a adding a `config` property in the descriptor and also adding a dependency on the module `module`. Calling `module.config()` inside the module will retrieve the module's configuration object, where the config property stores all specific configuration values. For example:
+CSUI core calls an initial service to fetch the [app's configuration file](https://github.com/quiaro/studio3/blob/test-asset-service/ui/server/app/mocks/config/list/studio-ui.json). After the app bootstraps, the user is able to interact with it and as she does, the app and its modules will call services to get or save the information input by the user. All of these services do not have to be offered by the same service provider. In other words, CSUI can be configured so that the CSUI core, modules and plugins can use different service providers. This makes it possible to work with 3rd-party services within the application, if necessary.
+
+Another benefit of this feature is giving developers the ability to add new functional modules that can use mocked versions of new services locally while the rest of the application can continue working with stable versions of the services (e.g. off of a test server). 
+
+Service providers can be configured in the app's configuration file via the `service_providers` property. The [App Configuration section](#app_configuration) provides an example on how to set different service providers. These service providers are instantiated during the bootstrap process and are put in an array. The Angular value `ServiceProviders` keeps a reference to this array of service providers, which can then be injected into any module or plugin.
+
+The property `default_service_provider` in the app's configuration file allows a specific service provider to be set as the default for the application. The Angular value `DefaultServiceProvider` saves this value, thus allowing any module or plugin access to the default service provider by combining this name and the `ServiceProviders` array, as `ServiceProviders[DefaultServiceProvider]`. For example:
+
+    define(['globals'], function( globals ) {
+
+        'use strict';
+
+        var injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['ServiceProviders', 'DefaultServiceProvider',
+            function(ServiceProviders, DefaultServiceProvider) {
+
+                // Get reference to the default service provider
+                var serviceProvider = ServiceProviders[DefaultServiceProvider];
+
+                // Use the service provider's API. Invoke the get method belonging 
+                // to a fictitious Resources module of the service provider
+                serviceProvider.Resources.get('resource-id-123').then( function(resource) {
+                        console.log('Resource: ', resource);
+                    });
+            }
+        ]);
+    });
+
+### Module Configuration
+
+Modules and plugins can declare their own specific configuration via their descriptor files. This can be done by a adding a `config` property in the descriptor and also adding a dependency on the special RequireJS module `module`. Calling `module.config()` inside the module will retrieve the module's configuration object, where the config property stores all specific configuration values. For example:
 
     /* Module descriptor */
     {
@@ -583,5 +616,59 @@ Modules & plugins can also declare their own specific configuration values. This
         ]);
     });
 
-#### Service Providers
+#### Using a Specific Service Provider
 
+Via its own descriptor file, a module can be configured to request specific access to one (or more) of the service providers available to the application. For example, assuming that 2 different service providers have been configured for the app: `StudioServices` (default) and `LocalStudioServices`, the module can be configured to work with `LocalStudioServices` as shown below: 
+
+    /* Module descriptor */
+    {
+        "name": "crafter.studio-ui.module.fictitious",
+        "version": "0.1.0",
+        "base_url": "http://domain.net/module-repo/",
+        "main": "fictitious.js",
+
+        // module-specific configuration
+        // The service_provider value corresponds to one of the names 
+        // of service providers in the app's configuration file 
+        "config": {
+            "service_provider": "LocalStudioServices"
+        }
+    }
+
+    /* Module definition */
+    define(['globals', 'module'], function( globals, module ) {
+
+        'use strict';
+
+        var config = module.config().config,
+            injector = angular.element(globals.dom_root).injector();
+
+        injector.invoke(['ServiceProviders', 'DefaultServiceProvider',
+            function(ServiceProviders, DefaultServiceProvider) {
+
+                // Get reference to the service provider specified in the
+                // module descriptor file. If not, use the default service
+                // provider as fallback 
+                var serviceProvider = (config && config.service_provider) ?
+                                ServiceProviders[config.service_provider] :
+                                ServiceProviders[DefaultServiceProvider];
+
+                // Use the service provider's API. Invoke the get method belonging 
+                // to a fictitious Resources module of the service provider
+                serviceProvider.Resources.get('resource-id-123').then( function(resource) {
+                        console.log('Resource: ', resource);
+                    });
+            }
+        ]);
+    });
+
+
+#### Multi-Language Support
+
+Modules and plugins have the option to provide multi-language support through the Language service. The Language service stores the user language preference in [localStorage](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage#localStorage) and broadcasts an `$sdoChangeLanguage` event when this value is changed. Note that when a language preference changes, the view is not refreshed; instead, the modules and plugins subscribed to the `$sdoChangeLanguage` event are responsible for updating their scope.
+
+The Language service provides two methods: 
+
+* `from`(*languageFolder*): Get the language file matching the user's current language preference. The *languageFolder* will be a path relative to the module's main file pointing to a folder with all the language files available for the module.
+  
+* `changeTo`(*languageId*): Sets the user's language preference to *languageId*.
