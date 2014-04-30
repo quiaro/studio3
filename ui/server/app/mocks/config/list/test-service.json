@@ -1,8 +1,8 @@
 {
     "name": "crafter.studio-ui.section.test-service",
     "version": "0.1.0",
-    "base_url": "modules/asset-service/",
-    "main": "asset-service.js",
+    "base_url": "modules/test-service/",
+    "main": "test-service.js",
 
     "config": {
         "service_provider": "RemoteStudioServices",

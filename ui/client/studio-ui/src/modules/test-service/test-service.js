@@ -5,7 +5,7 @@ define(['require',
         'ace/ace',
         'module',
         'directives',
-        'css!./asset-service'], function( require, globals, ace, module ) {
+        'css!./test-service'], function( require, globals, ace, module ) {
 
     'use strict';
 
@@ -22,7 +22,7 @@ define(['require',
         NgRegistry
             .addState('test', {
                 url: '/test-service',
-                templateUrl: require.toUrl('./templates/asset-service.tpl.html'),
+                templateUrl: require.toUrl('./templates/test-service.tpl.html'),
                 resolve: {
                     content: ['Language', function (Language) {
                         return Language.from(require.toUrl(config.lang_folder));
