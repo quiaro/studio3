@@ -14,9 +14,11 @@
         "module_paths": {
             "ace": "lib/ace",
             "ckeditor": "lib/ckeditor/ckeditor",
-            "globals": "modules/common/globals",
             "common": "modules/common/common",
-            "directives": "modules/common/directives"
+            "directives": "modules/common/directives",
+            "globals": "modules/common/globals",
+            "pubsub": "lib/pubsub-js/pubsub",
+            "requirejs": "lib/requirejs/js/requirejs"
         }
     },
 
@@ -33,7 +35,7 @@
     },
 
     "modules": [
-        "login", "dashboard", "test-service"
+        "login", "dashboard", "test-service", "authoring"
     ],
 
     "service_providers": [{
@@ -55,5 +57,11 @@
             },
             "site": "coconut"
         }
-    }]
+    }],
+
+    "bridged_events": [
+        "app/element/update",
+        "editor/element/select",
+        "editor/element/edit"
+    ]
 }

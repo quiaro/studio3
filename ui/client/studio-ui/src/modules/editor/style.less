@@ -1,6 +1,6 @@
 // Studio variables and mixins
-@import "/client/studio-ui/src/app/common/styles/variables.less";
-@import "/client/studio-ui/src/app/common/styles/mixins.less";
+@import "variables.less";
+@import "mixins.less";
 
 /* ---------------------------------------- */
 /* -- Styles from Bootstrap v.3.0 --------- */
@@ -36,17 +36,17 @@
 }
 
 #studio-preview-toolbar {
-	position: fixed;
-	bottom: 0;
-	left: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     .size(100%, 50px);
 }
 
 #studio-component-controls {
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
 
     > ul {
         border: 2px solid @editor-border;

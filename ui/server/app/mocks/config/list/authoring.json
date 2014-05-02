@@ -1,0 +1,14 @@
+{
+    "name": "crafter.studio-ui.sections.authoring",
+    "version": "0.1.0",
+    "base_url": "modules/authoring/",
+    "main": "authoring.js",
+
+    "config": {
+        "editor": {
+            "frame_id": "editor-iframe",
+            "pubsub_module": "pubsub"
+        },
+        "lang_folder": "./lang"
+    }
+}

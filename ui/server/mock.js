@@ -73,6 +73,9 @@ module.exports = {
         }, {
             arguments: { module: "tree-navigation"},
             path: '/config/list/tree-navigation'
+        }, {
+            arguments: { module: "authoring"},
+            path: '/config/list/authoring'
         }]
     }, {
         method: 'get',

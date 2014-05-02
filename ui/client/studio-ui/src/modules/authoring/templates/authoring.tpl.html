@@ -2,14 +2,7 @@
 <!-- If this div is moved after the iframe, it won't be rendered! -->
 <div id="tools-panel" class="{{authoring.tools.state}}" style="height:{{authoring.tools.height}}%;">
     <div id="component-navigator">
-        <div
-          data-angular-treeview="true"
-          data-tree-id="navigatorContent"
-          data-tree-model="navigatorModel"
-          data-node-id="roleId"
-          data-node-label="roleName"
-          data-node-children="children" >
-        </div>
+
     </div>
     <div id="tools-area">
 
@@ -35,7 +28,7 @@
 
     <!-- <form>
         <div>
-        	<div ng-controller="OneCtrl">
+            <div ng-controller="OneCtrl">
                 <label for='view-locked'>
                     <input type='checkbox' name='changes' id='view-locked' ng-click="lockView()" />
                     <span>View as locked</span>
@@ -59,4 +52,8 @@
     </form> -->
 </div>
 
-<editor-iframe frameborder="0" ng-src="{{authoring.site}}" height="{{100 - authoring.tools.height}}%" width="100%" />
+<editor-iframe frameborder="0"
+               ng-src="{{authoring.site}}"
+               height="{{100 - authoring.tools.height}}%"
+               width="100%" />
+
