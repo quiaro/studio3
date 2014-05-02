@@ -57,7 +57,7 @@ module.exports = function(grunt) {
             dev: {
                 expand: true,
                 cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                src: '**/*.{html,css,js}',
+                src: '**/*.{html,css,js,json}',
                 dest: '<%= sdo.output.dev %><%= sdo.path.modules %>'
             },
             assets: {
@@ -74,12 +74,12 @@ module.exports = function(grunt) {
                 }, {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.modules %>',
-                    src: '**/*.{html,css}',
+                    src: '**/*.{html,css,json}',
                     dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.modules %>'
                 }, {
                     expand: true,
                     cwd: '<%= sdo.root %><%= sdo.path.plugins %>',
-                    src: '**/*.{html,css,less}',
+                    src: '**/*.{html,css,less,json}',
                     dest: '<%= sdo.output.build %><%= sdo.path.build %><%= sdo.path.plugins %>'
                 }]
             },
