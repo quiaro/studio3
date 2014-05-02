@@ -3,7 +3,8 @@
 define(['globals',
         'module',
         'require',
-        'pubsub'], function( globals, module, require, pubsub ) {
+        'pubsub',
+        'css!./authoring'], function( globals, module, require, pubsub ) {
 
     'use strict';
 
