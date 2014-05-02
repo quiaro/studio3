@@ -1,6 +1,6 @@
 To learn more about this project, please check out the documentation in our wiki:
 
-(http://wiki.craftercms.org/display/CRAFTER/Studio+UI)[http://wiki.craftercms.org/display/CRAFTER/Studio+UI]
+http://wiki.craftercms.org/display/CRAFTER/Studio+UI
 
 <!-- 
 Requirements
