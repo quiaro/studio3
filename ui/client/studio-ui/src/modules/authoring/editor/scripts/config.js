@@ -111,11 +111,6 @@ define({
         }
       ]
     }
-  },
-
-  REGISTRY: {
-    path: '/studio-ui/config/registry.json',
-    bridgedEventsKey: 'bridgedEvents'
   }
 
 });

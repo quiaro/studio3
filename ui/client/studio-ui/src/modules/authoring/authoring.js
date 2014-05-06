@@ -3,8 +3,8 @@
 define(['globals',
         'module',
         'require',
-        'pubsub',
-        'css!./authoring'], function( globals, module, require, pubsub ) {
+        './editor/scripts/require-config.js',
+        'css!./authoring'], function( globals, module, require, RequireConfig ) {
 
     'use strict';
 
@@ -28,16 +28,67 @@ define(['globals',
             })
 
             .addDirective('editorIframe',
-                ['eventBridge', '$rootScope', function(eventBridge, $rootScope) {
+                ['$rootScope', function($rootScope) {
+
+                function setupEditor(iframeEl) {
+                    // console.log('requirejs: ', requirejs);
+                }
+
+                function setupEventBridge(iframeEl) {
+
+                }
+
                 return {
                     restrict: 'E',
                     replace: true,
-                    template: '<iframe id="' + config.editor.frame_id + '">'
+                    template: '<iframe>',
+                    controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', 'Utils', 'CONFIG',
+                        function($scope, $element, $attrs, $transclude, $http, $stateParams, Utils, CONFIG) {
+
+                        var reqConfig = RequireConfig(CONFIG.base_url,
+                                                      config.editor.dependencies, {
+                                                        module_paths: CONFIG.requirejs.module_paths,
+                                                        map: CONFIG.requirejs.map,
+                                                        bridged_events: config.editor.bridged_events
+                                                      });
+                        $http({
+                            method: 'GET',
+                            url: $stateParams.path + '.html',
+                            cache: false,
+                            transformResponse: function(data) {
+                                // Inject the editor into the page
+                                var requireMapping = CONFIG.requirejs.module_paths['requirejs'],
+                                    editorInjectStr;
+
+                                if (!requireMapping) {
+                                    throw new Error('No path mapping found for \'requirejs\' in module_paths');
+                                }
+
+                                editorInjectStr =   '<script ' +
+                                                        'src="' + Utils.getUrl(CONFIG.base_url, requireMapping) + '.js' + '">' +
+                                                    '</script>\n' + reqConfig + '\n' +
+                                                    '<script ' +
+                                                        'src="' + require.toUrl('./editor/editor.js') + '">' +
+                                                    '</script>';
+
+                                data = data.replace(/<head>([\S\s]*?)<\/head>/gm,
+                                                    '<head>$1\n' + editorInjectStr + '</head>');
+                                return data;
+                            }
+                        }).then( function (response) {
+
+                            // console.log("Response: ", response.data);
+
+                            $element[0].contentWindow.contents = response.data;
+                            $element.attr('src', 'javascript:window["contents"]');
+                        })
+
+                    }]
                 };
             }])
 
             .addFactory('eventBridge',
-                ['$rootScope', '$log', 'CONFIG', function($rootScope, $log, CONFIG) {
+                ['$rootScope', '$log', function($rootScope, $log) {
 
                 // Get all the events from the registry that we want to pass on
                 // from angular to the editor
@@ -55,7 +106,7 @@ define(['globals',
                     return requireFuncCache;
                 }
 
-                CONFIG.bridged_events.forEach( function(evt) {
+                config.bridged_events.forEach( function(evt) {
                     // For each bridged event, create a listener.
                     // When the event is published in angular, this listener will
                     // publish it on the editor as well (using the PubSub module).
@@ -85,8 +136,8 @@ define(['globals',
             }])
 
             .addController('AuthoringCtrl',
-                ['$scope', '$rootScope', '$stateParams', 'Language', 'content',
-                    function($scope, $rootScope, $stateParams, Language, content) {
+                ['$scope', '$rootScope', 'Language', 'content',
+                    function($scope, $rootScope, Language, content) {
 
                 $scope.content = content;
 
@@ -97,7 +148,6 @@ define(['globals',
                 });
 
                 $scope.authoring = {
-                    site: $stateParams.path + '.html',
                     tools: {
                         state: 'off',
                         height: 0,

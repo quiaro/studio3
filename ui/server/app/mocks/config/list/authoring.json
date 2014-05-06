@@ -6,8 +6,12 @@
 
     "config": {
         "editor": {
-            "frame_id": "editor-iframe",
-            "pubsub_module": "pubsub"
+            "dependencies": [ "ckeditor", "domReady", "jquery", "pubsub" ],
+            "bridged_events": [
+                "app/element/update",
+                "editor/element/select",
+                "editor/element/edit"
+            ]
         },
         "lang_folder": "./lang"
     }
