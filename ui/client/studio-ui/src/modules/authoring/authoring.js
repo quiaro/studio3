@@ -45,12 +45,8 @@ define(['globals',
                     controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', 'Utils', 'CONFIG',
                         function($scope, $element, $attrs, $transclude, $http, $stateParams, Utils, CONFIG) {
 
-                        var reqConfig = RequireConfig(CONFIG.base_url,
-                                                      config.editor.dependencies, {
-                                                        module_paths: CONFIG.requirejs.module_paths,
-                                                        map: CONFIG.requirejs.map,
-                                                        bridged_events: config.editor.bridged_events
-                                                      });
+                        var reqConfig = RequireConfig(CONFIG, config.editor);
+
                         $http({
                             method: 'GET',
                             url: $stateParams.path + '.html',
@@ -64,23 +60,27 @@ define(['globals',
                                     throw new Error('No path mapping found for \'requirejs\' in module_paths');
                                 }
 
-                                editorInjectStr =   '<script ' +
+                                editorInjectStr =   '<!-- Studio Editor Injection -->\n' +
+                                                    '<script ' +
                                                         'src="' + Utils.getUrl(CONFIG.base_url, requireMapping) + '.js' + '">' +
                                                     '</script>\n' + reqConfig + '\n' +
-                                                    '<script ' +
-                                                        'src="' + require.toUrl('./editor/editor.js') + '">' +
-                                                    '</script>';
+                                                    '<script>requirejs(["editor/editor"]);</script>\n'+
+                                                    '<!-- EO: Studio Editor Injection -->';
 
-                                data = data.replace(/<head>([\S\s]*?)<\/head>/gm,
-                                                    '<head>$1\n' + editorInjectStr + '</head>');
+                                data = data.replace(/<\/body>/gm,
+                                                    editorInjectStr + '\n</body>');
                                 return data;
                             }
                         }).then( function (response) {
 
-                            // console.log("Response: ", response.data);
-
+                            // Editor injection per:
+                            // http://sparecycles.wordpress.com/2012/03/08/inject-content-into-a-new-iframe/
                             $element[0].contentWindow.contents = response.data;
                             $element.attr('src', 'javascript:window["contents"]');
+
+                            $scope.$on(config.editor.load_event, function (event, args) {
+                                // setupEventBridge
+                            });
                         })
 
                     }]
@@ -190,54 +190,13 @@ define(['globals',
                     });
                 });
 
+                $scope.updateElement = function () {
+                    console.log('Calling updateElement ... ');
+                    $scope.$broadcast('app/element/update', "Element updated in authoring module");
+                };
+
             }]);
 
     }]);
 
 });
-
-
-/* TODO : Remove the controllers below. These are here only to test communication from
- * the angular app to the editor
- */
-function OneCtrl ($scope, $rootScope) {
-    $scope.locked = {};
-    $scope.locked.value = true;
-
-    $scope.lockView = function lockView() {
-        $rootScope.$broadcast('app/element/update', {
-            id: $scope.selectedElement,
-            state: 'locked'
-        });
-    };
-}
-
-function TwoCtrl ($scope, $rootScope) {
-    $scope.readonly = {};
-    $scope.readonly.value = false;
-
-    $scope.readOnlyView = function readOnlyView() {
-        $rootScope.$broadcast('app/element/update', {
-            id: $scope.selectedElement,
-            state: 'read'
-        });
-    };
-}
-
-function ThreeCtrl ($scope, $rootScope) {
-    $scope.edit = {};
-    $scope.edit.value = true;
-
-    $scope.editView = function editView() {
-        $rootScope.$broadcast('app/element/update', {
-            id: $scope.selectedElement,
-            state: 'edit'
-        });
-    };
-}
-
-OneCtrl.$inject = ['$scope', '$rootScope'];
-
-TwoCtrl.$inject = ['$scope', '$rootScope'];
-
-ThreeCtrl.$inject = ['$scope', '$rootScope'];
