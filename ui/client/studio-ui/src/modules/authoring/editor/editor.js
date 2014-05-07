@@ -1,7 +1,7 @@
-/* global CKEDITOR, define */
+/* global define */
 
 define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/config', 'editor/scripts/event-bridge', 'css!editor/editor'],
-    function(module, domReady, $, ckeditor, pubsub, config, eventBridge) {
+    function(module, domReady, $, CKEDITOR, pubsub, config, eventBridge) {
 
     'use strict';
 

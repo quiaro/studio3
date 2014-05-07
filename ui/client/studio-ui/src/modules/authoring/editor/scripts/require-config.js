@@ -13,7 +13,7 @@ define(['require'], function(require) {
             paths: globalCfg.requirejs.module_paths,
             shim: {
                 ckeditor: {
-                    exports: 'ckeditor'
+                    exports: 'CKEDITOR'
                 }
             },
             map: {
