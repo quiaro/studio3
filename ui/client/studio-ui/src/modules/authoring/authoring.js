@@ -29,12 +29,21 @@ define(['globals',
 
             .addDirective('editorIframe', [function() {
 
+                /*jshint -W072 */
                 return {
                     restrict: 'E',
                     replace: true,
                     template: '<iframe>',
-                    controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', '$log', 'Utils', 'CONFIG',
-                        function($scope, $element, $attrs, $transclude, $http, $stateParams, $log, Utils, CONFIG) {
+                    controller: ['$scope',
+                                 '$element',
+                                 '$attrs',
+                                 '$transclude',
+                                 '$http',
+                                 '$stateParams',
+                                 '$log',
+                                 'Utils',
+                                 'CONFIG',
+                            function($scope, $element, $attrs, $transclude, $http, $stateParams, $log, Utils, CONFIG) {
 
                         function setupEventBridge($scope, eventList, requirejs) {
 
@@ -80,19 +89,19 @@ define(['globals',
                             cache: false,
                             transformResponse: function(data) {
                                 // Inject the editor into the page
-                                var requireMapping = CONFIG.requirejs.module_paths['requirejs'],
+                                var requirejsPath = CONFIG.requirejs.module_paths.requirejs,
                                     editorInjectStr;
 
-                                if (!requireMapping) {
+                                if (!requirejsPath) {
                                     throw new Error('No path mapping found for \'requirejs\' in module_paths');
                                 }
 
                                 editorInjectStr =   '<!-- Studio Editor Injection -->\n' +
-                                                    '<script ' +
-                                                        'src="' + Utils.getUrl(CONFIG.base_url, requireMapping) + '.js' + '">' +
-                                                    '</script>\n' + reqConfig + '\n' +
-                                                    '<script>requirejs(["editor/editor"]);</script>\n'+
-                                                    '<!-- EO: Studio Editor Injection -->';
+                                    '<script ' +
+                                        'src="' + Utils.getUrl(CONFIG.base_url, requirejsPath) + '.js' + '">' +
+                                    '</script>\n' + reqConfig + '\n' +
+                                    '<script>requirejs(["editor/editor"]);</script>\n'+
+                                    '<!-- EO: Studio Editor Injection -->';
 
                                 data = data.replace(/<\/body>/gm, editorInjectStr + '\n</body>');
                                 return data;
@@ -108,10 +117,11 @@ define(['globals',
                                 $log.log('Editor loaded ... setting up event bridge');
                                 setupEventBridge($scope, config.editor.bridged_events, iframe.requirejs);
                             });
-                        })
+                        });
 
                     }]
                 };
+                /*jshint +W072 */
             }])
 
             .addController('AuthoringCtrl',
@@ -170,7 +180,7 @@ define(['globals',
                 });
 
                 $scope.updateElement = function () {
-                    $scope.$broadcast('app/element/update', { msg: "Element updated in authoring module" });
+                    $scope.$broadcast('app/element/update', { msg: 'Element updated in authoring module' });
                 };
 
             }]);

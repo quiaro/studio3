@@ -22,6 +22,7 @@ define(['require'], function(require) {
 
         };
 
+        /*jshint -W069 */
         // Add path mappings to modules specific to the editor
         configObj.paths['editor'] = require.toUrl('..');
         configObj.paths['jquery-private'] = require.toUrl('./jquery-private');
@@ -34,6 +35,7 @@ define(['require'], function(require) {
         // Add aliases used by the editor
         configObj.map['*']['jquery'] = 'jquery-private';
         configObj.map['jquery-private'] = { 'jquery': 'jquery' };
+        /*jshint +W069 */
 
         return '<script>requirejs.config(' + JSON.stringify(configObj) + ')</script>';
     };

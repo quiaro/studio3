@@ -150,7 +150,7 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                 });
 
                             }
-                        }
+                        };
 
                     }
                 };

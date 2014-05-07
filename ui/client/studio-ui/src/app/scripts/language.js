@@ -1,4 +1,4 @@
-/* global define, localStorage */
+/* global localStorage */
 'use strict';
 
 angular.module('crafter.studio-ui.Language', [])
@@ -20,7 +20,7 @@ angular.module('crafter.studio-ui.Language', [])
                 // Define where the language files will be read from
                 from: function from (baseUrl) {
                     var dfd = $q.defer(),
-                        fileName = localStorage[lang_key] + ".json",
+                        fileName = localStorage[lang_key] + '.json',
                         langFile = Utils.getUrl(baseUrl, fileName);
 
                         $log.log('Loading language file: ', langFile);
@@ -36,7 +36,7 @@ angular.module('crafter.studio-ui.Language', [])
                         $log.warn('Language file not found in: ' + langFile);
                         $log.warn('Fallback to default language: ' + GLOBALS.default_language);
 
-                        fileName = GLOBALS.default_language + ".json";
+                        fileName = GLOBALS.default_language + '.json';
                         langFile = Utils.getUrl(baseUrl, fileName);
 
                         $http({
@@ -66,7 +66,7 @@ angular.module('crafter.studio-ui.Language', [])
             };
 
         } else {
-            throw new Error("Browser does not support Session Storage");
+            throw new Error('Browser does not support Session Storage');
         }
 
     }]);

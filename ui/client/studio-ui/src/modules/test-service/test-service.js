@@ -48,7 +48,7 @@ define(['require',
                 ['$scope', '$timeout', '$rootScope', '$log', 'Language',
                     function($scope, $timeout, $rootScope, $log, Language) {
 
-                    var treeNav, treeNavClearWatch,
+                    var treeNav,
                         editor = ace.edit('code-editor');
 
                     // Initialize scope values
@@ -340,7 +340,7 @@ define(['require',
 
                     $scope.changeLanguage = function changeLanguage (langId) {
                         Language.changeTo(langId);
-                    }
+                    };
 
             }])
 

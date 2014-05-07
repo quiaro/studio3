@@ -1,6 +1,13 @@
-/* global define */
+/* global define, requirejs */
 
-define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/config', 'editor/scripts/event-bridge', 'css!editor/editor'],
+define(['module',
+        'domReady',
+        'jquery',
+        'ckeditor',
+        'pubsub',
+        'editor/scripts/config',
+        'editor/scripts/event-bridge',
+        'css!editor/editor'],
     function(module, domReady, $, CKEDITOR, pubsub, config, eventBridge) {
 
     'use strict';
@@ -379,7 +386,7 @@ define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/co
         /* Subscriptions */
         pubsub.subscribe('app/element/update', function(msg, data) {
 
-            console.log("Authoring module said: " + data.msg);
+            console.log('Authoring module said: ' + data.msg);
             // var el;
 
             // if (data.id && data.state) {
