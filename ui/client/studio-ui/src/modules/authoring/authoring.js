@@ -27,16 +27,7 @@ define(['globals',
                 rolesAllowed: ['admin', 'editor']
             })
 
-            .addDirective('editorIframe',
-                ['$rootScope', function($rootScope) {
-
-                function setupEditor(iframeEl) {
-                    // console.log('requirejs: ', requirejs);
-                }
-
-                function setupEventBridge(iframeEl) {
-
-                }
+            .addDirective('editorIframe', [function() {
 
                 return {
                     restrict: 'E',
@@ -44,6 +35,40 @@ define(['globals',
                     template: '<iframe>',
                     controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', 'Utils', 'CONFIG',
                         function($scope, $element, $attrs, $transclude, $http, $stateParams, Utils, CONFIG) {
+
+                        function setupEventBridge($scope, eventList, requirejs) {
+
+                            if (!requirejs) {
+                                $log.warn('The global variable \'requirejs\' is not present in the editor iframe');
+
+                            } else {
+                                // Get reference to the editor's publish/subscribe module
+                                requirejs(['pubsub'], function (editorPubSub) {
+
+                                    eventList.forEach( function(evt) {
+                                        // For each bridged event, create a listener.
+                                        // When the event is published in angular, this listener will
+                                        // publish it on the editor as well (using the pubsub module).
+                                        $scope.$on(evt, function(event, data) {
+
+                                            if (!angular.isObject(data)) {
+                                                throw new Error('Data for event \'' + evt + '\' is not an object');
+                                            }
+
+                                            // We're going to add a property to the message data "cancelBridge"
+                                            // to check if we should pass on an event or not (and avoid creating
+                                            // an endless loop)
+                                            if (!data.cancelBridge) {
+                                                data.cancelBridge = true;
+
+                                                editorPubSub.publish(evt, data);
+                                            }
+                                        });
+                                    });
+
+                                });
+                            }
+                        }
 
                         var reqConfig = RequireConfig(CONFIG, config.editor);
 
@@ -78,61 +103,13 @@ define(['globals',
                             $element[0].contentWindow.contents = response.data;
                             $element.attr('src', 'javascript:window["contents"]');
 
-                            $scope.$on(config.editor.load_event, function (event, args) {
-                                // setupEventBridge
+                            $scope.$on(config.editor.load_event, function (event, iframe) {
+                                setupEventBridge($scope, config.editor.bridged_events, iframe.requirejs);
                             });
                         })
 
                     }]
                 };
-            }])
-
-            .addFactory('eventBridge',
-                ['$rootScope', '$log', function($rootScope, $log) {
-
-                // Get all the events from the registry that we want to pass on
-                // from angular to the editor
-                var iframeCache, requireFuncCache;
-
-                function getIframe() {
-                    iframeCache = iframeCache || angular.element('#' + config.editor.frame_id);
-                    return iframeCache;
-                }
-
-                function getRequireFunc(iframe) {
-                    if (!requireFuncCache && iframe.length) {
-                        requireFuncCache = iframe[0].contentWindow.require;
-                    }
-                    return requireFuncCache;
-                }
-
-                config.bridged_events.forEach( function(evt) {
-                    // For each bridged event, create a listener.
-                    // When the event is published in angular, this listener will
-                    // publish it on the editor as well (using the PubSub module).
-                    $rootScope.$on(evt, function(event, data) {
-                        var iframe, requireFunc;
-
-                        // We're going to add a property to the message data "cancelBridge"
-                        // to check if we should pass on an event or not and avoid creating
-                        // an endless loop
-                        if (!data.cancelBridge) {
-                            data.cancelBridge = true;
-
-                            iframe = getIframe();
-                            requireFunc = getRequireFunc(iframe);
-
-                            if (requireFunc) {
-                                requireFunc([config.editor.pubsub_module], function (editorPubSub) {
-                                    editorPubSub.publish(evt, data);
-                                });
-                            } else {
-                                $log.warn('The global variable \'require\' is not present in the editor iframe');
-                            }
-                        }
-                    });
-                });
-
             }])
 
             .addController('AuthoringCtrl',
@@ -192,7 +169,7 @@ define(['globals',
 
                 $scope.updateElement = function () {
                     console.log('Calling updateElement ... ');
-                    $scope.$broadcast('app/element/update', "Element updated in authoring module");
+                    $scope.$broadcast('app/element/update', { msg: "Element updated in authoring module" });
                 };
 
             }]);

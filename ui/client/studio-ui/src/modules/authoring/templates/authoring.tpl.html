@@ -11,8 +11,8 @@
         <div class="tabbable">
             <ul class="nav nav-tabs">
                 <li ng-repeat="tab in authoring.tools.tabs"
-                    ng-class="{active: $parent.authoring.tools.activeTab == tab.name }">
-                    <a ng-click="$parent.authoring.setActiveTab(tab.name)">{{tab.title}}</a>
+                    ng-class="{active: authoring.tools.activeTab == tab.name }">
+                    <a ng-click="authoring.setActiveTab(tab.name); updateElement()">{{tab.title}}</a>
                 </li>
             </ul>
 
@@ -20,7 +20,7 @@
                 <div ng-repeat="tab in authoring.tools.tabs"
                      ng-class="'content'"
                      ng-include="tab.contentUrl"
-                     ng-hide="$parent.authoring.tools.activeTab != tab.name">
+                     ng-hide="authoring.tools.activeTab != tab.name">
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@
 
     "config": {
         "editor": {
-            "dependencies": [ "ckeditor", "domReady", "jquery", "pubsub" ],
+            "load_event": "editor/load",
             "bridged_events": [
                 "app/element/update",
                 "editor/element/select",

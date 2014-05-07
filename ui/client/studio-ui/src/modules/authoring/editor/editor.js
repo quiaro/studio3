@@ -36,8 +36,8 @@ define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/co
         var ngAuthoringScope = parent.angular.element('#' + window.frameElement.id).scope(),
             activeElement, fm, cc;
 
-        // Editor has finished loading -broadcast event
-        ngAuthoringScope.$broadcast(editorCfg.load_event);
+        // Editor has finished loading -broadcast event (with a reference to requirejs)
+        ngAuthoringScope.$broadcast(editorCfg.load_event, { requirejs: requirejs });
 
         function changeElementState(el, state, inlineStyles) {
 
@@ -380,7 +380,7 @@ define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/co
         /* Subscriptions */
         pubsub.subscribe('app/element/update', function(msg, data) {
 
-            alert("Authoring module said: " + data);
+            console.log("Authoring module said: " + data.msg);
             // var el;
 
             // if (data.id && data.state) {
