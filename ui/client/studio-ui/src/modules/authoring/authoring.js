@@ -33,8 +33,8 @@ define(['globals',
                     restrict: 'E',
                     replace: true,
                     template: '<iframe>',
-                    controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', 'Utils', 'CONFIG',
-                        function($scope, $element, $attrs, $transclude, $http, $stateParams, Utils, CONFIG) {
+                    controller: ['$scope', '$element', '$attrs', '$transclude', '$http', '$stateParams', '$log', 'Utils', 'CONFIG',
+                        function($scope, $element, $attrs, $transclude, $http, $stateParams, $log, Utils, CONFIG) {
 
                         function setupEventBridge($scope, eventList, requirejs) {
 
@@ -66,6 +66,8 @@ define(['globals',
                                         });
                                     });
 
+                                    $log.log('Event bridge set for the events: ', eventList);
+
                                 });
                             }
                         }
@@ -92,8 +94,7 @@ define(['globals',
                                                     '<script>requirejs(["editor/editor"]);</script>\n'+
                                                     '<!-- EO: Studio Editor Injection -->';
 
-                                data = data.replace(/<\/body>/gm,
-                                                    editorInjectStr + '\n</body>');
+                                data = data.replace(/<\/body>/gm, editorInjectStr + '\n</body>');
                                 return data;
                             }
                         }).then( function (response) {
@@ -103,7 +104,8 @@ define(['globals',
                             $element[0].contentWindow.contents = response.data;
                             $element.attr('src', 'javascript:window["contents"]');
 
-                            $scope.$on(config.editor.load_event, function (event, iframe) {
+                            $scope.$on('editor/load', function (event, iframe) {
+                                $log.log('Editor loaded ... setting up event bridge');
                                 setupEventBridge($scope, config.editor.bridged_events, iframe.requirejs);
                             });
                         })
@@ -168,7 +170,6 @@ define(['globals',
                 });
 
                 $scope.updateElement = function () {
-                    console.log('Calling updateElement ... ');
                     $scope.$broadcast('app/element/update', { msg: "Element updated in authoring module" });
                 };
 

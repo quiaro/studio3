@@ -6,9 +6,9 @@
 
     "config": {
         "editor": {
-            "load_event": "editor/load",
             "bridged_events": [
                 "app/element/update",
+                "editor/load",
                 "editor/element/select",
                 "editor/element/edit"
             ]

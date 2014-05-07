@@ -33,11 +33,10 @@ define(['module', 'domReady', 'jquery', 'ckeditor', 'pubsub', 'editor/scripts/co
     });
 
     domReady(function () {
-        var ngAuthoringScope = parent.angular.element('#' + window.frameElement.id).scope(),
-            activeElement, fm, cc;
+        var activeElement, fm, cc;
 
         // Editor has finished loading -broadcast event (with a reference to requirejs)
-        ngAuthoringScope.$broadcast(editorCfg.load_event, { requirejs: requirejs });
+        pubsub.publish('editor/load', { requirejs: requirejs });
 
         function changeElementState(el, state, inlineStyles) {
 
