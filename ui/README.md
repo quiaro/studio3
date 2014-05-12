@@ -1,8 +1,8 @@
-<!-- To learn more about this project, please check out the documentation in our wiki:
+To learn more about this project, please check out the documentation in our wiki:
 
-http://wiki.craftercms.org/display/CRAFTER/Studio+UI -->
+http://wiki.craftercms.org/display/CRAFTER/Studio+UI
 
-
+<!-- 
 Requirements
 ------------
 
@@ -677,3 +677,4 @@ The Language service provides two methods:
   
 * `changeTo`(*languageId*): Sets the user's language preference to *languageId*.
 
+ -->
