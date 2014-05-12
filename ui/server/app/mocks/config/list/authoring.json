@@ -1,7 +1,7 @@
 {
     "name": "crafter.studio-ui.sections.authoring",
     "version": "0.1.0",
-    "base_url": "modules/authoring/",
+    "base_url": "src/modules/authoring/",
     "main": "authoring.js",
 
     "config": {

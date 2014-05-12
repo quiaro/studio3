@@ -14,10 +14,10 @@
         "module_paths": {
             "ace": "lib/ace",
             "ckeditor": "lib/ckeditor/ckeditor",
-            "common": "modules/common/common",
-            "directives": "modules/common/directives",
+            "common": "src/modules/common/common",
+            "directives": "src/modules/common/directives",
             "domReady": "lib/requirejs-domready/js/domReady",
-            "globals": "modules/common/globals",
+            "globals": "src/modules/common/globals",
             "jquery": "lib/jquery/js/jquery.min",
             "pubsub": "lib/pubsub-js/pubsub",
             "requirejs": "lib/requirejs/js/require"
@@ -32,8 +32,8 @@
         "default_language": "en",
         "unauthorized_state": "unauthorized",
         "unauthorized_url": "/unauthorized",
-        "templates_url": "modules/common/templates",
-        "plugins_url": "plugins"
+        "templates_url": "src/modules/common/templates",
+        "plugins_url": "src/plugins"
     },
 
     "modules": [
