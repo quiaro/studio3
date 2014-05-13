@@ -41,6 +41,8 @@ define(['require', 'globals', 'module'], function(require, globals, module){
 
                                 contentPromise.then( function(content) {
 
+                                    var defServiceProvider = config.service_provider;
+
                                     tnContent = content;
 
                                     // Set all the first-level nodes
@@ -62,7 +64,8 @@ define(['require', 'globals', 'module'], function(require, globals, module){
                                         scope.treeData.push(node);
 
                                         if (section.content) {
-                                            serviceProvider = section.content.service_provider;
+                                            // Allow sections to have a specific service provider
+                                            serviceProvider = section.content.service_provider || defServiceProvider;
                                             serviceStr = section.content.service;
                                             contentType = section.content.type;
                                             node.contentType = contentType;

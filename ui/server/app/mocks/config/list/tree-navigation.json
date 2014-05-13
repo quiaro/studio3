@@ -5,25 +5,23 @@
     "main": "tree-navigation.js",
 
     "config": {
+        "service_provider": "LocalStudioServices",
         "sections": [{
             "label": "Assets",
             "content": {
                 "type": "asset",
-                "service_provider": "LocalStudioServices",
                 "service": "Asset.list"
             }
         }, {
             "label": "Descriptors",
             "content": {
                 "type": "descriptor",
-                "service_provider": "LocalStudioServices",
                 "service": "Descriptor.list"
             }
         }, {
             "label": "Templates",
             "content": {
                 "type": "template",
-                "service_provider": "LocalStudioServices",
                 "service": "Template.list"
             }
         }]
