@@ -125,8 +125,8 @@ define(['globals',
             }])
 
             .addController('AuthoringCtrl',
-                ['$scope', '$rootScope', 'Language', 'content',
-                    function($scope, $rootScope, Language, content) {
+                ['$scope', '$rootScope', '$timeout', 'Language', 'content',
+                    function($scope, $rootScope, $timeout, Language, content) {
 
                 $scope.content = content;
 
@@ -181,6 +181,15 @@ define(['globals',
 
                 $scope.updateElement = function () {
                     $scope.$broadcast('app/element/update', { msg: 'Element updated in authoring module' });
+                };
+
+                $scope.closeTools = function () {
+                    $timeout( function() {
+                        $scope.$apply(function () {
+                            $scope.authoring.tools.state = 'off';
+                            $scope.authoring.tools.height = 0;
+                        });
+                    })
                 };
 
             }]);

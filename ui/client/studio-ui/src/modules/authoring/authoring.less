@@ -12,6 +12,31 @@
     &.off { display: none; }
 
     &.on { display: block; }
+
+    button.btn-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 100;
+        border-radius: 0;
+        border-bottom-left-radius: @border-radius-base;
+        border-top: 0;
+        border-right: 0;
+        border-bottom: 1px solid @gray-dark;
+        border-left: 1px solid @gray-dark;
+
+        color: lighten(#000, 70%);
+        #gradient.vertical(@toolbar-background-top, @toolbar-background-bottom);
+
+        &:hover, &:active, &.on {
+            background-color: @toolbar-background-top;
+            color: @gray-lighter;
+        };
+
+        .btn-label {
+            .hide-text();
+        }
+    }
 }
 
 #component-navigator {

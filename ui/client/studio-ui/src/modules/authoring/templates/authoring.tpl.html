@@ -1,13 +1,15 @@
 
 <!-- If this div is moved after the iframe, it won't be rendered! -->
 <div id="tools-panel" class="{{authoring.tools.state}}" style="height:{{authoring.tools.height}}%;">
+    <button type="button" class="btn-close btn btn-primary" ng-click="closeTools()">
+        <span class="glyphicon glyphicon-remove-circle"></span>
+        <span class="btn-label">Close</span>
+    </button>
+
     <div id="component-navigator">
 
     </div>
     <div id="tools-area">
-
-        <!-- <p class="intro">Element selected: <span id="element-id">{{selectedElement}}</span></p> -->
-
         <div class="tabbable">
             <ul class="nav nav-tabs">
                 <li ng-repeat="tab in authoring.tools.tabs"
@@ -25,31 +27,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <form>
-        <div>
-            <div ng-controller="OneCtrl">
-                <label for='view-locked'>
-                    <input type='checkbox' name='changes' id='view-locked' ng-click="lockView()" />
-                    <span>View as locked</span>
-                </label>
-            </div>
-
-            <div ng-controller="TwoCtrl">
-                <label for='view-readonly'>
-                    <input type='checkbox' name='changes' id='view-readonly' ng-click="readOnlyView()" />
-                    <span>View as read-only</span>
-                </label>
-            </div>
-
-            <div ng-controller="ThreeCtrl">
-                <label for='view-edit'>
-                    <input type='checkbox' name='changes' id='view-edit' ng-click="editView()" />
-                    <span>View as edit</span>
-                </label>
-            </div>
-        </div>
-    </form> -->
 </div>
 
 <editor-iframe frameborder="0"
