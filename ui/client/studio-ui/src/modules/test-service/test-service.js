@@ -132,7 +132,7 @@ define(['require',
 
                     $scope.submitCode = function (action, fileType, nodeSelected) {
                         var content = editor.getSession().getValue(),
-                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/',
+                            itemId = nodeSelected && nodeSelected.id && nodeSelected.id.itemId,
                             fileName;
 
                         if (content) {
@@ -149,7 +149,7 @@ define(['require',
                                 if (fileType === 'descriptor') {
                                     serviceProvider.Descriptor.create({
                                         content_type_id: 'sampleId',
-                                        parent_id: itemId,
+                                        parent_id: itemId || '/site',
                                         file_name: fileName,
                                         content: content
                                     }).then( function(descriptor) {
@@ -160,7 +160,7 @@ define(['require',
                                     });
                                 } else if (fileType === 'template') {
                                     serviceProvider.Template.create({
-                                        parent_id: itemId,
+                                        parent_id: itemId || '/templates',
                                         file_name: fileName,
                                         content: content
                                     }).then( function(template) {
@@ -199,7 +199,7 @@ define(['require',
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
-                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/';
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/static-assets';
 
                             if (isFolder) {
 
@@ -235,7 +235,7 @@ define(['require',
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
-                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/';
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/site';
 
                             if (isFolder) {
 
@@ -271,7 +271,7 @@ define(['require',
 
                         if ($scope.selectedFiles.length) {
                             $file = $scope.selectedFiles[0];
-                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/';
+                            itemId = (nodeSelected && nodeSelected.id && nodeSelected.id.itemId) || '/templates';
 
                             if (isFolder) {
 
