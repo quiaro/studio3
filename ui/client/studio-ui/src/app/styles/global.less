@@ -139,8 +139,11 @@
 
 // --- Modal Dialogs
 .modal.fade.in {
-    display: block;
-    top: 20%;
+
+    .modal-dialog {
+        margin-top: 12%;
+        width: 500px;
+    }
 
     .modal-header {
         color: @modal-header;

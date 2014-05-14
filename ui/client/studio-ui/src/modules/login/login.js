@@ -34,15 +34,6 @@ define(['require',
                 };
             }])
 
-            .addController('ModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-                $scope.cancel = function cancel () {
-                    $modalInstance.close();
-                };
-                $scope.reset = function reset () {
-                    $modalInstance.close('Some data');
-                };
-            }])
-
             .addState('login', {
                 url: '/login',
                 templateUrl: require.toUrl('./templates/login.tpl.html')
@@ -53,16 +44,13 @@ define(['require',
                 onEnter: function($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: require.toUrl('./templates/recover.tpl.html'),
-                        controller: 'ModalCtrl'
+                        windowClass: 'pwd-recovery'
                     }).result
-                        .then(function (result) {
-                            if (result) {
-                                // If something is returned, then process it
-                                return $state.transitionTo('login');
-                            } else {
-                                // User cancelled
-                                return $state.transitionTo('login');
-                            }
+                        .then(function (userInfo) {
+                            // TO-DO: Process the user information
+                            return $state.transitionTo('login');
+                        }, function () {
+                            return $state.transitionTo('login');
                         });
                 },
                 requireAuth: false
