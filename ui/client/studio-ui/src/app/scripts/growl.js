@@ -1,9 +1,9 @@
 /* global toastr */
 'use strict';
 
-angular.module('crafter.studio-ui.common')
+angular.module('crafter.studio-ui.GrowlService', [])
 
-    .factory('NotificationService', ['toastr',
+    .factory('Notifications', ['toastr',
         function(toastr) {
             var queue = [];
 

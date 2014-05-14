@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('crafter.studio-ui.services.AuthService', [])
+angular.module('crafter.studio-ui.AuthService', [])
 
     .factory('AuthService', [
         function() {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('crafter.studio-ui.services.UserService', [])
+angular.module('crafter.studio-ui.UserService', [])
 
     .factory('UserService', [
         function() {
