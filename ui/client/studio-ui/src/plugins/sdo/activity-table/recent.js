@@ -17,7 +17,7 @@ define(['require', 'globals', 'module', './activity-table.js', 'less!./activity-
 
         NgRegistry
             .addController('sdoActivityTableRecentCtrl',
-                ['$scope', '$timeout', 'AuditService', function ($scope, $timeout, AuditService) {
+                ['$scope', '$timeout', function ($scope, $timeout) {
 
                 // Filter options for the data
                 // TO-DO: write a service from which to get these options (per user)
