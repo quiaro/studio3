@@ -1,73 +1,78 @@
 /* global define */
 
-define(['require', 'globals', './activity-table.js', 'less!./activity-table'],
-    function( require, globals, activityTable) {
+define(['require', 'globals', 'module', './activity-table.js', 'less!./activity-table'],
+    function( require, globals, module, activityTable) {
 
     'use strict';
 
-    var injector = angular.element(globals.dom_root).injector();
+    var config = module.config().config,
+        injector = angular.element(globals.dom_root).injector();
 
-    injector.invoke(['NgRegistry', function(NgRegistry) {
+    injector.invoke(['NgRegistry', 'ServiceProviders', 'DefaultServiceProvider',
+        function(NgRegistry, ServiceProviders, DefaultServiceProvider) {
 
-            NgRegistry
-                .addController('sdoActivityTableRecentCtrl',
-                    ['$scope', '$timeout', 'AuditService', function ($scope, $timeout, AuditService) {
+        var serviceProvider = (config && config.service_provider) ?
+                                ServiceProviders[config.service_provider] :
+                                ServiceProviders[DefaultServiceProvider];
 
-                    // Filter options for the data may be defined as directive attributes
-                    var filterOpts = {
-                            argumentA: false
-                        };
+        NgRegistry
+            .addController('sdoActivityTableRecentCtrl',
+                ['$scope', '$timeout', 'AuditService', function ($scope, $timeout, AuditService) {
 
-                    var recentTable = {
-                        // Extend specific attribute (angular's extend is not deep)
-                        table: angular.extend(activityTable.table, {
-                                    header: 'My Recent Activity',
-                                    columns: [{
-                                        name: 'name',
-                                        header: 'Page Name',
-                                        class: 'page-name'
-                                    }, {
-                                        'name': 'lastAuthor',
-                                        header: 'Last Edited By',
-                                        class: 'last-author'
-                                    }, {
-                                        'name': 'lastEdited',
-                                        header: 'Last Edited',
-                                        class: 'last-edit'
-                                    }]
-                                })
-                    };
+                // Filter options for the data
+                // TO-DO: write a service from which to get these options (per user)
+                var filterOpts = {};
 
-                    // Extend/override inherited scope
-                    angular.extend($scope, activityTable, recentTable);
+                var recentTable = {
+                    // Extend specific attribute (angular's extend is not deep)
+                    table: angular.extend(activityTable.table, {
+                                header: 'My Recent Activity',
+                                columns: [{
+                                    name: 'name',
+                                    header: 'Page Name',
+                                    class: 'page-name'
+                                }, {
+                                    name: 'lastAuthor',
+                                    header: 'Last Edited By',
+                                    class: 'last-author'
+                                }, {
+                                    name: 'lastEdited',
+                                    header: 'Last Edited',
+                                    class: 'last-edit'
+                                }]
+                            })
+                };
 
-                    AuditService.activity(filterOpts).then(function(data) {
+                // Extend/override inherited scope
+                angular.extend($scope, activityTable, recentTable);
 
-                        $timeout( function() {
-                            $scope.$apply( function() {
-                                var numResults = $scope.filterLength.value;
+                serviceProvider.Audit.getActivity(filterOpts).then(function(data) {
 
-                                // Delay the updates to the model until it's safe
-                                // to start a new digest cycle in Angular
-                                $scope.table.data = data;
-                                $scope.filterLength.value = (numResults) ? numResults : data.length;
-                            });
+                    $timeout( function() {
+                        $scope.$apply( function() {
+                            var numResults = $scope.filterLength.value;
+
+                            // Delay the updates to the model until it's safe
+                            // to start a new digest cycle in Angular
+                            $scope.table.data = data;
+                            $scope.filterLength.value = (numResults) ? numResults : data.length;
                         });
                     });
+                });
 
-                }])
+            }])
 
-                .addDirective('sdoPluginActivityTableRecent', [function() {
+            .addDirective('sdoPluginActivityTableRecent', [function() {
 
-                    return {
-                        restrict: 'E',
-                        controller: 'sdoActivityTableRecentCtrl',
-                        replace: true,
-                        scope: {},
-                        templateUrl: require.toUrl('./templates/recent.tpl.html')
-                    };
+                return {
+                    restrict: 'E',
+                    controller: 'sdoActivityTableRecentCtrl',
+                    replace: true,
+                    scope: {},
+                    templateUrl: require.toUrl('./templates/recent.tpl.html')
+                };
 
-                }]);
+            }]);
 
         }
     ]);

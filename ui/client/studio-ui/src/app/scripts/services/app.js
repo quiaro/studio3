@@ -41,24 +41,6 @@ angular.module('crafter.studio-ui.services.AppService', [])
                 }
             };
 
-            this.setEnvProperty = function setEnvProperty(property, value) {
-                var hasProperty = false;
-
-                for (var prop in Env) {
-                    if (Env.hasOwnProperty(prop)) {
-                        // Check if the property does exist in Env
-                        if (prop === property) {
-                            hasProperty = true;
-                        }
-                    }
-                }
-                if (hasProperty) {
-                    Env[property] = value;
-                } else {
-                    throw new ReferenceError(property + ' is not a valid property of Env');
-                }
-            };
-
             this.makeServiceCall = function makeServiceCall(url, deferred) {
                 $http.get(url).success(function(data) {
                     deferred.resolve(data);

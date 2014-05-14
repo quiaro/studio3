@@ -2,5 +2,9 @@
     "name": "crafter.studio-ui.plugins.sdo.activity-table.recent",
     "version": "0.1.0",
     "base_url": "/sdo/activity-table/",
-    "main": "recent.js"
+    "main": "recent.js",
+
+    "config": {
+        "service_provider": "LocalStudioServices"
+    }
 }
