@@ -19,7 +19,7 @@ define(['require',
                     templateUrl: require.toUrl('./templates/dashboard.tpl.html'),
 
                     // TODO: Use robust authentication mechanism
-                    requireAuth: true,
+                    requireAuth: false,     // Change to true to limit access
                     rolesAllowed: ['admin', 'editor']
                 });
 
