@@ -189,7 +189,7 @@ define(['globals',
                             $scope.authoring.tools.state = 'off';
                             $scope.authoring.tools.height = 0;
                         });
-                    })
+                    });
                 };
 
             }]);
