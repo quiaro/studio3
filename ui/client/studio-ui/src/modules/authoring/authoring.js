@@ -138,8 +138,8 @@ define(['globals',
 
                 $scope.authoring = {
                     tools: {
-                        state: 'off',
-                        height: 0,
+                        state: 'on',
+                        height: 30,
                         tabs: [{
                             name: 'content',
                             title: 'Content',
