@@ -1,6 +1,6 @@
 
 <!-- If this div is moved after the iframe, it won't be rendered! -->
-<div id="tools-panel" class="{{authoring.tools.state}}" style="height:{{authoring.tools.height}}%;">
+<div id="tools-panel">
     <button type="button" class="btn-close btn btn-primary" ng-click="closeTools()">
         <span class="glyphicon glyphicon-remove-circle"></span>
         <span class="btn-label">Close</span>
@@ -29,8 +29,14 @@
     </div>
 </div>
 
-<editor-iframe frameborder="0"
-               id="editor-iframe"
-               height="{{100 - authoring.tools.height}}%"
-               width="100%" />
+<!-- bottom-offset = the height of the footer (at the bottom of the page) -->
+<sdo-y-divider id="y-divider"
+               top="#iframe-container"
+               bottom="#tools-panel"
+               bottom-min="100"
+               bottom-offset="50"></sdo-y-divider>
 
+<div id="iframe-container">
+    <editor-iframe frameborder="0"
+                   id="editor-iframe"/>
+</div>

@@ -13,6 +13,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             'crafter.studio-ui.AuthService',
             'crafter.studio-ui.Language',
             'crafter.studio-ui.NgRegistry',
+            'crafter.studio-ui.Resize',
             'crafter.studio-ui.Utils',
             'crafter.studio-ui.UserService',
             'angularBootstrapNavTree',
