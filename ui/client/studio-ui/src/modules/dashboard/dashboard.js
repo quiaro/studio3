@@ -3,7 +3,6 @@
 define(['require',
         'globals',
         'common',
-        'directives',
         'css!./dashboard'], function( require, globals ) {
 
     'use strict';

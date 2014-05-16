@@ -4,7 +4,6 @@ define(['require',
         'globals',
         'ace/ace',
         'module',
-        'directives',
         'css!./test-service'], function( require, globals, ace, module ) {
 
     'use strict';

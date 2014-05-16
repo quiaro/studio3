@@ -15,7 +15,6 @@
             "ace": "lib/ace",
             "ckeditor": "lib/ckeditor/ckeditor",
             "common": "src/modules/common/common",
-            "directives": "src/modules/common/directives",
             "domReady": "lib/requirejs-domready/js/domReady",
             "globals": "src/modules/common/globals",
             "jquery": "lib/jquery/js/jquery.min",

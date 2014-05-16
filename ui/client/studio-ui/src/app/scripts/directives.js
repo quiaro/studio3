@@ -81,20 +81,22 @@ angular.module('crafter.studio-ui.Directives', [])
          '$compile',
          '$timeout',
          '$log',
-         'Utils', function ($q, $compile, $timeout, $log, Utils) {
+         'ServiceProviders',
+         'DefaultServiceProvider',
+         'Utils',
+         'GLOBALS',
+         function ($q, $compile, $timeout, $log, ServiceProviders, DefaultServiceProvider, Utils, GLOBALS) {
 
         return {
             restrict: 'E',
             scope: {},
-            template: '<div class="sdo-plugins"></div>',
-            replace: true,
             link : function postLink (scope, element, attrs) {
 
                 var containerId;
 
                 if (!attrs.pluginContainer) {
                     $log.warn('Plugins directive with id "' + attrs.id +
-                        '" is missing data-plugin-container attribute');
+                        '" is missing plugin-container attribute');
                     return;
                 } else {
                     containerId = attrs.pluginContainer;
@@ -102,7 +104,7 @@ angular.module('crafter.studio-ui.Directives', [])
 
                 $log.log('Plugin container with id: "' + containerId + '"');
 
-                StudioServices.Config.getPlugins(containerId)
+                ServiceProviders[DefaultServiceProvider].Config.getPlugins(containerId)
                     .then( function (data) {
 
                         var pluginList = data.plugins,
@@ -110,7 +112,7 @@ angular.module('crafter.studio-ui.Directives', [])
 
                         $log.log('Plugins found for "' + containerId + '":', pluginList);
 
-                        promiseList = Utils.loadModules(pluginList, globals.plugins_url);
+                        promiseList = Utils.loadModules(pluginList, GLOBALS.plugins_url);
 
                         $q.all(promiseList).then( function(templates) {
 
