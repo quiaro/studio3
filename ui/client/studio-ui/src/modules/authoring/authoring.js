@@ -138,8 +138,6 @@ define(['globals',
 
                 $scope.authoring = {
                     tools: {
-                        state: 'on',
-                        height: 30,
                         tabs: [{
                             name: 'content',
                             title: 'Content',
@@ -157,7 +155,8 @@ define(['globals',
                             title: 'Info',
                             contentUrl: require.toUrl('./templates/tabs/info.html')
                         }],
-                        activeTab: 'content'
+                        activeTab: 'content',
+                        enabled: true
                     },
                     setActiveTab: function setActiveTab (tabName) {
                         this.tools.activeTab = tabName;
@@ -167,10 +166,7 @@ define(['globals',
                 $scope.selectedElement = 'none';
 
                 $scope.$on('editor/element/edit', function (event, args) {
-                    $scope.$apply(function () {
-                        $scope.authoring.tools.state = 'on';
-                        $scope.authoring.tools.height = 30;
-                    });
+                    $scope.authoring.tools.enabled = true;
                 });
 
                 $scope.$on('editor/element/select', function (event, args) {
@@ -181,15 +177,6 @@ define(['globals',
 
                 $scope.updateElement = function () {
                     $scope.$broadcast('app/element/update', { msg: 'Element updated in authoring module' });
-                };
-
-                $scope.closeTools = function () {
-                    $timeout( function() {
-                        $scope.$apply(function () {
-                            $scope.authoring.tools.state = 'off';
-                            $scope.authoring.tools.height = 0;
-                        });
-                    });
                 };
 
             }]);

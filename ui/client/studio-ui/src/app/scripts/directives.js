@@ -178,10 +178,16 @@ angular.module('crafter.studio-ui.Directives', [])
                     $bottomEl = $($attrs.bottom),
                     bottomOffset = +($attrs.bottomOffset) || 0,
                     bottomMin = +($attrs.bottomMin) || 0,
+
+                    // If the y-divider includes the class "inside", it means
+                    // that the y-divider is inside the bottom element (and
+                    // not outside, on top)
+                    isInside = /\binside\b/.test($attrs.class),
                     dividerHeight = $element.height(),
                     overlayClass = 'resize-overlay',
+                    overlayTop = (isInside) ? dividerHeight + 'px' : 0,
                     overlay = '<div class="' + overlayClass + '"' +
-                              ' style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 1000"></div>';
+                              ' style="position: absolute; top: ' + overlayTop + '; bottom: 0; left: 0; right: 0; z-index: 1000"></div>';
 
                 $element.on('mousedown', function(event) {
                     event.preventDefault();
@@ -206,17 +212,28 @@ angular.module('crafter.studio-ui.Directives', [])
                     y = (y > bottomLowerLimit) ? y : bottomLowerLimit;
                     y = (y < bottomUpperLimit) ? y : bottomUpperLimit;
 
-                    $element.css({
-                        bottom: y + 'px'
-                    });
+                    if (isInside) {
+                        $topEl.css({
+                            bottom: y + 'px'
+                        });
 
-                    $topEl.css({
-                        bottom: y + dividerHeight + 'px'
-                    });
+                        $bottomEl.css({
+                            height: y + 'px'
+                        });
 
-                    $bottomEl.css({
-                        height: y + 'px'
-                    });
+                    } else {
+                        $element.css({
+                            bottom: y + 'px'
+                        });
+
+                        $topEl.css({
+                            bottom: y + dividerHeight + 'px'
+                        });
+
+                        $bottomEl.css({
+                            height: y + 'px'
+                        });
+                    }
                 }
 
                 function mouseup() {

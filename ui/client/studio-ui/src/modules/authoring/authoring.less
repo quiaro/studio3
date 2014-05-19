@@ -1,9 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-@resize-bar-y: 200px;
-@resize-bar-height: 2px;
-
 #tools-panel {
     background-color: @tools-panel-gradient-top;
     position: absolute;
@@ -14,7 +11,7 @@
 
     button.btn-close {
         position: absolute;
-        top: 0;
+        top: @resize-bar-height;
         right: 0;
         z-index: 100;
         border-radius: 0;
@@ -102,24 +99,12 @@
     }
 }
 
-#y-divider {
-    box-shadow: 0px -1px 2px 0px rgba(45, 45, 45, 0.6);
-    position: absolute;
-    bottom: @resize-bar-y;
-    left: 0;
-    right: 0;
-    height: @resize-bar-height;
-    background-color: @gray-light;
-    cursor: ns-resize;
-    z-index: 1000;
-}
-
 #iframe-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: @resize-bar-y + @resize-bar-height;
+    bottom: @resize-bar-y;
 
     #editor-iframe {
         height: 100%;

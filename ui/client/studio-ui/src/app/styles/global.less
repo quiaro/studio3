@@ -221,4 +221,22 @@ div[data-tree-model] ul {
     }
   }
 }
+
+.y-divider {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: @resize-bar-height;
+    background-color: @gray-light;
+    cursor: ns-resize;
+    z-index: 1000;
+
+    &.inside {
+        top: 0;
+    }
+    &.outside {
+        box-shadow: 0px -1px 2px 0px rgba(45, 45, 45, 0.6);
+        bottom: @resize-bar-y;
+    }
+}
 /* --- EO: GLOBAL.LESS --- */
