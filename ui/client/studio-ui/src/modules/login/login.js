@@ -40,7 +40,7 @@ define(['require',
 
             .addState('login.recover', {
                 url: '/recover',
-                onEnter: function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
                     $modal.open({
                         templateUrl: require.toUrl('./templates/recover.tpl.html'),
                         windowClass: 'pwd-recovery'
@@ -51,7 +51,7 @@ define(['require',
                         }, function () {
                             return $state.transitionTo('login');
                         });
-                },
+                }],
                 requireAuth: false
             });
 
