@@ -76,6 +76,7 @@ angular.module('crafter.studio-ui.Directives', [])
         };
     }])
 
+    /*jshint -W072 */
     .directive('sdoPlugins',
         ['$q',
          '$compile',
@@ -129,6 +130,7 @@ angular.module('crafter.studio-ui.Directives', [])
             }
         };
     }])
+    /*jshint +W072 */
 
     .directive('sdoPluginSrc',
         ['$q',
