@@ -82,7 +82,7 @@ module.exports = {
         url: '/api/1/config/plugins/:container',
         mock: [{
             arguments: { container: "activity"},
-            path: '/config/plugins/activity/plugins'
+            path: '/config/plugins/activity'
         }]
     }]
 };
