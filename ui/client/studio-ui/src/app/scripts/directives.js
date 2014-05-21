@@ -204,9 +204,17 @@ angular.module('crafter.studio-ui.Directives', [])
                         switch (side) {
                             case 'top':
                                 panelSize = $element.css('height');
+                                $adjacent.css({ top: 0 });
+                                $element.animate({ height: 0 }, 200, function() {
+                                    $element.hide();
+                                });
                                 break;
                             case 'right':
                                 panelSize = $element.css('width');
+                                $adjacent.css({ right: 0 });
+                                $element.animate({ width: 0 }, 200, function() {
+                                    $element.hide();
+                                });
                                 break;
                             case 'bottom':
                                 panelSize = $element.css('height');
@@ -217,13 +225,25 @@ angular.module('crafter.studio-ui.Directives', [])
                                 break;
                             case 'left':
                                 panelSize = $element.css('width');
+                                $adjacent.css({ left: 0 });
+                                $element.animate({ width: 0 }, 200, function() {
+                                    $element.hide();
+                                });
                                 break;
                         }
                     } else {
                         switch (side) {
                             case 'top':
+                                $element.show();
+                                $element.animate({ height: panelSize }, 200, function() {
+                                    $adjacent.css({ top: panelSize });
+                                });
                                 break;
                             case 'right':
+                                $element.show();
+                                $element.animate({ width: panelSize }, 200, function() {
+                                    $adjacent.css({ right: panelSize });
+                                });
                                 break;
                             case 'bottom':
                                 $element.show();
@@ -232,6 +252,10 @@ angular.module('crafter.studio-ui.Directives', [])
                                 });
                                 break;
                             case 'left':
+                                $element.show();
+                                $element.animate({ width: panelSize }, 200, function() {
+                                    $adjacent.css({ left: panelSize });
+                                });
                                 break;
                         }
                     }

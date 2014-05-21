@@ -226,35 +226,20 @@ div[data-tree-model] ul {
 .sdo-divider {
     position: absolute;
     background-color: @gray-light;
+}
+.top > .sdo-divider, .bottom > .sdo-divider {
+    left: 0;
+    right: 0;
     cursor: ns-resize;
-    z-index: 1000;
-
 }
-.top > .sdo-divider {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: @resize-bar-size;
-}
-.right > .sdo-divider {
+.right > .sdo-divider, .left > .sdo-divider {
     top: 0;
     bottom: 0;
-    left: 0;
-    width: @resize-bar-size;
+    cursor: ew-resize;
 }
-.bottom > .sdo-divider {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: @resize-bar-size;
-}
-.left > .sdo-divider {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: @resize-bar-size;
-}
-
-
+.top > .sdo-divider { bottom: 0; }
+.right > .sdo-divider { left: 0; }
+.bottom > .sdo-divider { top: 0; }
+.left > .sdo-divider { right: 0; }
 
 /* --- EO: GLOBAL.LESS --- */
