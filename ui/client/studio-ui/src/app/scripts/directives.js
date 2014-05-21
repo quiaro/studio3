@@ -201,8 +201,7 @@ angular.module('crafter.studio-ui.Directives', [])
                         objAdj = {},
                         speed = 150;
 
-                    objEl[length] = 0;
-                    objAdj[side] = 0;
+                    objEl[length] = objAdj[side] = 0;
 
                     $adj.css(objAdj);
                     $el.animate(objEl, speed, function() {
@@ -215,8 +214,7 @@ angular.module('crafter.studio-ui.Directives', [])
                         objAdj = {},
                         speed = 150;
 
-                    objEl[length] = restoreVal;
-                    objAdj[side] = restoreVal;
+                    objEl[length] = objAdj[side] = restoreVal;
 
                     $el.show();
                     $el.animate(objEl, speed, function() {
@@ -270,105 +268,105 @@ angular.module('crafter.studio-ui.Directives', [])
                     side = ctrl.get('side'),
                     offset = ctrl.get('offset'),
                     overlayClass = 'resize-overlay',
-                    zIndex = 1000,
-                    min = +($attrs.min) || 0,
                     overlay,
                     max,
                     moveFn;
 
-                switch (side) {
-                    case 'top':
-                        overlay = '<div class="' + overlayClass + '"' +
-                                  ' style="position: absolute; top: 0; left: 0; right: 0;' +
-                                  ' bottom: ' + $element.css('height') + '; z-index: ' + zIndex + '"></div>';
+                function getOverlayString($el, overlayClass, side) {
+                    var opposite,
+                        dimension,
+                        styleObj = {
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0,
+                            'z-index': 1000
+                        },
+                        start = '<div class="' + overlayClass + '" style="',
+                        end = '"></div>';
 
-                        max = +($attrs.max) || window.innerHeight - offset;
+                    switch (side) {
+                        case 'top':
+                            opposite = 'bottom';
+                            dimension = 'height';
+                            break;
+                        case 'right':
+                            opposite = 'left';
+                            dimension = 'width';
+                            break;
+                        case 'bottom':
+                            opposite = 'top';
+                            dimension = 'height';
+                            break;
+                        case 'left':
+                            opposite = 'right';
+                            dimension = 'width';
+                            break;
+                    }
 
-                        moveFn = function (event) {
-                            var fullLength = window.innerHeight - offset,
-                                distance = event.pageY - offset,
-                                realMax = max || fullLength,
-                                lowerLimit = Math.min(fullLength, min),
-                                upperLimit = Math.min(fullLength, realMax);
-
-                            distance = (distance > lowerLimit) ? distance : lowerLimit;
-                            distance = (distance < upperLimit) ? distance : upperLimit;
-                            distance += 'px';
-
-                            $self.css({ height: distance });
-                            $adjacent.css({ top: distance });
-                        };
-                        break;
-
-                    case 'right':
-                        overlay = '<div class="' + overlayClass + '"' +
-                                  ' style="position: absolute; top: 0; bottom: 0; right: 0;' +
-                                  ' left: ' + $element.css('width') + '; z-index: ' + zIndex + '"></div>';
-
-                        max = +($attrs.max) || window.innerWidth - offset;
-
-                        moveFn = function (event) {
-                            var fullLength = window.innerWidth - offset,
-                                distance = fullLength - event.pageX,
-                                realMax = max || fullLength,
-                                lowerLimit = Math.min(fullLength, min),
-                                upperLimit = Math.min(fullLength, realMax);
-
-                            distance = (distance > lowerLimit) ? distance : lowerLimit;
-                            distance = (distance < upperLimit) ? distance : upperLimit;
-                            distance += 'px';
-
-                            $self.css({ width: distance });
-                            $adjacent.css({ right: distance });
-                        };
-                        break;
-
-                    case 'bottom':
-                        overlay = '<div class="' + overlayClass + '"' +
-                                  ' style="position: absolute; bottom: 0; left: 0; right: 0;' +
-                                  ' top: ' + $element.css('height') + '; z-index: ' + zIndex + '"></div>';
-
-                        max = +($attrs.max) || null;
-
-                        moveFn = function (event) {
-                            var fullLength = window.innerHeight - offset,
-                                distance = fullLength - event.pageY,
-                                realMax = max || fullLength,
-                                lowerLimit = Math.min(fullLength, min),
-                                upperLimit = Math.min(fullLength, realMax);
-
-                            distance = (distance > lowerLimit) ? distance : lowerLimit;
-                            distance = (distance < upperLimit) ? distance : upperLimit;
-                            distance += 'px';
-
-                            $self.css({ height: distance });
-                            $adjacent.css({ bottom: distance });
-                        };
-                        break;
-
-                    case 'left':
-                        overlay = '<div class="' + overlayClass + '"' +
-                                  ' style="position: absolute; top: 0; bottom: 0; left: 0;' +
-                                  ' right: ' + $element.css('width') + '; z-index: ' + zIndex + '"></div>';
-
-                        max = +($attrs.max) || window.innerWidth - offset;
-
-                        moveFn = function (event) {
-                            var fullLength = window.innerWidth - offset,
-                                distance = event.pageX - offset,
-                                realMax = max || fullLength,
-                                lowerLimit = Math.min(fullLength, min),
-                                upperLimit = Math.min(fullLength, realMax);
-
-                            distance = (distance > lowerLimit) ? distance : lowerLimit;
-                            distance = (distance < upperLimit) ? distance : upperLimit;
-                            distance += 'px';
-
-                            $self.css({ width: distance });
-                            $adjacent.css({ left: distance });
-                        };
-                        break;
+                    styleObj[opposite] = $el.css(dimension);
+                    return start + JSON.stringify(styleObj).replace(/,/g,';').replace(/\{|\}|"/g, '') + end;
                 }
+
+                function generateMoveFn (side, minVal, maxVal, offset) {
+                    var dimension,
+                        winProp,
+                        getDistance,
+                        min,
+                        max;
+
+                    switch (side) {
+                        case 'top':
+                            dimension = 'height';
+                            getDistance = function (event, length, offset) {
+                                return event.pageY - offset;
+                            };
+                            break;
+                        case 'right':
+                            dimension = 'width';
+                            getDistance = function (event, length, offset) {
+                                return length - event.pageX;
+                            };
+                            break;
+                        case 'bottom':
+                            dimension = 'height';
+                            getDistance = function (event, length, offset) {
+                                return length - event.pageY;
+                            };
+                            break;
+                        case 'left':
+                            dimension = 'width';
+                            getDistance = function (event, length, offset) {
+                                return event.pageX - offset;
+                            };
+                            break;
+                    }
+                    winProp = 'inner' + dimension.charAt(0).toUpperCase() + dimension.slice(1);
+                    min = minVal || 0;
+                    max = maxVal || window[winProp] - offset;
+
+                    return function (event, $el, $adj) {
+                        var length = window[winProp] - offset,
+                            distance = getDistance(event, length, offset),
+                            lowerLimit = Math.min(length, min),
+                            upperLimit = Math.min(length, max),
+                            objEl = {},
+                            objAdj = {};
+
+                        distance = (distance > lowerLimit) ? distance : lowerLimit;
+                        distance = (distance < upperLimit) ? distance : upperLimit;
+                        distance += 'px';
+
+                        objEl[dimension] = objAdj[side] = distance;
+
+                        $el.css(objEl);
+                        $adj.css(objAdj);
+                    }
+                }
+
+                overlay = getOverlayString($element, overlayClass, side);
+                moveFn = generateMoveFn(side, +($attrs.min), +($attrs.max), offset);
 
                 $element.on('mousedown', function(event) {
                     event.preventDefault();
@@ -383,7 +381,7 @@ angular.module('crafter.studio-ui.Directives', [])
                 });
 
                 function mousemove(event) {
-                    moveFn(event);
+                    moveFn(event, $self, $adjacent);
                 }
 
                 function mouseup() {
