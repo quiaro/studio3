@@ -156,7 +156,7 @@ define(['globals',
                             contentUrl: require.toUrl('./templates/tabs/info.html')
                         }],
                         activeTab: 'content',
-                        enabled: true
+                        enabled: false
                     },
                     setActiveTab: function setActiveTab (tabName) {
                         this.tools.activeTab = tabName;

@@ -14,6 +14,7 @@ requirejs(['studioServices/studioServices'], function (studioServices) {
             'crafter.studio-ui.Directives',
             'crafter.studio-ui.Language',
             'crafter.studio-ui.NgRegistry',
+            'crafter.studio-ui.Preferences',
             'crafter.studio-ui.Utils',
             'crafter.studio-ui.UserService',
             'angularBootstrapNavTree',

@@ -168,7 +168,7 @@ angular.module('crafter.studio-ui.Directives', [])
         };
     }])
 
-    .directive('sdoFlexPanel', ['$document', function($document) {
+    .directive('sdoFlexPanel', ['Preferences', function(Preferences) {
 
         return {
             restrict: 'E',
@@ -183,7 +183,8 @@ angular.module('crafter.studio-ui.Directives', [])
                 var data = {
                     adjacent : $attrs.adjacent,
                     side : side,
-                    offset: +($attrs.offset) || 0
+                    offset: +($attrs.offset) || 0,
+                    prefKey: 'tools_panel'
                 };
 
                 this.get = function get (id) {
@@ -194,7 +195,7 @@ angular.module('crafter.studio-ui.Directives', [])
 
                 var $adjacent = $(ctrl.get('adjacent')),
                     side = ctrl.get('side'),
-                    sizeCache = +($attrs.default) || 200;
+                    sizeCache = Preferences.get(ctrl.get('prefKey')) || +($attrs.default) || 200;
 
                 function closeAnimation($el, $adj, side, length) {
                     var objEl = {},
@@ -225,7 +226,6 @@ angular.module('crafter.studio-ui.Directives', [])
                 $scope.$watch($attrs.hideIf, function(close, initVal) {
 
                     if (close === initVal) {
-
                         // first run
                         if (!close) {
                             openAnimation($element, $adjacent, side, 'height', sizeCache);
@@ -263,7 +263,7 @@ angular.module('crafter.studio-ui.Directives', [])
         };
     }])
 
-    .directive('sdoDivider', ['$document', function($document) {
+    .directive('sdoDivider', ['$document', 'Preferences', function($document, Preferences) {
 
         return {
             restrict: 'C',
@@ -363,6 +363,8 @@ angular.module('crafter.studio-ui.Directives', [])
 
                         distance = (distance > lowerLimit) ? distance : lowerLimit;
                         distance = (distance < upperLimit) ? distance : upperLimit;
+
+                        Preferences.set(ctrl.get('prefKey'), distance);
                         distance += 'px';
 
                         objEl[dimension] = objAdj[side] = distance;
