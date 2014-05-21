@@ -194,7 +194,7 @@ angular.module('crafter.studio-ui.Directives', [])
 
                 var $adjacent = $(ctrl.get('adjacent')),
                     side = ctrl.get('side'),
-                    sizeCache;
+                    sizeCache = +($attrs.default) || 200;
 
                 function closeAnimation($el, $adj, side, length) {
                     var objEl = {},
@@ -224,7 +224,14 @@ angular.module('crafter.studio-ui.Directives', [])
 
                 $scope.$watch($attrs.hideIf, function(close, initVal) {
 
-                    if (close === initVal) { return; } // first run
+                    if (close === initVal) {
+
+                        // first run
+                        if (!close) {
+                            openAnimation($element, $adjacent, side, 'height', sizeCache);
+                        }
+                        return;
+                    }
 
                     if (close) {
                         switch (side) {
