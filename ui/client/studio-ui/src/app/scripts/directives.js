@@ -194,7 +194,35 @@ angular.module('crafter.studio-ui.Directives', [])
 
                 var $adjacent = $(ctrl.get('adjacent')),
                     side = ctrl.get('side'),
-                    panelSize;
+                    sizeCache;
+
+                function closeAnimation($el, $adj, side, length) {
+                    var objEl = {},
+                        objAdj = {},
+                        speed = 150;
+
+                    objEl[length] = 0;
+                    objAdj[side] = 0;
+
+                    $adj.css(objAdj);
+                    $el.animate(objEl, speed, function() {
+                        $el.hide();
+                    });
+                }
+
+                function openAnimation($el, $adj, side, length, restoreVal) {
+                    var objEl = {},
+                        objAdj = {},
+                        speed = 150;
+
+                    objEl[length] = restoreVal;
+                    objAdj[side] = restoreVal;
+
+                    $el.show();
+                    $el.animate(objEl, speed, function() {
+                        $adjacent.css(objAdj);
+                    });
+                }
 
                 $scope.$watch($attrs.hideIf, function(close, initVal) {
 
@@ -203,59 +231,25 @@ angular.module('crafter.studio-ui.Directives', [])
                     if (close) {
                         switch (side) {
                             case 'top':
-                                panelSize = $element.css('height');
-                                $adjacent.css({ top: 0 });
-                                $element.animate({ height: 0 }, 200, function() {
-                                    $element.hide();
-                                });
+                            case 'bottom':
+                                sizeCache = $element.css('height');
+                                closeAnimation($element, $adjacent, side, 'height');
                                 break;
                             case 'right':
-                                panelSize = $element.css('width');
-                                $adjacent.css({ right: 0 });
-                                $element.animate({ width: 0 }, 200, function() {
-                                    $element.hide();
-                                });
-                                break;
-                            case 'bottom':
-                                panelSize = $element.css('height');
-                                $adjacent.css({ bottom: 0 });
-                                $element.animate({ height: 0 }, 200, function() {
-                                    $element.hide();
-                                });
-                                break;
                             case 'left':
-                                panelSize = $element.css('width');
-                                $adjacent.css({ left: 0 });
-                                $element.animate({ width: 0 }, 200, function() {
-                                    $element.hide();
-                                });
+                                sizeCache = $element.css('width');
+                                closeAnimation($element, $adjacent, side, 'width');
                                 break;
                         }
                     } else {
                         switch (side) {
                             case 'top':
-                                $element.show();
-                                $element.animate({ height: panelSize }, 200, function() {
-                                    $adjacent.css({ top: panelSize });
-                                });
+                            case 'bottom':
+                                openAnimation($element, $adjacent, side, 'height', sizeCache);
                                 break;
                             case 'right':
-                                $element.show();
-                                $element.animate({ width: panelSize }, 200, function() {
-                                    $adjacent.css({ right: panelSize });
-                                });
-                                break;
-                            case 'bottom':
-                                $element.show();
-                                $element.animate({ height: panelSize }, 200, function() {
-                                    $adjacent.css({ bottom: panelSize });
-                                });
-                                break;
                             case 'left':
-                                $element.show();
-                                $element.animate({ width: panelSize }, 200, function() {
-                                    $adjacent.css({ left: panelSize });
-                                });
+                                openAnimation($element, $adjacent, side, 'width', sizeCache);
                                 break;
                         }
                     }
