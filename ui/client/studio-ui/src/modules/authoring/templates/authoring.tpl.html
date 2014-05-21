@@ -1,10 +1,15 @@
 
 <!-- If this div is moved after the iframe, it won't be rendered! -->
+<!-- offset = the height of the footer (at the bottom of the page) -->
 <sdo-flex-panel id="tools-panel"
-                side="bottom"
-                hide-when="!authoring.tools.enabled">
-    <div>
-        <button type="button" class="btn-close btn btn-primary" ng-click="closeTools()">
+                class="bottom"
+                adjacent="#iframe-container"
+                offset="50"
+                hide-if="!authoring.tools.enabled">
+
+    <div class="sdo-divider" min="100"></div>
+    <div class="main">
+        <button type="button" class="btn-close btn btn-primary" ng-click="authoring.tools.enabled=false">
             <span class="glyphicon glyphicon-remove-circle"></span>
             <span class="btn-label">Close</span>
         </button>
@@ -32,12 +37,6 @@
         </div>
     </div>
 
-    <!-- bottom-offset = the height of the footer (at the bottom of the page) -->
-    <sdo-y-divider class="y-divider inside"
-                   top="#iframe-container"
-                   bottom="#tools-panel"
-                   bottom-min="100"
-                   bottom-offset="50"></sdo-y-divider>
 </sdo-flex-panel>
 
 <div id="iframe-container">

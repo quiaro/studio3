@@ -21,6 +21,7 @@
     bottom: 0;
     position: absolute;
     width: 100%;
+    z-index: 1001;
 
     #gradient.vertical(@toolbar-background-top, @toolbar-background-bottom);
 
@@ -222,21 +223,38 @@ div[data-tree-model] ul {
   }
 }
 
-.y-divider {
+.sdo-divider {
     position: absolute;
-    left: 0;
-    right: 0;
-    height: @resize-bar-height;
     background-color: @gray-light;
     cursor: ns-resize;
     z-index: 1000;
 
-    &.inside {
-        top: 0;
-    }
-    &.outside {
-        box-shadow: 0px -1px 2px 0px rgba(45, 45, 45, 0.6);
-        bottom: @resize-bar-y;
-    }
 }
+.top > .sdo-divider {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @resize-bar-size;
+}
+.right > .sdo-divider {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @resize-bar-size;
+}
+.bottom > .sdo-divider {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: @resize-bar-size;
+}
+.left > .sdo-divider {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: @resize-bar-size;
+}
+
+
+
 /* --- EO: GLOBAL.LESS --- */

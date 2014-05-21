@@ -168,78 +168,210 @@ angular.module('crafter.studio-ui.Directives', [])
         };
     }])
 
-    .directive('sdoYDivider', ['$document', function($document) {
+    .directive('sdoFlexPanel', ['$document', function($document) {
 
         return {
             restrict: 'E',
-            link: function($scope, $element, $attrs) {
+            require: 'sdoFlexPanel',
+            controller: ['$scope', '$element', '$attrs',
+                function controller ($scope, $element, $attrs) {
 
-                var $topEl = $($attrs.top),
-                    $bottomEl = $($attrs.bottom),
-                    bottomOffset = +($attrs.bottomOffset) || 0,
-                    bottomMin = +($attrs.bottomMin) || 0,
+                var side = $attrs.class.match(/\b(top|right|bottom|left)\b/);
+                side = (side && side.length) ? side[0] : null;
 
-                    // If the y-divider includes the class "inside", it means
-                    // that the y-divider is inside the bottom element (and
-                    // not outside, on top)
-                    isInside = /\binside\b/.test($attrs.class),
-                    dividerHeight = $element.height(),
+                // Make these elements available to other directives
+                var data = {
+                    adjacent : $attrs.adjacent,
+                    side : side,
+                    offset: +($attrs.offset) || 0
+                };
+
+                this.get = function get (id) {
+                    return data[id];
+                };
+            }],
+            link: function($scope, $element, $attrs, ctrl) {
+
+                var $adjacent = $(ctrl.get('adjacent')),
+                    side = ctrl.get('side'),
+                    panelSize;
+
+                $scope.$watch($attrs.hideIf, function(close, initVal) {
+
+                    if (close === initVal) { return; } // first run
+
+                    if (close) {
+                        switch (side) {
+                            case 'top':
+                                panelSize = $element.css('height');
+                                break;
+                            case 'right':
+                                panelSize = $element.css('width');
+                                break;
+                            case 'bottom':
+                                panelSize = $element.css('height');
+                                $adjacent.css({ bottom: 0 });
+                                $element.animate({ height: 0 }, 200, function() {
+                                    $element.hide();
+                                });
+                                break;
+                            case 'left':
+                                panelSize = $element.css('width');
+                                break;
+                        }
+                    } else {
+                        switch (side) {
+                            case 'top':
+                                break;
+                            case 'right':
+                                break;
+                            case 'bottom':
+                                $element.show();
+                                $element.animate({ height: panelSize }, 200, function() {
+                                    $adjacent.css({ bottom: panelSize });
+                                });
+                                break;
+                            case 'left':
+                                break;
+                        }
+                    }
+                });
+            }
+        };
+    }])
+
+    .directive('sdoDivider', ['$document', function($document) {
+
+        return {
+            restrict: 'C',
+            require: '^sdoFlexPanel',
+            link: function($scope, $element, $attrs, ctrl) {
+
+                var $self = $element.parent(),
+                    $adjacent = $(ctrl.get('adjacent')),
+                    side = ctrl.get('side'),
+                    offset = ctrl.get('offset'),
                     overlayClass = 'resize-overlay',
-                    overlayTop = (isInside) ? dividerHeight + 'px' : 0,
-                    overlay = '<div class="' + overlayClass + '"' +
-                              ' style="position: absolute; top: ' + overlayTop + '; bottom: 0; left: 0; right: 0; z-index: 1000"></div>';
+                    zIndex = 1000,
+                    min = +($attrs.min) || 0,
+                    overlay,
+                    max,
+                    moveFn;
+
+                switch (side) {
+                    case 'top':
+                        overlay = '<div class="' + overlayClass + '"' +
+                                  ' style="position: absolute; top: 0; left: 0; right: 0;' +
+                                  ' bottom: ' + $element.css('height') + '; z-index: ' + zIndex + '"></div>';
+
+                        max = +($attrs.max) || window.innerHeight - offset;
+
+                        moveFn = function (event) {
+                            var fullLength = window.innerHeight - offset,
+                                distance = event.pageY - offset,
+                                realMax = max || fullLength,
+                                lowerLimit = Math.min(fullLength, min),
+                                upperLimit = Math.min(fullLength, realMax);
+
+                            distance = (distance > lowerLimit) ? distance : lowerLimit;
+                            distance = (distance < upperLimit) ? distance : upperLimit;
+                            distance += 'px';
+
+                            $self.css({ height: distance });
+                            $adjacent.css({ top: distance });
+                        };
+                        break;
+
+                    case 'right':
+                        overlay = '<div class="' + overlayClass + '"' +
+                                  ' style="position: absolute; top: 0; bottom: 0; right: 0;' +
+                                  ' left: ' + $element.css('width') + '; z-index: ' + zIndex + '"></div>';
+
+                        max = +($attrs.max) || window.innerWidth - offset;
+
+                        moveFn = function (event) {
+                            var fullLength = window.innerWidth - offset,
+                                distance = fullLength - event.pageX,
+                                realMax = max || fullLength,
+                                lowerLimit = Math.min(fullLength, min),
+                                upperLimit = Math.min(fullLength, realMax);
+
+                            distance = (distance > lowerLimit) ? distance : lowerLimit;
+                            distance = (distance < upperLimit) ? distance : upperLimit;
+                            distance += 'px';
+
+                            $self.css({ width: distance });
+                            $adjacent.css({ right: distance });
+                        };
+                        break;
+
+                    case 'bottom':
+                        overlay = '<div class="' + overlayClass + '"' +
+                                  ' style="position: absolute; bottom: 0; left: 0; right: 0;' +
+                                  ' top: ' + $element.css('height') + '; z-index: ' + zIndex + '"></div>';
+
+                        max = +($attrs.max) || null;
+
+                        moveFn = function (event) {
+                            var fullLength = window.innerHeight - offset,
+                                distance = fullLength - event.pageY,
+                                realMax = max || fullLength,
+                                lowerLimit = Math.min(fullLength, min),
+                                upperLimit = Math.min(fullLength, realMax);
+
+                            distance = (distance > lowerLimit) ? distance : lowerLimit;
+                            distance = (distance < upperLimit) ? distance : upperLimit;
+                            distance += 'px';
+
+                            $self.css({ height: distance });
+                            $adjacent.css({ bottom: distance });
+                        };
+                        break;
+
+                    case 'left':
+                        overlay = '<div class="' + overlayClass + '"' +
+                                  ' style="position: absolute; top: 0; bottom: 0; left: 0;' +
+                                  ' right: ' + $element.css('width') + '; z-index: ' + zIndex + '"></div>';
+
+                        max = +($attrs.max) || window.innerWidth - offset;
+
+                        moveFn = function (event) {
+                            var fullLength = window.innerWidth - offset,
+                                distance = event.pageX - offset,
+                                realMax = max || fullLength,
+                                lowerLimit = Math.min(fullLength, min),
+                                upperLimit = Math.min(fullLength, realMax);
+
+                            distance = (distance > lowerLimit) ? distance : lowerLimit;
+                            distance = (distance < upperLimit) ? distance : upperLimit;
+                            distance += 'px';
+
+                            $self.css({ width: distance });
+                            $adjacent.css({ left: distance });
+                        };
+                        break;
+                }
 
                 $element.on('mousedown', function(event) {
                     event.preventDefault();
 
                     // Put an overlay over the top and bottom elements so that any mouse over
                     // events in them do not interfere with the resizing
-                    $topEl.append(overlay);
-                    $bottomEl.append(overlay);
+                    $self.append(overlay);
+                    $adjacent.append(overlay);
 
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
                 });
 
                 function mousemove(event) {
-
-                    var windowHeight = window.innerHeight - bottomOffset,
-                        y = windowHeight - event.pageY,
-                        bottomMax = +($attrs.bottomMax) || windowHeight,
-                        bottomLowerLimit = Math.min(windowHeight, bottomMin),
-                        bottomUpperLimit = Math.min(windowHeight, bottomMax);
-
-                    y = (y > bottomLowerLimit) ? y : bottomLowerLimit;
-                    y = (y < bottomUpperLimit) ? y : bottomUpperLimit;
-
-                    if (isInside) {
-                        $topEl.css({
-                            bottom: y + 'px'
-                        });
-
-                        $bottomEl.css({
-                            height: y + 'px'
-                        });
-
-                    } else {
-                        $element.css({
-                            bottom: y + 'px'
-                        });
-
-                        $topEl.css({
-                            bottom: y + dividerHeight + 'px'
-                        });
-
-                        $bottomEl.css({
-                            height: y + 'px'
-                        });
-                    }
+                    moveFn(event);
                 }
 
                 function mouseup() {
                     // Remove the overlays
-                    $topEl.children().remove('.' + overlayClass);
-                    $bottomEl.children().remove('.' + overlayClass);
+                    $self.children().remove('.' + overlayClass);
+                    $adjacent.children().remove('.' + overlayClass);
 
                     $document.unbind('mousemove', mousemove);
                     $document.unbind('mouseup', mouseup);
