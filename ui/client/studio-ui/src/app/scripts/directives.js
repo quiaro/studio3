@@ -168,6 +168,33 @@ angular.module('crafter.studio-ui.Directives', [])
         };
     }])
 
+    /*
+     * Creates a "slidable" panel with the ability to be opened and closed.
+     * The flex panel is meant to be adjacent to another container or panel.
+     * When the flex panel closes, the adjacent panel expands and when the flex
+     * panel closes, the adjacent panel shrinks.
+     *
+     * This directive has the following attributes:
+     * - class: "top" | "right" | "bottom" | "left", this attribute determines
+     *          the position of the flex panel relative to its container. If
+     *          the flex panel is at the "top", the adjacent panel is expected
+     *          to go below and vice versa.
+     * - adjacent: css selector for the adjacent panel
+     * - offset (optional): pixel offset on the same side that the flex panel is.
+     *           For example:
+     *           if the flex panel is at the bottom and offset="50", that means
+     *           the flex panel is not completely at the bottom of its container;
+     *           instead, there'll be a 50px gap at the bottom of the container.
+     *           This option is useful for placing ribbons or menus on the same side
+     *           as the flex panel. Defaults to 0.
+     * - default (optional): default height or width (in pixels) of the flex panel.
+     *           If the flex panel is at the bottom or at the top, then this value
+     *           corresponds to its default height; otherwise, if it's on the left
+     *           or on the right, this value corresponds to its default width.
+     *           Defaults to 200.
+     * - hide-if: expression that controls the state of the flex panel (open or closed)
+     */
+
     .directive('sdoFlexPanel', ['Preferences', function(Preferences) {
 
         return {
@@ -262,6 +289,21 @@ angular.module('crafter.studio-ui.Directives', [])
             }
         };
     }])
+
+    /*
+     * Gives the user the ability to modifiy the height or width of a flex panel
+     * (see sdoFlexPanel). For example, if the flex panel is at the top, the user
+     * will be able to adjust the height by dragging the bottom border. Similarly,
+     * if the flex panel is at the bottom, the user may adjust its height by
+     * dragging the top border.
+     *
+     * This directive has the following attributes:
+     * - min (optinal): The minimum height/width (in pixels) allowed for the flex panel.
+     *                  Defaults to 0.
+     * - max (optional): The maximum height/width (in pixels) allowed for the flex panel.
+     *                   Defaults to window.innerHeight - offset (for a horizontal flex panel) or
+     *                   window.innerWidth - offset (for a vertical flex panel)
+     */
 
     .directive('sdoDivider', ['$document', 'Preferences', function($document, Preferences) {
 
