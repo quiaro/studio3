@@ -276,7 +276,6 @@ angular.module('crafter.studio-ui.Directives', [])
                     offset = ctrl.get('offset'),
                     overlayClass = 'resize-overlay',
                     overlay,
-                    max,
                     moveFn;
 
                 function getOverlayString($el, overlayClass, side) {
@@ -371,7 +370,7 @@ angular.module('crafter.studio-ui.Directives', [])
 
                         $el.css(objEl);
                         $adj.css(objAdj);
-                    }
+                    };
                 }
 
                 overlay = getOverlayString($element, overlayClass, side);

@@ -1,10 +1,9 @@
-/* global localStorage */
 'use strict';
 
 angular.module('crafter.studio-ui.Language', [])
 
-    .factory('Language', ['$http', '$q', '$rootScope', '$state', '$log', 'Utils', 'Preferences', 'GLOBALS',
-        function($http, $q, $rootScope, $state, $log, Utils, Preferences, GLOBALS) {
+    .factory('Language', ['$http', '$q', '$rootScope', '$log', 'Utils', 'Preferences', 'GLOBALS',
+        function($http, $q, $rootScope, $log, Utils, Preferences, GLOBALS) {
 
         // session storage language key
         var lang_key = 'studio_ui_lang';
